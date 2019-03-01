@@ -1,0 +1,95 @@
+/* 
+    Created on : 13/08/2018, 17:03:34
+    Author     : eniomarcelobuzaneli
+*/
+
+
+.hide-reload-screen {display: none}
+
+.col-lg-1, .col-lg-10, .col-lg-11, .col-lg-12, .col-lg-2, .col-lg-3, .col-lg-4, .col-lg-5, .col-lg-6, .col-lg-7, .col-lg-8, .col-lg-9, .col-md-1, .col-md-10, .col-md-11, .col-md-12, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9, .col-sm-1, .col-sm-10, .col-sm-11, .col-sm-12, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9, .col-xs-1, .col-xs-10, .col-xs-11, .col-xs-12, .col-xs-2, .col-xs-3, .col-xs-4, .col-xs-5, .col-xs-6, .col-xs-7, .col-xs-8, .col-xs-9 {
+    padding-left: 0 !important;
+}
+
+
+.box-primary > div.box-body {
+    padding-right: 0 !important;
+}
+
+
+
+/*
+ * INPUTS, SELECTS, CHECK BOX, RADIO BOX
+ */
+input[name=id] {    
+    color: #0174B7 !important;
+    font-weight: bold !important;
+    /*font-size: 1.3em !important;*/
+}    
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+    color: #86AA35 !important;
+    font-weight: bold !important;
+}
+
+/*
+ * TABLE GRID LIST
+ */
+.tdBtnAction {
+    text-align: center;
+}
+
+
+
+/*
+ * SWAL
+ */
+.swal-overlay {
+    background-color: transparent !important;
+}
+
+.swal-modal {
+    -webkit-box-shadow: 0px 0px 70px -5px rgba(0,0,0,0.62);
+    -moz-box-shadow: 0px 0px 70px -5px rgba(0,0,0,0.62);
+    box-shadow: 0px 0px 70px -5px rgba(0,0,0,0.62);
+}
+
+
+/**
+* MODAL AGUARDE
+*/
+.bz-aguarde-modal {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1050;
+    display: none;
+    overflow: hidden;
+    -webkit-overflow-scrolling: touch;
+    outline: 0;
+    background-color: rgba(255, 255, 255, 0.8);
+    text-align: center;
+    padding: 0!important;
+}
+
+.bz-aguarde-modal:before {
+    content: '';
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+    margin-right: -4px;
+
+}
+
+.bz-aguarde-modal-dialog {
+    display: inline-block;
+    text-align: left;
+    vertical-align: middle;
+}
+
+.bz-aguarde-modal-content {
+    background-color: transparent;
+    color: #3b3b1f;
+
+}
+
