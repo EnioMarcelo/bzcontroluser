@@ -14,6 +14,7 @@
     /* function  __construct() */
   	public function __construct() {
   		parent::__construct();
+        
 
       /* LOAD MODEL */
       $this->load->model('Cadastrodeclientes_model', 'm', TRUE);
