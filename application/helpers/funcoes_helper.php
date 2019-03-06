@@ -50,8 +50,18 @@ function check_is_user_super_admin() {
  * CHECK SE USUÁRIO ESTÁ LOGADO NO SISTEMA
  */
 function check_is_user_login() {
-
     $CI = & get_instance();
+
+    $_notCheckLoginApp = [
+        'login',
+        'changepass'
+    ];
+
+    if (!in_array($CI->router->fetch_class(), $_notCheckLoginApp)):
+        return TRUE;
+    endif;
+
+
     return $CI->session->has_userdata('user_login');
 }
 
@@ -189,12 +199,10 @@ function set_mensagem($titulo = NULL, $mensagem = NULL, $fa_icon = 'fa-times', $
 function get_mensagem() {
     $CI = & get_instance();
 
-    if (!empty($CI->session->flashdata('mensagem_sistema'))):
-        if ($CI->session->flashdata('mensagem_sistema')):
-            $result = $CI->session->flashdata('mensagem_sistema');
-            $CI->session->unset_userdata('mensagem_sistema');
-            return $result;
-        endif;
+    if ($CI->session->flashdata('mensagem_sistema')):
+        $result = $CI->session->flashdata('mensagem_sistema');
+        $CI->session->unset_userdata('mensagem_sistema');
+        return $result;
     endif;
 }
 

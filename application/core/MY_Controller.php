@@ -48,7 +48,7 @@ class MY_Controller extends MX_Controller {
         /*
          * AUDITORIA
          */
-        if ($this->router->fetch_class() != 'auditoria' && $this->router->fetch_class() != 'dashboard'):
+        if ($this->router->fetch_class() != 'login' && $this->router->fetch_class() != 'changepass' && $this->router->fetch_class() != 'auditoria' && $this->router->fetch_class() != 'dashboard'):
             if (check_is_user_login()):
                 $dados_auditoria['username'] = $this->session->userdata('user_login')['user_nome'] . ' - ' . $this->session->userdata('user_login')['user_email'];
             endif;
@@ -60,8 +60,16 @@ class MY_Controller extends MX_Controller {
 
         endif;
 
+        /**
+         * ARRAY DE APPs QUE NÃO PRECISAM CHEGAR SE FEZ LOGIN OU SE TEM PERMISSÃO DE ACESSO.
+         */
+        $_notCheckLoginApp = [
+            'login',
+            'changepass',
+            ''
+        ];
 
-        if ($this->router->fetch_class() != 'login' && $this->router->fetch_class() != 'changepass' && $this->router->fetch_class() != 'manutencao'):
+        if (!in_array($this->router->fetch_class(), $_notCheckLoginApp)):
 
             /*
              * CHECK SE USUÁRIO ESTÁ LOGADO, SE OK, REDIRECIONA PARA O PAINEL.
@@ -97,7 +105,7 @@ class MY_Controller extends MX_Controller {
              * CHECK SE USUÁRIO TEM PERMISSÃO PARA ACESSAR O MÓDULO DO SISTEMA
              */
 
-            if ($this->session->userdata('user_login')['user_super_admin'] != 'Y'):
+            if ($this->session->userdata('user_login')['user_super_admin'] !== 'Y'):
 
                 /*
                  * GET ACL DO USUÁRIO LOGADO NO SISTEMA
@@ -107,7 +115,7 @@ class MY_Controller extends MX_Controller {
                 /*
                  * ACL APPS QUE OS USUÁRIOS TEM ACESSO LIBERADO NO SISTEMA
                  */
-                $_defaults_apps_access = array('dashboard', 'userprofile'); //APPS DEFAULT
+                $_defaults_apps_access = array('dashboard', 'userprofile', 'login', 'changepass', 'assets', 'favicon.ico'); //APPS DEFAULT
                 $_acl_users_access_modules = $_defaults_apps_access;
 
                 foreach ($_acl_user as $_app):
@@ -117,6 +125,7 @@ class MY_Controller extends MX_Controller {
                 /*
                  * CHECK SE O USUÁRIO TE PERMISSÃO DE ACESSO AOS APLICATIVOS DO SISTEMA
                  */
+                
                 if (!in_array($this->router->fetch_class(), $_acl_users_access_modules)):
 
                     //GRAVA AUDITORIA
@@ -151,13 +160,12 @@ class MY_Controller extends MX_Controller {
          * END CHECK SE USUÁRIO TEM PERMISSÃO PARA ACESSAR O MÓDULO DO SISTEMA
          */
 
-
         endif;
 
 
         //GRAVA AUDITORIA
         if ($this->saveAuditoria):
-            add_auditoria($dados_auditoria);
+        //add_auditoria($dados_auditoria);
         endif;
 
 
