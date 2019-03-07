@@ -137,7 +137,7 @@
     ?>
 
 
-    <body class="skin-<?= ___BZ_LAYOUT_SKINCOLOR___; ?> sidebar-mini fixed <?= ((get_setting('sidebar_collapsed') == 'SIM') ? 'sidebar-collapse' : ''); ?> enio">
+    <body class="skin-<?= ___BZ_LAYOUT_SKINCOLOR___; ?> sidebar-mini fixed <?= ((get_setting('sidebar_collapsed') == 'SIM') ? 'sidebar-collapse' : ''); ?>">
         <div class="wrapper">
 
             <!-- Main Header -->
