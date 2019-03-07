@@ -205,6 +205,7 @@
                                     <option value="number">Número Inteiro</option>
                                     <option value="number-decimal">Número Decimal</option>
                                     <option value="moeda">Moeda</option>
+                                    <option value="senha">Senha</option>
                                     <option value="select-manual">Select Dropdown - Manual</option>
                                     <option value="select-dinamic">Select Dropdown - Dinâmico</option>
                                     <option value="select-multiple-manual">Select Multiplo - Manual</option>
@@ -449,6 +450,21 @@
 
 
 
+                            <!--TIPO DE CARACTERES - SOMENTE LETRAS, SOMENTE NÚMEROS OU LETRAS E NÚMEROS-->
+                            <div class="form-group col-bg-12 col-md-12 col-sm-12 col-xs-12">
+                                <label>Caracteres:</label>
+                                <div class="input-group col-bg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <select class="form-control input-sm" name="form_add_edit_field_type_characters">
+                                        <option value="">Todos</option>
+                                        <option value="only_numbers">Somente Números</option>
+                                        <option value="only_letters">Somente Letras</option>
+                                        <option value="letters_and_numbers">Letras e Números</option>
+                                    </select>
+                                </div>
+                            </div>
+
+
+
                             <!--MÍNIMO DE CARACTERES NO INPUT-->
                             <div class="form-group col-bg-12 col-md-12 col-sm-12 col-xs-12">
                                 <label>Mínimno de Caracteres:</label>
@@ -539,6 +555,7 @@
                     $('textarea[name="form_add_edit_field_value_checkbox_multiple_dinamic"]').val('');
                     $('select[name="form_add_edit_field_column"]').val('');
                     $('select[name="form_add_edit_field_convert_letter_into"]').val('');
+                    $('select[name="form_add_edit_field_type_characters"]').val('');
                     $('input[name="form_add_edit_field_min_length"]').val('');
                     $('input[name="form_add_edit_field_max_length"]').val('');
 
@@ -564,8 +581,6 @@
                     $('select[name="form_add_edit_field_required_in_form"]').removeAttr('selected').val(result.form_add_edit_field_required_in_form).attr('selected', true);
 
 
-
-
                     //INPUT MASK
                     if (result.form_add_edit_field_type == 'text' || result.form_add_edit_field_type == 'number-decimal') {
                         $('input[name="form_add_edit_field_mask"]').parent().removeClass('hide');
@@ -576,21 +591,28 @@
                     }
 
                     //INPUT UPPERCASE / LOWERCASE
-                    if (result.form_add_edit_field_type == 'text' || result.form_add_edit_field_type == 'text-long') {
+                    if (result.form_add_edit_field_type == 'text' || result.form_add_edit_field_type == 'text-long' || result.form_add_edit_field_type == 'senha') {
                         $('select[name="form_add_edit_field_convert_letter_into"]').parent().parent().removeClass('hide');
                     } else {
                         $('select[name="form_add_edit_field_convert_letter_into"]').parent().parent().addClass('hide');
                     }
 
+                    //INPUT TYPE CHARACTERS
+                    if (result.form_add_edit_field_type == 'text' || result.form_add_edit_field_type == 'senha') {
+                        $('input[name="form_add_edit_field_type_characters"]').parent().parent().removeClass('hide');
+                    } else {
+                        $('input[name="form_add_edit_field_type_characters"]').parent().parent().addClass('hide');
+                    }
+
                     //INPUT MIN LENGHT
-                    if (result.form_add_edit_field_type == 'text' || result.form_add_edit_field_type == 'text-long' || result.form_add_edit_field_type == 'email' || result.form_add_edit_field_type == 'number' || result.form_add_edit_field_type == 'number-decimal' || result.form_add_edit_field_type == 'moeda') {
+                    if (result.form_add_edit_field_type == 'text' || result.form_add_edit_field_type == 'text-long' || result.form_add_edit_field_type == 'email' || result.form_add_edit_field_type == 'number' || result.form_add_edit_field_type == 'number-decimal' || result.form_add_edit_field_type == 'moeda' || result.form_add_edit_field_type == 'senha') {
                         $('input[name="form_add_edit_field_min_length"]').parent().parent().removeClass('hide');
                     } else {
                         $('input[name="form_add_edit_field_min_length"]').parent().parent().addClass('hide');
                     }
 
                     //INPUT MAX LENGHT
-                    if (result.form_add_edit_field_type == 'text' || result.form_add_edit_field_type == 'text-long' || result.form_add_edit_field_type == 'email' || result.form_add_edit_field_type == 'number' || result.form_add_edit_field_type == 'number-decimal' || result.form_add_edit_field_type == 'moeda') {
+                    if (result.form_add_edit_field_type == 'text' || result.form_add_edit_field_type == 'text-long' || result.form_add_edit_field_type == 'email' || result.form_add_edit_field_type == 'number' || result.form_add_edit_field_type == 'number-decimal' || result.form_add_edit_field_type == 'moeda' || result.form_add_edit_field_type == 'senha') {
                         $('input[name="form_add_edit_field_max_length"]').parent().parent().removeClass('hide');
                     } else {
                         $('input[name="form_add_edit_field_max_length"]').parent().parent().addClass('hide');
@@ -744,6 +766,8 @@
 
                     $('select[name="form_add_edit_field_convert_letter_into"]').removeAttr('selected').val(result.form_add_edit_field_convert_letter_into).attr('selected', true);
 
+                    $('select[name="form_add_edit_field_type_characters"]').removeAttr('selected').val(result.form_add_edit_field_type_characters).attr('selected', true);
+
                     $('input[name="form_add_edit_field_min_length"]').val(result.form_add_edit_field_min_length);
 
                     $('input[name="form_add_edit_field_max_length"]').val(result.form_add_edit_field_max_length);
@@ -811,6 +835,7 @@
             $('input[name="form_add_edit_field_min_length"]').val('');
             $('input[name="form_add_edit_field_max_length"]').val('');
             $('select[name="form_add_edit_field_convert_letter_into"]').val('');
+            $('select[name="form_add_edit_field_type_characters"]').val('');
 
 
 
@@ -824,21 +849,28 @@
             }
 
             //INPUT UPPERCASE / LOWERCASE
-            if (_selected == 'text' || _selected == 'text-long') {
+            if (_selected == 'text' || _selected == 'text-long' || _selected == 'senha') {
                 $('select[name="form_add_edit_field_convert_letter_into"]').parent().parent().removeClass('hide');
             } else {
                 $('select[name="form_add_edit_field_convert_letter_into"]').parent().parent().addClass('hide');
             }
 
+            //INPUT SENHA
+            if (_selected == 'text' || _selected == 'senha') {
+                $('select[name="form_add_edit_field_type_characters"]').parent().parent().removeClass('hide');
+            } else {
+                $('select[name="form_add_edit_field_type_characters"]').parent().parent().addClass('hide');
+            }
+
             //INPUT MIN LENGHT
-            if (_selected == 'text' || _selected == 'text-long' || _selected == 'email' || _selected == 'number' || _selected == 'number-decimal' || _selected == 'moeda') {
+            if (_selected == 'text' || _selected == 'text-long' || _selected == 'email' || _selected == 'number' || _selected == 'number-decimal' || _selected == 'moeda' || _selected == 'senha') {
                 $('input[name="form_add_edit_field_min_length"]').parent().parent().removeClass('hide');
             } else {
                 $('input[name="form_add_edit_field_min_length"]').parent().parent().addClass('hide');
             }
 
             //INPUT MAX LENGHT
-            if (_selected == 'text' || _selected == 'text-long' || _selected == 'email' || _selected == 'number' || _selected == 'number-decimal' || _selected == 'moeda') {
+            if (_selected == 'text' || _selected == 'text-long' || _selected == 'email' || _selected == 'number' || _selected == 'number-decimal' || _selected == 'moeda' || _selected == 'senha') {
                 $('input[name="form_add_edit_field_max_length"]').parent().parent().removeClass('hide');
             } else {
                 $('input[name="form_add_edit_field_max_length"]').parent().parent().addClass('hide');
@@ -1041,8 +1073,8 @@
             console.log('_projeto_id: ' + _projeto_id);
             console.log('_field_name: ' + _field_name);
             console.log('_primary_key: ' + _primary_key);
-            
-            
+
+
             btnDataObj = {};
 
             $(_dataArray).each(function (i, field) {
@@ -1078,7 +1110,7 @@
                 data: _data,
                 dataType: "json",
                 beforeSend: function () {
-                    
+
                     console.log('AJAX SUBMIT IN');
                     _btn_save.hide();
 
@@ -1143,7 +1175,7 @@
                     } else {
                         alert('Uncaught Error.\n' + xhr.responseText);
                     }
-                    
+
                     notfit_msg_error('Ocorreu um ERRO Inesperado ao Atualizar Registro, Contacte o Administrador do Sistema.');
 
                 }//END error
