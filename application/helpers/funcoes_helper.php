@@ -838,6 +838,7 @@ function get_setting($nome) {
 function settingsConfig($_p) {
     $CI = & get_instance();
     $dadosForm = '';
+    
     /*
      * FORM Configurações Gerais - Carrega.
      */
@@ -866,7 +867,7 @@ function settingsConfig($_p) {
             </div>
             ';
 //END Campo Modo Debug da Aplicação    
-
+        
 
 
         /*
@@ -967,14 +968,18 @@ function settingsConfig($_p) {
             ';
 //END Campo Modo Debug da Aplicação
 
-
-
-
     endif;
+    /*
+     * END FORM Configurações Gerais - Carrega.
+     */
+    
+    
+    
+    
 
 
     /*
-     * SKINS
+     * FORM DE SKINS
      */
     if ($_p == 'skins'):
         $CI->db->where('nome_config', 'layout_skin');
@@ -1108,8 +1113,53 @@ function settingsConfig($_p) {
         ';
 //END SKINS
     endif;
+    /*
+     * END FORM DE SKINS
+     */
+    
+    
+    
+    
+    
+    
+    /*
+     * FORM Configurações de Layout do Sistema
+     */
+    if ($_p == 'other-config'):
 
+        
+         /*
+         * Menu Collapse
+         */
+        $CI->db->where('nome_config', 'sidebar_collapsed');
+        $CI->db->limit(1);
+        $sidebarCollapse = $CI->db->get('sec_settings')->row();
+        if ($sidebarCollapse):
+            $sidebarCollapse = ($sidebarCollapse->valor_config == 'SIM') ? 'checked' : '';
+        else:
+            $sidebarCollapse = '';
+        endif;
+        $dadosForm .= '
+            <div class="form-group">
+            <label class="control-sidebar-subheading">
+            Menu Fechado 
+            <input type="checkbox" name="sidebar_collapsed" class="pull-right" ' . $sidebarCollapse . ' />
+            </label>
+            <p>
+            Inicia o Sistema com o Menu Fechado.
+            </p>
+            </div>
+            ';
+//END Campos Configurações Sistema
 
+    endif;
+    /*
+     * END FORM Configurações de Layout do Sistema
+     */
+    
+    
+    
+    
 
     return $dadosForm;
 }

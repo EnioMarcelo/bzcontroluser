@@ -1,6 +1,6 @@
 <?php
 /*
-  Created on : 07/03/2019, 14:44PM
+  Created on : 07/03/2019, 14:53PM
   Author     : Enio Marcelo - eniomarcelo@gmail.com
  */
 
@@ -127,7 +127,7 @@ echo form_dropdown('genero_id', $_list_genero_id, set_value('genero_id',isset($d
                                             <?php $_error = form_error("telefone", "<small class='text-danger col-xs-12 bz-input-error'>", "</small>"); ?>
                                             <div id="telefone" class="form-group has-feedback col-sm-12">
                                                 <label for="telefone">Senha</label>
-                                                <input type="text" name="telefone" class="form-control   " placeholder=""  value="<?=set_value("telefone",!empty($dados->telefone) ? $dados->telefone : set_value("telefone"));?>" />
+                                                <input type="password" name="telefone" class="form-control" placeholder="" value="<?=set_value("telefone",isset($dados->telefone) ? $dados->telefone : set_value("telefone"));?>"  />
                                                 <?= $_error; ?>
                                             </div>
                                             

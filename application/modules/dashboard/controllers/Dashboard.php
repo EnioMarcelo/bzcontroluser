@@ -101,12 +101,13 @@
                 elseif ($acao == 'add-form-settings'):
 
                     $settings = elements(array('multiplos_logins', 'em_manutencao'), $this->input->post());
-
+                
                     $settings['multiplos_logins'] = ($this->input->post('multiplos_logins', TRUE) == 'on') ? 'SIM' : 'NAO';
                     $settings['em_manutencao'] = ($this->input->post('em_manutencao', TRUE) == 'on') ? 'SIM' : 'NAO';
                     $settings['debug_mode'] = ($this->input->post('debug_mode', TRUE) == 'on') ? 'SIM' : 'NAO';
                     $settings['time_render'] = ($this->input->post('time_render', TRUE) == 'on') ? 'SIM' : 'NAO';
                     $settings['time_zone'] = $this->input->post('time_zone', TRUE);
+                    $settings['sidebar_collapsed'] = ($this->input->post('sidebar_collapsed', TRUE) == 'on') ? 'SIM' : 'NAO';
                     $settings['layout_skin'] = $this->input->post('layout_skin', TRUE)[0];
 
                     foreach ($settings as $nome_config => $valor_config):

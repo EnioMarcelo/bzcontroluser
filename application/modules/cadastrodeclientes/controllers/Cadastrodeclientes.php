@@ -1,7 +1,7 @@
 <?php
 
 /*
-  Created on : 07/03/2019, 14:44PM
+  Created on : 07/03/2019, 14:53PM
   Author     : Enio Marcelo - eniomarcelo@gmail.com
  */
 
@@ -64,7 +64,7 @@
         $this->form_validation->set_rules('id', '<b>ID</b>', 'trim|max_length[11]');
 $this->form_validation->set_rules('nome', '<b>Nome</b>', 'trim|strtoupper|max_length[255]|required');
 $this->form_validation->set_rules('genero_id', '<b>Gênero</b>', 'trim|callback_validation_required_genero_id');
-$this->form_validation->set_rules('telefone', '<b>Senha</b>', 'trim');
+$this->form_validation->set_rules('telefone', '<b>Senha</b>', 'trim|alpha_numeric');
 
         /* END VALIDAÇÃO DOS DADOS */
 
@@ -145,7 +145,7 @@ $_dados["id"] = preg_replace("/[^0-9]/", "", $_dados["id"]);
       $this->form_validation->set_rules('id', '<b>ID</b>', 'trim|max_length[11]');
 $this->form_validation->set_rules('nome', '<b>Nome</b>', 'trim|strtoupper|max_length[255]|required');
 $this->form_validation->set_rules('genero_id', '<b>Gênero</b>', 'trim|callback_validation_required_genero_id');
-$this->form_validation->set_rules('telefone', '<b>Senha</b>', 'trim');
+$this->form_validation->set_rules('telefone', '<b>Senha</b>', 'trim|alpha_numeric');
 
       /* END VALIDAÇÃO DOS DADOS */
 
