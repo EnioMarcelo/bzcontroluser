@@ -15,7 +15,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>ADMIN <?= bz_strip_tags_content(___BZ_TITULO_SISTEMA___); ?>| Log in</title>
+        <title>ADMIN <?= bz_remove_strip_tags_content(___BZ_TITULO_SISTEMA___); ?>| Log in</title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
         <!-- Bootstrap 3.3.4 -->
         <link href="<?= base_url('assets'); ?>/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />

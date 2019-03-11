@@ -15,7 +15,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title><?= bz_strip_tags_content(___BZ_TITULO_SISTEMA___); ?></title>
+        <title><?= bz_remove_strip_tags_content(___BZ_TITULO_SISTEMA___); ?></title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
 
         <!-- Theme style iCheck-->

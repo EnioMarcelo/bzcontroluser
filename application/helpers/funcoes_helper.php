@@ -1493,26 +1493,22 @@ function bz_modal($_p = []) {
 }
 
 /**
- * REMOVES THE HTML TAGS ALONG WITH THEIR CONTENTS
+ * REMOVE THE HTML TAGS ALONG WITH THEIR CONTENTS
  * 
- * @param type $text
- * @param type $tags
- * @param type $invert
+ * @param type $string
  * @return type
  */
-function bz_strip_tags_content($text, $tags = '', $invert = FALSE) {
+function bz_remove_strip_tags_content($string) {
 
-    preg_match_all('/<(.+?)[\s]*\/?[\s]*>/si', trim($tags), $tags);
-    $tags = array_unique($tags[1]);
+    // ----- remove HTML TAGs ----- 
+    $string = preg_replace('/<[^>]*>/', ' ', $string);
 
-    if (is_array($tags) AND count($tags) > 0) {
-        if ($invert == FALSE) {
-            return preg_replace('@<(?!(?:' . implode('|', $tags) . ')\b)(\w+)\b.*?>.*?</\1>@si', '', $text);
-        } else {
-            return preg_replace('@<(' . implode('|', $tags) . ')\b.*?>.*?</\1>@si', '', $text);
-        }
-    } elseif ($invert == FALSE) {
-        return preg_replace('@<(\w+)\b.*?>.*?</\1>@si', '', $text);
-    }
-    return $text;
+    // ----- remove control characters ----- 
+    $string = str_replace("\r", '', $string);    // --- replace with empty space
+    $string = str_replace("\n", ' ', $string);   // --- replace with space
+    $string = str_replace("\t", ' ', $string);   // --- replace with space
+    // ----- remove multiple spaces ----- 
+    $string = trim(preg_replace('/ {2,}/', ' ', $string));
+
+    return $string;
 }
