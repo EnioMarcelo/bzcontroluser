@@ -52,16 +52,6 @@ function check_is_user_super_admin() {
 function check_is_user_login() {
     $CI = & get_instance();
 
-    $_notCheckLoginApp = [
-        'login',
-        'changepass'
-    ];
-
-    if (!in_array($CI->router->fetch_class(), $_notCheckLoginApp)):
-        return TRUE;
-    endif;
-
-
     return $CI->session->has_userdata('user_login');
 }
 
@@ -289,7 +279,33 @@ function bz_enviar_email($para, $assunto, $mensagem, $formato = 'html') {
 //END bz_enviar_email()
 
 /**
- * FUNÇÃO QUE FILTRA O CONTAUDO DE UM ARRAY.
+ * PROCURA UMA OCORRÊNCIA EXATA DENTRO DE UM ARRAY E RETORNA UM ARRAY 
+ * COM OS DADOS FILTRADOS.
+ * 
+ * @param type $elem
+ * @param type $array
+ * @return boolean
+ */
+function bz_find_in_multiarray($elem, $array) {
+
+    $_new_array = array();
+
+    while (current($array) !== false) {
+
+        if (current($array) == $elem) {
+            $_new_array[] = current($array);
+        } elseif (is_array(current($array))) {
+            if (bz_find_in_multiarray($elem, current($array))) {
+                $_new_array[] = current($array);
+            }
+        }
+        next($array);
+    }
+    return $_new_array;
+}
+
+/**
+ * FUNÇÃO QUE FILTRA O CONTEUDO DE UM ARRAY.
  *
  * @param string $_p['array']       Passa o ARRAY para ser filtrado
  * @param string $_p['field']       Passa o NOME DO CAMPO que contém o valor a ser filtrado
@@ -838,7 +854,7 @@ function get_setting($nome) {
 function settingsConfig($_p) {
     $CI = & get_instance();
     $dadosForm = '';
-    
+
     /*
      * FORM Configurações Gerais - Carrega.
      */
@@ -867,7 +883,7 @@ function settingsConfig($_p) {
             </div>
             ';
 //END Campo Modo Debug da Aplicação    
-        
+
 
 
         /*
@@ -972,10 +988,10 @@ function settingsConfig($_p) {
     /*
      * END FORM Configurações Gerais - Carrega.
      */
-    
-    
-    
-    
+
+
+
+
 
 
     /*
@@ -988,127 +1004,127 @@ function settingsConfig($_p) {
 
         $dadosForm .= '
         <ul class="list-unstyled clearfix margin-bottom-20">
-			<li style="float:left; width: 33.33333%; padding: 5px;">
-				<a href="javascript:void(0)" data-skin="skin-blue" style="display: block; box-shadow: 0 0 3px rgba(0,0,0,0.4)" class="clearfix full-opacity-hover">
-					<div><span style="display:block; width: 20%; float: left; height: 7px; background: #367fa9"></span><span class="bg-light-blue" style="display:block; width: 80%; float: left; height: 7px;"></span>
-					</div>
-					<div><span style="display:block; width: 20%; float: left; height: 20px; background: #222d32"></span><span style="display:block; width: 80%; float: left; height: 20px; background: #f4f5f7"></span>
-					</div>
-				</a>
-				<p class="text-center no-margin">Blue</p>
+            <li style="float:left; width: 33.33333%; padding: 5px;">
+                <a href="javascript:void(0)" data-skin="skin-blue" style="display: block; box-shadow: 0 0 3px rgba(0,0,0,0.4)" class="clearfix full-opacity-hover">
+                    <div><span style="display:block; width: 20%; float: left; height: 7px; background: #367fa9"></span><span class="bg-light-blue" style="display:block; width: 80%; float: left; height: 7px;"></span>
+                    </div>
+                    <div><span style="display:block; width: 20%; float: left; height: 20px; background: #222d32"></span><span style="display:block; width: 80%; float: left; height: 20px; background: #f4f5f7"></span>
+                    </div>
+                </a>
+                <p class="text-center no-margin">Blue</p>
                 <p class="text-center no-margin"><input type="radio" value="blue" name="layout_skin[]" id="skin-blue" ' . (($layout_skin->valor_config == 'blue') ? 'checked' : '') . ' /></p>
                 
-			</li>
-			<li style="float:left; width: 33.33333%; padding: 5px;">
-				<a href="javascript:void(0)" data-skin="skin-black" style="display: block; box-shadow: 0 0 3px rgba(0,0,0,0.4)" class="clearfix full-opacity-hover">
-					<div style="box-shadow: 0 0 2px rgba(0,0,0,0.1)" class="clearfix"><span style="display:block; width: 20%; float: left; height: 7px; background: #fefefe"></span><span style="display:block; width: 80%; float: left; height: 7px; background: #fefefe"></span>
-					</div>
-					<div><span style="display:block; width: 20%; float: left; height: 20px; background: #222"></span><span style="display:block; width: 80%; float: left; height: 20px; background: #f4f5f7"></span>
-					</div>
-				</a>
-				<p class="text-center no-margin">Black</p>
+            </li>
+            <li style="float:left; width: 33.33333%; padding: 5px;">
+                <a href="javascript:void(0)" data-skin="skin-black" style="display: block; box-shadow: 0 0 3px rgba(0,0,0,0.4)" class="clearfix full-opacity-hover">
+                    <div style="box-shadow: 0 0 2px rgba(0,0,0,0.1)" class="clearfix"><span style="display:block; width: 20%; float: left; height: 7px; background: #fefefe"></span><span style="display:block; width: 80%; float: left; height: 7px; background: #fefefe"></span>
+                    </div>
+                    <div><span style="display:block; width: 20%; float: left; height: 20px; background: #222"></span><span style="display:block; width: 80%; float: left; height: 20px; background: #f4f5f7"></span>
+                    </div>
+                </a>
+                <p class="text-center no-margin">Black</p>
                 <p class="text-center no-margin"><input type="radio" value="black" name="layout_skin[]" id="skin-black" ' . (($layout_skin->valor_config == 'black') ? 'checked' : '') . '/></p>
-			</li>
-			<li style="float:left; width: 33.33333%; padding: 5px;">
-				<a href="javascript:void(0)" data-skin="skin-purple" style="display: block; box-shadow: 0 0 3px rgba(0,0,0,0.4)" class="clearfix full-opacity-hover">
-					<div><span style="display:block; width: 20%; float: left; height: 7px;" class="bg-purple-active"></span><span class="bg-purple" style="display:block; width: 80%; float: left; height: 7px;"></span>
-					</div>
-					<div><span style="display:block; width: 20%; float: left; height: 20px; background: #222d32"></span><span style="display:block; width: 80%; float: left; height: 20px; background: #f4f5f7"></span>
-					</div>
-				</a>
-				<p class="text-center no-margin">Purple</p>
+            </li>
+            <li style="float:left; width: 33.33333%; padding: 5px;">
+                <a href="javascript:void(0)" data-skin="skin-purple" style="display: block; box-shadow: 0 0 3px rgba(0,0,0,0.4)" class="clearfix full-opacity-hover">
+                    <div><span style="display:block; width: 20%; float: left; height: 7px;" class="bg-purple-active"></span><span class="bg-purple" style="display:block; width: 80%; float: left; height: 7px;"></span>
+                    </div>
+                    <div><span style="display:block; width: 20%; float: left; height: 20px; background: #222d32"></span><span style="display:block; width: 80%; float: left; height: 20px; background: #f4f5f7"></span>
+                    </div>
+                </a>
+                <p class="text-center no-margin">Purple</p>
                 <p class="text-center no-margin"><input type="radio" value="purple" name="layout_skin[]" id="skin-purple" ' . (($layout_skin->valor_config == 'purple') ? 'checked' : '') . '/></p>
-			</li>
-			<li style="float:left; width: 33.33333%; padding: 5px;">
-				<a href="javascript:void(0)" data-skin="skin-green" style="display: block; box-shadow: 0 0 3px rgba(0,0,0,0.4)" class="clearfix full-opacity-hover">
-					<div><span style="display:block; width: 20%; float: left; height: 7px;" class="bg-green-active"></span><span class="bg-green" style="display:block; width: 80%; float: left; height: 7px;"></span>
-					</div>
-					<div><span style="display:block; width: 20%; float: left; height: 20px; background: #222d32"></span><span style="display:block; width: 80%; float: left; height: 20px; background: #f4f5f7"></span>
-					</div>
-				</a>
-				<p class="text-center no-margin">Green</p>
+            </li>
+            <li style="float:left; width: 33.33333%; padding: 5px;">
+                <a href="javascript:void(0)" data-skin="skin-green" style="display: block; box-shadow: 0 0 3px rgba(0,0,0,0.4)" class="clearfix full-opacity-hover">
+                    <div><span style="display:block; width: 20%; float: left; height: 7px;" class="bg-green-active"></span><span class="bg-green" style="display:block; width: 80%; float: left; height: 7px;"></span>
+                    </div>
+                    <div><span style="display:block; width: 20%; float: left; height: 20px; background: #222d32"></span><span style="display:block; width: 80%; float: left; height: 20px; background: #f4f5f7"></span>
+                    </div>
+                </a>
+                <p class="text-center no-margin">Green</p>
                 <p class="text-center no-margin"><input type="radio" value="green" name="layout_skin[]" id="skin-green" ' . (($layout_skin->valor_config == 'green') ? 'checked' : '') . '/></p>
-			</li>
-			<li style="float:left; width: 33.33333%; padding: 5px;">
-				<a href="javascript:void(0)" data-skin="skin-red" style="display: block; box-shadow: 0 0 3px rgba(0,0,0,0.4)" class="clearfix full-opacity-hover">
-					<div><span style="display:block; width: 20%; float: left; height: 7px;" class="bg-red-active"></span><span class="bg-red" style="display:block; width: 80%; float: left; height: 7px;"></span>
-					</div>
-					<div><span style="display:block; width: 20%; float: left; height: 20px; background: #222d32"></span><span style="display:block; width: 80%; float: left; height: 20px; background: #f4f5f7"></span>
-					</div>
-				</a>
-				<p class="text-center no-margin">Red</p>
+            </li>
+            <li style="float:left; width: 33.33333%; padding: 5px;">
+                <a href="javascript:void(0)" data-skin="skin-red" style="display: block; box-shadow: 0 0 3px rgba(0,0,0,0.4)" class="clearfix full-opacity-hover">
+                    <div><span style="display:block; width: 20%; float: left; height: 7px;" class="bg-red-active"></span><span class="bg-red" style="display:block; width: 80%; float: left; height: 7px;"></span>
+                    </div>
+                    <div><span style="display:block; width: 20%; float: left; height: 20px; background: #222d32"></span><span style="display:block; width: 80%; float: left; height: 20px; background: #f4f5f7"></span>
+                    </div>
+                </a>
+                <p class="text-center no-margin">Red</p>
                 <p class="text-center no-margin"><input type="radio" value="red" name="layout_skin[]" id="skin-red" ' . (($layout_skin->valor_config == 'red') ? 'checked' : '') . '/></p>
-			</li>
-			<li style="float:left; width: 33.33333%; padding: 5px;">
-				<a href="javascript:void(0)" data-skin="skin-yellow" style="display: block; box-shadow: 0 0 3px rgba(0,0,0,0.4)" class="clearfix full-opacity-hover">
-					<div><span style="display:block; width: 20%; float: left; height: 7px;" class="bg-yellow-active"></span><span class="bg-yellow" style="display:block; width: 80%; float: left; height: 7px;"></span>
-					</div>
-					<div><span style="display:block; width: 20%; float: left; height: 20px; background: #222d32"></span><span style="display:block; width: 80%; float: left; height: 20px; background: #f4f5f7"></span>
-					</div>
-				</a>
-				<p class="text-center no-margin">Yellow</p>
+            </li>
+            <li style="float:left; width: 33.33333%; padding: 5px;">
+                <a href="javascript:void(0)" data-skin="skin-yellow" style="display: block; box-shadow: 0 0 3px rgba(0,0,0,0.4)" class="clearfix full-opacity-hover">
+                    <div><span style="display:block; width: 20%; float: left; height: 7px;" class="bg-yellow-active"></span><span class="bg-yellow" style="display:block; width: 80%; float: left; height: 7px;"></span>
+                    </div>
+                    <div><span style="display:block; width: 20%; float: left; height: 20px; background: #222d32"></span><span style="display:block; width: 80%; float: left; height: 20px; background: #f4f5f7"></span>
+                    </div>
+                </a>
+                <p class="text-center no-margin">Yellow</p>
                 <p class="text-center no-margin"><input type="radio" value="yellow" name="layout_skin[]" id="skin-yellow" ' . (($layout_skin->valor_config == 'yellow') ? 'checked' : '') . '/></p>
-			</li>
-			<li style="float:left; width: 33.33333%; padding: 5px;">
-				<a href="javascript:void(0)" data-skin="skin-blue-light" style="display: block; box-shadow: 0 0 3px rgba(0,0,0,0.4)" class="clearfix full-opacity-hover">
-					<div><span style="display:block; width: 20%; float: left; height: 7px; background: #367fa9"></span><span class="bg-light-blue" style="display:block; width: 80%; float: left; height: 7px;"></span>
-					</div>
-					<div><span style="display:block; width: 20%; float: left; height: 20px; background: #f9fafc"></span><span style="display:block; width: 80%; float: left; height: 20px; background: #f4f5f7"></span>
-					</div>
-				</a>
-				<p class="text-center no-margin" style="font-size: 12px">Blue Light</p>
+            </li>
+            <li style="float:left; width: 33.33333%; padding: 5px;">
+                <a href="javascript:void(0)" data-skin="skin-blue-light" style="display: block; box-shadow: 0 0 3px rgba(0,0,0,0.4)" class="clearfix full-opacity-hover">
+                    <div><span style="display:block; width: 20%; float: left; height: 7px; background: #367fa9"></span><span class="bg-light-blue" style="display:block; width: 80%; float: left; height: 7px;"></span>
+                    </div>
+                    <div><span style="display:block; width: 20%; float: left; height: 20px; background: #f9fafc"></span><span style="display:block; width: 80%; float: left; height: 20px; background: #f4f5f7"></span>
+                    </div>
+                </a>
+                <p class="text-center no-margin" style="font-size: 12px">Blue Light</p>
                 <p class="text-center no-margin"><input type="radio" value="blue-light" name="layout_skin[]" id="skin-blue-light" ' . (($layout_skin->valor_config == 'blue-light') ? 'checked' : '') . '/></p>
-			</li>
-			<li style="float:left; width: 33.33333%; padding: 5px;">
-				<a href="javascript:void(0)" data-skin="skin-black-light" style="display: block; box-shadow: 0 0 3px rgba(0,0,0,0.4)" class="clearfix full-opacity-hover">
-					<div style="box-shadow: 0 0 2px rgba(0,0,0,0.1)" class="clearfix"><span style="display:block; width: 20%; float: left; height: 7px; background: #fefefe"></span><span style="display:block; width: 80%; float: left; height: 7px; background: #fefefe"></span>
-					</div>
-					<div><span style="display:block; width: 20%; float: left; height: 20px; background: #f9fafc"></span><span style="display:block; width: 80%; float: left; height: 20px; background: #f4f5f7"></span>
-					</div>
-				</a>
-				<p class="text-center no-margin" style="font-size: 12px">Black Light</p>
+            </li>
+            <li style="float:left; width: 33.33333%; padding: 5px;">
+                <a href="javascript:void(0)" data-skin="skin-black-light" style="display: block; box-shadow: 0 0 3px rgba(0,0,0,0.4)" class="clearfix full-opacity-hover">
+                    <div style="box-shadow: 0 0 2px rgba(0,0,0,0.1)" class="clearfix"><span style="display:block; width: 20%; float: left; height: 7px; background: #fefefe"></span><span style="display:block; width: 80%; float: left; height: 7px; background: #fefefe"></span>
+                    </div>
+                    <div><span style="display:block; width: 20%; float: left; height: 20px; background: #f9fafc"></span><span style="display:block; width: 80%; float: left; height: 20px; background: #f4f5f7"></span>
+                    </div>
+                </a>
+                <p class="text-center no-margin" style="font-size: 12px">Black Light</p>
                 <p class="text-center no-margin"><input type="radio" value="black-light" name="layout_skin[]" id="skin-black-light" ' . (($layout_skin->valor_config == 'black-light') ? 'checked' : '') . '/></p>
-			</li>
-			<li style="float:left; width: 33.33333%; padding: 5px;">
-				<a href="javascript:void(0)" data-skin="skin-purple-light" style="display: block; box-shadow: 0 0 3px rgba(0,0,0,0.4)" class="clearfix full-opacity-hover">
-					<div><span style="display:block; width: 20%; float: left; height: 7px;" class="bg-purple-active"></span><span class="bg-purple" style="display:block; width: 80%; float: left; height: 7px;"></span>
-					</div>
-					<div><span style="display:block; width: 20%; float: left; height: 20px; background: #f9fafc"></span><span style="display:block; width: 80%; float: left; height: 20px; background: #f4f5f7"></span>
-					</div>
-				</a>
-				<p class="text-center no-margin" style="font-size: 12px">Purple Light</p>
+            </li>
+            <li style="float:left; width: 33.33333%; padding: 5px;">
+                <a href="javascript:void(0)" data-skin="skin-purple-light" style="display: block; box-shadow: 0 0 3px rgba(0,0,0,0.4)" class="clearfix full-opacity-hover">
+                    <div><span style="display:block; width: 20%; float: left; height: 7px;" class="bg-purple-active"></span><span class="bg-purple" style="display:block; width: 80%; float: left; height: 7px;"></span>
+                    </div>
+                    <div><span style="display:block; width: 20%; float: left; height: 20px; background: #f9fafc"></span><span style="display:block; width: 80%; float: left; height: 20px; background: #f4f5f7"></span>
+                    </div>
+                </a>
+                <p class="text-center no-margin" style="font-size: 12px">Purple Light</p>
                 <p class="text-center no-margin"><input type="radio" value="purple-light" name="layout_skin[]" id="skin-purple-light" ' . (($layout_skin->valor_config == 'purple-light') ? 'checked' : '') . '/></p>
-			</li>
-			<li style="float:left; width: 33.33333%; padding: 5px;">
-				<a href="javascript:void(0)" data-skin="skin-green-light" style="display: block; box-shadow: 0 0 3px rgba(0,0,0,0.4)" class="clearfix full-opacity-hover">
-					<div><span style="display:block; width: 20%; float: left; height: 7px;" class="bg-green-active"></span><span class="bg-green" style="display:block; width: 80%; float: left; height: 7px;"></span>
-					</div>
-					<div><span style="display:block; width: 20%; float: left; height: 20px; background: #f9fafc"></span><span style="display:block; width: 80%; float: left; height: 20px; background: #f4f5f7"></span>
-					</div>
-				</a>
-				<p class="text-center no-margin" style="font-size: 12px">Green Light</p>
+            </li>
+            <li style="float:left; width: 33.33333%; padding: 5px;">
+                <a href="javascript:void(0)" data-skin="skin-green-light" style="display: block; box-shadow: 0 0 3px rgba(0,0,0,0.4)" class="clearfix full-opacity-hover">
+                    <div><span style="display:block; width: 20%; float: left; height: 7px;" class="bg-green-active"></span><span class="bg-green" style="display:block; width: 80%; float: left; height: 7px;"></span>
+                    </div>
+                    <div><span style="display:block; width: 20%; float: left; height: 20px; background: #f9fafc"></span><span style="display:block; width: 80%; float: left; height: 20px; background: #f4f5f7"></span>
+                    </div>
+                </a>
+                <p class="text-center no-margin" style="font-size: 12px">Green Light</p>
                 <p class="text-center no-margin"><input type="radio" value="green-light" name="layout_skin[]" id="skin-green-light" ' . (($layout_skin->valor_config == 'green-light') ? 'checked' : '') . '/></p>
-			</li>
-			<li style="float:left; width: 33.33333%; padding: 5px;">
-				<a href="javascript:void(0)" data-skin="skin-red-light" style="display: block; box-shadow: 0 0 3px rgba(0,0,0,0.4)" class="clearfix full-opacity-hover">
-					<div><span style="display:block; width: 20%; float: left; height: 7px;" class="bg-red-active"></span><span class="bg-red" style="display:block; width: 80%; float: left; height: 7px;"></span>
-					</div>
-					<div><span style="display:block; width: 20%; float: left; height: 20px; background: #f9fafc"></span><span style="display:block; width: 80%; float: left; height: 20px; background: #f4f5f7"></span>
-					</div>
-				</a>
-				<p class="text-center no-margin" style="font-size: 12px">Red Light</p>
+            </li>
+            <li style="float:left; width: 33.33333%; padding: 5px;">
+                <a href="javascript:void(0)" data-skin="skin-red-light" style="display: block; box-shadow: 0 0 3px rgba(0,0,0,0.4)" class="clearfix full-opacity-hover">
+                    <div><span style="display:block; width: 20%; float: left; height: 7px;" class="bg-red-active"></span><span class="bg-red" style="display:block; width: 80%; float: left; height: 7px;"></span>
+                    </div>
+                    <div><span style="display:block; width: 20%; float: left; height: 20px; background: #f9fafc"></span><span style="display:block; width: 80%; float: left; height: 20px; background: #f4f5f7"></span>
+                    </div>
+                </a>
+                <p class="text-center no-margin" style="font-size: 12px">Red Light</p>
                 <p class="text-center no-margin"><input type="radio" value="red-light" name="layout_skin[]" id="skin-red-light" ' . (($layout_skin->valor_config == 'red-light') ? 'checked' : '') . '/></p>
-			</li>
-			<li style="float:left; width: 33.33333%; padding: 5px;">
-				<a href="javascript:void(0)" data-skin="skin-yellow-light" style="display: block; box-shadow: 0 0 3px rgba(0,0,0,0.4)" class="clearfix full-opacity-hover">
-					<div><span style="display:block; width: 20%; float: left; height: 7px;" class="bg-yellow-active"></span><span class="bg-yellow" style="display:block; width: 80%; float: left; height: 7px;"></span>
-					</div>
-					<div><span style="display:block; width: 20%; float: left; height: 20px; background: #f9fafc"></span><span style="display:block; width: 80%; float: left; height: 20px; background: #f4f5f7"></span>
-					</div>
-				</a>
-				<p class="text-center no-margin" style="font-size: 12px">Yellow Light</p>
+            </li>
+            <li style="float:left; width: 33.33333%; padding: 5px;">
+                <a href="javascript:void(0)" data-skin="skin-yellow-light" style="display: block; box-shadow: 0 0 3px rgba(0,0,0,0.4)" class="clearfix full-opacity-hover">
+                    <div><span style="display:block; width: 20%; float: left; height: 7px;" class="bg-yellow-active"></span><span class="bg-yellow" style="display:block; width: 80%; float: left; height: 7px;"></span>
+                    </div>
+                    <div><span style="display:block; width: 20%; float: left; height: 20px; background: #f9fafc"></span><span style="display:block; width: 80%; float: left; height: 20px; background: #f4f5f7"></span>
+                    </div>
+                </a>
+                <p class="text-center no-margin" style="font-size: 12px">Yellow Light</p>
                 <p class="text-center no-margin"><input type="radio" value="yellow-light" name="layout_skin[]" id="skin-yellow-light" ' . (($layout_skin->valor_config == 'yellow-light') ? 'checked' : '') . '/></p>
-			</li>
+            </li>
         </ul>            
         ';
 //END SKINS
@@ -1116,19 +1132,19 @@ function settingsConfig($_p) {
     /*
      * END FORM DE SKINS
      */
-    
-    
-    
-    
-    
-    
+
+
+
+
+
+
     /*
      * FORM Configurações de Layout do Sistema
      */
     if ($_p == 'other-config'):
 
-        
-         /*
+
+        /*
          * Menu Collapse
          */
         $CI->db->where('nome_config', 'sidebar_collapsed');
@@ -1156,10 +1172,10 @@ function settingsConfig($_p) {
     /*
      * END FORM Configurações de Layout do Sistema
      */
-    
-    
-    
-    
+
+
+
+
 
     return $dadosForm;
 }
@@ -1474,4 +1490,29 @@ function bz_modal($_p = []) {
     }
 
     return $_modal;
+}
+
+/**
+ * REMOVES THE HTML TAGS ALONG WITH THEIR CONTENTS
+ * 
+ * @param type $text
+ * @param type $tags
+ * @param type $invert
+ * @return type
+ */
+function bz_strip_tags_content($text, $tags = '', $invert = FALSE) {
+
+    preg_match_all('/<(.+?)[\s]*\/?[\s]*>/si', trim($tags), $tags);
+    $tags = array_unique($tags[1]);
+
+    if (is_array($tags) AND count($tags) > 0) {
+        if ($invert == FALSE) {
+            return preg_replace('@<(?!(?:' . implode('|', $tags) . ')\b)(\w+)\b.*?>.*?</\1>@si', '', $text);
+        } else {
+            return preg_replace('@<(' . implode('|', $tags) . ')\b.*?>.*?</\1>@si', '', $text);
+        }
+    } elseif ($invert == FALSE) {
+        return preg_replace('@<(\w+)\b.*?>.*?</\1>@si', '', $text);
+    }
+    return $text;
 }

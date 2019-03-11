@@ -15,7 +15,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title><?= ___BZ_TITULO_SISTEMA___; ?> | Dashboard</title>
+        <title><?= bz_strip_tags_content(___BZ_TITULO_SISTEMA___); ?></title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
 
         <!-- Theme style iCheck-->
@@ -551,6 +551,7 @@
 
 
                     </div>
+                    
 
                     <form id="form-settings" name="form-settings" method="post">
                         <ul class="nav nav-tabs nav-justified control-sidebar-tabs">

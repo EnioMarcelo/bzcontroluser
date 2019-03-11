@@ -125,9 +125,8 @@ class MY_Controller extends MX_Controller {
                 /*
                  * CHECK SE O USUÁRIO TE PERMISSÃO DE ACESSO AOS APLICATIVOS DO SISTEMA
                  */
-                
-                if (!in_array($this->router->fetch_class(), $_acl_users_access_modules)):
 
+                if (!in_array($this->router->fetch_class(), $_acl_users_access_modules)):
                     //GRAVA AUDITORIA
                     $dados_auditoria['description'] = 'Usuário não tem Permissão para Acessar';
                     add_auditoria($dados_auditoria);
@@ -135,7 +134,7 @@ class MY_Controller extends MX_Controller {
                     //set_mensagem('Erro de Permissão', 'Acesso não Permitido.', 'fa-thumbs-o-down', 'danger');
                     //set_mensagem_toastr('Erro de Permissão', 'Acesso não Permitido.', 'error', 'top-center');
                     set_mensagem_sweetalert('Erro de Permissão', 'Acesso não Permitido para: ' . strtolower($this->uri->segment(1)), 'error');
-                    echo '<script>window.open("' . site_url('dashboard') . '", "_top");</script>';
+                    echo '<script>window.open("' . site_url('login') . '", "_top");</script>';
                     exit;
                 else:
 
