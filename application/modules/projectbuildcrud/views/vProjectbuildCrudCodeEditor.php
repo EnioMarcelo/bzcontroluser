@@ -13,13 +13,13 @@
         <i class="<?= $_font_icon; ?>"></i>
         <?= $_titulo_app; ?>
         <small class=" ">
-            <span style=" font-size: 1.8em; color:#2c3b41"> - Code Editor</span> <b> - <?= strtoupper(str_replace('-', ' ', $_parametros['code_type'])); ?></b> <?= ($_parametros['code_type'] == 'onrecord' ? '' : $_parametros['code_screen_title']); ?>
+            <span style=" font-size: 1.8em; color:#2c3b41"> - Code Editor</span> <b> - <?= strtoupper(str_replace('-', ' ', $_parametros['code_type'])); ?></b>
         </small>
     </h1>
     <ol class="breadcrumb">
         <li><a href="<?= site_url('dashboard'); ?>" target="_top" class="active btn-show-modal-aguarde"><i class="fa fa-dashboard"></i>Dashboard</a></li>
         <li class=""><a href="<?= site_url($this->router->fetch_class() . '/edit/' . $_dados_projeto->id); ?>" class="btn-show-modal-aguarde"><i class="<?= $_font_icon; ?>"></i><?= $_titulo_app; ?></a></li>
-        <li class="active"><i class="glyphicon glyphicon-edit margin-right-5"></i>Editando <b><?= strtoupper(str_replace('-', ' ', $_parametros['code_type'])); ?></b> <?= ( $_parametros['code_type'] == 'onrecord' ? '' : $_parametros['code_screen_title']); ?></li>
+        <li class="active"><i class="glyphicon glyphicon-edit margin-right-5"></i>Editando <b><?= strtoupper(str_replace('-', ' ', $_parametros['code_type'])); ?></b> </li>
     </ol>
 </section>
 
@@ -42,7 +42,7 @@
             <small style=" font-size: 0.9em;"><?= $_dados_projeto->tabela; ?></small>
         </h3>
 
-        <div class="pull-right">
+        <div class="row pull-right margin-right-5">
 
             <a href="<?= site_url($this->router->fetch_class() . '/edit/' . $_dados_projeto->id . '?' . bz_app_parametros_url()); ?>" class="btn btn-sm btn-default btn-show-modal-aguarde margin-right-5">
                 <span class="fa fa-reply margin-right-5"></span> Voltar
@@ -72,6 +72,19 @@
             </a>
             <!-- END BTN EXECUTAR APLICAÇÃO-->
 
+        </div>
+
+        <div class="row margin-left-1 margin-top-10">
+
+            <div class="col-md-2"><b>Método: </b> <?= ($_parametros['code_type'] == 'onrecord' ? '' : $_parametros['code_screen_title']); ?></div>
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label class="" style="">
+                        <div class="icheckbox_flat-green" aria-checked="false" aria-disabled="false" style="position: relative;"><input <?= $_parametros['code_access_ajax_only']; ?> type="checkbox" name="code_access_ajax_only" class="flat-green" style="position: absolute; opacity: 0;" kl_vkbd_parsed="true"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div>
+                        Acesso somente por AJAX ?
+                    </label>
+                </div>
+            </div>
         </div>
 
     </div>

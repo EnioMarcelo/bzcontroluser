@@ -1,7 +1,7 @@
 <?php
 
 /*
-  Created on : 11/03/2019, 09:22AM
+  Created on : 13/03/2019, 13:04PM
   Author     : Enio Marcelo - eniomarcelo@gmail.com
  */
 
@@ -316,6 +316,18 @@ public function fcn_onScriptInit($_p = null) {
 $this->page['per_page'] = 150;
 }
 /* END METODO PHP - fcn_onScriptInit */
+
+/* METODO PHP - fcn_teste */
+public function fcn_teste($_p = null) {
+/*
+ * CERTIFICA SE O ACESSO A ESTA FUNCTION REALMENTE ESTÁ SENDO FEITO POR AJAX.
+ */
+bz_check_is_ajax_request();
+
+
+echo 'Olá....';
+}
+/* END METODO PHP - fcn_teste */
 
 
 

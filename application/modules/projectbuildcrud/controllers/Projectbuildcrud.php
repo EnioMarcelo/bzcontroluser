@@ -1280,6 +1280,7 @@ class ProjectbuildCrud extends MY_Controller {
                      */
 
                     $_data_code_editor = array(
+                        'code_access_ajax_only' => ($this->input->post('code_access_ajax_only') == 'on' ? 1 : 0),
                         'code_script' => base64_encode($this->input->post('code_script', false))
                     );
                     $this->db->update('proj_build_codeeditor', $_data_code_editor, $_where);
@@ -1295,6 +1296,7 @@ class ProjectbuildCrud extends MY_Controller {
                         'proj_build_id' => $this->input->post('proj_build_id'),
                         'code_screen' => $this->input->post('code_screen'),
                         'code_type' => $this->input->post('code_type'),
+                        'code_access_ajax_only' => ($this->input->post('code_access_ajax_only') == 'on' ? 1 : 0),
                         'code_script' => base64_encode($this->input->post('code_script', false))
                     );
                     $this->db->insert('proj_build_codeeditor', $_data_code_editor);
@@ -1346,6 +1348,7 @@ class ProjectbuildCrud extends MY_Controller {
         $this->dados['_parametros']['code_type'] = $_code_type;
 
         $this->dados['_parametros']['code_script'] = '';
+        $this->dados['_parametros']['code_access_ajax_only'] = '';
 
 
 
@@ -1373,6 +1376,7 @@ class ProjectbuildCrud extends MY_Controller {
 
 
             if ($_r_CodeEditor):
+                $this->dados['_parametros']['code_access_ajax_only'] = ($_r_CodeEditor['code_access_ajax_only'] == '1' ? 'checked' : '');
                 $this->dados['_parametros']['code_script'] = $_r_CodeEditor['code_script'];
             endif;
 
@@ -2650,6 +2654,18 @@ class ProjectbuildCrud extends MY_Controller {
                     if (!empty(trim($_row_getCode_ControllerMetodosPHP->code_script))):
                         $this->_controller_metodos_php .= "/* METODO PHP - " . $_row_getCode_ControllerMetodosPHP->code_screen . ' */' . PHP_EOL;
                         $this->_controller_metodos_php .= "public function " . $_row_getCode_ControllerMetodosPHP->code_screen . '($_p = null) {' . PHP_EOL;
+
+                        if ($_row_getCode_ControllerMetodosPHP->code_access_ajax_only == 1) {
+
+                            $this->_controller_metodos_php .= '/*' . PHP_EOL;
+                            $this->_controller_metodos_php .= ' * CERTIFICA SE O ACESSO A ESTA FUNCTION REALMENTE ESTÁ SENDO FEITO POR AJAX.' . PHP_EOL;
+                            $this->_controller_metodos_php .= ' */' . PHP_EOL;
+                            $this->_controller_metodos_php .= 'bz_check_is_ajax_request();' . PHP_EOL . PHP_EOL . PHP_EOL;
+                        }
+
+
+
+
                         $this->_controller_metodos_php .= html_entity_decode(base64_decode($_row_getCode_ControllerMetodosPHP->code_script), ENT_QUOTES) . PHP_EOL;
                         $this->_controller_metodos_php .= "}" . PHP_EOL;
                         $this->_controller_metodos_php .= "/* END METODO PHP - " . $_row_getCode_ControllerMetodosPHP->code_screen . ' */' . PHP_EOL . PHP_EOL;
