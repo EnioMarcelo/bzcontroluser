@@ -1635,7 +1635,7 @@ class ProjectbuildCrud extends MY_Controller {
                             <!-- BTN SEARCH -->";
 
                     $this->_gridListClearhButton = "<!-- BTN LIMPAR -->
-                            <a href='<?= site_url(\$this->router->fetch_class()); ?>' class='btn btn-sm btn-default btn-show-modal-aguarde j-tooltip' data-placement='bottom' data-toggle='tooltip' data-original-title='Limpar'><i class='fa fa-refresh'></i></a>
+                            <a href='<?= site_url(\$this->router->fetch_class()); ?>' class='btn btn-sm btn-default btn-show-modal-aguarde j-tooltip' data-placement='bottom' data-toggle='tooltip' data-original-title='Limpar'><i class='glyphicon glyphicon-minus'></i></a>
                             <!-- BTN LIMPAR -->";
                 } else {
                     $this->_gridListDivButtons = 'pull-right margin-right-25';

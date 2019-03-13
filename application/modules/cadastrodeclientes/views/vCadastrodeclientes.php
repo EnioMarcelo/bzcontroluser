@@ -1,7 +1,7 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 <!--
 /*
-  Created on : 08/03/2019, 15:59PM
+  Created on : 13/03/2019, 09:39AM
   Author     : Enio Marcelo - eniomarcelo@gmail.com
  */
 -->
@@ -50,13 +50,29 @@
 				<!-- FORM DE PESQUISA -->
 				<?= form_open('', 'id="IdFormSearch_'.$this->router->fetch_class().'" role="form" method="GET"'); ?>
 				<div class='input-group margin-top-10'>
+                    
+                    
+                    <!-- BOTÕES AVULSOS -->
+                    <a id="buttons-loose-before-inputsearch"></a>
+                    <!-- BOTÕES AVULSOS -->
 
                     <!-- INPUT SEARCH -->
                             <input type='text' name='search' value='<?= $this->input->get('search'); ?>' class='form-control input-sm pull-right' style ='width: 150px;' placeholder='Pesquisar' autofocus>
                             <!-- INPUT SEARCH -->
+                    
+                    <!-- BOTÕES AVULSOS -->
+                    <a id="buttons-loose-after-inputsearch"></a>
+                    <!-- BOTÕES AVULSOS -->
+                    
 
 					<div class='input-group-btn '>
 
+                        
+                        <!-- BOTÕES AVULSOS -->
+                        <a id="buttons-loose-before"></a>
+                        <!-- BOTÕES AVULSOS -->
+                        
+                        
                         <!-- BTN SEARCH -->
                             <button class='btn btn-sm btn-primary btn-show-modal-aguarde j-tooltip' data-placement='bottom' data-toggle='tooltip' data-original-title='Pesquisa'><i class='fa fa-search'></i></button>
                             <!-- BTN SEARCH -->
@@ -64,14 +80,14 @@
                         <!-- BTN LIMPAR -->
                             <a href='<?= site_url($this->router->fetch_class()); ?>' class='btn btn-sm btn-default btn-show-modal-aguarde j-tooltip' data-placement='bottom' data-toggle='tooltip' data-original-title='Limpar'><i class='fa fa-refresh'></i></a>
                             <!-- BTN LIMPAR -->
-
-                        <!-- BTN FULL SCREEN -->
-						<a class='btn btn-sm btn-flat j-btn-open-modal-fullscreen j-tooltip' data-placement='bottom' data-toggle='tooltip' data-original-title='Tela Cheia'><i class='fa fa-external-link'></i></a>
-						<!-- BTN FULL SCREEN -->	
-
-                        <!-- BTN CLOSE FULL SCREEN -->
-                        <a style="display: none" class='btn btn-sm btn-flat j-btn-close-modal-fullscreen j-tooltip' data-placement='bottom' data-toggle='tooltip' data-original-title='Fechar Tela'><i class='fa fa-close'></i></a>
-                        <!-- BTN CLOSE FULL SCREEN -->	
+                        
+                        
+                        
+                        <!-- BOTÕES AVULSOS -->
+                        <a id="buttons-loose-after"></a>
+                        <!-- BOTÕES AVULSOS -->
+                        
+                        
                         
 						<!-- BTN ATIVO/INATIVO -->
 						<?php if(  'N' == 'Y'  ):?>
@@ -84,6 +100,18 @@
 							<!-- BTN INATIVO -->
 						<?php endif; ?>
 						<!-- BTN ATIVO/INATIVO -->
+                        
+                        
+                        
+                        <!-- BTN FULL SCREEN -->
+						<a class='btn btn-sm btn-flat j-btn-open-modal-fullscreen j-tooltip' data-placement='bottom' data-toggle='tooltip' data-original-title='Tela Cheia'><i class='fa fa-external-link'></i></a>
+						<!-- BTN FULL SCREEN -->	
+
+                        <!-- BTN CLOSE FULL SCREEN -->
+                        <a style="display: none" class='btn btn-sm btn-flat j-btn-close-modal-fullscreen j-tooltip' data-placement='bottom' data-toggle='tooltip' data-original-title='Fechar Tela'><i class='fa fa-close'></i></a>
+                        <!-- BTN CLOSE FULL SCREEN -->	
+                        
+                        
 
 					</div>
 
@@ -139,7 +167,7 @@
 if( $_row['genero_id'] ):
      $_r = $this->read->ExecRead('cad_genero', 'WHERE id = ' . $_row['genero_id'])->row();
      $_row['genero_id'] = '<spam style="color:red">' . $_r->genero . '</spam>';
-endif;     
+endif;    
 
 ?>
 

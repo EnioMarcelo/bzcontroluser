@@ -1,7 +1,7 @@
 <?php
 
 /*
-  Created on : 08/03/2019, 15:59PM
+  Created on : 13/03/2019, 09:39AM
   Author     : Enio Marcelo - eniomarcelo@gmail.com
  */
 
@@ -302,7 +302,7 @@ private function get_paginacao() {
   $_dados_pag['filter'] = $_filter;
   $_dados_pag['order_by'] = 'nome ASC';
   $_dados_pag['programa'] = $this->router->fetch_class();
-  $_dados_pag['per_page'] = '10';
+  $_dados_pag['per_page'] = (!empty($this->page['per_page']) ? $this->page['per_page'] : '10' );
 
   $_result_pag = bz_paginacao($_dados_pag);
 

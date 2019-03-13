@@ -163,7 +163,7 @@
                 <h4 class="modal-title">ATENÇÃO</h4>
             </div>
             <div class="modal-body">
-                <p>Deseja deletar este retistro ?</p>
+                <p>Deseja deletar este registro ?</p>
             </div>
             <div class="modal-footer">
                 <button type="button" id="delete-cancel" class="btn btn-outline pull-left btn-show-modal-aguarde" data-dismiss="modal">NÃO</button>

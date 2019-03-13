@@ -527,9 +527,9 @@
                 var p = deleteditems.indexOf(",");
                 var t = '';
                 if (p > 0) {
-                    t = 'Deseja deletar estes retistros ?';
+                    t = 'Deseja deletar estes registros ?';
                 } else {
-                    t = 'Deseja deletar este retistro ?';
+                    t = 'Deseja deletar este registro ?';
                 }
 
                 swal({

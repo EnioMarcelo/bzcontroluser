@@ -50,22 +50,38 @@
 				<!-- FORM DE PESQUISA -->
 				<?= form_open('', 'id="IdFormSearch_'.$this->router->fetch_class().'" role="form" method="GET"'); ?>
 				<div class='input-group margin-top-10'>
+                    
+                    
+                    <!-- BOTÕES AVULSOS -->
+                    <a id="buttons-loose-before-inputsearch" class="pull-right"></a>
+                    <!-- BOTÕES AVULSOS -->
 
                     {{grid-list-input-search}}
+                    
+                    <!-- BOTÕES AVULSOS -->
+                    <a id="buttons-loose-after-inputsearch" class="pull-right"></a>
+                    <!-- BOTÕES AVULSOS -->
+                    
 
 					<div class='input-group-btn {{grid-list-div-buttons}}'>
 
+                        
+                        <!-- BOTÕES AVULSOS -->
+                        <a id="buttons-loose-before"></a>
+                        <!-- BOTÕES AVULSOS -->
+                        
+                        
                         {{grid-list-button-search}}
 
                         {{grid-list-button-clear}}
-
-                        <!-- BTN FULL SCREEN -->
-						<a class='btn btn-sm btn-flat j-btn-open-modal-fullscreen j-tooltip' data-placement='bottom' data-toggle='tooltip' data-original-title='Tela Cheia'><i class='fa fa-external-link'></i></a>
-						<!-- BTN FULL SCREEN -->	
-
-                        <!-- BTN CLOSE FULL SCREEN -->
-                        <a style="display: none" class='btn btn-sm btn-flat j-btn-close-modal-fullscreen j-tooltip' data-placement='bottom' data-toggle='tooltip' data-original-title='Fechar Tela'><i class='fa fa-close'></i></a>
-                        <!-- BTN CLOSE FULL SCREEN -->	
+                        
+                        
+                        
+                        <!-- BOTÕES AVULSOS -->
+                        <a id="buttons-loose-after"></a>
+                        <!-- BOTÕES AVULSOS -->
+                        
+                        
                         
 						<!-- BTN ATIVO/INATIVO -->
 						<?php if(  '{{grid-list-show-status}}' == 'Y'  ):?>
@@ -78,6 +94,18 @@
 							<!-- BTN INATIVO -->
 						<?php endif; ?>
 						<!-- BTN ATIVO/INATIVO -->
+                        
+                        
+                        
+                        <!-- BTN FULL SCREEN -->
+						<a class='btn btn-sm btn-flat j-btn-open-modal-fullscreen j-tooltip' data-placement='bottom' data-toggle='tooltip' data-original-title='Tela Cheia'><i class='fa fa-external-link'></i></a>
+						<!-- BTN FULL SCREEN -->	
+
+                        <!-- BTN CLOSE FULL SCREEN -->
+                        <a style="display: none" class='btn btn-sm btn-flat j-btn-close-modal-fullscreen j-tooltip' data-placement='bottom' data-toggle='tooltip' data-original-title='Fechar Tela'><i class='fa fa-close'></i></a>
+                        <!-- BTN CLOSE FULL SCREEN -->	
+                        
+                        
 
 					</div>
 
@@ -143,7 +171,7 @@
 							<td class="tdBtnAction">
                                 <!-- BTN EDITA REGISTRO -->
 								<?php $_edit = site_url($this->router->fetch_class() . '/edit/' . $_row['{{primary_key_field}}'] . '?' . bz_app_parametros_url()); ?>
-								<a href="<?= $_edit; ?>" class="btn btn-xs btn-primary ">
+								<a href="<?= $_edit; ?>" class="btn btn-xs btn-primary btn-show-modal-aguarde ">
 									<span class="glyphicon glyphicon-edit j-tooltip" data-placement="bottom" data-toggle="tooltip" data-original-title="Editar"></span>
 								</a>
                                 <!-- END BTN EDITA REGISTRO -->
