@@ -1,7 +1,7 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 <!--
 /*
-  Created on : 13/03/2019, 09:39AM
+  Created on : 15/03/2019, 13:38PM
   Author     : Enio Marcelo - eniomarcelo@gmail.com
  */
 -->
@@ -21,6 +21,11 @@
 			<button type='button' id='btn-delete' class='btn btn-sm btn-danger disabled' name='btn-del' value='btn-del'>
 				<span class='glyphicon glyphicon-trash'></span> Deleta
 			</button>
+
+
+            <a href='<?= site_url($this->router->fetch_class() . '/export' . '?' . bz_app_parametros_url()); ?>' class='btn btn-sm btn-primary btn-show-modal-aguarde xmargin-left-15' name='btn-export' value='btn-export'>
+                <span class='glyphicon glyphicon-print'></span> Imprimir
+            </a>
 
 
 		</small>
@@ -53,7 +58,7 @@
                     
                     
                     <!-- BOTÕES AVULSOS -->
-                    <a id="buttons-loose-before-inputsearch"></a>
+                    <a id="buttons-loose-before-inputsearch" class="pull-right"></a>
                     <!-- BOTÕES AVULSOS -->
 
                     <!-- INPUT SEARCH -->
@@ -61,7 +66,7 @@
                             <!-- INPUT SEARCH -->
                     
                     <!-- BOTÕES AVULSOS -->
-                    <a id="buttons-loose-after-inputsearch"></a>
+                    <a id="buttons-loose-after-inputsearch" class="pull-right"></a>
                     <!-- BOTÕES AVULSOS -->
                     
 
@@ -78,7 +83,7 @@
                             <!-- BTN SEARCH -->
 
                         <!-- BTN LIMPAR -->
-                            <a href='<?= site_url($this->router->fetch_class()); ?>' class='btn btn-sm btn-default btn-show-modal-aguarde j-tooltip' data-placement='bottom' data-toggle='tooltip' data-original-title='Limpar'><i class='fa fa-refresh'></i></a>
+                            <a href='<?= site_url($this->router->fetch_class()); ?>' class='btn btn-sm btn-default btn-show-modal-aguarde j-tooltip' data-placement='bottom' data-toggle='tooltip' data-original-title='Limpar'><i class='glyphicon glyphicon-minus'></i></a>
                             <!-- BTN LIMPAR -->
                         
                         
@@ -205,7 +210,7 @@ console.log('<?=$_row["id"];?>');
 							<td class="tdBtnAction">
                                 <!-- BTN EDITA REGISTRO -->
 								<?php $_edit = site_url($this->router->fetch_class() . '/edit/' . $_row['id'] . '?' . bz_app_parametros_url()); ?>
-								<a href="<?= $_edit; ?>" class="btn btn-xs btn-primary ">
+								<a href="<?= $_edit; ?>" class="btn btn-xs btn-primary btn-show-modal-aguarde ">
 									<span class="glyphicon glyphicon-edit j-tooltip" data-placement="bottom" data-toggle="tooltip" data-original-title="Editar"></span>
 								</a>
                                 <!-- END BTN EDITA REGISTRO -->

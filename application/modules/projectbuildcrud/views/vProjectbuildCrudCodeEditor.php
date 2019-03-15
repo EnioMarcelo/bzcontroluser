@@ -74,18 +74,23 @@
 
         </div>
 
-        <div class="row margin-left-1 margin-top-10">
 
-            <div class="col-md-2"><b>Método: </b> <?= ($_parametros['code_type'] == 'onrecord' ? '' : $_parametros['code_screen_title']); ?></div>
-            <div class="col-md-2">
-                <div class="form-group">
-                    <label class="" style="">
-                        <div class="icheckbox_flat-green" aria-checked="false" aria-disabled="false" style="position: relative;"><input <?= $_parametros['code_access_ajax_only']; ?> type="checkbox" name="code_access_ajax_only" class="flat-green" style="position: absolute; opacity: 0;" kl_vkbd_parsed="true"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div>
-                        Acesso somente por AJAX ?
-                    </label>
+        <div class="row margin-left-1 margin-top-10">
+            <?php if ($_parametros['code_type'] !== 'onrecord' && $_parametros['code_type'] !== 'onrecordexport'): ?>
+                <div class="col-md-4"><b>Evento: </b> <?= $_parametros['code_screen_title']; ?></div>
+            <?php endif; ?>
+            <?php if ($_parametros['code_type'] !== 'onrecord' && $_parametros['code_screen'] !== 'fcn_onScriptInitExport' && $_parametros['code_screen'] !== 'fcn_onScriptBeforeExport' && $_parametros['code_screen'] !== 'fcn_onScriptAfterExport' && $_parametros['code_screen'] !== 'fcn_onScriptEndExport' && $_parametros['code_screen'] !== 'onRecordExport'): ?>
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label class="" style="">
+                            <div class="icheckbox_flat-green" aria-checked="false" aria-disabled="false" style="position: relative;"><input <?= $_parametros['code_access_ajax_only']; ?> type="checkbox" name="code_access_ajax_only" class="flat-green" style="position: absolute; opacity: 0;" kl_vkbd_parsed="true"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div>
+                            Acesso somente por AJAX ?
+                        </label>
+                    </div>
                 </div>
-            </div>
+            <?php endif; ?>
         </div>
+
 
     </div>
     <!-- /.box-header -->

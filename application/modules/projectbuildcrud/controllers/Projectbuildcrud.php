@@ -36,8 +36,14 @@ class ProjectbuildCrud extends MY_Controller {
     protected $_controller_onAfterUpdate = '';
     protected $_controller_onBeforeDelete = '';
     protected $_controller_onAfterDelete = '';
+    protected $_controller_onScriptInitExport = '';
+    protected $_controller_onScriptBeforeExport = '';
+    protected $_controller_onScriptAfterExport = '';
+    protected $_controller_onScriptEndExport = '';
     //MODELS
     protected $_models_metodos_php = '';
+    // EXPORT
+    protected $_exportCodeEditorOnRecord = '';
     // GRID LIST
     protected $_gridListCodeEditorCSS = '';
     protected $_gridListCodeEditorJS = '';
@@ -734,6 +740,12 @@ class ProjectbuildCrud extends MY_Controller {
                 foreach ($_r_eventos_php as $_key_r_evento_php => $_value_r_evento_php):
                     $this->dados["_eventos_php"][$_value_r_evento_php['code_screen']] = $_value_r_evento_php['code_script'];
                 endforeach;
+                
+                // GET ON RECORD EXPORT PHP
+                $_r_eventos_php = $this->db->get_where('proj_build_codeeditor', array('code_type' => 'onrecordexport', 'proj_build_id' => $_id))->result_array();
+                foreach ($_r_eventos_php as $_key_r_evento_php => $_value_r_evento_php):
+                    $this->dados["_eventos_php"][$_value_r_evento_php['code_screen']] = $_value_r_evento_php['code_script'];
+                endforeach;
 
                 // GET CSS GRIDLIST
                 $this->dados["_gridlist_css"] = $this->db->get_where('proj_build_codeeditor', array('code_type' => 'css', 'code_screen' => 'gridlist', 'proj_build_id' => $_id))->row_array();
@@ -1043,7 +1055,8 @@ class ProjectbuildCrud extends MY_Controller {
                     $_reponse['message'] = 'SAVE-SWITCH-OK';
 
                     echo json_encode($_reponse);
-                    exit; elseif ($this->input->post('screen_type') == 'formaddedit'):
+                    exit;
+                elseif ($this->input->post('screen_type') == 'formaddedit'):
 
                     $_dados = json_decode($_r_param_formaddedit, true);
                     $_dados['form_add_edit_field_show'] = $this->input->post('grid_list_show');
@@ -2629,6 +2642,14 @@ class ProjectbuildCrud extends MY_Controller {
                             $this->_controller_onBeforeDelete = "\$this->fcn_onBeforeDelete();" . PHP_EOL;
                         } elseif ($_row_getCode_ControllerMetodosPHP->code_screen == 'fcn_onAfterDelete') {
                             $this->_controller_onAfterDelete = "\$this->fcn_onAfterDelete();" . PHP_EOL;
+                        } elseif ($_row_getCode_ControllerMetodosPHP->code_screen == 'fcn_onScriptInitExport') {
+                            $this->_controller_onScriptInitExport = "\$this->fcn_onScriptInitExport();" . PHP_EOL;
+                        } elseif ($_row_getCode_ControllerMetodosPHP->code_screen == 'fcn_onScriptBeforeExport') {
+                            $this->_controller_onScriptBeforeExport = "\$this->fcn_onScriptBeforeExport();" . PHP_EOL;
+                        } elseif ($_row_getCode_ControllerMetodosPHP->code_screen == 'fcn_onScriptAfterExport') {
+                            $this->_controller_onScriptAfterExport = "\$this->fcn_onScriptAfterExport();" . PHP_EOL;
+                        } elseif ($_row_getCode_ControllerMetodosPHP->code_screen == 'fcn_onScriptEndExport') {
+                            $this->_controller_onScriptEndExport = "\$this->fcn_onScriptEndExport();" . PHP_EOL;
                         }
 
                         $this->_controller_metodos_php .= "/* METODO PHP - " . $_row_getCode_ControllerMetodosPHP->code_screen . ' */' . PHP_EOL;
@@ -2715,6 +2736,25 @@ class ProjectbuildCrud extends MY_Controller {
 
 
 
+                /*
+                 * GET CODE EDITOR ON RECORD EXPORT
+                 */
+                $_where_getCode_onRecordExport = array(
+                    'proj_build_id' => $this->_project_id,
+                    'code_type' => 'onrecordexport',
+                );
+                $_query_getCode_onRecordExport = $this->db->get_where('proj_build_codeeditor', $_where_getCode_onRecordExport)->result();
+                foreach ($_query_getCode_onRecordExport as $_row_getCode_onRecordExport):
+                    if (!empty(trim($_row_getCode_onRecordExport->code_script))):
+                        $this->_exportCodeEditorOnRecord .= "/* ON RECORD EXPORT */" . PHP_EOL;
+                        $this->_exportCodeEditorOnRecord .= html_entity_decode(base64_decode($_row_getCode_onRecordExport->code_script), ENT_QUOTES) . PHP_EOL;
+                        $this->_exportCodeEditorOnRecord .= "/* END ON RECORD EXPORT */" . PHP_EOL . PHP_EOL;
+                    endif;
+                endforeach;
+                //END GET CODE EDITOR ON RECORD EXPORT
+
+
+
 
                 /*
                  * GET CODE EDITOR FORM ADD
@@ -2792,6 +2832,9 @@ class ProjectbuildCrud extends MY_Controller {
                     endif;
                 endforeach;
             //END GET CODE EDITOR FORM ADD
+                
+                
+                
 
             else:
 
@@ -2937,18 +2980,12 @@ class ProjectbuildCrud extends MY_Controller {
         $this->_dadosController = str_replace('{{form-edit-unset-fields}}', $this->_form_edit_unset_fields, $this->_dadosController);
 
 
-
         $this->_dadosController = str_replace('{{callback-validation}}', $this->_formAddEditConfigInputValidationCallback, $this->_dadosController);
 
         $this->_dadosController = str_replace('{{form-edit-where-update-fields}}', $this->_formEditWhereUpdateFields, $this->_dadosController);
 
 
-        /* echo '<pre>';
-          var_dump($this->_controller_onBeforeInsert);
-          echo '</pre>';
-          exit; */
-
-
+        /* MÉTODOS */
         $this->_dadosController = str_replace('{{controller-metodos-php}}', $this->_controller_metodos_php, $this->_dadosController);
         $this->_dadosController = str_replace('{{controller-onScriptInit}}', $this->_controller_onScriptinit, $this->_dadosController);
         $this->_dadosController = str_replace('{{controller-onBeforeInsert}}', $this->_controller_onBeforeInsert, $this->_dadosController);
@@ -2957,25 +2994,30 @@ class ProjectbuildCrud extends MY_Controller {
         $this->_dadosController = str_replace('{{controller-onAfterUpdate}}', $this->_controller_onAfterUpdate, $this->_dadosController);
         $this->_dadosController = str_replace('{{controller-onBeforeDelete}}', $this->_controller_onBeforeDelete, $this->_dadosController);
         $this->_dadosController = str_replace('{{controller-onAfterDelete}}', $this->_controller_onAfterDelete, $this->_dadosController);
+        $this->_dadosController = str_replace('{{controller-onScriptInitExport}}', $this->_controller_onScriptInitExport, $this->_dadosController);
+        $this->_dadosController = str_replace('{{controller-onScriptBeforeExport}}', $this->_controller_onScriptBeforeExport, $this->_dadosController);
+        $this->_dadosController = str_replace('{{controller-onScriptAfterExport}}', $this->_controller_onScriptAfterExport, $this->_dadosController);
+        $this->_dadosController = str_replace('{{controller-onScriptEndExport}}', $this->_controller_onScriptEndExport, $this->_dadosController);
+        /* END MÉTODOS */
 
-
+        /* CAMPOS VIRTUAIS DA GRIDLIST */
         $this->_dadosController = str_replace('{{controller-virtual-field}}', ((count($this->_gridListVirtualFieldsTable) > 0) ? "'" . implode("','", $this->_gridListVirtualFieldsTable) . "'" : ''), $this->_dadosController);
+        /* END CAMPOS VIRTUAIS DA GRIDLIST */
 
 
+        /* EXPORT REPORT */
+        $this->_dadosController = str_replace('{{grid-list-header-table}}', $this->_gridListHeaderTable, $this->_dadosController);
+        $this->_dadosController = str_replace('{{grid-list-fields-table}}', $this->_gridListFieldsTable, $this->_dadosController);
+        $this->_dadosController = str_replace("<?= ", "'.", $this->_dadosController);
+        $this->_dadosController = str_replace("; ?>", ".'", $this->_dadosController);
+        
+        $this->_dadosController = str_replace('{{export-on-record}}', $this->_exportCodeEditorOnRecord, $this->_dadosController);
+        /* END EXPORT REPORT */
 
-
-
-
-
-
-
-
-
-
-
-
+        /* GERA O ARQUIVO controller DA APLICAÇÃO */
         write_file($this->_directory . '/controllers/' . $this->_app_nome . '.php', $this->_dadosController);
-
+        /* END GERA O ARQUIVO controller DA APLICAÇÃO */
+        
         $this->_dadosController = '';
     }
 
@@ -3010,8 +3052,9 @@ class ProjectbuildCrud extends MY_Controller {
         $this->_dadosModel = str_replace('{{model-name}}', $this->_app_nome, $this->_dadosModel);
         $this->_dadosModel = str_replace('{{models-metodos-php}}', $this->_models_metodos_php, $this->_dadosModel);
 
-
+        /* GERA O ARQUIVO model DA APLICAÇÃO */
         write_file($this->_directory . '/models/' . $this->_app_nome . '_model.php', $this->_dadosModel);
+        /* END GERA O ARQUIVO model DA APLICAÇÃO */
 
         $this->_dadosModel = '';
     }
@@ -3071,9 +3114,9 @@ class ProjectbuildCrud extends MY_Controller {
 
 
 
-
+        /* GERA O ARQUIVO VIEW gridlist DA APLICAÇÃO */
         write_file($this->_directory . '/views/v' . $this->_app_nome . '.php', $this->_dadosView);
-
+        /* EDND GERA O ARQUIVO VIEW gridlist DA APLICAÇÃO */
 
 
         $this->_dadosView = '';
@@ -3127,9 +3170,9 @@ class ProjectbuildCrud extends MY_Controller {
         $this->_dadosFormAdd = str_replace('{{form-add-scripts-js}}', $this->_formAddCodeEditorJS, $this->_dadosFormAdd);
 
 
-
+        /* GERA O ARQUIVO VIEW formadd DA APLICAÇÃO */
         write_file($this->_directory . '/views/v' . $this->_app_nome . 'FormAdd.php', $this->_dadosFormAdd);
-
+        /* END GERA O ARQUIVO VIEW formadd DA APLICAÇÃO */
 
 
         $this->_dadosFormAdd = '';
@@ -3188,8 +3231,9 @@ class ProjectbuildCrud extends MY_Controller {
 //        $this->_dadosFormEdit = str_replace('{{form-edit-scripts-js}}', $this->_formAddCodeEditorJS, $this->_dadosFormEdit);
 
 
-
+        /* GERA O ARQUIVO VIEW formedit DA APLICAÇÃO */
         write_file($this->_directory . '/views/v' . $this->_app_nome . 'FormEdit.php', $this->_dadosFormEdit);
+        /* END GERA O ARQUIVO VIEW formedit DA APLICAÇÃO */
 
 
 

@@ -23,6 +23,11 @@
 			</button>
 
 
+            <a href='<?= site_url($this->router->fetch_class() . '/export' . '?' . bz_app_parametros_url()); ?>' class='btn btn-sm btn-primary btn-show-modal-aguarde xmargin-left-15' name='btn-export' value='btn-export'>
+                <span class='glyphicon glyphicon-print'></span> Imprimir
+            </a>
+
+
 		</small>
 	</h1>
 	<ol class='breadcrumb'>

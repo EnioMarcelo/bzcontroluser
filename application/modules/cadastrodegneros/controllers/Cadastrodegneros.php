@@ -1,7 +1,7 @@
 <?php
 
 /*
-  Created on : 08/03/2019, 15:59PM
+  Created on : 15/03/2019, 13:38PM
   Author     : Enio Marcelo - eniomarcelo@gmail.com
  */
 
@@ -282,6 +282,142 @@ exit;
 /* END function del() */
 
 
+/* function export() - Print Report */
+    public function export() {
+            
+    
+        
+    /* CARREGA O HELPER */
+//    $this->load->helper('printtopdf');
+    
+    /* VARIABLES */
+    $this->export['_loadHtml'] = '';
+
+        
+    /* QUANTIDADE DE LINHAS NO PDF - ZERO = TODAS OS REGISTROS DA TABELA */    
+    $this->page['per_page'] = 0;
+    
+    
+        
+    /* CARREGA OS REGISTROS COM PAGINAÇÃO */
+    $this->export['_dados'] = $this->get_paginacao();
+    
+    
+    
+    
+    
+    /* GERA O RELATÓRIO PARA SER EXPORTADO */
+    
+    $this->export['_loadHtml'] .= '<html>';
+    $this->export['_loadHtml'] .= '  <head>';
+    $this->export['_loadHtml'] .= '      <meta charset="UTF-8">';
+    $this->export['_loadHtml'] .= "      <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>";
+    $this->export['_loadHtml'] .= "      <!-- Bootstrap 3.3.4 -->";
+    $this->export['_loadHtml'] .= '      <link href="'.site_url().'/assets/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />';
+    $this->export['_loadHtml'] .= '      <!-- Font Awesome Icons -->';
+    $this->export['_loadHtml'] .= '      <link href="'.site_url().'/assets/font/font-awesome.min.css" rel="stylesheet" type="text/css"/>';
+    $this->export['_loadHtml'] .= '      <!-- BOOT BUZA -->';
+    $this->export['_loadHtml'] .= '      <link href="'.base_url('assets').'/css/boot-buza.css" rel="stylesheet" type="text/css" />';
+    $this->export['_loadHtml'] .= '      <!-- CSS DEFAULT MASTER PAGE IFRAME -->';
+    $this->export['_loadHtml'] .= '      <link href="'.base_url('assets').'/css/custom-masterPageIframe.css" rel="stylesheet" type="text/css" />';
+    $this->export['_loadHtml'] .= '      <style>';
+    $this->export['_loadHtml'] .= '         table { border-collapse:unset; }';
+    $this->export['_loadHtml'] .= '         .table>thead>tr>td, .table>thead>tr>th{ font-size:14px; line-height:1em; }';
+    $this->export['_loadHtml'] .= '         .table>tbody>tr>td, .table>tbody>tr>th{ font-size:12px; line-height:0.5em; }';
+    $this->export['_loadHtml'] .= '         .table>tfoot>tr>td, .table>tfoot>tr>th{ font-size:12px; line-height:0.5em; }';
+    $this->export['_loadHtml'] .= '         a, a:hover, a:visited, a:link, a:active{ color: black !important; text-decoration: none !important; }';
+    $this->export['_loadHtml'] .= '         .pointer {cursor: pointer;}';
+    $this->export['_loadHtml'] .= '      </style>';
+    $this->export['_loadHtml'] .= "  </head>";
+    $this->export['_loadHtml'] .= "  <body>";
+    
+    $this->export['_loadHtml'] .= " <!-- TABLE -->";
+    $this->export['_loadHtml'] .= "<div class='container'>";
+    $this->export['_loadHtml'] .= '<h3 class="pointer" style="margin-top:5; margin-botom:15px" title="Voltar">';
+    $this->export['_loadHtml'] .= "<i class='".$this->dados['_font_icon']."'></i>";
+    $this->export['_loadHtml'] .= '<spam style="margin-left:10px;">'.$this->dados["_titulo_app"].'</spam>';
+    $this->export['_loadHtml'] .= "</h3>";
+	$this->export['_loadHtml'] .= "	<table class='table table-striped'>";
+	$this->export['_loadHtml'] .= "     <!-- HEADER DA TABLE -->";
+	$this->export['_loadHtml'] .= "     <thead style='background-color:black;color:white'>";
+	$this->export['_loadHtml'] .= "         <tr id='IdTableGridListTheadTr'>";
+	$this->export['_loadHtml'] .= "             <th class='text-center' style='width:3%;'>#</th>";
+	$this->export['_loadHtml'] .= '             <th class="thClGenero" class="text-left" style="text-align:left">Gênero</th>
+<th class="thClCreated" class="text-center" style="text-align:center">Cadastro</th>
+<th class="thClUpdated" class="text-center" style="text-align:center">Atualização</th>
+';
+	$this->export['_loadHtml'] .= "			</tr>";
+	$this->export['_loadHtml'] .= "		</thead>";
+	$this->export['_loadHtml'] .= "     <!-- END HEADER DA TABLE -->";
+    
+    $this->export['_loadHtml'] .= "     <!-- ON RECORD EXPORT TABLE -->";
+	$this->export['_loadHtml'] .= "     <tbody>";
+        
+        /* ON RECORD EXPORT */
+        $_c = 0; 
+        $_class_tr = ''; 
+        $_style_tr = '';
+
+        foreach ($this->export['_dados']['results_paginacao_array'] as $_key => $_row):
+
+            $_c++;
+        
+            
+
+            $this->export['_loadHtml'] .= "<tr class='".$_class_tr."' style='font-size:12px;line-height: 0.6em; ".$_style_tr."'>";
+            
+            $this->export['_loadHtml'] .= "    <td class='text-center'  >".$_c."</td>";
+
+            $this->export['_loadHtml'] .= "    <!-- CAMPOS DA TABLE -->";
+            $this->export['_loadHtml'] .= '     <td class="tdClGenero" class="text-left" style="text-align:left">'.$_row["genero"].'</td>
+<td class="tdClCreated" class="text-center" style="text-align:center">'.$_row["created"].'</td>
+<td class="tdClUpdated" class="text-center" style="text-align:center">'.$_row["updated"].'</td>
+';
+            $this->export['_loadHtml'] .= "    <!-- CAMPOS DA TABLE -->";
+
+            $this->export['_loadHtml'] .= "</tr>";
+
+        endforeach;
+        /* EBD ON RECORD EXPORT */
+    
+    
+    $this->export['_loadHtml'] .= "     </tbody>";
+    $this->export['_loadHtml'] .= "     <!-- ON RECORD EXPORT DADOS DA TABLE -->";
+    $this->export['_loadHtml'] .= " </table>";
+    $this->export['_loadHtml'] .= " <!-- END TABLE -->";
+    
+    $this->export['_loadHtml'] .= "</div>";
+    $this->export['_loadHtml'] .= '</body>';
+    $this->export['_loadHtml'] .= '</html>';
+    
+    /* JQUERY */ 
+    $this->export['_loadHtml'] .= '<!-- jQuery 2.1.4 -->';
+    $this->export['_loadHtml'] .= '<script src="' . site_url() . '/assets/plugins/jQuery/jQuery-2.1.4.min.js"></script>';
+    
+    $this->export['_loadHtml'] .= '<script>';
+    /* IMPRIME A PÁGINA */
+    $this->export['_loadHtml'] .= 'window.print();';
+
+    /* VOLTAR PÁGINA */
+    $this->export['_loadHtml'] .= '$(function(){'
+            . '$( "h3" ).on( "click", function() {'
+            . 'window.location.replace("' . $this->_redirect_parametros_url . '");'
+            . '});'
+            . '})';
+
+    $this->export['_loadHtml'] .= '</script>';
+    
+    
+    
+    /* IMPRIME */
+    echo $this->export['_loadHtml'] ;
+    
+    
+
+}
+/* END function export() - Print Report */
+
+
 
 /* CARREGA REGISTROS COM PAGINAÇÃO */
 private function get_paginacao() {
@@ -299,7 +435,21 @@ private function get_paginacao() {
   $_dados_pag['filter'] = $_filter;
   $_dados_pag['order_by'] = 'genero DESC';
   $_dados_pag['programa'] = $this->router->fetch_class();
-  $_dados_pag['per_page'] = '10';
+  
+  /* QUANTIDADE DE LINHAS PARA PAGINAÇÃO DOS DADOS*/
+  if (isset($this->page['per_page'])){
+      if ( $this->page['per_page'] > 0 ){
+          $_dados_pag['per_page'] = $this->page['per_page'];
+      }elseif( $this->page['per_page'] == 0 || !empty($this->page['per_page']) ){
+          $_dados_pag['per_page'] = 0 ;
+      }else{
+          $_dados_pag['per_page'] = 10 ;
+      }
+  }else{
+     $_dados_pag['per_page'] = 10 ; 
+  }
+  
+  /* END QUANTIDADE DE LINHAS PARA PAGINAÇÃO DOS DADOS */
 
   $_result_pag = bz_paginacao($_dados_pag);
 

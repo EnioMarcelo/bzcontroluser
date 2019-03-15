@@ -97,6 +97,15 @@
                                 <li class="text-left"><a class="padding-left-5" href="<?= site_url($this->router->fetch_class() . '/codeeditor/' . $dados->id . '/fcn_onBeforeDelete/evento-php'); ?>"><?= ((!empty($_eventos_php['fcn_onBeforeDelete']) ) ? '<i class="fa fa-fw fa-check-square-o color_blue margin-right-5"></i>' : '<i class="fa fa-fw margin-right-5"></i>'); ?>onBeforeDelete</a></li>
                                 <li class="text-left"><a class="padding-left-5" href="<?= site_url($this->router->fetch_class() . '/codeeditor/' . $dados->id . '/fcn_onAfterDelete/evento-php'); ?>"><?= ((!empty($_eventos_php['fcn_onAfterDelete']) ) ? '<i class="fa fa-fw fa-check-square-o color_blue margin-right-5"></i>' : '<i class="fa fa-fw margin-right-5"></i>'); ?>onAfterDelete</a></li>
                                 <li class="text-left"><a class="padding-left-5" href="<?= site_url($this->router->fetch_class() . '/codeeditor/' . $dados->id . '/onRecord/onrecord'); ?>"><?= ((!empty($_eventos_php['onRecord']) ) ? '<i class="fa fa-fw fa-check-square-o color_blue margin-right-5"></i>' : '<i class="fa fa-fw margin-right-5"></i>'); ?>onRecord</a></li>
+
+                                <hr class="separator margin-0 margin-top-10 margin-bottom-10"></li>
+
+                                <li class="text-left"><a class="padding-left-5" href="<?= site_url($this->router->fetch_class() . '/codeeditor/' . $dados->id . '/fcn_onScriptInitExport/evento-php'); ?>"><?= ( (!empty($_eventos_php['fcn_onScriptInitExport']) ) ? '<i class="fa fa-fw fa-check-square-o color_blue margin-right-5"></i>' : '<i class="fa fa-fw margin-right-5"></i>'); ?>onScriptInitExport</a></li>
+                                <li class="text-left"><a class="padding-left-5" href="<?= site_url($this->router->fetch_class() . '/codeeditor/' . $dados->id . '/fcn_onScriptBeforeExport/evento-php'); ?>"><?= ( (!empty($_eventos_php['fcn_onScriptBeforeExport']) ) ? '<i class="fa fa-fw fa-check-square-o color_blue margin-right-5"></i>' : '<i class="fa fa-fw margin-right-5"></i>'); ?>onBeforeExport</a></li>
+                                <li class="text-left"><a class="padding-left-5" href="<?= site_url($this->router->fetch_class() . '/codeeditor/' . $dados->id . '/fcn_onScriptAfterExport/evento-php'); ?>"><?= ( (!empty($_eventos_php['fcn_onScriptAfterExport']) ) ? '<i class="fa fa-fw fa-check-square-o color_blue margin-right-5"></i>' : '<i class="fa fa-fw margin-right-5"></i>'); ?>onAfterExport</a></li>
+                                <li class="text-left"><a class="padding-left-5" href="<?= site_url($this->router->fetch_class() . '/codeeditor/' . $dados->id . '/fcn_onScriptEndExport/evento-php'); ?>"><?= ( (!empty($_eventos_php['fcn_onScriptEndExport']) ) ? '<i class="fa fa-fw fa-check-square-o color_blue margin-right-5"></i>' : '<i class="fa fa-fw margin-right-5"></i>'); ?>onEndExport</a></li>
+                                <li class="text-left"><a class="padding-left-5" href="<?= site_url($this->router->fetch_class() . '/codeeditor/' . $dados->id . '/onRecordExport/onrecordexport'); ?>"><?= ((!empty($_eventos_php['onRecordExport']) ) ? '<i class="fa fa-fw fa-check-square-o color_blue margin-right-5"></i>' : '<i class="fa fa-fw margin-right-5"></i>'); ?>onRecordExport</a></li>
+                                
                             </ul>
                         </div>
                         <!--BUTTON EDIT CODE EVENTOS PHP-->
@@ -772,9 +781,9 @@
                 var _c = $(this).hasClass("fa-toggle-off");
                 var _screen_type = $(this).attr('rel-screen-type');
 
-                if(  _screen_type === 'gridlist' ){
+                if (_screen_type === 'gridlist') {
                     var _field_name = $(this).closest("td").next().next().next().text();
-                }else if(  _screen_type === 'formaddedit' ){
+                } else if (_screen_type === 'formaddedit') {
                     var _field_name = $(this).closest("td").next().next().text();
                 }
 
@@ -786,7 +795,7 @@
                 } else {
                     $(this).removeClass("fa-toggle-on").removeClass("text-green").addClass("fa-toggle-off").parent().parent().addClass("font-color-gray-light");
 
-                    if( _screen_type == 'gridlist' ){
+                    if (_screen_type == 'gridlist') {
                         $(this).parent().next().children().removeClass("fa-toggle-on").removeClass("text-green").addClass("fa-toggle-off").parent().parent().addClass("font-color-gray-light");
                     }
 
@@ -794,27 +803,27 @@
                 }
 
                 $.post("<?= site_url($this->router->fetch_class() . '/switch_show_field_on_off'); ?>",
-                    {
-                        task: "SAVE-SWITCH",
-                        screen_type: _screen_type,
-                        project_id: "<?= $dados->id; ?>",
-                        field_name: _field_name,
-                        grid_list_show: _switch
+                        {
+                            task: "SAVE-SWITCH",
+                            screen_type: _screen_type,
+                            project_id: "<?= $dados->id; ?>",
+                            field_name: _field_name,
+                            grid_list_show: _switch
 
-                    },
-                    function (data, status) {
+                        },
+                        function (data, status) {
 
-                        if (data.message === 'SAVE-SWITCH-OK') {
-                        } else {
-                            $.toast({
-                                heading: 'ATENÇÃO !!!',
-                                text: 'Ocorreu um ERRO Inesperado, Contacte o Administrador do Sistema.',
-                                position: 'top-center',
-                                icon: 'error'
-                            });
-                        }
+                            if (data.message === 'SAVE-SWITCH-OK') {
+                            } else {
+                                $.toast({
+                                    heading: 'ATENÇÃO !!!',
+                                    text: 'Ocorreu um ERRO Inesperado, Contacte o Administrador do Sistema.',
+                                    position: 'top-center',
+                                    icon: 'error'
+                                });
+                            }
 
-                    }, 'json' );
+                        }, 'json');
 
             });
             /**
@@ -833,7 +842,7 @@
                 var _switch = '';
 
                 var _t = $(this).parent().prev().children().hasClass("fa-toggle-off");
-                if(_t){
+                if (_t) {
                     return false;
                 }
 
@@ -846,27 +855,27 @@
                 }
 
                 $.post("<?= site_url($this->router->fetch_class() . '/switch_search_field_on_off'); ?>",
-                    {
-                        task: "SAVE-SWITCH",
-                        screen_type: _screen_type,
-                        project_id: "<?= $dados->id; ?>",
-                        field_name: _field_name,
-                        grid_list_search: _switch
+                        {
+                            task: "SAVE-SWITCH",
+                            screen_type: _screen_type,
+                            project_id: "<?= $dados->id; ?>",
+                            field_name: _field_name,
+                            grid_list_search: _switch
 
-                    },
-                    function (data, status) {
+                        },
+                        function (data, status) {
 
-                        if (data.message === 'SAVE-SWITCH-OK') {
-                        } else {
-                            $.toast({
-                                heading: 'ATENÇÃO !!!',
-                                text: 'Ocorreu um ERRO Inesperado, Contacte o Administrador do Sistema.',
-                                position: 'top-center',
-                                icon: 'error'
-                            });
-                        }
+                            if (data.message === 'SAVE-SWITCH-OK') {
+                            } else {
+                                $.toast({
+                                    heading: 'ATENÇÃO !!!',
+                                    text: 'Ocorreu um ERRO Inesperado, Contacte o Administrador do Sistema.',
+                                    position: 'top-center',
+                                    icon: 'error'
+                                });
+                            }
 
-                    }, 'json' );
+                        }, 'json');
 
             });
             /**

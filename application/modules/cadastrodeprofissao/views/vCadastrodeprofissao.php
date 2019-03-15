@@ -1,7 +1,7 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 <!--
 /*
-  Created on : 13/03/2019, 13:04PM
+  Created on : 15/03/2019, 14:31PM
   Author     : Enio Marcelo - eniomarcelo@gmail.com
  */
 -->
@@ -21,6 +21,11 @@
 			<button type='button' id='btn-delete' class='btn btn-sm btn-danger disabled' name='btn-del' value='btn-del'>
 				<span class='glyphicon glyphicon-trash'></span> Deleta
 			</button>
+
+
+            <a href='<?= site_url($this->router->fetch_class() . '/export' . '?' . bz_app_parametros_url()); ?>' class='btn btn-sm btn-primary btn-show-modal-aguarde xmargin-left-15' name='btn-export' value='btn-export'>
+                <span class='glyphicon glyphicon-print'></span> Imprimir
+            </a>
 
 
 		</small>
@@ -138,8 +143,7 @@
 						<th class='text-center' style='width:3%;'><input class='checkbox-all flat-red' type='checkbox'></th>
 						<th class='text-center' style='width:3%;'>#</th>
 
-						<th class="thClId" class="text-center" style="width:5; text-align:center">ID</th>
-<th class="thClProfissao" class="text-left" style="text-align:left">Profissão</th>
+						<th class="thClProfissao" class="text-left" style="text-align:left">Profissão</th>
 
 
 						<th class='col-md-1 text-center'>Ação</th>
@@ -184,8 +188,7 @@ if( strstr( strtolower($_row['profissao']) , 'agente' )  ){
 							<td class='text-center'  ><?= $_c; ?></td>
 
 							<!-- CAMPOS DA TABLE -->
-							<td class="tdClId" class="text-center" style="width:5; text-align:center"><?= $_row["id"]; ?></td>
-<td class="tdClProfissao" class="text-left" style="text-align:left"><?= $_row["profissao"]; ?></td>
+							<td class="tdClProfissao" class="text-left" style="text-align:left"><?= $_row["profissao"]; ?></td>
 
 							<!-- CAMPOS DA TABLE -->
 

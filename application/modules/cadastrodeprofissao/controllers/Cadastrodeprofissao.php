@@ -1,7 +1,7 @@
 <?php
 
 /*
-  Created on : 13/03/2019, 13:04PM
+  Created on : 15/03/2019, 14:31PM
   Author     : Enio Marcelo - eniomarcelo@gmail.com
  */
 
@@ -275,6 +275,157 @@ exit;
 /* END function del() */
 
 
+/* function export() - Print Report */
+    public function export() {
+            
+    $this->fcn_onScriptInitExport();
+
+        
+    /* CARREGA O HELPER */
+//    $this->load->helper('printtopdf');
+    
+    /* VARIABLES */
+    $this->export['_loadHtml'] = '';
+
+        
+    /* QUANTIDADE DE LINHAS NO PDF - ZERO = TODAS OS REGISTROS DA TABELA */    
+    $this->page['per_page'] = 0;
+    
+    
+        
+    /* CARREGA OS REGISTROS COM PAGINAÇÃO */
+    $this->export['_dados'] = $this->get_paginacao();
+    
+    
+    $this->fcn_onScriptBeforeExport();
+
+    
+    
+    /* GERA O RELATÓRIO PARA SER EXPORTADO */
+    
+    $this->export['_loadHtml'] .= '<html>' . PHP_EOL;
+    $this->export['_loadHtml'] .= '  <head>' . PHP_EOL;
+    $this->export['_loadHtml'] .= '      <meta charset="UTF-8">' . PHP_EOL;
+    $this->export['_loadHtml'] .= "      <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>" . PHP_EOL;
+    $this->export['_loadHtml'] .= "      <!-- Bootstrap 3.3.4 -->" . PHP_EOL;
+    $this->export['_loadHtml'] .= '      <link href="'.site_url().'/assets/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />' . PHP_EOL;
+    $this->export['_loadHtml'] .= '      <!-- Font Awesome Icons -->' . PHP_EOL;
+    $this->export['_loadHtml'] .= '      <link href="'.site_url().'/assets/font/font-awesome.min.css" rel="stylesheet" type="text/css"/>' . PHP_EOL;
+    $this->export['_loadHtml'] .= '      <!-- BOOT BUZA -->' . PHP_EOL;
+    $this->export['_loadHtml'] .= '      <link href="'.base_url('assets').'/css/boot-buza.css" rel="stylesheet" type="text/css" />' . PHP_EOL;
+    $this->export['_loadHtml'] .= '      <!-- CSS DEFAULT MASTER PAGE IFRAME -->' . PHP_EOL;
+    $this->export['_loadHtml'] .= '      <link href="'.base_url('assets').'/css/custom-masterPageIframe.css" rel="stylesheet" type="text/css" />' . PHP_EOL;
+    $this->export['_loadHtml'] .= '      <!-- Theme style -->';
+    $this->export['_loadHtml'] .= '      <link href="'.base_url('assets').'/dist/css/AdminLTE.BZ.min.css" rel="stylesheet" type="text/css"/>';
+    
+    
+    $this->export['_loadHtml'] .= '      <style>' . PHP_EOL;
+    $this->export['_loadHtml'] .= '         table { border-collapse:unset; }' . PHP_EOL;
+    $this->export['_loadHtml'] .= '         .table>thead>tr>td, .table>thead>tr>th{ font-size:14px; padding:1px; }' . PHP_EOL;
+    $this->export['_loadHtml'] .= '         .table>tbody>tr>td, .table>tbody>tr>th{ font-size:12px; padding:1px; }' . PHP_EOL;
+    $this->export['_loadHtml'] .= '         .table>tfoot>tr>td, .table>tfoot>tr>th{ font-size:12px; padding:1px; }' . PHP_EOL;
+    $this->export['_loadHtml'] .= '         a, a:hover, a:visited, a:link, a:active{ color: black !important; text-decoration: none !important; }' . PHP_EOL;
+    $this->export['_loadHtml'] .= '         .pointer {cursor: pointer;}' . PHP_EOL;
+    $this->export['_loadHtml'] .= '      </style>' . PHP_EOL;
+    $this->export['_loadHtml'] .= "  </head>" . PHP_EOL;
+    $this->export['_loadHtml'] .= "  <body>" . PHP_EOL;
+    
+    $this->export['_loadHtml'] .= " <!-- TABLE -->" . PHP_EOL;
+    $this->export['_loadHtml'] .= "<div id='exportreport' class='container'>" . PHP_EOL;
+    $this->export['_loadHtml'] .= '<h3 class="pointer" style="margin-top:5; margin-botom:15px" title="Voltar">' . PHP_EOL;
+    $this->export['_loadHtml'] .= "<i class='".$this->dados['_font_icon']."'></i>" . PHP_EOL;
+    $this->export['_loadHtml'] .= '<spam style="margin-left:10px;">'.$this->dados["_titulo_app"].'</spam>' . PHP_EOL;
+    $this->export['_loadHtml'] .= "</h3>" . PHP_EOL;
+	$this->export['_loadHtml'] .= "	<table class='table table-striped'>" . PHP_EOL;
+	$this->export['_loadHtml'] .= "     <!-- HEADER DA TABLE -->" . PHP_EOL;
+	$this->export['_loadHtml'] .= "     <thead style='background-color:black;color:white'>" . PHP_EOL;
+	$this->export['_loadHtml'] .= "         <tr id='IdTableGridListTheadTr'>" . PHP_EOL;
+	$this->export['_loadHtml'] .= "             <th class='text-center' style='width:3%;'>#</th>" . PHP_EOL;
+	$this->export['_loadHtml'] .= '             <th class="thClProfissao" class="text-left" style="text-align:left">Profissão</th>
+' . PHP_EOL;
+	$this->export['_loadHtml'] .= "			</tr>" . PHP_EOL;
+	$this->export['_loadHtml'] .= "		</thead>" . PHP_EOL;
+	$this->export['_loadHtml'] .= "     <!-- END HEADER DA TABLE -->" . PHP_EOL;
+    
+    $this->export['_loadHtml'] .= "     <!-- ON RECORD EXPORT TABLE -->" . PHP_EOL;
+	$this->export['_loadHtml'] .= "     <tbody>" . PHP_EOL;
+        
+        /* ON RECORD EXPORT */
+        $_c = 0; 
+        $_class_tr = ''; 
+        $_style_tr = '';
+
+        foreach ($this->export['_dados']['results_paginacao_array'] as $_key => $_row):
+
+            $_c++;
+        
+            /* ON RECORD EXPORT */
+if( strstr( strtolower($_row['profissao']) , 'agen' )  ){
+     //$_style_tr = 'color: red !important; background-color: blue !important; color: white !important;' ;
+     $_class_tr = 'bg-orange' ;
+}else{
+     $_style_tr = '';
+     $_class_tr = '';
+}
+/* END ON RECORD EXPORT */
+
+
+
+            $this->export['_loadHtml'] .= "<tr class='".$_class_tr."' style='font-size:12px;line-height: 0.6em; ".$_style_tr."'>" . PHP_EOL;
+            
+            $this->export['_loadHtml'] .= "    <td class='text-center'  >".$_c."</td>" . PHP_EOL;
+
+            $this->export['_loadHtml'] .= "    <!-- CAMPOS DA TABLE -->" . PHP_EOL;
+            $this->export['_loadHtml'] .= '     <td class="tdClProfissao" class="text-left" style="text-align:left">'.$_row["profissao"].'</td>
+' . PHP_EOL;
+            $this->export['_loadHtml'] .= "    <!-- CAMPOS DA TABLE -->" . PHP_EOL;
+
+            $this->export['_loadHtml'] .= "</tr>" . PHP_EOL;
+
+        endforeach;
+        /* END ON RECORD EXPORT */
+    
+    
+    $this->export['_loadHtml'] .= "     </tbody>" . PHP_EOL;
+    $this->export['_loadHtml'] .= "     <!-- ON RECORD EXPORT DADOS DA TABLE -->" . PHP_EOL;
+    $this->export['_loadHtml'] .= " </table>" . PHP_EOL;
+    $this->export['_loadHtml'] .= " <!-- END TABLE -->" . PHP_EOL;
+    
+    $this->export['_loadHtml'] .= "</div>" . PHP_EOL;
+    $this->export['_loadHtml'] .= '</body>' . PHP_EOL;
+    $this->export['_loadHtml'] .= '</html>' . PHP_EOL;
+    
+    /* JQUERY */ 
+    $this->export['_loadHtml'] .= '<!-- jQuery 2.1.4 -->' . PHP_EOL;
+    $this->export['_loadHtml'] .= '<script src="' . site_url() . 'assets/plugins/jQuery/jQuery-2.1.4.min.js"></script>' . PHP_EOL;
+    
+    $this->export['_loadHtml'] .= '<script>' . PHP_EOL;
+    /* IMPRIME A PÁGINA */
+    //$this->export['_loadHtml'] .= 'window.print();' . PHP_EOL;
+    
+
+    /* VOLTAR PÁGINA */
+    $this->export['_loadHtml'] .= '$(function(){'
+            . '$( "h3" ).on( "click", function() {'
+            . 'window.location.replace("' . $this->_redirect_parametros_url . '");'
+            . '});'
+            . 'window.print();'
+            . '})' . PHP_EOL;
+
+    $this->export['_loadHtml'] .= '</script>' . PHP_EOL;
+    
+    
+    
+    /* IMPRIME */
+    echo $this->export['_loadHtml'] ;
+    
+    
+    
+
+}
+/* END function export() - Print Report */
+
+
 
 /* CARREGA REGISTROS COM PAGINAÇÃO */
 private function get_paginacao() {
@@ -286,13 +437,27 @@ private function get_paginacao() {
   $_dados_pag['table'] = $this->table_gridlist_name;
 
   if ($this->input->get('search', TRUE)):
-                            $_dados_pag['search'] = array('_concat_fields' => 'id,profissao', '_string' => $this->input->get('search', TRUE));
+                            $_dados_pag['search'] = array('_concat_fields' => 'profissao', '_string' => $this->input->get('search', TRUE));
                         endif;
 
   $_dados_pag['filter'] = $_filter;
   $_dados_pag['order_by'] = 'profissao ASC';
   $_dados_pag['programa'] = $this->router->fetch_class();
-  $_dados_pag['per_page'] = (!empty($this->page['per_page']) ? $this->page['per_page'] : '10' );
+  
+  /* QUANTIDADE DE LINHAS PARA PAGINAÇÃO DOS DADOS*/
+  if (isset($this->page['per_page'])){
+      if ( $this->page['per_page'] > 0 ){
+          $_dados_pag['per_page'] = $this->page['per_page'];
+      }elseif( $this->page['per_page'] == 0 || !empty($this->page['per_page']) ){
+          $_dados_pag['per_page'] = 0 ;
+      }else{
+          $_dados_pag['per_page'] = 10 ;
+      }
+  }else{
+     $_dados_pag['per_page'] = 10 ; 
+  }
+  
+  /* END QUANTIDADE DE LINHAS PARA PAGINAÇÃO DOS DADOS */
 
   $_result_pag = bz_paginacao($_dados_pag);
 
@@ -311,11 +476,32 @@ private function get_paginacao() {
 /* END function get_paginacao()  */
 
 
+/* METODO PHP - fcn_onScriptInitExport */
+public function fcn_onScriptInitExport($_p = null) {
+/*echo 'fcn_onScriptInitExport';
+exit;*/
+}
+/* END METODO PHP - fcn_onScriptInitExport */
+
 /* METODO PHP - fcn_onScriptInit */
 public function fcn_onScriptInit($_p = null) {
-$this->page['per_page'] = 150;
+//$this->page['per_page'] = 100;
 }
 /* END METODO PHP - fcn_onScriptInit */
+
+/* METODO PHP - fcn_onScriptBeforeExport */
+public function fcn_onScriptBeforeExport($_p = null) {
+/*echo '<pre>';
+
+var_dump($this->export['_dados']['results_paginacao']);
+
+echo '</pre>';exit;*/
+
+
+/*echo 'fcn_onScriptBeforeExport';
+exit;*/
+}
+/* END METODO PHP - fcn_onScriptBeforeExport */
 
 /* METODO PHP - fcn_teste */
 public function fcn_teste($_p = null) {

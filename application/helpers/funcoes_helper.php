@@ -577,7 +577,7 @@ function bz_paginacao($param = array()) {
     $_or_where = (isset($param['or_where'])) ? $param['or_where'] : '';
 
     $_programa = (isset($param['programa'])) ? $param['programa'] : $CI->router->fetch_class();
-    $_per_page = (isset($param['per_page'])) ? $param['per_page'] : 10;
+
 
     if ($_filter):
         $CI->db->like($_filter);
@@ -597,13 +597,25 @@ function bz_paginacao($param = array()) {
             $CI->db->where("CONCAT_WS('|'," . $_search['_concat_fields'] . ") LIKE '%" . $_search['_string'] . "%'", NULL, FALSE);
         endif;
 
-    //$_total_row = $CI->db->get($_tabela)->num_rows();
-    //else:
-    //$_total_row = $CI->db->get($_tabela)->num_rows();
     endif;
 
+    /* COUNT QUANTIDADE DE REGISTROS NA TABELA */
     $_total_row = $CI->db->get($_tabela)->num_rows();
+    /* END COUNT QUANTIDADE DE REGISTROS NA TABELA */
 
+    /* QUANTIDADE DE LINHAS PARA PAGINAÇÃO DOS DADOS */
+    if (isset($param['per_page'])) {
+        if ($param['per_page'] == 0) {
+            $_per_page = $_total_row;
+        } else {
+            $_per_page = $param['per_page'];
+        }
+    } else {
+        $_per_page = 10;
+    }
+    /* END QUANTIDADE DE LINHAS PARA PAGINAÇÃO DOS DADOS */
+
+    
     $_num_links = ceil($_total_row / $_per_page) - 1;
 
     if ($_current_page > $_num_links):
