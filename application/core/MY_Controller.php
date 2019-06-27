@@ -15,6 +15,8 @@ class MY_Controller extends MX_Controller {
     protected $task;
     protected $page;
     protected $export;
+    protected $where;
+    protected $or_where;
     protected $_redirect = '';
     protected $_redirect_parametros_url = '';
     private $saveAuditoria = false;

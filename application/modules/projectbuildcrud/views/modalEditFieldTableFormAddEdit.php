@@ -206,6 +206,7 @@
                                     <option value="number-decimal">Número Decimal</option>
                                     <option value="moeda">Moeda</option>
                                     <option value="senha">Senha</option>
+                                    <option value="upload-imagem">Upload de Imagem</option>
                                     <option value="select-manual">Select Dropdown - Manual</option>
                                     <option value="select-dinamic">Select Dropdown - Dinâmico</option>
                                     <option value="select-multiple-manual">Select Multiplo - Manual</option>
@@ -369,7 +370,7 @@
                                 <div class="form-group col-bg-12 col-md-12 col-sm-12 col-xs-12">
                                     <label>Somente Leitura:</label>
                                     <div class="input-group">
-                                        <input type="checkbox" class="form-control" data-toggle="toggle" data-on="ON" data-off="OFF" name="form_add_edit_field_read_only" />
+                                        <input type="checkbox" class="form-control input-sm btn_form_add_edit_field_read_only" data-toggle="toggle" data-on="ON" data-off="OFF" name="form_add_edit_field_read_only" />
 
                                         <select class="input-sm margin-left-20 hide" name="form_add_edit_field_read_only_in_form">
                                             <option value="todos">Todos</option>
@@ -476,11 +477,55 @@
 
 
                             <!--MÁXIMO DE CARACTERES NO INPUT-->
-                            <div class="form-group col-bg-12 col-md-12 col-sm-12 col-xs-12">
+                            <div class="form-group col-bg-12 col-md-12 col-sm-12 col-xs-12 hide">
                                 <label>Máximo de Caracteres:</label>
                                 <div class="input-group col-bg-12 col-md-12 col-sm-12 col-xs-12">
                                     <input class="form-control input-sm" type="number" placeholder="Quantidade máxima de caracteres no campo." name="form_add_edit_field_max_length" value="" patter="[0-9]">
                                 </div>
+                            </div>
+
+
+
+                            <!--UPLOAD IMAGEM-->
+                            <div id="id-div-upload-imagem" class="col-bg-12 col-md-12 col-sm-12 col-xs-12">
+                                <div class="form-group col-bg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <label>Extensões Permitidas:</label>
+                                    <div class="input-group col-bg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <input class="form-control input-sm" type="text" name="form_add_edit_field_upload_imagem_extensao_permitida" value="">
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-bg-12 col-md-12 col-sm-12 col-xs-12" style="line-height: 1.2em;">
+                                    <label>Tamanho máximo do arquivo (em kilobytes):</label>
+                                    <div class="input-group col-bg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <input class="form-control input-sm" type="number" name="form_add_edit_field_upload_imagem_tamanho_maximo" value="">
+                                    </div>
+                                    <span class="margin-left-0" style="font-size: 0.9em; font-weight: 100;">Nota: A maioria das instalações do PHP tem seu próprio limite, conforme especificado no arquivo php.ini. Geralmente 2 MB (ou 2048 KB) por padrão.</span>
+                                </div>
+
+                                <div class="col-bg-12 col-md-12 col-sm-12 col-xs-12">
+
+                                    <div class="col-bg-12 col-md-12 col-sm-12 col-xs-12 margin-bottom-10" style="line-height: 0.8em">
+                                        <label>Dimensões da Imagem (em pixels).</label> <span class="margin-left-5" style=" font-size: 0.9em; font-weight: 100">Definido como zero para nenhum limite.</span>
+                                    </div>
+                                    <div class="col-bg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <div class="form-group col-bg-6 col-md-6 col-sm-6 col-xs-6">
+                                            <label style="font-weight: normal">Largura Máxima:</label>
+                                            <div class="input-group col-bg-12 col-md-12 col-sm-12 col-xs-12">
+                                                <input class="form-control input-sm" type="number" name="form_add_edit_field_upload_imagem_max_width" value="">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group col-bg-6 col-md-6 col-sm-6 col-xs-6">
+                                            <label style="font-weight: normal">Altura Máxima:</label>
+                                            <div class="input-group col-bg-12 col-md-12 col-sm-12 col-xs-12">
+                                                <input class="form-control input-sm" type="number" name="form_add_edit_field_upload_imagem_max_height" value="">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
                             </div>
 
 
@@ -558,8 +603,8 @@
                     $('select[name="form_add_edit_field_type_characters"]').val('');
                     $('input[name="form_add_edit_field_min_length"]').val('');
                     $('input[name="form_add_edit_field_max_length"]').val('');
-
-
+//                    $('input[name="form_add_edit_field_upload_imagem_extensao_permitida"]').val('');
+//                    $('input[name="form_add_edit_field_upload_imagem_tamanho_maximo"]').val('');
 
 
                     if (_primary_key == 1) {
@@ -598,10 +643,13 @@
                     }
 
                     //INPUT TYPE CHARACTERS
+                    console.clear();
+                    console.log(result.form_add_edit_field_type);
+
                     if (result.form_add_edit_field_type == 'text' || result.form_add_edit_field_type == 'senha') {
-                        $('input[name="form_add_edit_field_type_characters"]').parent().parent().removeClass('hide');
+                        $('select[name="form_add_edit_field_type_characters"]').parent().parent().removeClass('hide');
                     } else {
-                        $('input[name="form_add_edit_field_type_characters"]').parent().parent().addClass('hide');
+                        $('select[name="form_add_edit_field_type_characters"]').parent().parent().addClass('hide');
                     }
 
                     //INPUT MIN LENGHT
@@ -616,6 +664,31 @@
                         $('input[name="form_add_edit_field_max_length"]').parent().parent().removeClass('hide');
                     } else {
                         $('input[name="form_add_edit_field_max_length"]').parent().parent().addClass('hide');
+                    }
+
+                    //INPUT UPLOAD IMAGEM upload-imagem
+                    if (result.form_add_edit_field_type == 'upload-imagem') {
+                        $('#id-div-upload-imagem').removeClass('hide');
+                        $('input[name="form_add_edit_field_upload_imagem_extensao_permitida"]').val(result.form_add_edit_field_upload_imagem_extensao_permitida);
+                        $('input[name="form_add_edit_field_upload_imagem_tamanho_maximo"]').val(result.form_add_edit_field_upload_imagem_tamanho_maximo);
+                        $('input[name="form_add_edit_field_upload_imagem_max_width"]').val(result.form_add_edit_field_upload_imagem_max_width);
+                        $('input[name="form_add_edit_field_upload_imagem_max_height"]').val(result.form_add_edit_field_upload_imagem_max_height);
+                        $('input[name="form_add_edit_field_placeholder"]').parent().addClass('hide');
+                        $('.btn_form_add_edit_field_hidden').parent().parent().parent().addClass('hide');
+                        $('.btn_form_add_edit_field_read_only').parent().parent().parent().addClass('hide');
+                        $('select[name="form_add_edit_field_required_in_form"]').addClass('hide');
+
+                    } else {
+                        $('#id-div-upload-imagem').addClass('hide');
+                        $('input[name="form_add_edit_field_upload_imagem_extensao_permitida"]').val('');
+                        $('input[name="form_add_edit_field_upload_imagem_tamanho_maximo"]').val('');
+                        $('input[name="form_add_edit_field_upload_imagem_max_width"]').val('0');
+                        $('input[name="form_add_edit_field_upload_imagem_max_height"]').val('0');
+                        $('input[name="form_add_edit_field_placeholder"]').parent().removeClass('hide');
+                        $('.btn_form_add_edit_field_hidden').parent().parent().parent().removeClass('hide');
+                        $('.btn_form_add_edit_field_read_only').parent().parent().parent().removeClass('hide');
+                        $('select[name="form_add_edit_field_required_in_form"]').removeClass('hide');
+
                     }
 
 
@@ -836,6 +909,8 @@
             $('input[name="form_add_edit_field_max_length"]').val('');
             $('select[name="form_add_edit_field_convert_letter_into"]').val('');
             $('select[name="form_add_edit_field_type_characters"]').val('');
+            $('input[name="form_add_edit_field_upload_imagem_extensao_permitida"]').val('');
+            $('input[name="form_add_edit_field_upload_imagem_tamanho_maximo"]').val('');
 
 
 
@@ -867,6 +942,7 @@
                 $('input[name="form_add_edit_field_min_length"]').parent().parent().removeClass('hide');
             } else {
                 $('input[name="form_add_edit_field_min_length"]').parent().parent().addClass('hide');
+
             }
 
             //INPUT MAX LENGHT
@@ -874,6 +950,26 @@
                 $('input[name="form_add_edit_field_max_length"]').parent().parent().removeClass('hide');
             } else {
                 $('input[name="form_add_edit_field_max_length"]').parent().parent().addClass('hide');
+            }
+
+            //INPUT UPLOAD IMAGEM upload-imagem
+            if (_selected == 'upload-imagem') {
+                $('#id-div-upload-imagem').removeClass('hide');
+                $('input[name="form_add_edit_field_upload_imagem_extensao_permitida"]').val('jpg|jpeg|gif|png');
+                $('input[name="form_add_edit_field_upload_imagem_tamanho_maximo"]').val('100');
+                $('input[name="form_add_edit_field_upload_imagem_max_width"]').val('0');
+                $('input[name="form_add_edit_field_upload_imagem_max_height"]').val('0');
+                $('input[name="form_add_edit_field_placeholder"]').parent().addClass('hide');
+                $('.btn_form_add_edit_field_hidden').parent().parent().parent().addClass('hide');
+                $('.btn_form_add_edit_field_read_only').parent().parent().parent().addClass('hide');
+                $('select[name="form_add_edit_field_required_in_form"]').addClass('hide');
+
+            } else {
+                $('#id-div-upload-imagem').addClass('hide');
+                $('input[name="form_add_edit_field_placeholder"]').parent().removeClass('hide');
+                $('.btn_form_add_edit_field_hidden').parent().parent().parent().removeClass('hide');
+                $('.btn_form_add_edit_field_read_only').parent().parent().parent().removeClass('hide');
+                $('select[name="form_add_edit_field_required_in_form"]').removeClass('hide');
             }
 
 
@@ -1042,12 +1138,24 @@
             if (_r === true) {
                 $('select[name="form_add_edit_field_required_in_form"]').val('todos');
                 $('select[name="form_add_edit_field_required_in_form"]').addClass('hide');
+
                 //$('input[name="form_add_edit_field_required"]').parent().removeClass('disabled');
             } else {
                 $('select[name="form_add_edit_field_required_in_form"]').removeClass('hide');
+
                 //$('input[name="form_add_edit_field_required"]').bootstrapToggle('off');
                 //$('input[name="form_add_edit_field_required"]').parent().addClass('disabled');
             }
+
+            if ($('.btn_form_add_edit_field_hidden').parent().parent().parent().hasClass('hide')) {
+                $('select[name="form_add_edit_field_required_in_form"]').addClass('hide');
+                $('input[name="form_add_edit_field_hidden"]').bootstrapToggle('off');
+                $('input[name="form_add_edit_field_read_only"]').bootstrapToggle('off');
+            }
+
+//                if ($('.btn_form_add_edit_field_read_only').parent().parent().parent().hasClass('hide')) {
+//                    $('select[name="form_add_edit_field_required_in_form"]').addClass('hide');
+//                }
 
         });
 

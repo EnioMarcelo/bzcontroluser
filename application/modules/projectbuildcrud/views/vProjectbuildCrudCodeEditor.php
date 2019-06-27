@@ -76,19 +76,45 @@
 
 
         <div class="row margin-left-1 margin-top-10">
-            <?php if ($_parametros['code_type'] !== 'onrecord' && $_parametros['code_type'] !== 'onrecordexport'): ?>
-                <div class="col-md-4"><b>Evento: </b> <?= $_parametros['code_screen_title']; ?></div>
-            <?php endif; ?>
-            <?php if ($_parametros['code_type'] !== 'onrecord' && $_parametros['code_screen'] !== 'fcn_onScriptInitExport' && $_parametros['code_screen'] !== 'fcn_onScriptBeforeExport' && $_parametros['code_screen'] !== 'fcn_onScriptAfterExport' && $_parametros['code_screen'] !== 'fcn_onScriptEndExport' && $_parametros['code_screen'] !== 'onRecordExport'): ?>
-                <div class="col-md-2">
+            <?php if ($_parametros['code_type'] == 'metodo-php'): ?>
+
+                <?php if (!$_parametros['code_access_ajax_only']) { ?>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label class="" style="">
+                                Tipo:
+                            </label>
+                            <?php
+                            $_code_type_method_options = [
+                                'public' => 'public',
+                                'private' => 'private',
+                                'protected' => 'protected'
+                            ];
+
+                            echo form_dropdown('code_type_method', $_code_type_method_options, $_parametros['code_type_method'], 'class="" style=""');
+                            ?>
+                        </div>
+                    </div>
+                <?php } ?>
+
+
+                <div class="col-md-3">
                     <div class="form-group">
                         <label class="" style="">
                             <div class="icheckbox_flat-green" aria-checked="false" aria-disabled="false" style="position: relative;"><input <?= $_parametros['code_access_ajax_only']; ?> type="checkbox" name="code_access_ajax_only" class="flat-green" style="position: absolute; opacity: 0;" kl_vkbd_parsed="true"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div>
-                            Acesso somente por AJAX ?
+                        </label>
+                        <label>
+                            &nbsp;Acesso somente por AJAX ?
                         </label>
                     </div>
                 </div>
+
             <?php endif; ?>
+
+            <?php if ($_parametros['code_type'] !== 'onrecord' && $_parametros['code_type'] !== 'onrecordexport'): ?>
+                <div class="col-md-12"><b>Evento: </b> <?= $_parametros['code_screen_title']; ?></div>
+            <?php endif; ?>
+
         </div>
 
 

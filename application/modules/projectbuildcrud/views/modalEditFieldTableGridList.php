@@ -169,7 +169,7 @@
                         <div class="col-md-4 margin-left-0 padding-left-0">
 
 
-                            <div class="col-md-12">
+                            <div class="col-md-4" >
                                 <label>Exibir:</label>
                                 <div class="form-group">
                                     <label class="margin-right-15 text-normal">
@@ -184,7 +184,7 @@
                             </div>
 
 
-                            <div id="grid_list_search" class="col-md-12">
+                            <div id="grid_list_search" class="col-md-4">
                                 <label>Pesquisar:</label>
                                 <div class="form-group">
                                     <label class="margin-right-15 text-normal">
@@ -197,6 +197,22 @@
                                     </label>
                                 </div>
                             </div>
+
+
+                            <div id="grid_list_export" class="col-md-4">
+                                <label>Exportar:</label>
+                                <div class="form-group">
+                                    <label class="margin-right-15 text-normal">
+                                        SIM
+                                        <input type="radio" id="grid_list_export_on" name="grid_list_export" class="flat-green" checked="" value="on">
+                                    </label>
+                                    <label class="text-normal">
+                                        NÃO 
+                                        <input type="radio" id="grid_list_export_off" name="grid_list_export" class="flat-red" value="off">
+                                    </label>
+                                </div>
+                            </div>
+
 
                             <div class="form-group col-bg-12 col-md-12 col-sm-12 col-xs-12">
                                 <label>Label:</label>
@@ -474,7 +490,6 @@
 
 
 
-
         //MODAL EDIT FIELDS OPEN
         $('.j_btn_modal_edit_fields_table_gridlist').click(function (e) {
             e.preventDefault();
@@ -514,6 +529,7 @@
                     //RESET CAMPOS
                     $('input[name="grid_list_show"]').filter(':radio').iCheck('uncheck');
                     $('input[name="grid_list_search"]').filter(':radio').iCheck('uncheck');
+                    $('input[name="grid_list_export"]').filter(':radio').iCheck('uncheck');
                     $('input[name="grid_list_label"]').val('');
                     $('select[name="grid_list_aligne_label"]').val('text-left');
                     $('select[name="grid_list_field_length"]').val('');
@@ -534,6 +550,7 @@
                         $('input[id="grid_list_show_on"]').filter(':radio').iCheck('check');
                     } else {
                         $('input[id="grid_list_show_off"]').filter(':radio').iCheck('check');
+
                     }
 
                     if (result.grid_list_field_type === 'virtual') {
@@ -545,6 +562,13 @@
                             $('input[id="grid_list_search_on"]').filter(':radio').iCheck('check');
                         } else {
                             $('input[id="grid_list_search_off"]').filter(':radio').iCheck('check');
+                        }
+
+                        $('#grid_list_export').show();
+                        if (result.grid_list_export === 'on') {
+                            $('input[id="grid_list_export_on"]').filter(':radio').iCheck('check');
+                        } else {
+                            $('input[id="grid_list_export_off"]').filter(':radio').iCheck('check');
                         }
                     }
 
@@ -584,6 +608,18 @@
         $(".j_btn_save_form_GridList").click(function (e) {
             e.preventDefault();
 
+//            if( $('input[id="grid_list_show_off"]').val() == 'off' ){
+//                
+//                $('input[name="grid_list_search"]').filter(':radio').iCheck('uncheck');
+//                $('input[id="grid_list_search_off"]').filter(':radio').iCheck('check');
+//                
+//                $('input[name="grid_list_export"]').filter(':radio').iCheck('uncheck');
+//                $('input[id="grid_list_export_off"]').filter(':radio').iCheck('check');
+//                
+//            }
+
+
+
             var _btn_save = $(this);
             var _label_field_name = $('input[name="grid_list_label"]').val();
             var _field_name = $('#modal_field_name').text();
@@ -617,13 +653,41 @@
                                     dataObj[field.name] = field.value;
                                 });
 
+
+                                console.clear();
+                                console.log(dataObj);
+
                                 if (dataObj['grid_list_show'] === 'off') {
+
+//                                    dataObj['grid_list_search'] = 'off' ;
+//                                    dataObj['grid_list_export'] = 'off' ;
+
                                     $(this).addClass('font-color-gray-light');
                                     $(this).children().first().next().children().removeClass('text-green').removeClass('fa-toggle-on').addClass('fa-toggle-off');
+
                                 } else {
                                     $(this).removeClass('font-color-gray-light');
                                     $(this).children().first().next().children().addClass('text-green').removeClass('fa-toggle-off').addClass('fa-toggle-on');
+
                                 }
+
+
+                                if (dataObj['grid_list_search'] === 'off') {
+                                    $(this).children().first().next().next().children().removeClass('text-green').removeClass('fa-toggle-on').addClass('fa-toggle-off');
+
+                                } else {
+                                    $(this).children().first().next().next().children().addClass('text-green').removeClass('fa-toggle-off').addClass('fa-toggle-on');
+                                }
+
+
+                                if (dataObj['grid_list_export'] === 'off') {
+                                    $(this).children().first().next().next().next().children().removeClass('text-green').removeClass('fa-toggle-on').addClass('fa-toggle-off');
+
+                                } else {
+                                    $(this).children().first().next().next().next().children().addClass('text-green').removeClass('fa-toggle-off').addClass('fa-toggle-on');
+                                }
+
+
                             }
                         });/*END MARCA REGISTRO OFF PARA MOSTRAR NA VIEW*/
 

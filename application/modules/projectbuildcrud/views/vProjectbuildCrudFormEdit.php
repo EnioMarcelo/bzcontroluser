@@ -105,7 +105,7 @@
                                 <li class="text-left"><a class="padding-left-5" href="<?= site_url($this->router->fetch_class() . '/codeeditor/' . $dados->id . '/fcn_onScriptAfterExport/evento-php'); ?>"><?= ( (!empty($_eventos_php['fcn_onScriptAfterExport']) ) ? '<i class="fa fa-fw fa-check-square-o color_blue margin-right-5"></i>' : '<i class="fa fa-fw margin-right-5"></i>'); ?>onAfterExport</a></li>
                                 <li class="text-left"><a class="padding-left-5" href="<?= site_url($this->router->fetch_class() . '/codeeditor/' . $dados->id . '/fcn_onScriptEndExport/evento-php'); ?>"><?= ( (!empty($_eventos_php['fcn_onScriptEndExport']) ) ? '<i class="fa fa-fw fa-check-square-o color_blue margin-right-5"></i>' : '<i class="fa fa-fw margin-right-5"></i>'); ?>onEndExport</a></li>
                                 <li class="text-left"><a class="padding-left-5" href="<?= site_url($this->router->fetch_class() . '/codeeditor/' . $dados->id . '/onRecordExport/onrecordexport'); ?>"><?= ((!empty($_eventos_php['onRecordExport']) ) ? '<i class="fa fa-fw fa-check-square-o color_blue margin-right-5"></i>' : '<i class="fa fa-fw margin-right-5"></i>'); ?>onRecordExport</a></li>
-                                
+
                             </ul>
                         </div>
                         <!--BUTTON EDIT CODE EVENTOS PHP-->
@@ -333,8 +333,9 @@
                                                 <thead class="bg-<?= ___BZ_LAYOUT_SKINCOLOR___; ?>">
                                                     <tr>
                                                         <th class="text-center" style="width:5px;">#</th>
-                                                        <th class="text-center" style="width:5px;"><span class="label label-default text-center mouse-cursor-pointer j-tooltip" tabindex="0" data-placement="top" data-toggle="tooltip" data-original-title="Status dos Campos<br/>Ativo ou Inativo">S</span></th>
-                                                        <th class="text-center" style="width:5px;"><span class="label label-default text-center mouse-cursor-pointer j-tooltip" tabindex="0" data-placement="top" data-toggle="tooltip" data-original-title="Pesquisa dos Campos<br/>Ativo ou Inativo">P</span></th>
+                                                        <th class="text-center" style="width:5px;"><span class="label label-default text-center mouse-cursor-pointer j-tooltip" tabindex="0" data-placement="top" data-toggle="tooltip" data-original-title="Status dos Campos">S</span></th>
+                                                        <th class="text-center" style="width:5px;"><span class="label label-default text-center mouse-cursor-pointer j-tooltip" tabindex="0" data-placement="top" data-toggle="tooltip" data-original-title="Pesquisa dos Campos">P</span></th>
+                                                        <th class="text-center" style="width:5px;"><span class="label label-default text-center mouse-cursor-pointer j-tooltip" tabindex="0" data-placement="top" data-toggle="tooltip" data-original-title="Exportar/Imprimir">E</span></th>
                                                         <th class="text-center" style="width:5px;"><span class="label label-default text-center mouse-cursor-pointer j-tooltip" tabindex="0" data-placement="top" data-toggle="tooltip" data-original-title="Ordenação dos Campos">O</span></th>
                                                         <th>Campo</th>
                                                         <th>Caracteres</th>
@@ -355,6 +356,17 @@
                                                         $_bg_color_grid_list_search = ($_json->grid_list_search == 'off') ? 'font-color-gray-light' : '';
                                                         $_btn_switch_grid_list_search = ($_json->grid_list_search == 'off') ? 'fa-toggle-off' : 'fa-toggle-on text-green';
 
+                                                        if (!empty($_json->grid_list_export)) {
+                                                            $_bg_color_grid_list_export = ($_json->grid_list_export == 'off') ? 'font-color-gray-light' : '';
+                                                            $_btn_switch_grid_list_export = ($_json->grid_list_export == 'off') ? 'fa-toggle-off' : 'fa-toggle-on text-green';
+                                                        }else{
+                                                            
+                                                            $_json->grid_list_export = 'font-color-gray-light' ;
+                                                            $_btn_switch_grid_list_export = 'fa-toggle-off';
+                                                            
+                                                        }
+
+
                                                         //SE O CAMPO FOR VIRTUAL HABILITA O BOTÃO DE DELETAR O CAMPO
                                                         if (!empty($_json->grid_list_field_type) && $_json->grid_list_field_type == 'virtual'):
                                                             $_grid_list_field_type_trash_icon = '<small class="label margin-left-5 bg-red j-tooltip j-btn-delete-virtual-field" data-placement="bottom" data-toggle="tooltip" data-original-title="Deletar Campo" rel-field-name="' . $_row_field_table_gridlist['field_name'] . '"><i class="fa fa-fw fa-trash text-whrite"></i></small>';
@@ -365,7 +377,8 @@
                                                         echo "<tr id='" . $_row_field_table_gridlist['field_name'] . "' rel-projeto-id='" . $dados->id . "' rel-primary-key='" . $_row_field_table_gridlist['primary_key'] . "' class='j_drag_active_gridlist mouse-cursor-pointer " . $_bg_color_grid_list_show . "' />";
                                                         echo "<td class='text-center table-line-order' style='width:5px;'>" . $_c . "</td>";
                                                         echo "<td><i class='fa fa-fw {$_btn_switch_grid_list_show} j-btn-switch-list-show-field' rel-screen-type='gridlist'></i></td>";
-                                                        echo "<td><i class='fa fa-fw {$_btn_switch_grid_list_search}  j-btn-switch-list-search-field' rel-screen-type='gridlist'></i></td>";
+                                                        echo "<td><i class='fa fa-fw {$_btn_switch_grid_list_search} j-btn-switch-list-search-field' rel-screen-type='gridlist'></i></td>";
+                                                        echo "<td><i class='fa fa-fw {$_btn_switch_grid_list_export} j-btn-switch-list-export-field' rel-screen-type='gridlist'></i></td>";
                                                         echo "<td class='text-center j_order_gridlist' style='width:5px;'><i class='fa fa-arrows'></i></td>";
                                                         echo "<td class='j_btn_modal_edit_fields_table_gridlist btn-show-modal-aguarde'>" . $_row_field_table_gridlist['field_name'] . $_grid_list_field_type_trash_icon . (($_row_field_table_gridlist['primary_key'] == 1) ? '<small class="label margin-left-5 bg-green j-tooltip" data-placement="bottom" data-toggle="tooltip" data-original-title="Chave Primária"><i class="fa fa-fw fa-key text-whrite"></i></small>' : '') . "</td>";
                                                         echo "<td class='j_btn_modal_edit_fields_table_gridlist btn-show-modal-aguarde'>" . $_row_field_table_gridlist['field_length'] . "</td>";
@@ -569,7 +582,7 @@
                         $(this).find("td:first").text(_c);
                         var _r = $(this).find("td:first").text();
                         var _projeto_id = $(this).parent().find('tr:first').attr('rel-projeto-id');
-                        var _field_name = $(this).find("td:eq(4)").text();
+                        var _field_name = $(this).find("td:eq(5)").text();
                         var _screen_type = $(this).parent().parent().attr('id');
 
                         if (_screen_type === 'tableGridlist') {
@@ -719,8 +732,6 @@
                             }, //END beforeSend
                             success: function (result) {
 
-                                //console.log('-->' + result.message);
-
                                 if (result.message === 'SAVE-REORDER-FIELDS-GRIDLIST-OK') {
                                     /**/
                                 } else {
@@ -733,8 +744,6 @@
                                     });
 
                                 }
-
-
 
                             }, //END success
                             complete: function () {
@@ -782,7 +791,7 @@
                 var _screen_type = $(this).attr('rel-screen-type');
 
                 if (_screen_type === 'gridlist') {
-                    var _field_name = $(this).closest("td").next().next().next().text();
+                    var _field_name = $(this).closest("td").next().next().next().next().text();
                 } else if (_screen_type === 'formaddedit') {
                     var _field_name = $(this).closest("td").next().next().text();
                 }
@@ -797,10 +806,12 @@
 
                     if (_screen_type == 'gridlist') {
                         $(this).parent().next().children().removeClass("fa-toggle-on").removeClass("text-green").addClass("fa-toggle-off").parent().parent().addClass("font-color-gray-light");
+                        $(this).parent().next().next().children().removeClass("fa-toggle-on").removeClass("text-green").addClass("fa-toggle-off").parent().parent().addClass("font-color-gray-light");
                     }
 
                     _switch = 'off';
                 }
+
 
                 $.post("<?= site_url($this->router->fetch_class() . '/switch_show_field_on_off'); ?>",
                         {
@@ -837,22 +848,23 @@
             $(".j-btn-switch-list-search-field").click(function () {
 
                 var _c = $(this).hasClass("fa-toggle-off");
-                var _field_name = $(this).closest("td").next().next().text();
+                var _field_name = $(this).closest("td").next().next().next().text();
                 var _screen_type = $(this).attr('rel-screen-type');
                 var _switch = '';
 
                 var _t = $(this).parent().prev().children().hasClass("fa-toggle-off");
                 if (_t) {
-                    return false;
+//                    return false;
                 }
 
                 if (_c) {
                     $(this).removeClass("fa-toggle-off").addClass("text-green").addClass("fa-toggle-on").parent().parent().removeClass("font-color-gray-light");
                     _switch = 'on';
                 } else {
-                    $(this).removeClass("fa-toggle-on").removeClass("text-green").addClass("fa-toggle-off").parent().parent().addClass("font-color-gray-light");
+                    $(this).removeClass("fa-toggle-on").removeClass("text-green").addClass("fa-toggle-off");
                     _switch = 'off';
                 }
+
 
                 $.post("<?= site_url($this->router->fetch_class() . '/switch_search_field_on_off'); ?>",
                         {
@@ -880,6 +892,60 @@
             });
             /**
              * END BUTTON SWITCH SEARCH FIELD
+             */
+
+
+
+            /**
+             * BUTTON SWITCH EXPORT FIELD
+             */
+            $(".j-btn-switch-list-export-field").click(function () {
+
+                var _c = $(this).hasClass("fa-toggle-off");
+                var _field_name = $(this).closest("td").next().next().text();
+                var _screen_type = $(this).attr('rel-screen-type');
+                var _switch = '';
+
+                var _t = $(this).parent().prev().children().hasClass("fa-toggle-off");
+                if (_t) {
+//                    return false;
+                }
+
+                if (_c) {
+                    $(this).removeClass("fa-toggle-off").addClass("text-green").addClass("fa-toggle-on").parent().parent().removeClass("font-color-gray-light");
+                    _switch = 'on';
+                } else {
+                    $(this).removeClass("fa-toggle-on").removeClass("text-green").addClass("fa-toggle-off");
+                    _switch = 'off';
+                }
+
+
+                $.post("<?= site_url($this->router->fetch_class() . '/switch_export_field_on_off'); ?>",
+                        {
+                            task: "SAVE-SWITCH",
+                            screen_type: _screen_type,
+                            project_id: "<?= $dados->id; ?>",
+                            field_name: _field_name,
+                            grid_list_export: _switch
+
+                        },
+                        function (data, status) {
+
+                            if (data.message === 'SAVE-SWITCH-OK') {
+                            } else {
+                                $.toast({
+                                    heading: 'ATENÇÃO !!!',
+                                    text: 'Ocorreu um ERRO Inesperado, Contacte o Administrador do Sistema.',
+                                    position: 'top-center',
+                                    icon: 'error'
+                                });
+                            }
+
+                        }, 'json');
+
+            });
+            /**
+             * END BUTTON SWITCH EXPORT FIELD
              */
 
 

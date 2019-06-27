@@ -1,9 +1,8 @@
 <?php
-
-    /**
-     * Created on : 18/12/2018, 11:29:45
-     * Author     : Enio Marcelo Buzaneli - eniomarcelo@gmail.com
-     */
+/**
+ * Created on : 18/12/2018, 11:29:45
+ * Author     : Enio Marcelo Buzaneli - eniomarcelo@gmail.com
+ */
 ?>
 
 <script>
@@ -26,14 +25,14 @@
     /**
      * FUNCTION DESLIGA MODAL AGUARDE
      */
-    function modalAguardeOff(){
+    function modalAguardeOff() {
         $('#modal-aguarde').modal('hide');
     }
 
     /**
      * AJAX FORM SUBMIT POST
      */
-    $(function(){
+    $(function () {
 
         /**
          * Exemplos de Uso:
@@ -110,23 +109,23 @@
                     }
 
                     //message toastr
-                    if(response.message && response.message.toastr){
+                    if (response.message && response.message.toastr) {
                         var icon = '';
-                        if(response.message.toastr.icon){
-                            icon = response.message.toastr.icon ;
-                        }else{
-                            icon = 'fa-info-circle' ;
+                        if (response.message.toastr.icon) {
+                            icon = response.message.toastr.icon;
+                        } else {
+                            icon = 'fa-info-circle';
                         }
 
-                        if( icon.length){
-                        }else{
+                        if (icon.length) {
+                        } else {
                             icon = 'fa-circle';
                         }
-                        var msg = '<div class="alert alert-' +response.message.toastr.tipo+ '" role="alert">' +
-                            '<button type="button" class="close" data-dismiss="alert" aria-label="Close">' +
-                            '<span aria-hidden="true">&times;</span>' +
-                            '</button>' +
-                            '<h4 class="alert-heading"><i class = "margin-right-5 fa '+icon+'"></i>'+response.message.toastr.titulo+'</h4>' + response.message.toastr.mensagem+ '<br /></div>';
+                        var msg = '<div class="alert alert-' + response.message.toastr.tipo + '" role="alert">' +
+                                '<button type="button" class="close" data-dismiss="alert" aria-label="Close">' +
+                                '<span aria-hidden="true">&times;</span>' +
+                                '</button>' +
+                                '<h4 class="alert-heading"><i class = "margin-right-5 fa ' + icon + '"></i>' + response.message.toastr.titulo + '</h4>' + response.message.toastr.mensagem + '<br /></div>';
                         $('.message-toastr').html(msg);
                         setTimeout(function () {
                             $('.alert').fadeOut(1000);
@@ -135,19 +134,19 @@
                     }
 
                     //message swal
-                    if(response.message && response.message.swal){
+                    if (response.message && response.message.swal) {
                         swal(response.message.swal.titulo, response.message.swal.mensagem, response.message.swal.tipo);
                     }
 
                     //message notfit
-                    if(response.message && response.message.notfit){
-                        if(response.message.notfit.tipo == 'warning' ){
+                    if (response.message && response.message.notfit) {
+                        if (response.message.notfit.tipo == 'warning') {
                             notfit_msg_warning(response.message.notfit.mensagem);
-                        }else if(response.message.notfit.tipo == 'error' ) {
+                        } else if (response.message.notfit.tipo == 'error') {
                             notfit_msg_error(response.message.notfit.mensagem);
-                        }else if(response.message.notfit.tipo == 'success' ) {
+                        } else if (response.message.notfit.tipo == 'success') {
                             notfit_msg_success(response.message.notfit.mensagem);
-                        }else {
+                        } else {
                             notfit_msg_info(response.message.notfit.mensagem);
                         }
                     }
@@ -427,7 +426,7 @@
      */
     $(function () {
         $('.select2').select2({
-
+            language: "pt-BR",
             placeholder: "Selecione...",
             allowClear: true
 
@@ -435,7 +434,7 @@
         });
 
         $('.select2-multiple-selection').select2({
-
+            language: "pt-BR",
             placeholder: "Selecione...",
             allowClear: true,
             multiple: true,
@@ -512,11 +511,11 @@
         $("#btn-delete").on("click", function () {
 
             var deleteditems = $('input:checkbox[name="btn-delete[]"]:checked')
-                .map(function () {
-                    return $(this).val();
-                })
-                .get()
-                .join(",");
+                    .map(function () {
+                        return $(this).val();
+                    })
+                    .get()
+                    .join(",");
             if (!deleteditems) {
 
                 swal("ATENÇÃO !", "Nenhum registro selecionado", "warning");
@@ -539,43 +538,43 @@
                     buttons: true,
                     dangerMode: true,
                 })
-                    .then((willDelete) => {
-                        if (willDelete) {
+                        .then((willDelete) => {
+                            if (willDelete) {
 
-                            $('#modal-aguarde').modal({
-                                backdrop: 'static',
-                                keyboard: false,
-                                show: true,
-                            });
+                                $('#modal-aguarde').modal({
+                                    backdrop: 'static',
+                                    keyboard: false,
+                                    show: true,
+                                });
 
-                            /*
-                             * DELETA O REGISTRO
-                             */
-                            var formData = {btndel: "btn-del", dadosdel: deleteditems}; //Array
+                                /*
+                                 * DELETA O REGISTRO
+                                 */
+                                var formData = {btndel: "btn-del", dadosdel: deleteditems}; //Array
 
-                            $.ajax({
-                                url: "<?= site_url($this->router->fetch_class() . '/del'); ?>",
-                                type: "POST",
-                                data: formData,
-                                success: function (formData, textStatus, jqXHR) {
-                                    window.location.href = "<?= site_url($this->router->fetch_class() . '?' . bz_app_parametros_url()); ?>";
-                                },
-                                error: function (jqXHR, textStatus, errorThrown) {
-                                    swal("ERRO !", "Erro ao deletar registro", "error");
-                                }
-                            });
+                                $.ajax({
+                                    url: "<?= site_url($this->router->fetch_class() . '/del'); ?>",
+                                    type: "POST",
+                                    data: formData,
+                                    success: function (formData, textStatus, jqXHR) {
+                                        window.location.href = "<?= site_url($this->router->fetch_class() . '?' . bz_app_parametros_url()); ?>";
+                                    },
+                                    error: function (jqXHR, textStatus, errorThrown) {
+                                        swal("ERRO !", "Erro ao deletar registro", "error");
+                                    }
+                                });
 
-                        } else {
+                            } else {
 
-                            $('#modal-aguarde').modal({
-                                backdrop: 'static',
-                                keyboard: false,
-                                show: true,
-                            });
+                                $('#modal-aguarde').modal({
+                                    backdrop: 'static',
+                                    keyboard: false,
+                                    show: true,
+                                });
 
-                            window.location.href = "<?= site_url($this->router->fetch_class() . '?' . bz_app_parametros_url()); ?>";
-                        }
-                    });
+                                window.location.href = "<?= site_url($this->router->fetch_class() . '?' . bz_app_parametros_url()); ?>";
+                            }
+                        });
 
             }
 

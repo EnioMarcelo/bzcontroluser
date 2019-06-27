@@ -38,3 +38,4 @@ $lang['form_validation_greater_than'] = 'O campo {field} deve conter um número 
 $lang['form_validation_greater_than_equal_to'] = 'O campo {field} deve conter um número maior ou igual que {param}.';
 $lang['form_validation_error_message_not_set'] = 'Não existe uma mensagem de erro para o campo com o nome {field}.';
 $lang['form_validation_in_list'] = 'O campo {field} deve ser um de: {param}.';
+$lang['form_validation_in_list'] = 'O campo {field} deve ser um de: {param}.';

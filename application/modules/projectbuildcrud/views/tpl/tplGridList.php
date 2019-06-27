@@ -7,33 +7,47 @@
 -->
 
 
-<section class='content-header header-dashboard' style='margin-top: 0px; margin-left: -15px; margin-bottom: 20px;'>
-	<h1>
-		<i class='<?= $_font_icon; ?>'></i>
-		<?= $_titulo_app; ?>
-		<small class='input-group-btn margin-left-10'>
+<section class='content-header header-dashboard row' style='margin-top: 0px; margin-left: -15px; margin-bottom: 20px;'>
+
+    <div class="row">
 
 
-			<a href='<?= site_url($this->router->fetch_class() . '/add' . '?' . bz_app_parametros_url()); ?>' class='btn btn-sm btn-info btn-show-modal-aguarde' name='btn-add' value='btn-add'>
-				<span class='glyphicon glyphicon-plus'></span> Novo
-			</a>
+        <div class="col-md-5 col-sm-5 col-xs-12 margin-left-15" style="font-size: 1.8em;">
 
-			<button type='button' id='btn-delete' class='btn btn-sm btn-danger disabled' name='btn-del' value='btn-del'>
-				<span class='glyphicon glyphicon-trash'></span> Deleta
-			</button>
+            <i class='<?= $_font_icon; ?> margin-right-5'></i><?= $_titulo_app; ?>
+
+        </div>
 
 
-            <a href='<?= site_url($this->router->fetch_class() . '/export' . '?' . bz_app_parametros_url()); ?>' class='btn btn-sm btn-primary btn-show-modal-aguarde xmargin-left-15' name='btn-export' value='btn-export'>
-                <span class='glyphicon glyphicon-print'></span> Imprimir
-            </a>
+        <div class="col-md-6 col-sm-6 col-xs-12  margin-left-15 btn-group">
+            <div class='input-group-btn'>
+
+                <a href='<?= site_url($this->router->fetch_class() . '/add' . '?' . bz_app_parametros_url()); ?>' class='btn btn-sm btn-info btn-show-modal-aguarde margin-right-5' name='btn-add' value='btn-add'>
+                    <span class='glyphicon glyphicon-plus'></span> Novo
+                </a>
+
+                <button type='button' id='btn-delete' class='btn btn-sm btn-danger disabled margin-right-5' name='btn-del' value='btn-del'>
+                    <span class='glyphicon glyphicon-trash'></span> Deleta
+                </button>
 
 
-		</small>
-	</h1>
-	<ol class='breadcrumb'>
-		<li><a href='<?= site_url('dashboard'); ?>' target='_top' class='active btn-show-modal-aguarde'><i class='fa fa-dashboard'></i>Dashboard</a></li>
-		<li class='active'><i class='<?= $_font_icon; ?> margin-right-5'></i><?= $_titulo_app; ?></li>
-	</ol>
+                <a href='<?= site_url($this->router->fetch_class() . '/export' . '?' . bz_app_parametros_url()); ?>' class='btn btn-sm btn-primary btn-show-modal-aguarde' name='btn-export' value='btn-export'>
+                    <span class='glyphicon glyphicon-print'></span> Imprimir
+                </a>
+
+
+            </div>
+        </div>
+
+        <div class="col-md-12 col-xs-12 padding-top-5 margin-left-15">
+            <ol class='breadcrumb col-md-12' style="margin-bottom:-10px;">
+                <li><a href='<?= site_url('dashboard'); ?>' target='_top' class='active btn-show-modal-aguarde'><i class='fa fa-dashboard margin-left-5'></i>&nbsp;Dashboard</a></li>
+                <li class='active'><i class='<?= $_font_icon; ?> margin-right-5'></i><?= $_titulo_app; ?></li>
+            </ol>
+        </div>
+
+    </div>
+
 </section>
 
 

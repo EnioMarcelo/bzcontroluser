@@ -230,6 +230,8 @@ public function del(){
   $_dados = $this->input->post('dadosdel', TRUE);
   $_dados = explode(',', $_dados);
 
+  {{controller_DeleteFileFunction}}
+  
   /* DELETA OS REGISTROS */
   $this->db->where_in('{{primary_key_field}}', $_dados);
   $this->db->delete($this->table_formaddedit_name);
@@ -278,7 +280,7 @@ exit;
     {{controller-onScriptInitExport}}
         
     /* CARREGA O HELPER */
-//    $this->load->helper('printtopdf');
+    /* $this->load->helper('printtopdf'); */
     
     /* VARIABLES */
     $this->export['_loadHtml'] = '';
@@ -327,16 +329,23 @@ exit;
     
     $this->export['_loadHtml'] .= " <!-- TABLE -->" . PHP_EOL;
     $this->export['_loadHtml'] .= "<div id='exportreport' class='container'>" . PHP_EOL;
-    $this->export['_loadHtml'] .= '<h3 class="pointer" style="margin-top:5; margin-botom:15px" title="Voltar">' . PHP_EOL;
+    $this->export['_loadHtml'] .= '<h3 class="pointer btn-show-modal-aguarde" style="margin-top:5; margin-botom:15px" title="Voltar">' . PHP_EOL;
     $this->export['_loadHtml'] .= "<i class='".$this->dados['_font_icon']."'></i>" . PHP_EOL;
     $this->export['_loadHtml'] .= '<spam style="margin-left:10px;">'.$this->dados["_titulo_app"].'</spam>' . PHP_EOL;
     $this->export['_loadHtml'] .= "</h3>" . PHP_EOL;
+    
+    
+    $this->export['_loadHtml'] .= "<a class='btn btn-sm btn-primary btn-show-modal-aguarde xmargin-left-15' name='btn-export' value='btn-export'>";
+    $this->export['_loadHtml'] .= "            <span class='glyphicon glyphicon-print'></span> Imprimir";
+    $this->export['_loadHtml'] .= "        </a>";
+    
+    
 	$this->export['_loadHtml'] .= "	<table class='table table-striped'>" . PHP_EOL;
 	$this->export['_loadHtml'] .= "     <!-- HEADER DA TABLE -->" . PHP_EOL;
-	$this->export['_loadHtml'] .= "     <thead style='background-color:black;color:white'>" . PHP_EOL;
+	$this->export['_loadHtml'] .= "     <thead class='bg-black'" . PHP_EOL;
 	$this->export['_loadHtml'] .= "         <tr id='IdTableGridListTheadTr'>" . PHP_EOL;
 	$this->export['_loadHtml'] .= "             <th class='text-center' style='width:3%;'>#</th>" . PHP_EOL;
-	$this->export['_loadHtml'] .= '             {{grid-list-header-table}}' . PHP_EOL;
+	$this->export['_loadHtml'] .= '             {{grid-list-header-table-export}}' . PHP_EOL;
 	$this->export['_loadHtml'] .= "			</tr>" . PHP_EOL;
 	$this->export['_loadHtml'] .= "		</thead>" . PHP_EOL;
 	$this->export['_loadHtml'] .= "     <!-- END HEADER DA TABLE -->" . PHP_EOL;
@@ -360,7 +369,7 @@ exit;
             $this->export['_loadHtml'] .= "    <td class='text-center'  >".$_c."</td>" . PHP_EOL;
 
             $this->export['_loadHtml'] .= "    <!-- CAMPOS DA TABLE -->" . PHP_EOL;
-            $this->export['_loadHtml'] .= '     {{grid-list-fields-table}}' . PHP_EOL;
+            $this->export['_loadHtml'] .= '     {{grid-list-fields-table-export}}' . PHP_EOL;
             $this->export['_loadHtml'] .= "    <!-- CAMPOS DA TABLE -->" . PHP_EOL;
 
             $this->export['_loadHtml'] .= "</tr>" . PHP_EOL;
@@ -375,12 +384,29 @@ exit;
     $this->export['_loadHtml'] .= " <!-- END TABLE -->" . PHP_EOL;
     
     $this->export['_loadHtml'] .= "</div>" . PHP_EOL;
+    
+    $this->export['_loadHtml'] .= '<!-- MODAL AGUARDE -->';
+    $this->export['_loadHtml'] .= '<div id="modal-aguarde" class="bz-aguarde-modal">';
+    $this->export['_loadHtml'] .= '    <div class="bz-aguarde-modal-dialog">';
+    $this->export['_loadHtml'] .= '        <div class="bz-aguarde-modal-content">';
+    $this->export['_loadHtml'] .= '            <div class="bz-aguarde-modal-body">';
+    $this->export['_loadHtml'] .= '                <p class="text-center">Aguarde</p>';
+    $this->export['_loadHtml'] .= '                <p class="text-center"><img src="<?= base_url("assets"); ?>/img/Facebook.gif" width="50px" style="margin-top: -20px;"></p>';
+    $this->export['_loadHtml'] .= '            </div>';
+    $this->export['_loadHtml'] .= '        </div><!-- /.bz-aguarde-modal-content -->';
+    $this->export['_loadHtml'] .= '    </div><!-- /.bz-aguarde-modal-dialog -->';
+    $this->export['_loadHtml'] .= '</div><!-- /.bz-aguarde-modal -->';
+    $this->export['_loadHtml'] .= '<!-- END MODAL AGUARDE -->';
+            
     $this->export['_loadHtml'] .= '</body>' . PHP_EOL;
     $this->export['_loadHtml'] .= '</html>' . PHP_EOL;
     
     /* JQUERY */ 
     $this->export['_loadHtml'] .= '<!-- jQuery 2.1.4 -->' . PHP_EOL;
     $this->export['_loadHtml'] .= '<script src="' . site_url() . 'assets/plugins/jQuery/jQuery-2.1.4.min.js"></script>' . PHP_EOL;
+    
+    $this->export['_loadHtml'] .= '<!-- Bootstrap 3.3.2 JS -->';
+    $this->export['_loadHtml'] .= '<script src="<?= base_url("assets"); ?>/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>';
     
     $this->export['_loadHtml'] .= '<script>' . PHP_EOL;
     /* IMPRIME A PÁGINA */
@@ -390,10 +416,17 @@ exit;
     /* VOLTAR PÁGINA */
     $this->export['_loadHtml'] .= '$(function(){'
             . '$( "h3" ).on( "click", function() {'
-            . 'window.location.replace("' . $this->_redirect_parametros_url . '");'
+            . '     window.location.replace("' . $this->_redirect_parametros_url . '");'
             . '});'
+            . "	$('.btn-show-modal-aguarde').on('click', function (event) {"
+            . "		$('#modal-aguarde').modal({"
+            . "			backdrop: 'static',"
+            . "         keyboard: false,"
+            . "         show: true,"
+            . "     });"
+            . " });"
             . 'window.print();'
-            . '})' . PHP_EOL;
+            . '});' . PHP_EOL;
 
     $this->export['_loadHtml'] .= '</script>' . PHP_EOL;
     
@@ -424,6 +457,16 @@ private function get_paginacao() {
   $_dados_pag['filter'] = $_filter;
   $_dados_pag['order_by'] = '{{grid-list-fields-order-by}}';
   $_dados_pag['programa'] = $this->router->fetch_class();
+        
+  /* WHERE GLOBAL DO CONTROLLER PAI - MY_CONTROLLER */
+  if( !empty($this->where) ){
+      $_dados_pag['where'] = $this->where;
+  }
+
+  if( !empty($this->or_where) ){
+      $_dados_pag['or_where'] = $this->or_where;
+  }
+  /* END WHERE GLOBAL DO CONTROLLER PAI - MY_CONTROLLER */
   
   /* QUANTIDADE DE LINHAS PARA PAGINAÇÃO DOS DADOS*/
   if (isset($this->page['per_page'])){
@@ -437,7 +480,6 @@ private function get_paginacao() {
   }else{
      $_dados_pag['per_page'] = 10 ; 
   }
-  
   /* END QUANTIDADE DE LINHAS PARA PAGINAÇÃO DOS DADOS */
 
   $_result_pag = bz_paginacao($_dados_pag);

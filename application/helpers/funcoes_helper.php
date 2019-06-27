@@ -566,9 +566,6 @@ function bz_paginacao($param = array()) {
 
     $CI = & get_instance();
 
-    $CI->load->model("generic/create");
-    $CI->read->ExecRead($param['table'], NULL);
-
     $_current_page = ($CI->input->get('pg', TRUE) - 1);
     $_tabela = $param['table'];
     $_search = (isset($param['search'])) ? $param['search'] : '';
@@ -615,7 +612,7 @@ function bz_paginacao($param = array()) {
     }
     /* END QUANTIDADE DE LINHAS PARA PAGINAÇÃO DOS DADOS */
 
-    
+
     $_num_links = ceil($_total_row / $_per_page) - 1;
 
     if ($_current_page > $_num_links):
@@ -669,6 +666,14 @@ function bz_paginacao($param = array()) {
 
 
     $CI->pagination->initialize($config);
+
+
+    /* WHERE GLOBAL DO CONTROLLER PAI - MY_CONTROLLER */
+    if (!empty($CI->where)):
+        $CI->db->where($CI->where);
+    endif;
+    /* END WHERE GLOBAL DO CONTROLLER PAI - MY_CONTROLLER */
+
 
     if (!empty($_where) || !empty($_search)):
 
@@ -1523,4 +1528,74 @@ function bz_remove_strip_tags_content($string) {
     $string = trim(preg_replace('/ {2,}/', ' ', $string));
 
     return $string;
+}
+
+/**
+ * UPLOAD IMAGE
+ * 
+ * PASSA UM ARRAY COMO PARÂMETRO
+ * 
+ * @param type $_file_name
+ * @param type $_upload_path
+ * @param type $_allowed_types
+ * @param type $_max_size
+ * @param type $_max_width
+ * @param type $_max_height
+ * @return string
+ */
+function bz_upload_file($_file_name, $_upload_path, $_allowed_types, $_max_size = 1024, $_max_width = 0, $_max_height = 0) {
+
+    if (empty($_file_name)) {
+        $_error['error']['message'] = 'Nenhum arquivo enviado para Upload.';
+        return $_error;
+    }
+
+    $CI = & get_instance();
+
+    $config['upload_path'] = ___CONF_UPLOAD_DIR___ . '/' . $_upload_path;
+    $config['allowed_types'] = $_allowed_types;
+    $config['max_size'] = $_max_size;
+    $config['max_width'] = $_max_width;
+    $config['max_height'] = $_max_height;
+    $config['encrypt_name'] = TRUE;
+    $config['xss_clean'] = TRUE;
+    $config['remove_spaces'] = TRUE;
+    $config['file_ext_tolower'] = TRUE;
+
+    $CI->load->library('upload', $config);
+
+    $_error = array();
+
+    $CI->upload->initialize($config);
+
+    if (!$CI->upload->do_upload($_file_name)) {
+
+        $_error['error']['file'] = $_file_name;
+        $_error['error']['message'] = trim($CI->upload->display_errors());
+        return $_error;
+    } else {
+
+        return $CI->upload->data();
+    }
+}
+
+/**
+ * DELETE FILE IN SERVER
+ *
+ * @param type $_file_name
+ * @param type $_file_path
+ * @return boolean
+ */
+function bz_delete_file($_file_name, $_file_path) {
+    $CI = & get_instance();
+    $CI->load->helper("file");
+
+    $_fileDel = $_file_path . '/' . $_file_name;
+
+    if (file_exists($_fileDel)) {
+        unlink($_fileDel);
+        return true;
+    } else {
+        return false;
+    }
 }

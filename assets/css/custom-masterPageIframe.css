@@ -24,11 +24,14 @@ input[name=id] {
     color: #0174B7 !important;
     font-weight: bold !important;
     /*font-size: 1.3em !important;*/
-}    
-.select2-container--default .select2-selection--single .select2-selection__rendered {
+}   
+
+.select2-container--default .select2-selection--single .select2-selection__rendered, .select2-selection__placeholder {
     color: #86AA35 !important;
     font-weight: bold !important;
 }
+
+
 
 /*
  * TABLE GRID LIST

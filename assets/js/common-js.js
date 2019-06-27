@@ -31,6 +31,11 @@ $(function () {
 });
 
 
+function fcnHideModalAguarde() {
+    $('#modal-aguarde').modal('hide');
+}
+
+
 
 /*
  * TIMER PARA APAGAR O ALERT
