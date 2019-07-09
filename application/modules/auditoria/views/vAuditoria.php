@@ -108,7 +108,7 @@
 
                             <td class="text-center" style="width:5px;"><?= $_c; ?></td>
                             <td class="text-left"><?= $_userAgent; ?></td>
-                            <td class="text-center"><?= bz_formatData($_row->inserted_date, 'd/m/Y H:i:s'); ?></td>
+                            <td class="text-center"><?= bz_formatdata($_row->inserted_date, 'd/m/Y H:i:s'); ?></td>
                             <td class=""><?= $_row->username; ?></td>
                             <td class="text-center"><?= $_row->application; ?></td>
                             <td class="text-center"><?= $_row->method; ?></td>

@@ -136,12 +136,25 @@ function set_mensagem_toastr($titulo = NULL, $mensagem = NULL, $tipo = 'info', $
         return false;
     endif;
 
+    if ($tipo == 'info') {
+        $_loaderBg = '#29a7d8';
+    } elseif ($tipo == 'warning') {
+        $_loaderBg = '#f29a0c';
+    } elseif ($tipo == 'error') {
+        $_loaderBg = '#8e0705';
+    } elseif ($tipo == 'success') {
+        $_loaderBg = '#0c660f';
+    } else {
+        $_loaderBg = '#777373';
+    }
+
     $result = "<script>
     $.toast({
         heading: '" . $titulo . "',
         text: '" . $mensagem . "',
         position: '" . $position . "',
-        icon: '" . $tipo . "'
+        icon: '" . $tipo . "',
+        loaderBg: '" . $_loaderBg . "'
     })
 
     </script>";
@@ -231,27 +244,27 @@ function bz_enviar_email($para, $assunto, $mensagem, $formato = 'html') {
 
     $config['mailtype'] = $formato;
 
-    if (strlen(___EMAIL_SMTP_HOST___) > 0 and strlen(___EMAIL_SMTP_PORT___) > 0 and strlen(___EMAIL_SMTP_USER___) > 0 and strlen(___EMAIL_SMTP_PASS___) > 0 and strlen(___EMAIL_FROM_EMAIL___) > 0):
+    if (strlen(___CONF_EMAIL_SMTP_HOST___) > 0 and strlen(___CONF_EMAIL_SMTP_PORT___) > 0 and strlen(___CONF_EMAIL_SMTP_USER___) > 0 and strlen(___CONF_EMAIL_SMTP_PASS___) > 0 and strlen(___CONF_EMAIL_FROM_EMAIL___) > 0):
         $servidor_email = 'OK';
     endif;
     /**/
     if ($servidor_email == 'OK'):
         $config['mailtype'] = $formato;
-        $config['protocol'] = ___EMAIL_SMTP_PROTOCOL___;
-        $config['smtp_host'] = ___EMAIL_SMTP_HOST___;
-        $config['smtp_port'] = ___EMAIL_SMTP_PORT___;
-        $config['smtp_timeout'] = ___EMAIL_SMTP_TIMEOUT___;
-        $config['smtp_user'] = ___EMAIL_SMTP_USER___;
-        $config['smtp_pass'] = ___EMAIL_SMTP_PASS___;
-        $config['charset'] = ___EMAIL_SMTP_CHARSET___;
-        $config['newline'] = ___EMAIL_SMTP_NEWLINE___;
+        $config['protocol'] = ___CONF_EMAIL_SMTP_PROTOCOL___;
+        $config['smtp_host'] = ___CONF_EMAIL_SMTP_HOST___;
+        $config['smtp_port'] = ___CONF_EMAIL_SMTP_PORT___;
+        $config['smtp_timeout'] = ___CONF_EMAIL_SMTP_TIMEOUT___;
+        $config['smtp_user'] = ___CONF_EMAIL_SMTP_USER___;
+        $config['smtp_pass'] = ___CONF_EMAIL_SMTP_PASS___;
+        $config['charset'] = ___CONF_EMAIL_SMTP_CHARSET___;
+        $config['newline'] = ___CONF_EMAIL_SMTP_NEWLINE___;
 
-        if (___EMAIL_SMTP_CRYPTO___) {
-            $config['smtp_crypto'] = ___EMAIL_SMTP_CRYPTO___;
+        if (___CONF_EMAIL_SMTP_CRYPTO___) {
+            $config['smtp_crypto'] = ___CONF_EMAIL_SMTP_CRYPTO___;
         }
 
-        if (___EMAIL_SMTP_VALIDATION___) {
-            $config['validation'] = ___EMAIL_SMTP_VALIDATION___;
+        if (___CONF_EMAIL_SMTP_VALIDATION___) {
+            $config['validation'] = ___CONF_EMAIL_SMTP_VALIDATION___;
         }
 
     endif;
@@ -263,7 +276,7 @@ function bz_enviar_email($para, $assunto, $mensagem, $formato = 'html') {
         exit('DADOS INCOMPLETOS DA CONTA DO USUÁRIO DO EMAIL. FAVOR VERIFICAR AS VARIÁVEIS CONSTANTES DO SERVIDOR DO EMAIL.');
     endif;
 
-    $CI->email->from(___EMAIL_FROM_EMAIL___);
+    $CI->email->from(___CONF_EMAIL_FROM_EMAIL___);
     $CI->email->to($para);
     $CI->email->subject($assunto);
     $CI->email->message($mensagem);
@@ -480,6 +493,19 @@ function bz_converteMoedaAmericana($get_valor, $decimal = 2, $cifrao = null) {
 //END bz_converteMoedaAmericana()
 
 /**
+ * Pesquisa um ocorrência dentro de uma string
+ * 
+ * Usando a analogia de encontrar uma agulha em um palheiro.
+ * 
+ * @param type $_agulha         Agulha - O quê vc deseja encontrar
+ * @param type $_palheiro       Palheiro - Onde você deseja encontrar
+ * @return type
+ */
+function bz_contains_in_string($_agulha, $_palheiro) {
+    return strstr($_palheiro, $_agulha);
+}
+
+/**
  * Preenche uma string qual caracteres
  * @param string $string            Passa a string com os dados
  * @param string $orientacao        Esquerda LEFT, Diretia RIGHT. Por padrão será LEFT
@@ -525,20 +551,21 @@ function bz_queryResultExcludeCol($_query_result = array(), $_ColumnExclude = NU
 /**
  * Converte data para o padrão que for passado no parametro $mascara
  *
- * Exemplo : bz_formatData(DATA,'d/m/Y H:i:s')
+ * Exemplo : bz_formatdata(DATA,'d/m/Y H:i:s')
  *
  * @param string $data              Passa a string com a data
  * @param string $mascara           Como a data será formatada. Exemplo: 'd/m/Y H:i:s'
  */
-function bz_formatData($data, $mascara = 'd/m/Y') {
-    if (strlen($data) > 0):
-        return date($mascara, strtotime($data));
-    else:
-        return '';
-    endif;
+function bz_formatdata($data, $mascara = 'd/m/Y') {
+
+    if (date('Y', strtotime(str_replace('/', '-', $data))) == '-0001' || empty($data)) {
+        return;
+    }
+
+    return date($mascara, strtotime(str_replace('/', '-', $data)));
 }
 
-//END bz_formatData()
+//END bz_formatdata()
 
 /**
  * FAZ A PAGINAÇÃO DE RESULTADOS DE UMA GRID.
@@ -899,7 +926,7 @@ function settingsConfig($_p) {
             </p>
             </div>
             ';
-//END Campo Modo Debug da Aplicação    
+        /* END Campo Modo Debug da Aplicação */
 
 
 
@@ -1447,6 +1474,21 @@ function valorPorExtenso($valor = 0, $bolExibirMoeda = true, $bolPalavraFeminina
  * 
  * @param type $_p
  * @return string
+ * 
+ * PARÂMETROS PASSADOS COMO ARRAY. Ex: $config['modalName'] = 'modalDeTeste';
+ * 
+ * modalName            Nome da Modal, se não for informado o nome padrão será bzModal
+ * modalClass           Para adicionar uma classe CSS na modal
+ * modalSize            Determina o tamanho da modal - Ex: large para Grande, small para Pequeno. Se não for informado nada o tamnho padrão será Médio
+ * modalTitle           O Título para a Modal
+ * modalText            O Texto no corpo da Modal
+ * modalTextSmall       O Texto de tamanho reduzino no corpo da Modal
+ * modalBtnCloseID      ID do botão que fecha a Modal
+ * modalBtnConfirmID    ID do botão de confirmação da Modal
+ * modalBtnClose        Texto do botão que fecha a Modal
+ * modalBtnConfirm      Texto o botão de confirmação da Modal
+ * modalShow            Se informado como TRUE a Modal é executada automaticamente
+ * 
  */
 function bz_modal($_p = []) {
 
@@ -1552,6 +1594,8 @@ function bz_upload_file($_file_name, $_upload_path, $_allowed_types, $_max_size 
 
     $CI = & get_instance();
 
+    $_FILES[$_file_name]['name'] = $CI->security->sanitize_filename($_FILES[$_file_name]['name']);
+
     $config['upload_path'] = ___CONF_UPLOAD_DIR___ . '/' . $_upload_path;
     $config['allowed_types'] = $_allowed_types;
     $config['max_size'] = $_max_size;
@@ -1590,10 +1634,10 @@ function bz_delete_file($_file_name, $_file_path) {
     $CI = & get_instance();
     $CI->load->helper("file");
 
-    $_fileDel = $_file_path . '/' . $_file_name;
+    $_fileDelete = $_file_path . '/' . $_file_name;
 
-    if (file_exists($_fileDel)) {
-        unlink($_fileDel);
+    if (!empty($_fileDelete) && file_exists($_fileDelete)) {
+        unlink($_fileDelete);
         return true;
     } else {
         return false;

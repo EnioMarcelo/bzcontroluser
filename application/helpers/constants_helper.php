@@ -27,9 +27,9 @@
      * SISTEMA
      * ========================================================================================================================================================================
      */
-    define('___BZ_TITULO_SISTEMA___', 'BUZZAControl');
-    define('___BZ_NOME_SISTEMA___', '<b>BUZZA</b>Control');
-    define('___BZ_NOME_SISTEMA_ABREVIADO___', '<b>BZ</b>CN');
+    define('___CONF_TITULO_SISTEMA___', 'BUZZAControl');
+    define('___CONF_NOME_SISTEMA___', '<b>BUZZA</b>Control');
+    define('___CONF_NOME_SISTEMA_ABREVIADO___', '<b>BZ</b>CN');
 
     /**
      * ========================================================================================================================================================================
@@ -43,7 +43,7 @@
      * UPLOAD
      * ========================================================================================================================================================================
      */
-    define("___CONF_UPLOAD_DIR___", "./storage");
+    define("___CONF_UPLOAD_DIR___", "storage");
     define("___CONF_UPLOAD_IMAGE_DIR___", "images");
     define("___CONF_UPLOAD_FILE_DIR___", "files");
     define("___CONF_UPLOAD_MEDIA_DIR___", "medias");
@@ -58,19 +58,19 @@
      * PARA ENVIAR EMAIL PELO SISTEMA
      * ========================================================================================================================================================================
      */
-    define('___EMAIL_SMTP_HOST___', 'smtp.sendgrid.net');
-    define('___EMAIL_SMTP_PORT___', '587');
-    define('___EMAIL_SMTP_PROTOCOL___', 'smtp');
-    define('___EMAIL_SMTP_TIMEOUT___', '60');
-    define('___EMAIL_SMTP_CRYPTO___', 'TLS'); //SSL ou TLS
+    define('___CONF_EMAIL_SMTP_HOST___', 'smtp.sendgrid.net');
+    define('___CONF_EMAIL_SMTP_PORT___', '587');
+    define('___CONF_EMAIL_SMTP_PROTOCOL___', 'smtp');
+    define('___CONF_EMAIL_SMTP_TIMEOUT___', '60');
+    define('___CONF_EMAIL_SMTP_CRYPTO___', 'TLS'); //SSL ou TLS
 
-    define('___EMAIL_SMTP_CHARSET___', 'utf-8');
-    define('___EMAIL_SMTP_NEWLINE___', '\r\n');
-    define('___EMAIL_SMTP_VALIDATION___', '');
+    define('___CONF_EMAIL_SMTP_CHARSET___', 'utf-8');
+    define('___CONF_EMAIL_SMTP_NEWLINE___', '\r\n');
+    define('___CONF_EMAIL_SMTP_VALIDATION___', '');
 
-    define('___EMAIL_SMTP_USER___', 'apikey');
-    define('___EMAIL_SMTP_PASS___', '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');
-    define('___EMAIL_FROM_EMAIL___', 'no-reply@eniomarcelo.com.br');
+    define('___CONF_EMAIL_SMTP_USER___', 'apikey');
+    define('___CONF_EMAIL_SMTP_PASS___', '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');
+    define('___CONF_EMAIL_FROM_EMAIL___', 'no-reply@eniomarcelo.com.br');
     /**
      * ========================================================================================================================================================================
      * END PARA ENVIAR EMAIL PELO SISTEMA

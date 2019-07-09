@@ -103,7 +103,7 @@
                                     <label for="cadastro_data">Data de Cadastro</label>
                                     <div class="input-group">
                                         <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                        <input type="text" class="form-control" placeholder="Data de Cadastro" value="<?= bz_formatData($_dados_usuario->cadastro_data, 'd/m/Y'); ?>" disabled/>
+                                        <input type="text" class="form-control" placeholder="Data de Cadastro" value="<?= bz_formatdata($_dados_usuario->cadastro_data, 'd/m/Y'); ?>" disabled/>
                                     </div>
                                 </div>
                             </div>
@@ -114,7 +114,7 @@
                                     <label for="cadastro_data">Hora de Cadastro</label>
                                     <div class="input-group">
                                         <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
-                                        <input type="text" class="form-control" placeholder="Hora de Cadastro" value="<?= bz_formatData($_dados_usuario->cadastro_data, 'H:i:s'); ?>" disabled/>
+                                        <input type="text" class="form-control" placeholder="Hora de Cadastro" value="<?= bz_formatdata($_dados_usuario->cadastro_data, 'H:i:s'); ?>" disabled/>
                                     </div>
                                 </div>
                             </div>
@@ -125,7 +125,7 @@
                                     <label for="ultimo_login">Último Login</label>
                                     <div class="input-group">
                                         <span class="input-group-addon"><i class="fa fa-hourglass-end"></i></span>
-                                        <input type="text" class="form-control" placeholder="Data Último Login" value="<?= bz_formatData($this->session->userdata('user_login')['user_ultimo_login'], 'd/m/Y H:i:s'); ?>" disabled/>
+                                        <input type="text" class="form-control" placeholder="Data Último Login" value="<?= bz_formatdata($this->session->userdata('user_login')['user_ultimo_login'], 'd/m/Y H:i:s'); ?>" disabled/>
                                     </div>
                                 </div>
                             </div>

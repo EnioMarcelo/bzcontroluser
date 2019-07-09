@@ -418,7 +418,6 @@
                                 <label>Colunas:</label>
                                 <div class="input-group col-bg-12 col-md-12 col-sm-12 col-xs-12">
                                     <select class="form-control input-sm" name="form_add_edit_field_column">
-                                        <option value="">Selecione...</option>
                                         <option value="1">1</option>
                                         <option value="2">2</option>
                                         <option value="3">3</option>

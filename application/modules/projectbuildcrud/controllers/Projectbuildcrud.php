@@ -114,10 +114,7 @@ class ProjectbuildCrud extends MY_Controller {
         $this->table_name = 'proj_build';
     }
 
-// END function __construct()
-
-
-
+    /* END function __construct() */
 
     public function index() {
 
@@ -133,7 +130,7 @@ class ProjectbuildCrud extends MY_Controller {
         $this->load->view('vMasterPageIframe', $this->dados);
     }
 
-//END function index()
+    /* END function index() */
 
 
 
@@ -141,6 +138,7 @@ class ProjectbuildCrud extends MY_Controller {
     /*
      * FUNÇÃO EDIT FIELDS GRID LIST
      */
+
     public function setup_gridlist() {
 
         /*
@@ -192,7 +190,7 @@ class ProjectbuildCrud extends MY_Controller {
         endif; //END $_POST
     }
 
-//END function gridlist_save()
+    /* END function gridlist_save() */
 
 
 
@@ -200,6 +198,7 @@ class ProjectbuildCrud extends MY_Controller {
     /*
      * FUNÇÃO EDIT FIELDS FORM ADD/EDIT
      */
+
     public function setup_formaddedit() {
 
         /*
@@ -419,10 +418,10 @@ class ProjectbuildCrud extends MY_Controller {
         endif; //END $_POST
     }
 
-//END function setup_formaddedit()
+    /* END function setup_formaddedit() */
 
     /**
-     * FUNÇÃO CADASTRO DE CAMPO DA GRIDLIST ENIO
+     * FUNÇÃO CADASTRO DE CAMPO DA GRIDLIST
      */
     public function addFieldGridList() {
 
@@ -503,7 +502,7 @@ class ProjectbuildCrud extends MY_Controller {
         endif;
     }
 
-//END FUNÇÃO CADASTRO DE CAMPO DA GRIDLIST
+    /* END FUNÇÃO CADASTRO DE CAMPO DA GRIDLIST */
 
     /*
      * FUNÇÃO CADASTRO
@@ -555,7 +554,7 @@ class ProjectbuildCrud extends MY_Controller {
                     $this->save_fields_project(str_replace('vw_', '', $_dados['tabela']), $result['last_id_add'], 'formaddedit');
 
 
-//GRAVA AUDITORIA
+                    /* GRAVA AUDITORIA */
                     $dados_auditoria['creator'] = 'user';
                     $dados_auditoria['action'] = 'add';
                     $dados_auditoria['description'] = ___MSG_AUDITORIA_ADD_SUCCESS___;
@@ -579,7 +578,7 @@ class ProjectbuildCrud extends MY_Controller {
 
                     if ($result_create_sec_aplicativos):
 
-//GRAVA AUDITORIA
+                        /* GRAVA AUDITORIA */
                         $dados_auditoria['creator'] = 'user';
                         $dados_auditoria['action'] = 'add';
                         $dados_auditoria['description'] = ___MSG_AUDITORIA_ADD_SUCCESS___;
@@ -614,7 +613,7 @@ class ProjectbuildCrud extends MY_Controller {
         $this->load->view('vMasterPageIframe', $this->dados);
     }
 
-//END public function add()
+    /* END public function add() */
 
 
 
@@ -1125,7 +1124,8 @@ class ProjectbuildCrud extends MY_Controller {
                     $_reponse['message'] = 'SAVE-SWITCH-OK';
 
                     echo json_encode($_reponse);
-                    exit; elseif ($this->input->post('screen_type') == 'formaddedit'):
+                    exit;
+                elseif ($this->input->post('screen_type') == 'formaddedit'):
 
                     $_dados = json_decode($_r_param_formaddedit, true);
                     $_dados['form_add_edit_field_show'] = $this->input->post('grid_list_show');
@@ -1234,15 +1234,37 @@ class ProjectbuildCrud extends MY_Controller {
                     $_dadosTable['primary_key'] = $_field->primary_key;
                 endif;
 
+                /**
+                 * TIPOS DE CAMPOS DA GRIDLIST E DO FORM
+                 */
+                $_input_type = 'text';
+
+                if ($_dadosTable['field_type'] == "int") {
+                    $_input_type = 'number';
+                } elseif ($_dadosTable['field_type'] == "longtext") {
+                    $_input_type = 'text-long';
+                } elseif ($_dadosTable['field_type'] == "date") {
+                    $_input_type = 'date';
+                } elseif ($_dadosTable['field_type'] == "time") {
+                    $_input_type = 'time';
+                } elseif ($_dadosTable['field_type'] == "datetime") {
+                    $_input_type = 'datetime';
+                }
+                /* END TIPOS DE CAMPOS DA GRIDLIST E DO FORM */
+
+
+
+
+
                 /*
                  * PARÂMETROS DO CAMPO
                  */
                 if ($_screen_type == 'gridlist'):
-                    $_dadosTable['param_gridlist'] = '{"grid_list_show":"on","grid_list_search":"on","grid_list_export":"on","grid_list_label":"' . $_dadosTable['field_name'] . '","grid_list_aligne_label":"text-left","grid_list_field_length":"","grid_list_field_aligne":"text-left"}';
+                    $_dadosTable['param_gridlist'] = '{"grid_list_show":"on","grid_list_search":"on","grid_list_export":"on","grid_list_field_input_type":"' . $_input_type . '","grid_list_label":"' . $_dadosTable['field_name'] . '","grid_list_aligne_label":"text-left","grid_list_field_length":"","grid_list_field_aligne":"text-left"}';
                 elseif ($_screen_type == 'formaddedit'):
-                    $_dadosTable['param_formaddedit'] = '{"form_add_edit_field_show":"on","form_add_edit_field_type":"text","form_add_edit_field_label":"' . $_dadosTable['field_name'] . '","form_add_edit_field_placeholder":"","form_add_edit_field_max_length":"' . (($_dadosTable['field_length'] > 0) ? $_dadosTable['field_length'] : '') . '"}';
+                    $_dadosTable['param_formaddedit'] = '{"form_add_edit_field_show":"on","form_add_edit_field_type":"' . $_input_type . '","form_add_edit_field_label":"' . $_dadosTable['field_name'] . '","form_add_edit_field_placeholder":"","form_add_edit_field_max_length":"' . (($_dadosTable['field_length'] > 0) ? $_dadosTable['field_length'] : '') . '"}';
                 endif;
-// END PARÂMETROS DO CAMPO
+                /* END PARÂMETROS DO CAMPO */
 
                 $this->create->ExecCreate('proj_build_fields', $_dadosTable);
 
@@ -1694,9 +1716,110 @@ class ProjectbuildCrud extends MY_Controller {
                                 endif;
                             endif;
 
+//                            echo '<pre class="vardump">';
+//                            var_dump( $_row );
+//                            echo '</pre>';
+
+
+
                             $this->_gridListFields .= $_row['field_name'] . ',';
                             $this->_gridListHeaderTable .= '<th class="thCl' . ucfirst($_row['field_name']) . '" class="' . $_class . '" style="' . $_width_field . '">' . $_param_gridListField['grid_list_label'] . '</th>' . PHP_EOL;
-                            $this->_gridListFieldsTable .= '<td class="tdCl' . ucfirst($_row['field_name']) . '" class="' . $_class . '" style="' . $_width_field . '"><?= $_row["' . $_row['field_name'] . '"]; ?></td>' . PHP_EOL;
+
+
+
+                            /**
+                             * FORMATAÇÃO DOS CAMPOS DA GRIDLIST $_ROW[] CONFORME SELEÇÃO DO CAMPO SELECT grid_list_field_input_type
+                             */
+                            if (!empty($_param_gridListField['grid_list_field_input_type'])) {
+
+                                /* CAMPO SELECT MODAL IMAGEM grid_list_field_type_modal_image  */
+                                if ($_param_gridListField['grid_list_field_input_type'] == 'upload-imagem') {
+
+                                    /* CAMPO SELECT MODAL IMAGEM grid_list_field_type_modal_image  */
+                                    if (!empty($_param_gridListField['grid_list_field_type_modal_image'])) {
+
+                                        if ($_param_gridListField['grid_list_field_type_modal_image'] == 'icon-link') {
+                                            $this->_gridListFieldsTable .= '<td class="tdCl' . ucfirst($_row['field_name']) . '" class="' . $_class . '" style="' . $_width_field . '"><?= mc_image_link_modal($_row["' . $_row['field_name'] . '"]); ?></td>' . PHP_EOL;
+                                        } else {
+                                            $this->_gridListFieldsTable .= '<td class="tdCl' . ucfirst($_row['field_name']) . '" class="' . $_class . '" style="' . $_width_field . '"><?= mc_image_thumb_modal($_row["' . $_row['field_name'] . '"]); ?></td>' . PHP_EOL;
+                                        }
+                                    }
+
+                                    /* END CAMPO SELECT MODAL IMAGEM grid_list_field_type_modal_image  */
+                                    /**/
+                                    /* CAMPO INPUT NUMBER DECIMAL grid_list_field_input_type  */
+                                } elseif ($_param_gridListField['grid_list_field_input_type'] == 'number-decimal') {
+
+
+                                    $this->_gridListFieldsTable .= '<td class="tdCl' . ucfirst($_row['field_name']) . '" class="' . $_class . '" style="' . $_width_field . '"><?= bz_converteMoedaBrasil($_row["' . $_row['field_name'] . '"]); ?></td>' . PHP_EOL;
+
+                                    /* END CAMPO INPUT NUMBER DECIMAL grid_list_field_input_type */
+                                    /**/
+                                    /* CAMPO INPUT MOEDA grid_list_field_input_type  */
+                                } elseif ($_param_gridListField['grid_list_field_input_type'] == 'moeda') {
+
+
+                                    $this->_gridListFieldsTable .= '<td class="tdCl' . ucfirst($_row['field_name']) . '" class="' . $_class . '" style="' . $_width_field . '">R$ <?= bz_converteMoedaBrasil($_row["' . $_row['field_name'] . '"]); ?></td>' . PHP_EOL;
+
+                                    /* END CAMPO INPUT MOEDA grid_list_field_input_type */
+                                    /**/
+                                    /* CAMPO INPUT NUMBER INTENGER grid_list_field_input_type  */
+                                } elseif ($_param_gridListField['grid_list_field_input_type'] == 'number') {
+
+
+                                    $this->_gridListFieldsTable .= '<td class="tdCl' . ucfirst($_row['field_name']) . '" class="' . $_class . '" style="' . $_width_field . '"><?= number_format($_row["' . $_row['field_name'] . '"], 0, "", ""); ?></td>' . PHP_EOL;
+
+                                    /* END CAMPO INPUT NUMBER INTENGER grid_list_field_input_type */
+                                    /**/
+                                    /* CAMPO INPUT DATE grid_list_field_input_type  */
+                                } elseif ($_param_gridListField['grid_list_field_input_type'] == 'date') {
+
+
+                                    $this->_gridListFieldsTable .= '<td class="tdCl' . ucfirst($_row['field_name']) . '" class="' . $_class . '" style="' . $_width_field . '"><?= bz_formatdata($_row["' . $_row['field_name'] . '"]); ?></td>' . PHP_EOL;
+
+                                    /* END CAMPO INPUT DATE grid_list_field_input_type */
+                                    /**/
+                                    /* CAMPO INPUT TIME grid_list_field_input_type  */
+                                } elseif ($_param_gridListField['grid_list_field_input_type'] == 'time') {
+
+
+                                    $this->_gridListFieldsTable .= '<td class="tdCl' . ucfirst($_row['field_name']) . '" class="' . $_class . '" style="' . $_width_field . '"><?= bz_formatdata($_row["' . $_row['field_name'] . '"], "H:i:s"); ?></td>' . PHP_EOL;
+
+                                    /* END CAMPO INPUT TIME grid_list_field_input_type */
+                                    /**/
+                                    /* CAMPO INPUT DATETIME grid_list_field_input_type  */
+                                } elseif ($_param_gridListField['grid_list_field_input_type'] == 'datetime') {
+
+
+                                    $this->_gridListFieldsTable .= '<td class="tdCl' . ucfirst($_row['field_name']) . '" class="' . $_class . '" style="' . $_width_field . '"><?= bz_formatdata($_row["' . $_row['field_name'] . '"], "d/m/Y H:i:s"); ?></td>' . PHP_EOL;
+
+                                    /* END CAMPO INPUT DATETIME grid_list_field_input_type */
+                                    /**/
+                                } else {
+                                    /**/
+                                    $this->_gridListFieldsTable .= '<td class="tdCl' . ucfirst($_row['field_name']) . '" class="' . $_class . '" style="' . $_width_field . '"><?= $_row["' . $_row['field_name'] . '"]; ?></td>' . PHP_EOL;
+                                    /**/
+                                }
+
+                                /**/
+                            } else {
+
+
+                                $this->_gridListFieldsTable .= '<td class="tdCl' . ucfirst($_row['field_name']) . '" class="' . $_class . '" style="' . $_width_field . '"><?= $_row["' . $_row['field_name'] . '"]; ?></td>' . PHP_EOL;
+
+                                /**/
+                            }
+                        /* END FORMATAÇÃO DOS CAMPOS DA GRIDLIST $_ROW[] CONFORME SELEÇÃO DO CAMPO SELECT grid_list_field_input_type */
+
+
+
+
+
+
+
+
+
+                        /**/
                         endif;
 
 
@@ -2031,18 +2154,18 @@ class ProjectbuildCrud extends MY_Controller {
 
                             $this->_formAddEditConfigInput = '<input type="text" name="' . $_row['field_name'] . '" class="form-control datepicker j-mask-data-ptbr j-mask-' . $_row['field_name'] . '" placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" value="<?=set_value("' . $_row['field_name'] . '",isset($dados->' . $_row['field_name'] . ') ? bz_formatdata($dados->' . $_row['field_name'] . ',"d/m/Y") : set_value("' . $_row['field_name'] . '"));?>" ' . $this->_formAddEditConfigInputAtributos . ' />';
                             $this->_formAddEditConfigInputMask .= '$(".j-mask-' . $_row['field_name'] . '").mask("00/00/0000", {placeholder: "__/__/____"});' . PHP_EOL;
-                            $this->_formAddConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = bz_formatData($_dados["' . $_row['field_name'] . '"],"Y-m-d");' . PHP_EOL;
+                            $this->_formAddConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = bz_formatdata($_dados["' . $_row['field_name'] . '"],"Y-m-d");' . PHP_EOL;
                             if ($_row['primary_key'] == 0):
-                                $this->_formEditConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = bz_formatData($_dados["' . $_row['field_name'] . '"],"Y-m-d");' . PHP_EOL;
+                                $this->_formEditConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = bz_formatdata($_dados["' . $_row['field_name'] . '"],"Y-m-d");' . PHP_EOL;
                             endif;
 
                         elseif ($_param_formAddEditField['form_add_edit_field_type'] == 'datetime'):
 
                             $this->_formAddEditConfigInput = '<input type="text" name="' . $_row['field_name'] . '" class="form-control datetimepicker j-mask-datahora-ptbr j-mask-' . $_row['field_name'] . '" placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" value="<?=set_value("' . $_row['field_name'] . '",isset($dados->' . $_row['field_name'] . ') ? bz_formatdata($dados->' . $_row['field_name'] . ',"d/m/Y H:i:s") : set_value("' . $_row['field_name'] . '"));?>" ' . $this->_formAddEditConfigInputAtributos . ' />';
                             $this->_formAddEditConfigInputMask .= '$(".j-mask-' . $_row['field_name'] . '").mask("00/00/0000 00:00", {placeholder: "__/__/____ __:__"});' . PHP_EOL;
-                            $this->_formAddConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = bz_formatData($_dados["' . $_row['field_name'] . '"],"Y-m-d H:i:s");' . PHP_EOL;
+                            $this->_formAddConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = bz_formatdata($_dados["' . $_row['field_name'] . '"],"Y-m-d H:i:s");' . PHP_EOL;
                             if ($_row['primary_key'] == 0):
-                                $this->_formEditConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = bz_formatData($_dados["' . $_row['field_name'] . '"],"Y-m-d H:i:s");' . PHP_EOL;
+                                $this->_formEditConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = bz_formatdata($_dados["' . $_row['field_name'] . '"],"Y-m-d H:i:s");' . PHP_EOL;
                             endif;
 
                         elseif ($_param_formAddEditField['form_add_edit_field_type'] == 'time'):
@@ -2080,7 +2203,9 @@ class ProjectbuildCrud extends MY_Controller {
 
                         elseif ($_param_formAddEditField['form_add_edit_field_type'] == 'upload-imagem'):
 
-                            $this->_formAddEditConfigInput = '<input type="file" name="' . $_row['field_name'] . '" class="form-control" placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" value="<?=set_value("' . $_row['field_name'] . '",isset($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : set_value("' . $_row['field_name'] . '"));?>" ' . $this->_formAddEditConfigInputAtributos . ' />';
+                            $this->_formAddEditConfigInput = '<input type="file" name="' . $_row['field_name'] . '" class="form-control" placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" value="<?=set_value("' . $_row['field_name'] . '",isset($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : set_value("' . $_row['field_name'] . '"));?>" ' . $this->_formAddEditConfigInputAtributos . ' />' . PHP_EOL
+                                    . '<div class="btn-ver-imagem margin-top-5 margin-bottom-5" style="font-size: 0.8em"><i class="fa fa-fw fa-camera"></i> <?= anchor(___CONF_UPLOAD_DIR___ . "/" . ___CONF_UPLOAD_IMAGE_DIR___ . "/" . set_value("imagem_nome", isset($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : set_value("' . $_row['field_name'] . '")), "Ver Imagem", "data-lightbox=\'' . $_row['field_name'] . '\'"); ?></div>';
+
                             $this->_formAddConvertDadosToDatabase .= "if( !empty(\$this->task['result_upload']['file_name']) ):" . PHP_EOL
                                     . "     \$_dados['" . $_row['field_name'] . "'] = \$this->task['result_upload']['file_name'];" . PHP_EOL
                                     . "endif;";
@@ -2094,6 +2219,15 @@ class ProjectbuildCrud extends MY_Controller {
                                     . "     \$_file_name = mc_findByIdDataDB(\$this->table_formaddedit_name, \$_value)->row()->" . $_row['field_name'] . ";" . PHP_EOL
                                     . "     bz_delete_file(\$_file_name, ___CONF_UPLOAD_DIR___ . '/' . ___CONF_UPLOAD_IMAGE_DIR___);" . PHP_EOL
                                     . "endforeach;" . PHP_EOL
+                                    . "/* END DELETA IMAGEM */";
+
+                            $this->_form_edit_unset_fields .= "/**" . PHP_EOL . PHP_EOL
+                                    . " * DELETA IMAGEM" . PHP_EOL
+                                    . " */" . PHP_EOL
+                                    . "if (isset(\$this->task['uploaded_image']) && \$this->task['uploaded_image']) {" . PHP_EOL
+                                    . "     \$_file_name = mc_findByIdDataDB(\$this->table_formaddedit_name, \$_id)->row()->" . $_row['field_name'] . ";" . PHP_EOL
+                                    . "     bz_delete_file(\$_file_name, ___CONF_UPLOAD_DIR___ . '/' . ___CONF_UPLOAD_IMAGE_DIR___);" . PHP_EOL
+                                    . "}" . PHP_EOL
                                     . "/* END DELETA IMAGEM */";
 
 
@@ -2662,6 +2796,8 @@ class ProjectbuildCrud extends MY_Controller {
                                                             \$this->form_validation->set_message('validation_upload_images_" . $_row["field_name"] . "', \$this->task['result_upload']['error']['message']);
                                                             return false;
                                                         }
+                                                        
+                                                        \$this->task['uploaded_image'] = true;
                                                   }
                                                   /* END VALIDAÇÃO POR CALLBACK UPLOAD DE IMAGENS " . $_row["field_name"] . ". */" . PHP_EOL . PHP_EOL . PHP_EOL;
                                         endif;
@@ -2720,6 +2856,8 @@ class ProjectbuildCrud extends MY_Controller {
                                                                 \$this->form_validation->set_message('validation_upload_images_" . $_row["field_name"] . "', \$this->task['result_upload']['error']['message']);
                                                                 return false;
                                                             }
+                                                        
+                                                            \$this->task['uploaded_image'] = true;
                                                       }
                                                   }
                                                   /* END VALIDAÇÃO POR CALLBACK UPLOAD DE IMAGENS " . $_row["field_name"] . ". */" . PHP_EOL . PHP_EOL . PHP_EOL;

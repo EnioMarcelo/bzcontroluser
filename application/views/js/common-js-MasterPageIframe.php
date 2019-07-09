@@ -15,8 +15,10 @@
         var numberOfChecked = $('tbody input:checkbox:checked').length;
         if (numberOfChecked > 0) {
             $('#btn-delete').removeClass('disabled');
+            $('.btn-enable-gridlist-checkbox-mark').removeClass('disabled');
         } else {
             $('#btn-delete').addClass('disabled');
+            $('.btn-enable-gridlist-checkbox-mark').addClass('disabled');
             $('.checkbox-all').prop("checked", false);
         }
 
@@ -594,8 +596,6 @@
         });
     });
     // END MARCA O MENU CORRESPONDENTE A APLICAÇÃO COMO ATIVO css class bg-blue-active
-
-
 
     /*
      * DATE AND TIME PICKER

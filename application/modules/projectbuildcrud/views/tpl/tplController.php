@@ -335,9 +335,9 @@ exit;
     $this->export['_loadHtml'] .= "</h3>" . PHP_EOL;
     
     
-    $this->export['_loadHtml'] .= "<a class='btn btn-sm btn-primary btn-show-modal-aguarde xmargin-left-15' name='btn-export' value='btn-export'>";
-    $this->export['_loadHtml'] .= "            <span class='glyphicon glyphicon-print'></span> Imprimir";
-    $this->export['_loadHtml'] .= "        </a>";
+//    $this->export['_loadHtml'] .= "<a class='btn btn-sm btn-primary btn-show-modal-aguarde xmargin-left-15' name='btn-export' value='btn-export'>";
+//    $this->export['_loadHtml'] .= "            <span class='glyphicon glyphicon-print'></span> Imprimir";
+//    $this->export['_loadHtml'] .= "        </a>";
     
     
 	$this->export['_loadHtml'] .= "	<table class='table table-striped'>" . PHP_EOL;

@@ -350,6 +350,7 @@
                                                         $_c++;
 
                                                         $_json = json_decode($_row_field_table_gridlist['param_gridlist']);
+
                                                         $_bg_color_grid_list_show = ($_json->grid_list_show == 'off') ? 'font-color-gray-light' : '';
                                                         $_btn_switch_grid_list_show = ($_json->grid_list_show == 'off') ? 'fa-toggle-off' : 'fa-toggle-on text-green';
 
@@ -359,11 +360,10 @@
                                                         if (!empty($_json->grid_list_export)) {
                                                             $_bg_color_grid_list_export = ($_json->grid_list_export == 'off') ? 'font-color-gray-light' : '';
                                                             $_btn_switch_grid_list_export = ($_json->grid_list_export == 'off') ? 'fa-toggle-off' : 'fa-toggle-on text-green';
-                                                        }else{
-                                                            
-                                                            $_json->grid_list_export = 'font-color-gray-light' ;
+                                                        } else {
+
+                                                            $_json->grid_list_export = 'font-color-gray-light';
                                                             $_btn_switch_grid_list_export = 'fa-toggle-off';
-                                                            
                                                         }
 
 

@@ -17,6 +17,7 @@ class MY_Controller extends MX_Controller {
     protected $export;
     protected $where;
     protected $or_where;
+    protected $order_by;
     protected $_redirect = '';
     protected $_redirect_parametros_url = '';
     private $saveAuditoria = false;

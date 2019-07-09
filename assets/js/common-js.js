@@ -72,3 +72,12 @@ $(function () {
     });
 });
 
+
+/**
+ * LIGHTBOX POPUP
+ */
+lightbox.option({
+    'resizeDuration': 200,
+    'wrapAround': true
+});
+

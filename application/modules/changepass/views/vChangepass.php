@@ -15,7 +15,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>ADMIN <?=bz_remove_strip_tags_content(___BZ_TITULO_SISTEMA___);?>| Esqueci minha senha</title>
+    <title>ADMIN <?=bz_remove_strip_tags_content(___CONF_TITULO_SISTEMA___);?>| Esqueci minha senha</title>
     <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
     <!-- Bootstrap 3.3.4 -->
     <link href="<?= base_url('assets'); ?>/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
@@ -63,7 +63,7 @@
 <body class="login-page">
 <div class="login-box">
     <div class="login-logo">
-        <a href="<?= site_url(); ?>"><b>Admin</b><?=___BZ_TITULO_SISTEMA___;?></a>
+        <a href="<?= site_url(); ?>"><b>Admin</b><?=___CONF_TITULO_SISTEMA___;?></a>
     </div><!-- /.login-logo -->
     <div class="login-box-body">
         <p class="login-box-msg">Digite seu e-mail para receber a nova senha.</p>

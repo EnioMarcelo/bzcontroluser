@@ -213,6 +213,33 @@
                                 </div>
                             </div>
 
+                            <!--TIPO DO CAMPO-->
+                            <div class="form-group col-md-12">
+                                <label>Tipo do Campo:</label>
+                                <select class="form-control input-sm" name="grid_list_field_input_type">
+                                    <option value="text">Texto</option>
+                                    <!--<option value="text-long">Texto Longo</option>-->
+                                    <!--<option value="email">E-Mail</option>-->
+                                    <option value="date">Data</option>
+                                    <option value="time">Hora</option>
+                                    <option value="datetime">Data e Hora</option>
+                                    <option value="number">Número Inteiro</option>
+                                    <option value="number-decimal">Número Decimal</option>
+                                    <option value="moeda">Moeda</option>
+                                    <!--<option value="senha">Senha</option>-->
+                                    <option value="upload-imagem">Upload de Imagem</option>
+                                    <!--<option value="select-manual">Select Dropdown - Manual</option>-->
+                                    <!--<option value="select-dinamic">Select Dropdown - Dinâmico</option>-->
+                                    <!--<option value="select-multiple-manual">Select Multiplo - Manual</option>-->
+                                    <!--<option value="select-multiple-dinamic">Select Multiplo - Dinâmico</option>-->
+                                    <!--<option value="radio-manual">Radio Button - Manual</option>-->
+                                    <!--<option value="radio-dinamic">Radio Button - Dinâmico</option>-->
+                                    <!--<option value="checkbox-manual">CheckBox - Manual</option>-->
+                                    <!--<option value="checkbox-multiple-manual">CheckBox Multiplo - Manual</option>-->
+                                    <!--<option value="checkbox-multiple-dinamic">CheckBox Multiplo - Dinâmico</option>-->
+                                </select>
+                            </div>
+
 
                             <div class="form-group col-bg-12 col-md-12 col-sm-12 col-xs-12">
                                 <label>Label:</label>
@@ -234,13 +261,6 @@
                                 </select>
                             </div>
 
-
-                            <div class="form-group col-md-12">
-                                <label>Tamanho do Campo:</label>
-                                <input class="form-control input-sm" type="text" placeholder="Tamanho do Campo em PX ou %" name="grid_list_field_length" value="">
-                            </div>
-
-
                             <div class="form-group col-md-12">
                                 <label>Alinhamento Campo:</label>
                                 <select class="form-control input-sm" name="grid_list_field_aligne">
@@ -257,6 +277,23 @@
 
                         <!--COLUNA 2-->
                         <div class="col-md-4">
+
+
+                            <div class="form-group col-md-12">
+                                <label>Tamanho do Campo:</label>
+                                <input class="form-control input-sm" type="text" placeholder="Tamanho do Campo em PX ou %" name="grid_list_field_length" value="">
+                            </div>
+
+
+
+                            <div class="form-group col-md-12">
+                                <label>Modal Imagem:</label>
+                                <select class="form-control input-sm" name="grid_list_field_type_modal_image">
+                                    <option value="icon-link">Icon Link</option>
+                                    <option value="thumb">Thumbnail</option>
+                                </select>
+                            </div>
+
 
                         </div>
                         <!--END COLUNA 2-->
@@ -489,8 +526,26 @@
         });//END MODAL ADD VIRTUAL FIELD OPEN .j_btn_modal_add_fields_table_gridlist
 
 
+        /**
+         * QUANDO O SELECT Tipo do Campo É SELECIONADO
+         */
+        $('select[name="grid_list_field_input_type"]').change(function (e) {
+            e.preventDefault();
+            var _selected = $(this).val();
 
-        //MODAL EDIT FIELDS OPEN
+            /* SELECT TYPE IMAGEM MODAL */
+            if (_selected == 'upload-imagem') {
+                $('select[name="grid_list_field_type_modal_image"]').parent().removeClass('hide');
+            } else {
+                $('select[name="grid_list_field_type_modal_image"]').parent().addClass('hide');
+            }
+
+        });
+
+
+        /**
+         * MODAL EDIT FIELDS OPEN
+         */
         $('.j_btn_modal_edit_fields_table_gridlist').click(function (e) {
             e.preventDefault();
 
@@ -530,11 +585,13 @@
                     $('input[name="grid_list_show"]').filter(':radio').iCheck('uncheck');
                     $('input[name="grid_list_search"]').filter(':radio').iCheck('uncheck');
                     $('input[name="grid_list_export"]').filter(':radio').iCheck('uncheck');
+                    $('input[name="grid_list_field_input_type"]').val('text');
                     $('input[name="grid_list_label"]').val('');
                     $('select[name="grid_list_aligne_label"]').val('text-left');
                     $('select[name="grid_list_field_length"]').val('');
                     $('select[name="grid_list_field_aligne"]').val('text-left');
                     $('select[name="grid_list_field_type"]').val('');
+                    $('select[name="grid_list_field_type_modal_image"]').val('icon-link');
 
                     if (_primary_key == 1) {
                         $('.j-flag-pk').show();
@@ -572,18 +629,36 @@
                         }
                     }
 
+
+                    /* INPUT TIPO DE CAMPO  */
+                    if (result.grid_list_field_input_type) {
+                        $('select[name="grid_list_field_input_type"]').removeAttr('selected').val(result.grid_list_field_input_type).attr('selected', true);
+                    }
+                    /* END INPUT TIPO DE CAMPO  */
+
+
                     $('select[name="grid_list_aligne_label"]').removeAttr('selected').val(result.grid_list_aligne_label).attr('selected', true);
 
                     $('input[name="grid_list_field_length"]').val(result.grid_list_field_length);
 
                     $('select[name="grid_list_field_aligne"]').removeAttr('selected').val(result.grid_list_field_aligne).attr('selected', true);
 
+//                    alert(result.grid_list_field_input_type);
+
+                    /* SELECT TYPE IMAGEM MODAL  */
+                    if (result.grid_list_field_input_type == 'upload-imagem') {
+                        $('select[name="grid_list_field_type_modal_image"]').removeAttr('selected').val(result.grid_list_field_type_modal_image).attr('selected', true);
+                        $('select[name="grid_list_field_type_modal_image"]').parent().removeClass('hide');
+                    } else {
+                        $('select[name="grid_list_field_type_modal_image"]').removeAttr('selected').val('icon-link').attr('selected', true);
+                        $('select[name="grid_list_field_type_modal_image"]').parent().addClass('hide');
+
+                    }
+                    /* END SELECT TYPE IMAGEM MODAL  */
+
                     $('input[name="grid_list_field_type"]').val(result.grid_list_field_type);
 
-
-
                     $('#modal-btn-edit-field-table-gridlist').css('display', 'block');
-
 
                     console.log('Campo :  ' + result.grid_list_label + ' - Aligne : ' + result.grid_list_aligne_label + ' - PK : ' + _primary_key);
 
@@ -603,8 +678,9 @@
 
 
 
-
-        //SUBMIT FORM formGridList
+        /**
+         * SUBMIT FORM formGridList
+         */
         $(".j_btn_save_form_GridList").click(function (e) {
             e.preventDefault();
 
@@ -617,6 +693,16 @@
 //                $('input[id="grid_list_export_off"]').filter(':radio').iCheck('check');
 //                
 //            }
+
+
+
+            /**
+             * RESET CAMPOS ANTES DE GRAVAR
+             */
+            if ($('select[name="grid_list_field_input_type"]').val() !== 'upload-imagem') {
+                $('select[name="grid_list_field_type_modal_image"]').val('icon-link');
+            }
+            /* RESET CAMPOS ANTES DE GRAVAR */
 
 
 
