@@ -1,0 +1,23 @@
+{
+    "name": "vendor/b-z-control-user",
+    "description": "Ferramente RAD para desenvolvimento de sistemas CRUD em PHP utilizando o Framwork Codigniter 3.x, JQuery e o Template AdminLTE",
+    "minimum-stability": "stable",
+    "authors": [
+        {
+            "name": "Enio Marcelo Buzaneli",
+            "email": "eniomarcelo@gmail.com",
+            "homepage": "https://www.eniomarcelo.com.br",
+            "role": "Developer"
+        }
+    ],
+    "config": {
+        "vendor-dir": "application/vendor"
+    },
+    "license": [
+        "LGPL-2.1-only",
+        "GPL-3.0-or-later"
+    ],
+    "require": {
+        "dompdf/dompdf": "^0.8"
+    }
+}
