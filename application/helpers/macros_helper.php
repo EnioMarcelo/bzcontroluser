@@ -41,15 +41,13 @@ function mc_image_link_modal($_image_name, $_type = 'single') {
 
         $_url_imagem = base_url(___CONF_UPLOAD_DIR___ . '/' . ___CONF_UPLOAD_IMAGE_DIR___ . '/') . $_image_name;
 
-        $_btn_copy_url_imagem = '<span style="color:#87A0B9" class="mouse-cursor-pointer j-tooltip margin-right-5" data-toggle="tooltip" data-original-title="Copiar Link Imagem" data-clipboard-text="' . $_imagem . '"> <i class="fa fa-copy (alias)"></i></span>';
-
         $_imagem = '<div class="btn-copy-to-clipboard btn-image-link-lightbox" ><a href="' . $_url_imagem . '" data-lightbox="' . $_image_name . '" data-title="" ><i class="fa fa-fw fa-camera"></i> </a></div>';
 
         $_btn_view_copy_image = '<div class="btn-group btn-xs">'
-                . '<button type="button" class="btn btn-default j-tooltip" data-toggle="tooltip" data-original-title="Copiar Link Imagem"  data-clipboard-text="' . $_url_imagem . '"><a><i class="fa fa-copy"></i></a></button>'
+                . '<button type="button" class="btn btn-default j-tooltip" data-toggle="tooltip" data-original-title="Download"><a href="' . $_url_imagem . '" download="' . $_image_name . '"><i class="fa fa-download"></i></a></button>'
+                . '<button type="button" class="btn btn-default j-tooltip" data-toggle="tooltip" data-original-title="Copiar Link"  data-clipboard-text="' . $_url_imagem . '"><a><i class="fa fa-copy"></i></a></button>'
                 . '<button type="button" class="btn btn-default btn-image-link-lightbox j-tooltip" data-toggle="tooltip" data-original-title="Ver Imagem">' . $_imagem . '</button>'
                 . '</div>';
-
 
         return $_btn_view_copy_image;
     } elseif ($_type = 'group') {
@@ -71,13 +69,14 @@ function mc_image_thumb_modal($_image_name, $_type = 'single') {
     if ($_type == 'single') {
 
         $_url_imagem = base_url(___CONF_UPLOAD_DIR___ . '/' . ___CONF_UPLOAD_IMAGE_DIR___ . '/') . $_image_name;
-        $_imagem = '<a class="btn-image-thumb-lightbox" href="' . $_url_imagem . '" data-lightbox="' . $_image_name . '"><img src="' . $_url_imagem . '" style="width:15%;"></a>';
+        $_imagem = '<a class="btn-image-thumb-lightbox" href="' . $_url_imagem . '" data-lightbox="' . $_image_name . '"><img class="img-responsive" src="' . $_url_imagem . '"></a>';
 
-
-        $_btn_view_copy_image = '<div class="btn-group btn-xs">'
-                . '<div class="btn-image-link-lightbox j-tooltip" data-toggle="tooltip" data-placement="left" data-original-title="Ver Imagem">' . $_imagem . '</div>'
-                . '<button type="button" style="margin-top:-33px;" class="btn btn-default j-tooltip" data-toggle="tooltip" data-placement="left" data-original-title="Copiar Link Imagem"  data-clipboard-text="' . $_url_imagem . '"><a><i class="fa fa-copy"></i></a></button>'
+        $_btn_view_copy_image = '<div class="display-flex display-flex-wrap display-flex-justify-content-right">'
+                . '     <div class="margin-bottom-0"><div class="btn-image-link-lightbox j-tooltip" data-toggle="tooltip" data-placement="left" data-original-title="Ver Imagem">' . $_imagem . '</div></div>'
+                . '     <div class="btn btn-default btn-xs margin-bottom-0 margin-top-3"><a href="' . $_url_imagem . '" download="' . $_image_name . '" class="j-tooltip" data-toggle="tooltip" data-original-title="Download"><i class="fa fa-download"></i></a>'
+                . '                                                                      &nbsp;&nbsp;|&nbsp;&nbsp;<a class="j-tooltip" data-toggle="tooltip" data-original-title="Copiar Link"  data-clipboard-text="' . $_url_imagem . '"><i class="fa fa-copy"></i></a></div>'
                 . '</div>';
+
 
         return $_btn_view_copy_image;
     } elseif ($_type = 'group') {

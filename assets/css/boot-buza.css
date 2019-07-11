@@ -5,6 +5,42 @@
 .vardump{ margin-left:245px; margin-top:60px; color:#1f1f1f; background: none; }
 pre{ background-color: none; border: none; border-radius: 0; border-left: 4px solid lightslategray }
 
+
+/**
+ * FLEX GRID
+ */
+
+.display-flex{ display: flex; }
+.display-flex-wrap{ flex-wrap: wrap; }
+
+.display-flex-direction-row{ flex-direction: row; }
+.display-flex-direction-row-reverse{ flex-direction: row-reverse; }
+.display-flex-direction-column{ flex-direction: column; }
+.display-flex-direction-column-reverse{ flex-direction: column-reverse; }
+.display-flex-direction-initial{ flex-direction: initial; }
+
+.display-flex-justify-content-left{ justify-content: flex-start; }
+.display-flex-justify-content-center{ justify-content: center; }
+.display-flex-justify-content-right{ justify-content: flex-end; }
+.display-flex-justify-content-between{ justify-content: space-between; }
+.display-flex-justify-content-around{ justify-content: space-around; }
+.display-flex-justify-content-initial{ justify-content: initial; }
+
+.display-flex-align-items-initial{ align-items: initial; }
+.display-flex-align-items-stretch{ align-items: stretch; }
+.display-flex-align-items-top{ align-items: flex-start; }
+.display-flex-align-items-center{ align-content: center; }
+.display-flex-align-items-bottom{ align-content: flex-end; }
+
+.display-flex-align-self-auto{ align-self: auto; }
+.display-flex-align-self-top{ align-self: flex-start; }
+.display-flex-align-self-center{ align-self: center; }
+.display-flex-align-self-bottom{ align-self: flex-end; }
+.display-flex-align-self-initial{ align-self: initial; }
+.display-flex-align-self-stretch{ align-self: stretch; }
+
+
+
 /**
  * MARGINS
  */

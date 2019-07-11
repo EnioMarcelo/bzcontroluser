@@ -1,0 +1,617 @@
+<?php
+
+/*
+  Created on : 11/07/2019, 11:23AM
+  Author     : Enio Marcelo - eniomarcelo@gmail.com
+ */
+
+
+  defined('BASEPATH') OR exit('No direct script access allowed');
+
+  class Cadcliente extends MY_Controller {
+
+
+    /* function  __construct() */
+  	public function __construct() {
+  		parent::__construct();
+
+      /* LOAD MODEL */
+      $this->load->model('Cadcliente_model', 'm', TRUE);
+
+
+      /* TÍTULO DA APLICAÇÃO */
+      $this->dados['_titulo_app'] = 'Cadastro de Clientes';
+      $this->dados['_font_icon'] = 'fa fa-user';
+
+      /* VIEW DA APLICAÇÃO */
+      $this->dados['_view_app_list'] = 'vCadcliente';
+      $this->dados['_view_app_add'] = 'vCadclienteFormAdd';
+      $this->dados['_view_app_edit'] = 'vCadclienteFormEdit';
+
+      /* TABELA QUE SERÁ USADO PELO MÓDULO DO SISTEMA */
+      $this->table_gridlist_name = 'cad_cliente';
+      $this->table_formaddedit_name = 'cad_cliente';
+
+      $this->fcn_onScriptinit();
+
+
+    }
+    /* END function __construct() */
+
+
+
+    /* function index() */
+    public function index() {
+
+      /* CARREGA OS REGISTROS COM PAGINAÇÃO */
+      $this->dados['_result'] = $this->get_paginacao();
+
+      /* TEMPLATE QUE SERÁ USADO PELO MÓDULO DO SISTEMA */
+      $this->dados['_conteudo_masterPageIframe'] = $this->router->fetch_class() . '/' . $this->dados['_view_app_list'];
+      $this->load->view('vMasterPageIframe', $this->dados);
+
+    }
+    /* END function index() */
+
+
+
+    /* function add() */
+    public function add(){
+
+      if ($this->input->post() && $this->input->post('btn-salvar') == 'btn-salvar'):
+
+
+        /* VALIDAÇÃO DOS DADOS */
+        $this->form_validation->set_rules('nome', '<b>Nome</b>', 'trim|strtoupper|max_length[255]|required');
+$this->form_validation->set_rules('valor', '<b>Valor</b>', 'trim');
+$this->form_validation->set_rules('data', '<b>Data</b>', 'trim|date|required');
+$this->form_validation->set_rules('data_hora', '<b>Data/Hora</b>', 'trim|required');
+
+        /* END VALIDAÇÃO DOS DADOS */
+
+        $this->fcn_onBeforeInsert();
+
+
+        if ($this->form_validation->run() == true ):
+
+          $_dados = $this->input->post();
+
+          unset($_dados['btn-salvar']);
+          
+          /* CONVERTE DADOS PARA GRAVAR NA TABELA */
+$_dados["valor"] = str_replace(",",".",str_replace(".","",$_dados["valor"]));$_dados["data"] = bz_formatdata($_dados["data"],"Y-m-d");
+$_dados["data_hora"] = bz_formatdata($_dados["data_hora"],"Y-m-d H:i:s");
+
+/* CONVERTE DADOS PARA GRAVAR NA TABELA */
+
+
+          /* GRAVA REGISTRO */
+
+          $result = $this->create->ExecCreate($this->table_formaddedit_name, $_dados);
+          if ($this->db->trans_status() === FALSE):
+            $this->db->trans_rollback();
+            echo 'Erro ao inserir Dados... SQL: ' . $this->db->set($dados)->get_compiled_insert($this->table_formaddedit_name);
+            exit;
+          else:
+            $this->db->trans_commit();
+          endif;
+
+          if ($result):
+
+            /* GRAVA AUDITORIA */
+            $dados_auditoria['creator'] = 'user';
+            $dados_auditoria['action'] = 'add';
+            $dados_auditoria['description'] = ___MSG_AUDITORIA_ADD_SUCCESS___;
+            $dados_auditoria['last_query'] = $this->db->last_query();
+            $dados_auditoria['last_query'] = str_replace("VALUES (''", "VALUES ('".$result['last_id_add']."'", $dados_auditoria['last_query']);
+
+            add_auditoria($dados_auditoria);
+
+            set_mensagem_notfit(___MSG_ADD_REGISTRO___, 'success');
+
+            $this->fcn_onAfterInsert();
+
+
+          else:
+            echo 'Erro ao inserir Dados... SQL: ' . $this->db->set($dados)->get_compiled_insert($this->table_formaddedit_name);
+            exit;
+          endif;
+
+
+        redirect($this->_redirect . '/add');
+
+        /* END GRAVA REGISTRO */
+
+      endif;
+
+    endif;
+
+
+
+
+    /* TEMPLATE QUE SERÁ USADO PELO MÓDULO DO SISTEMA */
+    $this->dados['_conteudo_masterPageIframe'] = $this->dados['_view_app_add'];
+    $this->load->view('vMasterPageIframe', $this->dados);
+
+  }
+  /* END function add() */
+
+
+
+
+  /* function edit() */
+  public function edit($_id = null){
+
+    /* SE $_id FOR INFORMADO E A VALIDAÇÃO DOS DADOS FOR true, ENTÃO SERÁ FEITO O UPDATE DOS DADOS */
+    if ($this->input->post() && $this->input->post('btn-editar') == 'btn-editar'):
+
+      /* VALIDAÇÃO DOS DADOS */
+      $this->form_validation->set_rules('nome', '<b>Nome</b>', 'trim|strtoupper|max_length[255]|required');
+$this->form_validation->set_rules('valor', '<b>Valor</b>', 'trim');
+$this->form_validation->set_rules('data', '<b>Data</b>', 'trim|date|required');
+$this->form_validation->set_rules('data_hora', '<b>Data/Hora</b>', 'trim|required');
+
+      /* END VALIDAÇÃO DOS DADOS */
+
+      $this->fcn_onBeforeUpdate();
+
+
+      if ($this->form_validation->run() == true ):
+
+         $_dados = $this->input->post();
+
+         unset($_dados['btn-editar']);
+         
+         
+         /* CONVERTE DADOS PARA GRAVAR NA TABELA */
+$_dados["valor"] = str_replace(",",".",str_replace(".","",$_dados["valor"]));$_dados["data"] = bz_formatdata($_dados["data"],"Y-m-d");
+$_dados["data_hora"] = bz_formatdata($_dados["data_hora"],"Y-m-d H:i:s");
+
+/* CONVERTE DADOS PARA GRAVAR NA TABELA */
+
+
+         /* UPDATE REGISTRO */
+
+         $_where_update = 'WHERE id = "'.$_id.'"';
+         $_result_update = $this->update->ExecUpdate($this->table_formaddedit_name, $_dados, $_where_update);
+
+         if ($this->db->trans_status() === FALSE):
+          $this->db->trans_rollback();
+          echo 'Erro ao atualizar Dados... SQL: ' . $this->db->set($dados)->get_compiled_insert($this->table_formaddedit_name);
+          exit;
+      else:
+          $this->db->trans_commit();
+      endif;
+
+      if ($_result_update):
+
+          /* GRAVA AUDITORIA */
+          $dados_auditoria['creator'] = 'user';
+          $dados_auditoria['action'] = 'edit';
+          $dados_auditoria['description'] = ___MSG_AUDITORIA_UPDATE_SUCCESS___;
+          $dados_auditoria['last_query'] = $this->db->last_query();
+          add_auditoria($dados_auditoria);
+
+          set_mensagem_notfit(___MSG_UPDATE_REGISTRO___, 'success');
+
+          $this->fcn_onAfterUpdate();
+
+
+      else:
+          echo 'Erro ao inserir Dados... SQL: ' . $this->db->set($dados)->get_compiled_insert($this->table_formaddedit_name);
+          exit;
+      endif;
+      /* END UPDATE REGISTRO */
+
+  endif;
+
+endif;
+
+
+/* GET DADOS PARA CARREGAR O FORM DE EDIT */
+if ($_id):
+
+  /* GET DADOS */
+  $_where = 'WHERE id = "' . $_id . '" LIMIT 1';
+  $_result = $this->read->ExecRead($this->table_formaddedit_name, $_where);
+
+  if ($_result->result()):
+    $this->dados['dados'] = $_result->row();
+  else:
+    set_mensagem_notfit(___MSG_ERROR_SELECT_UPDATE_REGISTRO___, 'error');
+    redirect($this->_redirect_parametros_url);
+  endif;
+
+else:
+  redirect($this->_redirect_parametros_url);
+endif;
+/* END GET DADOS PARA CARREGAR O FORM DE EDIT */
+
+/* TEMPLATE QUE SERÁ USADO PELO MÓDULO DO SISTEMA */
+$this->dados['_conteudo_masterPageIframe'] = $this->dados['_view_app_edit'];
+$this->load->view('vMasterPageIframe', $this->dados);
+
+}
+/* END function edit() */
+
+
+
+
+/* function del() */
+public function del(){
+
+ /* CERTIFICA SE O ACESSO A ESTA FUNCTION REALMENTE ESTÁ SENDO FEITO POR AJAX. */
+ bz_check_is_ajax_request();
+
+ $this->form_validation->set_rules('btndel', '<b>BTN Del</b>', 'trim|required');
+ $this->form_validation->set_rules('dadosdel', '<b>REGISTROS DEL</b>', 'trim|required');
+
+ $this->fcn_onBeforeDelete();
+
+
+ if ($this->form_validation->run() == TRUE):
+
+  $_dados = $this->input->post('dadosdel', TRUE);
+  $_dados = explode(',', $_dados);
+
+  
+  
+  /* DELETA OS REGISTROS */
+  $this->db->where_in('id', $_dados);
+  $this->db->delete($this->table_formaddedit_name);
+  if ($this->db->trans_status() === FALSE):
+    $this->db->trans_rollback();
+    echo 'Erro ao inserir Dados... SQL: ' . $this->db->set($dados)->get_compiled_insert($this->table_formaddedit_name);
+    exit;
+  else:
+    $this->db->trans_commit();
+  endif;
+
+
+  if ($this->db->affected_rows()):
+    if (count($_dados) > 1):
+      set_mensagem_notfit(str_replace('Registro Deletado', 'Registros Deletados', ___MSG_DEL_REGISTRO___), 'success');
+      $dados_auditoria['description'] = str_replace('Registro Deletado', 'Registros Deletados', ___MSG_AUDITORIA_DEL_SUCCESS___);
+    else:
+      set_mensagem_notfit(___MSG_DEL_REGISTRO___, 'success');
+      $dados_auditoria['description'] = ___MSG_AUDITORIA_DEL_SUCCESS___;
+    endif;
+
+    /* GRAVA AUDITORIA */
+    $dados_auditoria['creator'] = 'user';
+    $dados_auditoria['action'] = 'del';
+    $dados_auditoria['last_query'] = $this->db->last_query();
+    add_auditoria($dados_auditoria);
+
+    $this->fcn_onAfterDelete();
+
+
+  else:
+    set_mensagem_notfit(___MSG_ERROR_DEL_REGISTRO___, 'error');
+  endif;
+
+else:
+  set_mensagem_notfit(___MSG_ERROR_DE_VALIDACAO___, 'error');
+endif;
+
+exit;
+}
+/* END function del() */
+
+
+/* function export() - Print Report */
+    public function export() {
+            
+    $this->fcn_onScriptInitExport();
+
+        
+    /* CARREGA O HELPER */
+    /* $this->load->helper('printtopdf'); */
+    
+    /* VARIABLES */
+    $this->export['_loadHtml'] = '';
+
+        
+    /* QUANTIDADE DE LINHAS NO PDF - ZERO = TODAS OS REGISTROS DA TABELA */    
+    $this->page['per_page'] = 0;
+    
+    
+        
+    /* CARREGA OS REGISTROS COM PAGINAÇÃO */
+    $this->export['_dados'] = $this->get_paginacao();
+    
+    
+    $this->fcn_onScriptBeforeExport();
+
+    
+    
+    /* GERA O RELATÓRIO PARA SER EXPORTADO */
+    
+    $this->export['_loadHtml'] .= '<html>' . PHP_EOL;
+    $this->export['_loadHtml'] .= '  <head>' . PHP_EOL;
+    $this->export['_loadHtml'] .= '      <meta charset="UTF-8">' . PHP_EOL;
+    $this->export['_loadHtml'] .= "      <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>" . PHP_EOL;
+    $this->export['_loadHtml'] .= "      <!-- Bootstrap 3.3.4 -->" . PHP_EOL;
+    $this->export['_loadHtml'] .= '      <link href="'.site_url().'/assets/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />' . PHP_EOL;
+    $this->export['_loadHtml'] .= '      <!-- Font Awesome Icons -->' . PHP_EOL;
+    $this->export['_loadHtml'] .= '      <link href="'.site_url().'/assets/font/font-awesome.min.css" rel="stylesheet" type="text/css"/>' . PHP_EOL;
+    $this->export['_loadHtml'] .= '      <!-- BOOT BUZA -->' . PHP_EOL;
+    $this->export['_loadHtml'] .= '      <link href="'.base_url('assets').'/css/boot-buza.css" rel="stylesheet" type="text/css" />' . PHP_EOL;
+    $this->export['_loadHtml'] .= '      <!-- CSS DEFAULT MASTER PAGE IFRAME -->' . PHP_EOL;
+    $this->export['_loadHtml'] .= '      <link href="'.base_url('assets').'/css/custom-masterPageIframe.css" rel="stylesheet" type="text/css" />' . PHP_EOL;
+    $this->export['_loadHtml'] .= '      <!-- Theme style -->';
+    $this->export['_loadHtml'] .= '      <link href="'.base_url('assets').'/dist/css/AdminLTE.BZ.min.css" rel="stylesheet" type="text/css"/>';
+    
+    
+    $this->export['_loadHtml'] .= '      <style>' . PHP_EOL;
+    $this->export['_loadHtml'] .= '         table { border-collapse:unset; }' . PHP_EOL;
+    $this->export['_loadHtml'] .= '         .table>thead>tr>td, .table>thead>tr>th{ font-size:14px; padding:1px; }' . PHP_EOL;
+    $this->export['_loadHtml'] .= '         .table>tbody>tr>td, .table>tbody>tr>th{ font-size:12px; padding:1px; }' . PHP_EOL;
+    $this->export['_loadHtml'] .= '         .table>tfoot>tr>td, .table>tfoot>tr>th{ font-size:12px; padding:1px; }' . PHP_EOL;
+    $this->export['_loadHtml'] .= '         a, a:hover, a:visited, a:link, a:active{ color: black !important; text-decoration: none !important; }' . PHP_EOL;
+    $this->export['_loadHtml'] .= '         .pointer {cursor: pointer;}' . PHP_EOL;
+    $this->export['_loadHtml'] .= '      </style>' . PHP_EOL;
+    $this->export['_loadHtml'] .= "  </head>" . PHP_EOL;
+    $this->export['_loadHtml'] .= "  <body>" . PHP_EOL;
+    
+    $this->export['_loadHtml'] .= " <!-- TABLE -->" . PHP_EOL;
+    $this->export['_loadHtml'] .= "<div id='exportreport' class='container'>" . PHP_EOL;
+    $this->export['_loadHtml'] .= '<h3 class="pointer btn-show-modal-aguarde" style="margin-top:5; margin-botom:15px" title="Voltar">' . PHP_EOL;
+    $this->export['_loadHtml'] .= "<i class='".$this->dados['_font_icon']."'></i>" . PHP_EOL;
+    $this->export['_loadHtml'] .= '<spam style="margin-left:10px;">'.$this->dados["_titulo_app"].'</spam>' . PHP_EOL;
+    $this->export['_loadHtml'] .= "</h3>" . PHP_EOL;
+    
+    
+//    $this->export['_loadHtml'] .= "<a class='btn btn-sm btn-primary btn-show-modal-aguarde xmargin-left-15' name='btn-export' value='btn-export'>";
+//    $this->export['_loadHtml'] .= "            <span class='glyphicon glyphicon-print'></span> Imprimir";
+//    $this->export['_loadHtml'] .= "        </a>";
+    
+    
+	$this->export['_loadHtml'] .= "	<table class='table table-striped'>" . PHP_EOL;
+	$this->export['_loadHtml'] .= "     <!-- HEADER DA TABLE -->" . PHP_EOL;
+	$this->export['_loadHtml'] .= "     <thead class='bg-black'" . PHP_EOL;
+	$this->export['_loadHtml'] .= "         <tr id='IdTableGridListTheadTr'>" . PHP_EOL;
+	$this->export['_loadHtml'] .= "             <th class='text-center' style='width:3%;'>#</th>" . PHP_EOL;
+	$this->export['_loadHtml'] .= '             <th class="thClNome" class="text-left" style="text-align:left; text-align:left">Nome</th>
+' . PHP_EOL;
+	$this->export['_loadHtml'] .= "			</tr>" . PHP_EOL;
+	$this->export['_loadHtml'] .= "		</thead>" . PHP_EOL;
+	$this->export['_loadHtml'] .= "     <!-- END HEADER DA TABLE -->" . PHP_EOL;
+    
+    $this->export['_loadHtml'] .= "     <!-- ON RECORD EXPORT TABLE -->" . PHP_EOL;
+	$this->export['_loadHtml'] .= "     <tbody>" . PHP_EOL;
+        
+        /* ON RECORD EXPORT */
+        $_c = 0; 
+        $_class_tr = ''; 
+        $_style_tr = '';
+
+        foreach ($this->export['_dados']['results_paginacao_array'] as $_key => $_row):
+
+            $_c++;
+        
+            
+
+            $this->export['_loadHtml'] .= "<tr class='".$_class_tr."' style='font-size:12px;line-height: 0.6em; ".$_style_tr."'>" . PHP_EOL;
+            
+            $this->export['_loadHtml'] .= "    <td class='text-center'  >".$_c."</td>" . PHP_EOL;
+
+            $this->export['_loadHtml'] .= "    <!-- CAMPOS DA TABLE -->" . PHP_EOL;
+            $this->export['_loadHtml'] .= '     <td class="tdClNome" class="text-left" style="text-align:left; text-align:left">'.$_row["nome"].'</td>
+' . PHP_EOL;
+            $this->export['_loadHtml'] .= "    <!-- CAMPOS DA TABLE -->" . PHP_EOL;
+
+            $this->export['_loadHtml'] .= "</tr>" . PHP_EOL;
+
+        endforeach;
+        /* END ON RECORD EXPORT */
+    
+    
+    $this->export['_loadHtml'] .= "     </tbody>" . PHP_EOL;
+    $this->export['_loadHtml'] .= "     <!-- ON RECORD EXPORT DADOS DA TABLE -->" . PHP_EOL;
+    $this->export['_loadHtml'] .= " </table>" . PHP_EOL;
+    $this->export['_loadHtml'] .= " <!-- END TABLE -->" . PHP_EOL;
+    
+    $this->export['_loadHtml'] .= "</div>" . PHP_EOL;
+    
+    $this->export['_loadHtml'] .= '<!-- MODAL AGUARDE -->';
+    $this->export['_loadHtml'] .= '<div id="modal-aguarde" class="bz-aguarde-modal">';
+    $this->export['_loadHtml'] .= '    <div class="bz-aguarde-modal-dialog">';
+    $this->export['_loadHtml'] .= '        <div class="bz-aguarde-modal-content">';
+    $this->export['_loadHtml'] .= '            <div class="bz-aguarde-modal-body">';
+    $this->export['_loadHtml'] .= '                <p class="text-center">Aguarde</p>';
+    $this->export['_loadHtml'] .= '                <p class="text-center"><img src="'.base_url("assets").'/img/Facebook.gif" width="50px" style="margin-top: -20px;"></p>';
+    $this->export['_loadHtml'] .= '            </div>';
+    $this->export['_loadHtml'] .= '        </div><!-- /.bz-aguarde-modal-content -->';
+    $this->export['_loadHtml'] .= '    </div><!-- /.bz-aguarde-modal-dialog -->';
+    $this->export['_loadHtml'] .= '</div><!-- /.bz-aguarde-modal -->';
+    $this->export['_loadHtml'] .= '<!-- END MODAL AGUARDE -->';
+            
+    $this->export['_loadHtml'] .= '</body>' . PHP_EOL;
+    $this->export['_loadHtml'] .= '</html>' . PHP_EOL;
+    
+    /* JQUERY */ 
+    $this->export['_loadHtml'] .= '<!-- jQuery 2.1.4 -->' . PHP_EOL;
+    $this->export['_loadHtml'] .= '<script src="' . site_url() . 'assets/plugins/jQuery/jQuery-2.1.4.min.js"></script>' . PHP_EOL;
+    
+    $this->export['_loadHtml'] .= '<!-- Bootstrap 3.3.2 JS -->';
+    $this->export['_loadHtml'] .= '<script src="'.base_url("assets").'/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>';
+    
+    $this->export['_loadHtml'] .= '<script>' . PHP_EOL;
+    /* IMPRIME A PÁGINA */
+    //$this->export['_loadHtml'] .= 'window.print();' . PHP_EOL;
+    
+
+    /* VOLTAR PÁGINA */
+    $this->export['_loadHtml'] .= '$(function(){'
+            . '$( "h3" ).on( "click", function() {'
+            . '     window.location.replace("' . $this->_redirect_parametros_url . '");'
+            . '});'
+            . "	$('.btn-show-modal-aguarde').on('click', function (event) {"
+            . "		$('#modal-aguarde').modal({"
+            . "			backdrop: 'static',"
+            . "         keyboard: false,"
+            . "         show: true,"
+            . "     });"
+            . " });"
+            . 'window.print();'
+            . '});' . PHP_EOL;
+
+    $this->export['_loadHtml'] .= '</script>' . PHP_EOL;
+    
+    $this->fcn_onScriptAfterExport();
+
+    
+    /* IMPRIME */
+    echo $this->export['_loadHtml'] ;
+    
+    $this->fcn_onScriptEndExport();
+
+    
+
+}
+/* END function export() - Print Report */
+
+
+
+/* CARREGA REGISTROS COM PAGINAÇÃO */
+private function get_paginacao() {
+  $_filter = $this->input->get();
+  unset($_filter['pg']);
+  unset($_filter['search']);
+
+  /* DADOS PARA PAGINAÇÃO */
+  $_dados_pag['table'] = $this->table_gridlist_name;
+
+  if ($this->input->get('search', TRUE)):
+                            $_dados_pag['search'] = array('_concat_fields' => 'nome,data_hora', '_string' => $this->input->get('search', TRUE));
+                        endif;
+
+  $_dados_pag['filter'] = $_filter;
+  $_dados_pag['order_by'] = 'nome';
+  $_dados_pag['programa'] = $this->router->fetch_class();
+        
+  /* WHERE GLOBAL DO CONTROLLER PAI - MY_CONTROLLER */
+  if( !empty($this->where) ){
+      $_dados_pag['where'] = $this->where;
+  }
+
+  if( !empty($this->or_where) ){
+      $_dados_pag['or_where'] = $this->or_where;
+  }
+  /* END WHERE GLOBAL DO CONTROLLER PAI - MY_CONTROLLER */
+  
+  /* QUANTIDADE DE LINHAS PARA PAGINAÇÃO DOS DADOS*/
+  if (isset($this->page['per_page'])){
+      if ( $this->page['per_page'] > 0 ){
+          $_dados_pag['per_page'] = $this->page['per_page'];
+      }elseif( $this->page['per_page'] == 0 || !empty($this->page['per_page']) ){
+          $_dados_pag['per_page'] = 0 ;
+      }else{
+          $_dados_pag['per_page'] = 10 ;
+      }
+  }else{
+     $_dados_pag['per_page'] = 10 ; 
+  }
+  /* END QUANTIDADE DE LINHAS PARA PAGINAÇÃO DOS DADOS */
+
+  $_result_pag = bz_paginacao($_dados_pag);
+
+  $_y = [];
+  if($_y):
+    $_z = $_result_pag['results_paginacao_array'];
+    foreach ($_y as $_y_key => $_y_row):
+      foreach ($_z as $_z_key => $_z_row):
+          $_result_pag['results_paginacao_array'][$_z_key][$_y_row] = '';
+      endforeach;
+    endforeach;
+  endif;
+
+  return $_result_pag;
+}
+/* END function get_paginacao()  */
+
+
+/* METODO PHP - fcn_onScriptInitExport */
+private function fcn_onScriptInitExport($_p = null) {
+echo '';
+}
+/* END METODO PHP - fcn_onScriptInitExport */
+
+/* METODO PHP - fcn_onScriptInit */
+private function fcn_onScriptInit($_p = null) {
+/*$this->where = ['nome LIKE'=>'%buza%'];
+$this->or_where = ['nome'=>'michel'];*/
+
+}
+/* END METODO PHP - fcn_onScriptInit */
+
+/* METODO PHP - fcn_onScriptEndExport */
+private function fcn_onScriptEndExport($_p = null) {
+echo '';
+}
+/* END METODO PHP - fcn_onScriptEndExport */
+
+/* METODO PHP - fcn_onScriptBeforeExport */
+private function fcn_onScriptBeforeExport($_p = null) {
+echo '';
+}
+/* END METODO PHP - fcn_onScriptBeforeExport */
+
+/* METODO PHP - fcn_onScriptAfterExport */
+private function fcn_onScriptAfterExport($_p = null) {
+echo '';
+}
+/* END METODO PHP - fcn_onScriptAfterExport */
+
+/* METODO PHP - fcn_onBeforeUpdate */
+private function fcn_onBeforeUpdate($_p = null) {
+echo '';
+}
+/* END METODO PHP - fcn_onBeforeUpdate */
+
+/* METODO PHP - fcn_onBeforeInsert */
+private function fcn_onBeforeInsert($_p = null) {
+echo '<br><br>before insert';
+
+}
+/* END METODO PHP - fcn_onBeforeInsert */
+
+/* METODO PHP - fcn_onBeforeDelete */
+private function fcn_onBeforeDelete($_p = null) {
+echo '';
+}
+/* END METODO PHP - fcn_onBeforeDelete */
+
+/* METODO PHP - fcn_onAfterUpdate */
+private function fcn_onAfterUpdate($_p = null) {
+echo '';
+}
+/* END METODO PHP - fcn_onAfterUpdate */
+
+/* METODO PHP - fcn_onAfterInsert */
+private function fcn_onAfterInsert($_p = null) {
+echo '';
+}
+/* END METODO PHP - fcn_onAfterInsert */
+
+/* METODO PHP - fcn_onAfterDelete */
+private function fcn_onAfterDelete($_p = null) {
+echo '';
+}
+/* END METODO PHP - fcn_onAfterDelete */
+
+/* METODO PHP - fcn_teste */
+protected function fcn_teste($_p = null) {
+echo 'ola....';
+
+$this->fcn_onBeforeInsert();
+}
+/* END METODO PHP - fcn_teste */
+
+
+
+
+
+}
+/* END class Cadcliente */
