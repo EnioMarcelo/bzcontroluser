@@ -1,7 +1,7 @@
 <?php
 
 /*
-  Created on : 11/07/2019, 11:23AM
+  Created on : 02/08/2019, 18:04PM
   Author     : Enio Marcelo - eniomarcelo@gmail.com
  */
 
@@ -63,6 +63,7 @@
 
         /* VALIDAÇÃO DOS DADOS */
         $this->form_validation->set_rules('nome', '<b>Nome</b>', 'trim|strtoupper|max_length[255]|required');
+$this->form_validation->set_rules('imagem_nome', '<b>Enviar Foto</b>', 'trim|callback_validation_upload_images_imagem_nome');
 $this->form_validation->set_rules('valor', '<b>Valor</b>', 'trim');
 $this->form_validation->set_rules('data', '<b>Data</b>', 'trim|date|required');
 $this->form_validation->set_rules('data_hora', '<b>Data/Hora</b>', 'trim|required');
@@ -79,7 +80,9 @@ $this->form_validation->set_rules('data_hora', '<b>Data/Hora</b>', 'trim|require
           unset($_dados['btn-salvar']);
           
           /* CONVERTE DADOS PARA GRAVAR NA TABELA */
-$_dados["valor"] = str_replace(",",".",str_replace(".","",$_dados["valor"]));$_dados["data"] = bz_formatdata($_dados["data"],"Y-m-d");
+if( !empty($this->task['result_upload']['file_name']) ):
+     $_dados['imagem_nome'] = $this->task['result_upload']['file_name'];
+endif;$_dados["valor"] = str_replace(",",".",str_replace(".","",$_dados["valor"]));$_dados["data"] = bz_formatdata($_dados["data"],"Y-m-d");
 $_dados["data_hora"] = bz_formatdata($_dados["data_hora"],"Y-m-d H:i:s");
 
 /* CONVERTE DADOS PARA GRAVAR NA TABELA */
@@ -147,6 +150,7 @@ $_dados["data_hora"] = bz_formatdata($_dados["data_hora"],"Y-m-d H:i:s");
 
       /* VALIDAÇÃO DOS DADOS */
       $this->form_validation->set_rules('nome', '<b>Nome</b>', 'trim|strtoupper|max_length[255]|required');
+$this->form_validation->set_rules('imagem_nome', '<b>Enviar Foto</b>', 'trim|callback_validation_upload_images_imagem_nome');
 $this->form_validation->set_rules('valor', '<b>Valor</b>', 'trim');
 $this->form_validation->set_rules('data', '<b>Data</b>', 'trim|date|required');
 $this->form_validation->set_rules('data_hora', '<b>Data/Hora</b>', 'trim|required');
@@ -161,10 +165,20 @@ $this->form_validation->set_rules('data_hora', '<b>Data/Hora</b>', 'trim|require
          $_dados = $this->input->post();
 
          unset($_dados['btn-editar']);
-         
+         /**
+
+ * DELETA IMAGEM
+ */
+if (isset($this->task['uploaded_image']) && $this->task['uploaded_image']) {
+     $_file_name = mc_findByIdDataDB($this->table_formaddedit_name, $_id)->row()->imagem_nome;
+     bz_delete_file($_file_name, ___CONF_UPLOAD_DIR___ . '/' . ___CONF_UPLOAD_IMAGE_DIR___);
+}
+/* END DELETA IMAGEM */
          
          /* CONVERTE DADOS PARA GRAVAR NA TABELA */
-$_dados["valor"] = str_replace(",",".",str_replace(".","",$_dados["valor"]));$_dados["data"] = bz_formatdata($_dados["data"],"Y-m-d");
+if( !empty($this->task['result_upload']['file_name']) ):
+     $_dados['imagem_nome'] = $this->task['result_upload']['file_name'];
+endif;$_dados["valor"] = str_replace(",",".",str_replace(".","",$_dados["valor"]));$_dados["data"] = bz_formatdata($_dados["data"],"Y-m-d");
 $_dados["data_hora"] = bz_formatdata($_dados["data_hora"],"Y-m-d H:i:s");
 
 /* CONVERTE DADOS PARA GRAVAR NA TABELA */
@@ -254,7 +268,14 @@ public function del(){
   $_dados = $this->input->post('dadosdel', TRUE);
   $_dados = explode(',', $_dados);
 
-  
+  /**
+ * DELETA IMAGEM
+ */
+foreach ($_dados as $_value):
+     $_file_name = mc_findByIdDataDB($this->table_formaddedit_name, $_value)->row()->imagem_nome;
+     bz_delete_file($_file_name, ___CONF_UPLOAD_DIR___ . '/' . ___CONF_UPLOAD_IMAGE_DIR___);
+endforeach;
+/* END DELETA IMAGEM */
   
   /* DELETA OS REGISTROS */
   $this->db->where_in('id', $_dados);
@@ -484,7 +505,7 @@ private function get_paginacao() {
   $_dados_pag['table'] = $this->table_gridlist_name;
 
   if ($this->input->get('search', TRUE)):
-                            $_dados_pag['search'] = array('_concat_fields' => 'nome,data_hora', '_string' => $this->input->get('search', TRUE));
+                            $_dados_pag['search'] = array('_concat_fields' => 'nome,data,data_hora', '_string' => $this->input->get('search', TRUE));
                         endif;
 
   $_dados_pag['filter'] = $_filter;
@@ -609,6 +630,31 @@ $this->fcn_onBeforeInsert();
 }
 /* END METODO PHP - fcn_teste */
 
+
+
+
+                                                 /* VALIDAÇÃO POR CALLBACK UPLOAD DE IMAGENS imagem_nome. */
+                                                  public function validation_upload_images_imagem_nome() {
+                                                        if (empty($_FILES['imagem_nome']['name'])) {
+                                                            $this->form_validation->set_message('validation_upload_images_imagem_nome', 'Nenhuma imagem selecionada para ser enviada.');
+                                                            return false;
+                                                        }
+                                                        
+                                                        if (strpos($_FILES['imagem_nome']['type'], 'image/') !== 0) {
+                                                            $this->form_validation->set_message('validation_upload_images_imagem_nome', 'Este arquivo não é um arquivo de imagem.');
+                                                            return false;
+                                                        }
+
+                                                        $this->task['result_upload'] = bz_upload_file('imagem_nome', ___CONF_UPLOAD_IMAGE_DIR___, 'jpg|jpeg|gif|png', '1024', '0', '0');
+
+                                                        if (isset($this->task['result_upload']['error'])) {
+                                                            $this->form_validation->set_message('validation_upload_images_imagem_nome', $this->task['result_upload']['error']['message']);
+                                                            return false;
+                                                        }
+                                                        
+                                                        $this->task['uploaded_image'] = true;
+                                                  }
+                                                  /* END VALIDAÇÃO POR CALLBACK UPLOAD DE IMAGENS imagem_nome. */
 
 
 

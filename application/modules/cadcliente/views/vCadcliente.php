@@ -1,7 +1,7 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 <!--
 /*
-  Created on : 11/07/2019, 11:23AM
+  Created on : 02/08/2019, 18:04PM
   Author     : Enio Marcelo - eniomarcelo@gmail.com
  */
 -->
@@ -158,7 +158,7 @@
 						<th class='text-center' style='width:3%;'>#</th>
 
 						<th class="thClNome" class="text-left" style="text-align:left">Nome</th>
-<th class="thClImagem_nome" class="text-center" style="width:15%; text-align:center">Imagem</th>
+<th class="thClImagem_nome" class="text-center" style="width:10%; text-align:center">Imagem</th>
 <th class="thClValor" class="text-right" style="text-align:right">Valor</th>
 <th class="thClData" class="text-left" style="text-align:left">Data</th>
 <th class="thClData_hora" class="text-center" style="text-align:center">Data/Hora</th>
@@ -205,7 +205,7 @@
 
 							<!-- CAMPOS DA TABLE -->
 							<td class="tdClNome" class="text-left" style="text-align:left"><?= $_row["nome"]; ?></td>
-<td class="tdClImagem_nome" class="text-center" style="width:15%; text-align:center"><?= mc_image_thumb_modal($_row["imagem_nome"]); ?></td>
+<td class="tdClImagem_nome" class="text-center" style="width:10%; text-align:center"><?= mc_image_link_modal($_row["imagem_nome"]); ?></td>
 <td class="tdClValor" class="text-right" style="text-align:right">R$ <?= bz_converteMoedaBrasil($_row["valor"]); ?></td>
 <td class="tdClData" class="text-left" style="text-align:left"><?= bz_formatdata($_row["data"]); ?></td>
 <td class="tdClData_hora" class="text-center" style="text-align:center"><?= bz_formatdata($_row["data_hora"], "d/m/Y H:i:s"); ?></td>

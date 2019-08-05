@@ -44,9 +44,9 @@ function mc_image_link_modal($_image_name, $_type = 'single') {
         $_imagem = '<div class="btn-copy-to-clipboard btn-image-link-lightbox" ><a href="' . $_url_imagem . '" data-lightbox="' . $_image_name . '" data-title="" ><i class="fa fa-fw fa-camera"></i> </a></div>';
 
         $_btn_view_copy_image = '<div class="btn-group btn-xs">'
-                . '<button type="button" class="btn btn-default j-tooltip" data-toggle="tooltip" data-original-title="Download"><a href="' . $_url_imagem . '" download="' . $_image_name . '"><i class="fa fa-download"></i></a></button>'
-                . '<button type="button" class="btn btn-default j-tooltip" data-toggle="tooltip" data-original-title="Copiar Link"  data-clipboard-text="' . $_url_imagem . '"><a><i class="fa fa-copy"></i></a></button>'
-                . '<button type="button" class="btn btn-default btn-image-link-lightbox j-tooltip" data-toggle="tooltip" data-original-title="Ver Imagem">' . $_imagem . '</button>'
+                . '<button type="button" class="btn btn-default btn-xs j-tooltip" data-toggle="tooltip" data-original-title="Download"><a href="' . $_url_imagem . '" download="' . $_image_name . '"><i class="fa fa-download"></i></a></button>'
+                . '<button type="button" class="btn btn-default btn-xs j-tooltip" data-toggle="tooltip" data-original-title="Copiar Link"  data-clipboard-text="' . $_url_imagem . '"><a><i class="fa fa-copy"></i></a></button>'
+                . '<button type="button" class="btn btn-default btn-xs btn-image-link-lightbox j-tooltip" data-toggle="tooltip" data-original-title="Ver Imagem">' . $_imagem . '</button>'
                 . '</div>';
 
         return $_btn_view_copy_image;

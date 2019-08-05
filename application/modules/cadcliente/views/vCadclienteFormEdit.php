@@ -1,6 +1,6 @@
 <?php
 /*
-  Created on : 11/07/2019, 11:23AM
+  Created on : 02/08/2019, 18:04PM
   Author     : Enio Marcelo - eniomarcelo@gmail.com
  */
 
@@ -37,7 +37,7 @@
 
 
   <!-- OPEN FORM -->
-  <?= form_open(site_url($this->router->fetch_class() . '/edit/'. $dados->id . '?' . bz_app_parametros_url()), 'id="IdFormEDIT_'.$this->router->fetch_class().'" name="formEDIT_'.$this->router->fetch_class().'" role="form" ' ); ?>
+  <?= form_open_multipart(site_url($this->router->fetch_class() . '/edit/'. $dados->id . '?' . bz_app_parametros_url()), 'id="IdFormEDIT_'.$this->router->fetch_class().'" name="formEDIT_'.$this->router->fetch_class().'" role="form" ' ); ?>
 
   <div class="row hide-reload-screen">
 
@@ -92,6 +92,15 @@
                                                 <div id="nome" class="form-group has-feedback col-sm-12">
                                                     <label for="nome"><i class="fa fa-asterisk margin-right-5 text-error " style="font-size: 0.7em;"></i>Nome</label>
                                                     <input type="text" name="nome" class="form-control uppercase  " placeholder="" autofocus  value="<?=set_value("nome",!empty($dados->nome) ? $dados->nome : set_value("nome"));?>" />
+                                                    <?= $_error; ?>
+                                                </div>
+                                                
+
+                                                <?php $_error = form_error("imagem_nome", "<small class='text-danger col-xs-12 bz-input-error'>", "</small>"); ?>
+                                                <div id="imagem_nome" class="form-group has-feedback col-sm-12">
+                                                    <label for="imagem_nome"><i class="fa fa-asterisk margin-right-5 text-error " style="font-size: 0.7em;"></i>Enviar Foto</label>
+                                                    <input type="file" name="imagem_nome" class="form-control" placeholder="" value="<?=set_value("imagem_nome",isset($dados->imagem_nome) ? $dados->imagem_nome : set_value("imagem_nome"));?>"  />
+<div class="btn-ver-imagem margin-top-5 margin-bottom-5" style="font-size: 0.8em"><i class="fa fa-fw fa-camera"></i> <?= anchor(___CONF_UPLOAD_DIR___ . "/" . ___CONF_UPLOAD_IMAGE_DIR___ . "/" . set_value("imagem_nome", isset($dados->imagem_nome) ? $dados->imagem_nome : set_value("imagem_nome")), "Ver Imagem", "data-lightbox='imagem_nome'"); ?></div>
                                                     <?= $_error; ?>
                                                 </div>
                                                 
