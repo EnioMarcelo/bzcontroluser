@@ -130,13 +130,15 @@
                 if ($_icon_menu_pai):
                     $_menuBuild = str_replace('fa fa-caret-right', 'fa ' . $_icon_menu_pai, $_menuBuild);
                 endif;
-                $_menuFilho .= '<li class="treeview margin-left-10" style="display: block;">';
-                $_menuFilho .= ' <a href="#"><i class=\'fa ' . ($row_menu_filho['icon'] ? $row_menu_filho['icon'] : 'fa-caret-right') . '\'></i> <span class="margin-0">' . $row_menu_filho['nome_menu'] . '</span> <i class="fa fa-angle-left pull-right"></i></a>';
-                $_menuFilho .= ' <ul class="treeview-menu">';
-                $_menuFilho .= '   <li><a href="#' . strtolower($row_menu_filho['app']) . '" style="padding-left:40px;" class="j-btn-linkmenu"><i class=\'fa fa-search\'></i>' . 'Consulta' . '</a></li>';
-                $_menuFilho .= '   <li><a href="#' . strtolower($row_menu_filho['app'] . '/add') . '" style="padding-left:40px;" class="j-btn-linkmenu"><i class=\'fa fa-plus\'></i>' . 'Novo' . '</a></li>';
-                $_menuFilho .= ' </ul>';
-                $_menuFilho .= '</li>';
+                $_menuFilho .= '   <li><a href="#' . strtolower($row_menu_filho['app']) . '" style="padding-left:40px;" class="j-btn-linkmenu"><i class=\'fa ' . ($row_menu_filho['icon'] ? $row_menu_filho['icon'] : 'fa-caret-right') . '\'></i>' . $row_menu_filho['nome_menu'] . '</a></li>';
+
+//                $_menuFilho .= '<li class="treeview margin-left-10" style="display: block;">';
+//                $_menuFilho .= ' <a href="#"><i class=\'fa ' . ($row_menu_filho['icon'] ? $row_menu_filho['icon'] : 'fa-caret-right') . '\'></i> <span class="margin-0">' . $row_menu_filho['nome_menu'] . '</span> <i class="fa fa-angle-left pull-right"></i></a>';
+//                $_menuFilho .= ' <ul class="treeview-menu">';
+//                $_menuFilho .= '   <li><a href="#' . strtolower($row_menu_filho['app']) . '" style="padding-left:40px;" class="j-btn-linkmenu"><i class=\'fa fa-search\'></i>' . 'Consulta' . '</a></li>';
+//                $_menuFilho .= '   <li><a href="#' . strtolower($row_menu_filho['app'] . '/add') . '" style="padding-left:40px;" class="j-btn-linkmenu"><i class=\'fa fa-plus\'></i>' . 'Novo' . '</a></li>';
+//                $_menuFilho .= ' </ul>';
+//                $_menuFilho .= '</li>';
             endforeach;
 
             $_menuBuild .= $_menuFilho;
@@ -388,28 +390,28 @@
                                     <li><a href="#menu" style="padding-left:40px;" class="j-btn-linkmenu">Menus</a></li>
                                     <li><a href="#auditoria" style="padding-left:40px;" class="j-btn-linkmenu margin-left: -20px;'">Auditoria</a></li>
 
-                                                        <!--                                    <li class="treeview" style="display: block;"><a href="#"><i class='fa fa-circle-o'></i> <span>Administração</span> <i class="fa fa-angle-left pull-right"></i></a>
-                                                                                                <ul class="treeview-menu">
+                                                                    <!--                                    <li class="treeview" style="display: block;"><a href="#"><i class='fa fa-circle-o'></i> <span>Administração</span> <i class="fa fa-angle-left pull-right"></i></a>
+                                                                                                            <ul class="treeview-menu">
 
 
-                                                                                                    <li><a href="#usuarios" class="j-btn-linkmenu">Usuários</a></li>
-                                                                                                    <li><a href="#grupos" class="j-btn-linkmenu">Grupos</a></li>
-                                                                                                    <li><a href="#apps" class="j-btn-linkmenu">Aplicativos</a></li>
-                                                                                                    <li class="treeview" style="display: block;"><a href="#"><i class='fa fa-circle-o'></i> <span>Administração</span> <i class="fa fa-angle-left pull-right"></i></a>
-                                                                                                        <ul class="treeview-menu">
+                                                                                                                <li><a href="#usuarios" class="j-btn-linkmenu">Usuários</a></li>
+                                                                                                                <li><a href="#grupos" class="j-btn-linkmenu">Grupos</a></li>
+                                                                                                                <li><a href="#apps" class="j-btn-linkmenu">Aplicativos</a></li>
+                                                                                                                <li class="treeview" style="display: block;"><a href="#"><i class='fa fa-circle-o'></i> <span>Administração</span> <i class="fa fa-angle-left pull-right"></i></a>
+                                                                                                                    <ul class="treeview-menu">
 
 
-                                                                                                            <li><a href="#usuarios" class="j-btn-linkmenu">Usuários</a></li>
-                                                                                                            <li><a href="#grupos" class="j-btn-linkmenu">Grupos</a></li>
-                                                                                                            <li><a href="#apps" class="j-btn-linkmenu">Aplicativos</a></li>
+                                                                                                                        <li><a href="#usuarios" class="j-btn-linkmenu">Usuários</a></li>
+                                                                                                                        <li><a href="#grupos" class="j-btn-linkmenu">Grupos</a></li>
+                                                                                                                        <li><a href="#apps" class="j-btn-linkmenu">Aplicativos</a></li>
 
 
-                                                                                                        </ul>
-                                                                                                    </li>
+                                                                                                                    </ul>
+                                                                                                                </li>
 
 
-                                                                                                </ul>
-                                                                                            </li>-->
+                                                                                                            </ul>
+                                                                                                        </li>-->
 
 
                                 </ul>
@@ -423,13 +425,7 @@
                                     <a href="#"><i class='fa fa-cogs'></i> <span>Build</span> <i class="fa fa-angle-left pull-right"></i></a>
                                     <ul class="treeview-menu">
 
-                                        <li><a href="#projectbuildcrud" style="padding-left:40px;" class="j-btn-linkmenu">CRUD</a></li>
-                                        <li><a href="#projectbuildblank" style="padding-left:40px;" class="j-btn-linkmenu">Blank</a></li>
-                                        <!--                                    <li><a href="#grupos" style="padding-left:40px;" class="j-btn-linkmenu">Grupos</a></li>
-                                                                            <li><a href="#apps" style="padding-left:40px;" class="j-btn-linkmenu">Aplicativos</a></li>
-                                                                            <li><a href="#menu" style="padding-left:40px;" class="j-btn-linkmenu">Menus</a></li>
-                                                                            <li><a href="#auditoria" style="padding-left:40px;" class="j-btn-linkmenu margin-left: -20px;'">Auditoria</a></li>-->
-
+                                        <li><a href="#projectbuildcrud" style="padding-left:40px;" class="j-btn-linkmenu">Projeto</a></li>
 
                                     </ul>
 

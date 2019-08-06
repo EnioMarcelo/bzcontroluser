@@ -81,34 +81,36 @@
 
 
                         <!--BUTTON EDIT CODE EVENTOS PHP-->
-                        <div class="btn-group margin-left-20">
-                            <button type="button" class="btn btn-sm btn-vk btn-flat"><i class="fa fa-fw fa-code"></i> EVENTOS PHP</button>
-                            <button type="button" class="btn btn-sm btn-vk btn-flat dropdown-toggle" data-toggle="dropdown">
-                                <span class="caret"></span>
-                                <span class="sr-only"></span>
-                            </button>
+                        <?php if ($dados->type_project == 'crud') { ?>
+                            <div class="btn-group margin-left-20">
+                                <button type="button" class="btn btn-sm btn-vk btn-flat"><i class="fa fa-fw fa-code"></i> EVENTOS PHP</button>
+                                <button type="button" class="btn btn-sm btn-vk btn-flat dropdown-toggle" data-toggle="dropdown">
+                                    <span class="caret"></span>
+                                    <span class="sr-only"></span>
+                                </button>
 
-                            <ul class="dropdown-menu" role="menu">
-                                <li class="text-left"><a class="padding-left-5" href="<?= site_url($this->router->fetch_class() . '/codeeditor/' . $dados->id . '/fcn_onScriptInit/evento-php'); ?>"><?= ( (!empty($_eventos_php['fcn_onScriptInit']) ) ? '<i class="fa fa-fw fa-check-square-o color_blue margin-right-5"></i>' : '<i class="fa fa-fw margin-right-5"></i>'); ?>onScriptInit</a></li>
-                                <li class="text-left"><a class="padding-left-5" href="<?= site_url($this->router->fetch_class() . '/codeeditor/' . $dados->id . '/fcn_onBeforeInsert/evento-php'); ?>"><?= ((!empty($_eventos_php['fcn_onBeforeInsert']) ) ? '<i class="fa fa-fw fa-check-square-o color_blue margin-right-5"></i>' : '<i class="fa fa-fw margin-right-5"></i>'); ?>onBeforeInsert</a></li>
-                                <li class="text-left"><a class="padding-left-5" href="<?= site_url($this->router->fetch_class() . '/codeeditor/' . $dados->id . '/fcn_onAfterInsert/evento-php'); ?>"><?= ((!empty($_eventos_php['fcn_onAfterInsert']) ) ? '<i class="fa fa-fw fa-check-square-o color_blue margin-right-5"></i>' : '<i class="fa fa-fw margin-right-5"></i>'); ?>onAfterInsert</a></li>
-                                <li class="text-left"><a class="padding-left-5" href="<?= site_url($this->router->fetch_class() . '/codeeditor/' . $dados->id . '/fcn_onBeforeUpdate/evento-php'); ?>"><?= ((!empty($_eventos_php['fcn_onBeforeUpdate']) ) ? '<i class="fa fa-fw fa-check-square-o color_blue margin-right-5"></i>' : '<i class="fa fa-fw margin-right-5"></i>'); ?>onBeforeUpdate</a></li>
-                                <li class="text-left"><a class="padding-left-5" href="<?= site_url($this->router->fetch_class() . '/codeeditor/' . $dados->id . '/fcn_onAfterUpdate/evento-php'); ?>"><?= ((!empty($_eventos_php['fcn_onAfterUpdate']) ) ? '<i class="fa fa-fw fa-check-square-o color_blue margin-right-5"></i>' : '<i class="fa fa-fw margin-right-5"></i>'); ?>onAfterUpdate</a></li>
-                                <li class="text-left"><a class="padding-left-5" href="<?= site_url($this->router->fetch_class() . '/codeeditor/' . $dados->id . '/fcn_onBeforeDelete/evento-php'); ?>"><?= ((!empty($_eventos_php['fcn_onBeforeDelete']) ) ? '<i class="fa fa-fw fa-check-square-o color_blue margin-right-5"></i>' : '<i class="fa fa-fw margin-right-5"></i>'); ?>onBeforeDelete</a></li>
-                                <li class="text-left"><a class="padding-left-5" href="<?= site_url($this->router->fetch_class() . '/codeeditor/' . $dados->id . '/fcn_onAfterDelete/evento-php'); ?>"><?= ((!empty($_eventos_php['fcn_onAfterDelete']) ) ? '<i class="fa fa-fw fa-check-square-o color_blue margin-right-5"></i>' : '<i class="fa fa-fw margin-right-5"></i>'); ?>onAfterDelete</a></li>
-                                <li class="text-left"><a class="padding-left-5" href="<?= site_url($this->router->fetch_class() . '/codeeditor/' . $dados->id . '/onRecord/onrecord'); ?>"><?= ((!empty($_eventos_php['onRecord']) ) ? '<i class="fa fa-fw fa-check-square-o color_blue margin-right-5"></i>' : '<i class="fa fa-fw margin-right-5"></i>'); ?>onRecord</a></li>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li class="text-left"><a class="padding-left-5" href="<?= site_url($this->router->fetch_class() . '/codeeditor/' . $dados->id . '/fcn_onScriptInit/evento-php'); ?>"><?= ( (!empty($_eventos_php['fcn_onScriptInit']) ) ? '<i class="fa fa-fw fa-check-square-o color_blue margin-right-5"></i>' : '<i class="fa fa-fw margin-right-5"></i>'); ?>onScriptInit</a></li>
+                                    <li class="text-left"><a class="padding-left-5" href="<?= site_url($this->router->fetch_class() . '/codeeditor/' . $dados->id . '/fcn_onBeforeInsert/evento-php'); ?>"><?= ((!empty($_eventos_php['fcn_onBeforeInsert']) ) ? '<i class="fa fa-fw fa-check-square-o color_blue margin-right-5"></i>' : '<i class="fa fa-fw margin-right-5"></i>'); ?>onBeforeInsert</a></li>
+                                    <li class="text-left"><a class="padding-left-5" href="<?= site_url($this->router->fetch_class() . '/codeeditor/' . $dados->id . '/fcn_onAfterInsert/evento-php'); ?>"><?= ((!empty($_eventos_php['fcn_onAfterInsert']) ) ? '<i class="fa fa-fw fa-check-square-o color_blue margin-right-5"></i>' : '<i class="fa fa-fw margin-right-5"></i>'); ?>onAfterInsert</a></li>
+                                    <li class="text-left"><a class="padding-left-5" href="<?= site_url($this->router->fetch_class() . '/codeeditor/' . $dados->id . '/fcn_onBeforeUpdate/evento-php'); ?>"><?= ((!empty($_eventos_php['fcn_onBeforeUpdate']) ) ? '<i class="fa fa-fw fa-check-square-o color_blue margin-right-5"></i>' : '<i class="fa fa-fw margin-right-5"></i>'); ?>onBeforeUpdate</a></li>
+                                    <li class="text-left"><a class="padding-left-5" href="<?= site_url($this->router->fetch_class() . '/codeeditor/' . $dados->id . '/fcn_onAfterUpdate/evento-php'); ?>"><?= ((!empty($_eventos_php['fcn_onAfterUpdate']) ) ? '<i class="fa fa-fw fa-check-square-o color_blue margin-right-5"></i>' : '<i class="fa fa-fw margin-right-5"></i>'); ?>onAfterUpdate</a></li>
+                                    <li class="text-left"><a class="padding-left-5" href="<?= site_url($this->router->fetch_class() . '/codeeditor/' . $dados->id . '/fcn_onBeforeDelete/evento-php'); ?>"><?= ((!empty($_eventos_php['fcn_onBeforeDelete']) ) ? '<i class="fa fa-fw fa-check-square-o color_blue margin-right-5"></i>' : '<i class="fa fa-fw margin-right-5"></i>'); ?>onBeforeDelete</a></li>
+                                    <li class="text-left"><a class="padding-left-5" href="<?= site_url($this->router->fetch_class() . '/codeeditor/' . $dados->id . '/fcn_onAfterDelete/evento-php'); ?>"><?= ((!empty($_eventos_php['fcn_onAfterDelete']) ) ? '<i class="fa fa-fw fa-check-square-o color_blue margin-right-5"></i>' : '<i class="fa fa-fw margin-right-5"></i>'); ?>onAfterDelete</a></li>
+                                    <li class="text-left"><a class="padding-left-5" href="<?= site_url($this->router->fetch_class() . '/codeeditor/' . $dados->id . '/onRecord/onrecord'); ?>"><?= ((!empty($_eventos_php['onRecord']) ) ? '<i class="fa fa-fw fa-check-square-o color_blue margin-right-5"></i>' : '<i class="fa fa-fw margin-right-5"></i>'); ?>onRecord</a></li>
 
-                                <hr class="separator margin-0 margin-top-10 margin-bottom-10"></li>
+                                    <hr class="separator margin-0 margin-top-10 margin-bottom-10"></li>
 
-                                <li class="text-left"><a class="padding-left-5" href="<?= site_url($this->router->fetch_class() . '/codeeditor/' . $dados->id . '/fcn_onScriptInitExport/evento-php'); ?>"><?= ( (!empty($_eventos_php['fcn_onScriptInitExport']) ) ? '<i class="fa fa-fw fa-check-square-o color_blue margin-right-5"></i>' : '<i class="fa fa-fw margin-right-5"></i>'); ?>onScriptInitExport</a></li>
-                                <li class="text-left"><a class="padding-left-5" href="<?= site_url($this->router->fetch_class() . '/codeeditor/' . $dados->id . '/fcn_onScriptBeforeExport/evento-php'); ?>"><?= ( (!empty($_eventos_php['fcn_onScriptBeforeExport']) ) ? '<i class="fa fa-fw fa-check-square-o color_blue margin-right-5"></i>' : '<i class="fa fa-fw margin-right-5"></i>'); ?>onBeforeExport</a></li>
-                                <li class="text-left"><a class="padding-left-5" href="<?= site_url($this->router->fetch_class() . '/codeeditor/' . $dados->id . '/fcn_onScriptAfterExport/evento-php'); ?>"><?= ( (!empty($_eventos_php['fcn_onScriptAfterExport']) ) ? '<i class="fa fa-fw fa-check-square-o color_blue margin-right-5"></i>' : '<i class="fa fa-fw margin-right-5"></i>'); ?>onAfterExport</a></li>
-                                <li class="text-left"><a class="padding-left-5" href="<?= site_url($this->router->fetch_class() . '/codeeditor/' . $dados->id . '/fcn_onScriptEndExport/evento-php'); ?>"><?= ( (!empty($_eventos_php['fcn_onScriptEndExport']) ) ? '<i class="fa fa-fw fa-check-square-o color_blue margin-right-5"></i>' : '<i class="fa fa-fw margin-right-5"></i>'); ?>onEndExport</a></li>
-                                <li class="text-left"><a class="padding-left-5" href="<?= site_url($this->router->fetch_class() . '/codeeditor/' . $dados->id . '/onRecordExport/onrecordexport'); ?>"><?= ((!empty($_eventos_php['onRecordExport']) ) ? '<i class="fa fa-fw fa-check-square-o color_blue margin-right-5"></i>' : '<i class="fa fa-fw margin-right-5"></i>'); ?>onRecordExport</a></li>
+                                    <li class="text-left"><a class="padding-left-5" href="<?= site_url($this->router->fetch_class() . '/codeeditor/' . $dados->id . '/fcn_onScriptInitExport/evento-php'); ?>"><?= ( (!empty($_eventos_php['fcn_onScriptInitExport']) ) ? '<i class="fa fa-fw fa-check-square-o color_blue margin-right-5"></i>' : '<i class="fa fa-fw margin-right-5"></i>'); ?>onScriptInitExport</a></li>
+                                    <li class="text-left"><a class="padding-left-5" href="<?= site_url($this->router->fetch_class() . '/codeeditor/' . $dados->id . '/fcn_onScriptBeforeExport/evento-php'); ?>"><?= ( (!empty($_eventos_php['fcn_onScriptBeforeExport']) ) ? '<i class="fa fa-fw fa-check-square-o color_blue margin-right-5"></i>' : '<i class="fa fa-fw margin-right-5"></i>'); ?>onBeforeExport</a></li>
+                                    <li class="text-left"><a class="padding-left-5" href="<?= site_url($this->router->fetch_class() . '/codeeditor/' . $dados->id . '/fcn_onScriptAfterExport/evento-php'); ?>"><?= ( (!empty($_eventos_php['fcn_onScriptAfterExport']) ) ? '<i class="fa fa-fw fa-check-square-o color_blue margin-right-5"></i>' : '<i class="fa fa-fw margin-right-5"></i>'); ?>onAfterExport</a></li>
+                                    <li class="text-left"><a class="padding-left-5" href="<?= site_url($this->router->fetch_class() . '/codeeditor/' . $dados->id . '/fcn_onScriptEndExport/evento-php'); ?>"><?= ( (!empty($_eventos_php['fcn_onScriptEndExport']) ) ? '<i class="fa fa-fw fa-check-square-o color_blue margin-right-5"></i>' : '<i class="fa fa-fw margin-right-5"></i>'); ?>onEndExport</a></li>
+                                    <li class="text-left"><a class="padding-left-5" href="<?= site_url($this->router->fetch_class() . '/codeeditor/' . $dados->id . '/onRecordExport/onrecordexport'); ?>"><?= ((!empty($_eventos_php['onRecordExport']) ) ? '<i class="fa fa-fw fa-check-square-o color_blue margin-right-5"></i>' : '<i class="fa fa-fw margin-right-5"></i>'); ?>onRecordExport</a></li>
 
-                            </ul>
-                        </div>
-                        <!--BUTTON EDIT CODE EVENTOS PHP-->
+                                </ul>
+                            </div>
+                            <!--BUTTON EDIT CODE EVENTOS PHP-->
+                        <?php } ?>
 
 
                         <!--BUTTON EDIT CODE MÉTODOS PHP-->
@@ -192,7 +194,9 @@
                         <div class="form-group has-feedback col-xs-12" style="font-size: 1.3em; padding-right: 0;">
                             <label for="id">ID : <span class="" ><spam class="text-normal"><?= $dados->id; ?></span></label>
                             <label for="app_nome" class="margin-left:5px"> | Nome Aplicativo : <span class="" ><spam class="text-normal"><?= $dados->app_nome; ?></span></span></label>
-                            <label for="tabela" class="margin-left:5px"> | Tabela : <span class="" ><spam class="text-normal"><?= $dados->tabela; ?></span></span></label>
+                            <?php if ($dados->type_project == 'crud'): ?>
+                                <label for="tabela" class="margin-left:5px"> | Tabela : <span class="" ><spam class="text-normal"><?= $dados->tabela; ?></span></span></label>
+                            <?php endif; ?>
                             <span class="padding-left-20">
 
 
@@ -220,7 +224,7 @@
 
 
                             <!--TITULO DO APLICATIVO-->
-                            <div class="col-xs-12 col-sm-12 col-md-12 form-group">
+                            <div class="<?= (($dados->type_project == 'crud') ? 'col-xs-12 col-sm-12 col-md-12' : 'col-xs-12 col-sm-5 col-md-5'); ?> form-group">
                                 <?php $_error = form_error("app_titulo", "<small class='text-danger col-xs-12 bz-input-error'>", "</small>"); ?>
                                 <div class="form-group has-feedback">
                                     <label for="app_titulo"><i class="fa fa-asterisk margin-right-5 text-error" style="font-size: 0.7em;"></i>Título do APP</label>
@@ -233,7 +237,7 @@
 
 
                             <!--ICONE DO APLICATIVO-->
-                            <div class="col-xs-12 col-sm-4 col-md-4 form-group">
+                            <div class="<?= (($dados->type_project == 'crud') ? "col-xs-12 col-sm-4 col-md-4" : "col-sm-3 col-md-3"); ?> form-group">
                                 <label for="menu_icon">Icone APP</label>
                                 <div class="input-group">
                                     <input id="app_icone" type="text" name="app_icone" class="form-control" placeholder="Icone do Aplicativo" value="<?= (set_value('app_icone')) ? set_value('app_icone') : $dados->app_icone; ?>" maxlength="50" />
@@ -246,6 +250,44 @@
 
 
 
+                            <!--TEMPLATE PADRÃO DO APLICATIVO-->
+                            <?php if ($dados->type_project == 'blank'): ?>
+                                <div class="col-xs-12 col-sm-2 col-md-2 form-group">
+                                    <label for="app_template_padrao">Template Padrão APP</label>
+                                    <div class="input-group" style="width:100%;">
+                                        <?php
+                                        $_templatePadraoOptions = array(
+                                            'SIM' => 'SIM',
+                                            'NAO' => 'NÃO',
+                                        );
+                                        ?>
+                                        <?= form_dropdown('app_template_padrao', $_templatePadraoOptions, (set_value('app_template_padrao')) ? set_value('app_template_padrao') : $dados->app_template_padrao, 'id="app_template_padrao" class="form-control"'); ?>
+                                    </div><!-- /.input group -->
+                                </div>
+                            <?php endif; ?>
+                            <!--END TEMPLATE PADRÃO DO APLICATIVO-->
+
+
+
+                            <!--SEGURANÇA DO APLICATIVO-->
+                            <?php if ($dados->type_project == 'blank'): ?>
+                                <div class="col-xs-12 col-sm-2 col-md-2 form-group">
+                                    <label for="app_security">Segurança APP</label>
+                                    <div class="input-group" style="width:100%;">
+                                        <?php
+                                        $_securityOptions = array(
+                                            'SIM' => 'SIM',
+                                            'NAO' => 'NÃO',
+                                        );
+                                        ?>
+                                        <?= form_dropdown('app_security', $_securityOptions, (set_value('app_security')) ? set_value('app_security') : $dados->app_security, 'id="app_security" class="form-control"'); ?>
+                                    </div><!-- /.input group -->
+                                </div>
+                            <?php endif; ?>
+                            <!--END SEGURANÇA DO APLICATIVO-->
+
+
+
                             <!--TABELAS-->
                             <div class="col-xs-12 col-sm-4 col-md-4 form-group hide">
                                 <div class="form-group has-feedback">
@@ -255,31 +297,35 @@
                             </div>
                             <!--END TABELAS-->
 
-                            <!--PRIMARY KEY-->
-                            <div class="col-xs-12 col-sm-4 col-md-4 form-group">
-                                <div class="form-group has-feedback">
-                                    <label for="primary_key">Chave Primária</label>
-                                    <select id="primary_key" class="form-control" name="primary_key">
 
-                                        <?php
-                                        foreach ($_fields_table_gridlist['_result'] as $_row_field_table_gridlist):
-                                            echo '<option ' . ($_row_field_table_gridlist['primary_key'] == 1 ? 'selected' : '') . '  value="' . $_row_field_table_gridlist['field_name'] . '">' . $_row_field_table_gridlist['field_name'] . '</option>';
-                                        endforeach;
-                                        ?>
 
-                                    </select>
+                            <?php if ($dados->type_project == 'crud'): ?>
+                                <!--PRIMARY KEY-->
+                                <div class="col-xs-12 col-sm-4 col-md-4 form-group">
+                                    <div class="form-group has-feedback">
+                                        <label for="primary_key">Chave Primária</label>
+                                        <select id="primary_key" class="form-control" name="primary_key">
+
+                                            <?php
+                                            foreach ($_fields_table_gridlist['_result'] as $_row_field_table_gridlist):
+                                                echo '<option ' . ($_row_field_table_gridlist['primary_key'] == 1 ? 'selected' : '') . '  value="' . $_row_field_table_gridlist['field_name'] . '">' . $_row_field_table_gridlist['field_name'] . '</option>';
+                                            endforeach;
+                                            ?>
+
+                                        </select>
+                                    </div>
                                 </div>
-                            </div>
-                            <!--END PRIMARY KEY-->
+                                <!--END PRIMARY KEY-->
 
-                            <!--ORDER BY-->
-                            <div class="col-xs-12 col-sm-4 col-md-4 form-group">
-                                <div class="form-group has-feedback">
-                                    <label for="order_by">Campos Order By</label>
-                                    <input type="text" name="order_by" class="form-control" placeholder="Ex: campo1 ASC, campos2 DESC" value="<?= (set_value('order_by')) ? set_value('order_by') : $dados->order_by; ?>"/>
+                                <!--ORDER BY-->
+                                <div class="col-xs-12 col-sm-4 col-md-4 form-group">
+                                    <div class="form-group has-feedback">
+                                        <label for="order_by">Campos Order By</label>
+                                        <input type="text" name="order_by" class="form-control" placeholder="Ex: campo1 ASC, campos2 DESC" value="<?= (set_value('order_by')) ? set_value('order_by') : $dados->order_by; ?>"/>
+                                    </div>
                                 </div>
-                            </div>
-                            <!--END ORDER BY-->
+                                <!--END ORDER BY-->
+                            <?php endif; ?>
 
 
 
@@ -294,195 +340,206 @@
 
 
                 <!-- Table Grid List / Form Add/EDIT -->
-                <div class="box box-info">
-                    <div class="box-body margin-left-10">
+                <?php if ($dados->type_project == 'crud'): ?>
+                    <div class="box box-info">
+                        <div class="box-body margin-left-10">
 
-                        <!--TABLE FIELDs proj_build_fields-->
-                        <div class="row">
-                            <div class="col-md-12 col-sm-12 col-xs-12">
+                            <!--TABLE FIELDs proj_build_fields-->
+                            <div class="row">
+                                <div class="col-md-12 col-sm-12 col-xs-12">
 
-                                <ul class="nav nav-pills">
-                                    <li class="<?= ($this->input->get('tab') == 'gridlist') ? 'active' : ((empty($this->input->get('tab'))) ? 'active' : null); ?>"><a data-toggle="pill" href="#gridlist">Grid List</a></li>
-                                    <li class="<?= ($this->input->get('tab') == 'formaddedit') ? 'active' : null; ?>"><a data-toggle="pill" href="#gridformaddedit">Form ADD/EDIT</a></li>
-                                </ul>
+                                    <ul class="nav nav-pills">
+                                        <li class="<?= ($this->input->get('tab') == 'gridlist') ? 'active' : ((empty($this->input->get('tab'))) ? 'active' : null); ?>"><a data-toggle="pill" href="#gridlist">Grid List</a></li>
+                                        <li class="<?= ($this->input->get('tab') == 'formaddedit') ? 'active' : null; ?>"><a data-toggle="pill" href="#gridformaddedit">Form ADD/EDIT</a></li>
+                                    </ul>
 
-                                <div class="tab-content">
-                                    <div id="gridlist" class="tab-pane fade <?= ($this->input->get('tab') == 'gridlist') ? 'in active' : ((empty($this->input->get('tab'))) ? 'in active' : null); ?>">
+                                    <div class="tab-content">
+                                        <div id="gridlist" class="tab-pane fade <?= ($this->input->get('tab') == 'gridlist') ? 'in active' : ((empty($this->input->get('tab'))) ? 'in active' : null); ?>">
 
-                                        <!--BUTTON EDIT CODE CSS/JQUERY-->
-                                        <div class="btn-group pull-right">
-                                            <button type="button" class="btn btn-info j_btn_modal_add_fields_table_gridlist margin-right-10" rel-projeto-id='<?= $dados->id; ?>'><span class="glyphicon glyphicon-plus"></span> Campo Virtual</button>
+                                            <!--BUTTON EDIT CODE CSS/JQUERY-->
+                                            <div class="btn-group pull-right">
+                                                <button type="button" class="btn btn-info j_btn_modal_add_fields_table_gridlist margin-right-10" rel-projeto-id='<?= $dados->id; ?>'><span class="glyphicon glyphicon-plus"></span> Campo Virtual</button>
 
-                                            <button type="button" class="btn btn-default btn-flat"><i class="fa fa-fw fa-code"></i> GRID LIST SCRIPTS</button>
-                                            <button type="button" class="btn btn-default btn-flat dropdown-toggle" data-toggle="dropdown">
-                                                <span class="caret"></span>
-                                                <span class="sr-only"></span>
-                                            </button>
-                                            <ul class="dropdown-menu" role="menu">
-                                                <li><a class="padding-left-5" href="<?= site_url($this->router->fetch_class() . '/codeeditor/' . $dados->id . '/gridlist/css?tab=gridlist'); ?>"><?= ( (!empty($_gridlist_css['code_script']) ) ? '<i class="fa fa-fw fa-check-square-o color_blue margin-right-5"></i>' : '<i class="fa fa-fw margin-right-5"></i>'); ?>CSS</a></li>
-                                                <li><a class="padding-left-5" href="<?= site_url($this->router->fetch_class() . '/codeeditor/' . $dados->id . '/gridlist/jquery?tab=gridlist'); ?>"><?= ( (!empty($_gridlist_jquery['code_script']) ) ? '<i class="fa fa-fw fa-check-square-o color_blue margin-right-5"></i>' : '<i class="fa fa-fw margin-right-5"></i>'); ?>jQuery</a></li>
-                                            </ul>
+                                                <button type="button" class="btn btn-default btn-flat"><i class="fa fa-fw fa-code"></i> GRID LIST SCRIPTS</button>
+                                                <button type="button" class="btn btn-default btn-flat dropdown-toggle" data-toggle="dropdown">
+                                                    <span class="caret"></span>
+                                                    <span class="sr-only"></span>
+                                                </button>
+                                                <ul class="dropdown-menu" role="menu">
+                                                    <li><a class="padding-left-5" href="<?= site_url($this->router->fetch_class() . '/codeeditor/' . $dados->id . '/gridlist/css?tab=gridlist'); ?>"><?= ( (!empty($_gridlist_css['code_script']) ) ? '<i class="fa fa-fw fa-check-square-o color_blue margin-right-5"></i>' : '<i class="fa fa-fw margin-right-5"></i>'); ?>CSS</a></li>
+                                                    <li><a class="padding-left-5" href="<?= site_url($this->router->fetch_class() . '/codeeditor/' . $dados->id . '/gridlist/jquery?tab=gridlist'); ?>"><?= ( (!empty($_gridlist_jquery['code_script']) ) ? '<i class="fa fa-fw fa-check-square-o color_blue margin-right-5"></i>' : '<i class="fa fa-fw margin-right-5"></i>'); ?>jQuery</a></li>
+                                                </ul>
+                                            </div>
+                                            <!--BUTTON EDIT CODE CSS/JQUERY-->
+
+
+                                            <h3>Campos GRID LIST</h3>
+                                            <div class="table-responsive">          
+                                                <table id="tableGridlist" class="table table-striped table-bordered table-mark-row">
+                                                    <thead class="bg-<?= ___BZ_LAYOUT_SKINCOLOR___; ?>">
+                                                        <tr>
+                                                            <th class="text-center" style="width:5px;">#</th>
+                                                            <th class="text-center" style="width:5px;"><span class="label label-default text-center mouse-cursor-pointer j-tooltip" tabindex="0" data-placement="top" data-toggle="tooltip" data-original-title="Status dos Campos">S</span></th>
+                                                            <th class="text-center" style="width:5px;"><span class="label label-default text-center mouse-cursor-pointer j-tooltip" tabindex="0" data-placement="top" data-toggle="tooltip" data-original-title="Pesquisa dos Campos">P</span></th>
+                                                            <th class="text-center" style="width:5px;"><span class="label label-default text-center mouse-cursor-pointer j-tooltip" tabindex="0" data-placement="top" data-toggle="tooltip" data-original-title="Exportar/Imprimir">E</span></th>
+                                                            <th class="text-center" style="width:5px;"><span class="label label-default text-center mouse-cursor-pointer j-tooltip" tabindex="0" data-placement="top" data-toggle="tooltip" data-original-title="Ordenação dos Campos">O</span></th>
+                                                            <th>Campo</th>
+                                                            <th>Caracteres</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody class="fields_table">
+                                                        <?php
+                                                        $_c = 0;
+
+                                                        foreach ($_fields_table_gridlist['_result'] as $_row_field_table_gridlist):
+
+                                                            $_c++;
+
+                                                            $_json = json_decode($_row_field_table_gridlist['param_gridlist']);
+
+                                                            $_bg_color_grid_list_show = ($_json->grid_list_show == 'off') ? 'font-color-gray-light' : '';
+                                                            $_btn_switch_grid_list_show = ($_json->grid_list_show == 'off') ? 'fa-toggle-off' : 'fa-toggle-on text-green';
+
+                                                            $_bg_color_grid_list_search = ($_json->grid_list_search == 'off') ? 'font-color-gray-light' : '';
+                                                            $_btn_switch_grid_list_search = ($_json->grid_list_search == 'off') ? 'fa-toggle-off' : 'fa-toggle-on text-green';
+
+                                                            if (!empty($_json->grid_list_export)) {
+                                                                $_bg_color_grid_list_export = ($_json->grid_list_export == 'off') ? 'font-color-gray-light' : '';
+                                                                $_btn_switch_grid_list_export = ($_json->grid_list_export == 'off') ? 'fa-toggle-off' : 'fa-toggle-on text-green';
+                                                            } else {
+
+                                                                $_json->grid_list_export = 'font-color-gray-light';
+                                                                $_btn_switch_grid_list_export = 'fa-toggle-off';
+                                                            }
+
+
+                                                            //SE O CAMPO FOR VIRTUAL HABILITA O BOTÃO DE DELETAR O CAMPO
+                                                            if (!empty($_json->grid_list_field_type) && $_json->grid_list_field_type == 'virtual'):
+                                                                $_grid_list_field_type_trash_icon = '<small class="label margin-left-5 bg-red j-tooltip j-btn-delete-virtual-field" data-placement="bottom" data-toggle="tooltip" data-original-title="Deletar Campo" rel-field-name="' . $_row_field_table_gridlist['field_name'] . '"><i class="fa fa-fw fa-trash text-whrite"></i></small>';
+                                                            else:
+                                                                $_grid_list_field_type_trash_icon = '';
+                                                            endif;
+
+                                                            echo "<tr id='" . $_row_field_table_gridlist['field_name'] . "' rel-projeto-id='" . $dados->id . "' rel-primary-key='" . $_row_field_table_gridlist['primary_key'] . "' class='j_drag_active_gridlist mouse-cursor-pointer " . $_bg_color_grid_list_show . "' />";
+                                                            echo "<td class='text-center table-line-order' style='width:5px;'>" . $_c . "</td>";
+                                                            echo "<td><i class='fa fa-fw {$_btn_switch_grid_list_show} j-btn-switch-list-show-field' rel-screen-type='gridlist'></i></td>";
+                                                            echo "<td><i class='fa fa-fw {$_btn_switch_grid_list_search} j-btn-switch-list-search-field' rel-screen-type='gridlist'></i></td>";
+                                                            echo "<td><i class='fa fa-fw {$_btn_switch_grid_list_export} j-btn-switch-list-export-field' rel-screen-type='gridlist'></i></td>";
+                                                            echo "<td class='text-center j_order_gridlist' style='width:5px;'><i class='fa fa-arrows'></i></td>";
+                                                            echo "<td class='j_btn_modal_edit_fields_table_gridlist btn-show-modal-aguarde'>" . $_row_field_table_gridlist['field_name'] . $_grid_list_field_type_trash_icon . (($_row_field_table_gridlist['primary_key'] == 1) ? '<small class="label margin-left-5 bg-green j-tooltip" data-placement="bottom" data-toggle="tooltip" data-original-title="Chave Primária"><i class="fa fa-fw fa-key text-whrite"></i></small>' : '') . "</td>";
+                                                            echo "<td class='j_btn_modal_edit_fields_table_gridlist btn-show-modal-aguarde'>" . $_row_field_table_gridlist['field_length'] . "</td>";
+                                                            echo "</tr>";
+
+
+                                                        endforeach;
+                                                        ?>
+                                                    </tbody>
+                                                </table>
+                                            </div>
                                         </div>
-                                        <!--BUTTON EDIT CODE CSS/JQUERY-->
+
+                                        <div id="gridformaddedit" class="tab-pane fade <?= ($this->input->get('tab') == 'formaddedit') ? 'in active' : null; ?>">
+                                            <!--BUTTON EDIT CODE CSS/JQUERY-->
+                                            <div class="btn-group pull-right">
+                                                <button type="button" class="btn btn-default btn-flat"><i class="fa fa-fw fa-code"></i> FORM SCRIPTS</button>
+                                                <button type="button" class="btn btn-default btn-flat dropdown-toggle" data-toggle="dropdown">
+                                                    <span class="caret"></span>
+                                                    <span class="sr-only"></span>
+                                                </button>
+                                                <ul class="dropdown-menu" role="menu">
+                                                    <li class="border-bottom-1"><span><b>FORM ADD</b></span></li>
+                                                    <li><a class="padding-left-5" href="<?= site_url($this->router->fetch_class() . '/codeeditor/' . $dados->id . '/formadd/css?tab=formaddedit'); ?>"><?= ( (!empty($_formadd_css_jquery['css']) ) ? '<i class="fa fa-fw fa-check-square-o color_blue margin-right-5"></i>' : '<i class="fa fa-fw margin-right-5"></i>'); ?>CSS</a></li>
+                                                    <li><a class="padding-left-5" href="<?= site_url($this->router->fetch_class() . '/codeeditor/' . $dados->id . '/formadd/jquery?tab=formaddedit'); ?>"><?= ( (!empty($_formadd_css_jquery['jquery']) ) ? '<i class="fa fa-fw fa-check-square-o color_blue margin-right-5"></i>' : '<i class="fa fa-fw margin-right-5"></i>'); ?>jQuery</a></li>
+
+                                                    <br/>
+
+                                                    <li class="border-bottom-1"><span><b>FORM EDIT</b></span></li>
+                                                    <li><a class="padding-left-5" href="<?= site_url($this->router->fetch_class() . '/codeeditor/' . $dados->id . '/formedit/css?tab=formaddedit'); ?>"><?= ( (!empty($_formedit_css_jquery['css']) ) ? '<i class="fa fa-fw fa-check-square-o color_blue margin-right-5"></i>' : '<i class="fa fa-fw margin-right-5"></i>'); ?>CSS</a></li>
+                                                    <li><a class="padding-left-5" href="<?= site_url($this->router->fetch_class() . '/codeeditor/' . $dados->id . '/formedit/jquery?tab=formaddedit'); ?>"><?= ( (!empty($_formedit_css_jquery['jquery']) ) ? '<i class="fa fa-fw fa-check-square-o color_blue margin-right-5"></i>' : '<i class="fa fa-fw margin-right-5"></i>'); ?>jQuery</a></li>
+                                                </ul>
+                                            </div>
+                                            <!--BUTTON EDIT CODE CSS/JQUERY-->
 
 
 
-                                        <h3>Campos GRID LIST</h3>
-                                        <div class="table-responsive">          
-                                            <table id="tableGridlist" class="table table-striped table-bordered table-mark-row">
-                                                <thead class="bg-<?= ___BZ_LAYOUT_SKINCOLOR___; ?>">
-                                                    <tr>
-                                                        <th class="text-center" style="width:5px;">#</th>
-                                                        <th class="text-center" style="width:5px;"><span class="label label-default text-center mouse-cursor-pointer j-tooltip" tabindex="0" data-placement="top" data-toggle="tooltip" data-original-title="Status dos Campos">S</span></th>
-                                                        <th class="text-center" style="width:5px;"><span class="label label-default text-center mouse-cursor-pointer j-tooltip" tabindex="0" data-placement="top" data-toggle="tooltip" data-original-title="Pesquisa dos Campos">P</span></th>
-                                                        <th class="text-center" style="width:5px;"><span class="label label-default text-center mouse-cursor-pointer j-tooltip" tabindex="0" data-placement="top" data-toggle="tooltip" data-original-title="Exportar/Imprimir">E</span></th>
-                                                        <th class="text-center" style="width:5px;"><span class="label label-default text-center mouse-cursor-pointer j-tooltip" tabindex="0" data-placement="top" data-toggle="tooltip" data-original-title="Ordenação dos Campos">O</span></th>
-                                                        <th>Campo</th>
-                                                        <th>Caracteres</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody class="fields_table">
-                                                    <?php
-                                                    $_c = 0;
+                                            <h3>Campos Form ADD/EDIT</h3>
+                                            <div class="table-responsive">          
+                                                <table id="tableGridlistFormAddEdit" class="table table-striped table-bordered table-mark-row">
+                                                    <thead class="ENIO bg-<?= ___BZ_LAYOUT_SKINCOLOR___; ?>">
+                                                        <tr>
+                                                            <th class="text-center" style="width:5px;">#</th>
+                                                            <th class="text-center" style="width:5px;"><span class="label label-default text-center mouse-cursor-pointer j-tooltip" tabindex="0" data-placement="top" data-toggle="tooltip" data-original-title="Status dos Campos<br/>Ativo ou Inativo">S</span></th>
+                                                            <th class="text-center" style="width:5px;"><span class="label label-default text-center mouse-cursor-pointer j-tooltip" tabindex="0" data-placement="top" data-toggle="tooltip" data-original-title="Ordenação dos Campos">O</span></th>
+                                                            <th>Campo</th>
+                                                            <th>Caracteres</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody class="fields_table_formaddedit">
+                                                        <?php
+                                                        $_c = 0;
 
-                                                    foreach ($_fields_table_gridlist['_result'] as $_row_field_table_gridlist):
+                                                        foreach ($_fields_table_formAddEdit['_result'] as $_row_field_table_formAddEdit):
 
-                                                        $_c++;
+                                                            $_c++;
 
-                                                        $_json = json_decode($_row_field_table_gridlist['param_gridlist']);
+                                                            $_json = json_decode($_row_field_table_formAddEdit['param_formaddedit']);
+                                                            $_bg_color_grid_list_show = ($_json->form_add_edit_field_show == 'off') ? 'font-color-gray-light' : '';
+                                                            $_btn_switch_form_add_edit_field_show = ($_json->form_add_edit_field_show == 'off') ? 'fa-toggle-off' : 'fa-toggle-on text-green';
 
-                                                        $_bg_color_grid_list_show = ($_json->grid_list_show == 'off') ? 'font-color-gray-light' : '';
-                                                        $_btn_switch_grid_list_show = ($_json->grid_list_show == 'off') ? 'fa-toggle-off' : 'fa-toggle-on text-green';
-
-                                                        $_bg_color_grid_list_search = ($_json->grid_list_search == 'off') ? 'font-color-gray-light' : '';
-                                                        $_btn_switch_grid_list_search = ($_json->grid_list_search == 'off') ? 'fa-toggle-off' : 'fa-toggle-on text-green';
-
-                                                        if (!empty($_json->grid_list_export)) {
-                                                            $_bg_color_grid_list_export = ($_json->grid_list_export == 'off') ? 'font-color-gray-light' : '';
-                                                            $_btn_switch_grid_list_export = ($_json->grid_list_export == 'off') ? 'fa-toggle-off' : 'fa-toggle-on text-green';
-                                                        } else {
-
-                                                            $_json->grid_list_export = 'font-color-gray-light';
-                                                            $_btn_switch_grid_list_export = 'fa-toggle-off';
-                                                        }
+                                                            echo "<tr id='" . $_row_field_table_formAddEdit['field_name'] . "' rel-projeto-id='" . $dados->id . "' rel-primary-key='" . $_row_field_table_formAddEdit['primary_key'] . "' class='j_drag_active_gridlist_formAddEdit mouse-cursor-pointer " . $_bg_color_grid_list_show . "' />";
+                                                            echo "<td class='j_btn_modal_edit_fields_table_formaddedit btn-show-modal-aguarde text-center table-line-order' style='width:5px;'>" . $_c . "</td>";
+                                                            echo "<td><i class='fa fa-fw {$_btn_switch_form_add_edit_field_show} j-btn-switch-list-show-field' rel-screen-type='formaddedit'></i></td>";
+                                                            echo "<td class='text-center j_order_gridlist_formAddEdit' style='width:5px;'><i class='fa fa-arrows'></i></td>";
+                                                            echo "<td class='j_btn_modal_edit_fields_table_formaddedit btn-show-modal-aguarde'>" . $_row_field_table_formAddEdit['field_name'] . (($_row_field_table_formAddEdit['primary_key'] == 1) ? '<small class="label margin-left-5 bg-green j-tooltip" data-placement="bottom" data-toggle="tooltip" data-original-title="Chave Primária"><i class="fa fa-fw fa-key text-whrite"></i></small>' : '') . "</td>";
+                                                            echo "<td>" . $_row_field_table_formAddEdit['field_length'] . "</td>";
+                                                            echo "</tr>";
 
 
-                                                        //SE O CAMPO FOR VIRTUAL HABILITA O BOTÃO DE DELETAR O CAMPO
-                                                        if (!empty($_json->grid_list_field_type) && $_json->grid_list_field_type == 'virtual'):
-                                                            $_grid_list_field_type_trash_icon = '<small class="label margin-left-5 bg-red j-tooltip j-btn-delete-virtual-field" data-placement="bottom" data-toggle="tooltip" data-original-title="Deletar Campo" rel-field-name="' . $_row_field_table_gridlist['field_name'] . '"><i class="fa fa-fw fa-trash text-whrite"></i></small>';
-                                                        else:
-                                                            $_grid_list_field_type_trash_icon = '';
-                                                        endif;
-
-                                                        echo "<tr id='" . $_row_field_table_gridlist['field_name'] . "' rel-projeto-id='" . $dados->id . "' rel-primary-key='" . $_row_field_table_gridlist['primary_key'] . "' class='j_drag_active_gridlist mouse-cursor-pointer " . $_bg_color_grid_list_show . "' />";
-                                                        echo "<td class='text-center table-line-order' style='width:5px;'>" . $_c . "</td>";
-                                                        echo "<td><i class='fa fa-fw {$_btn_switch_grid_list_show} j-btn-switch-list-show-field' rel-screen-type='gridlist'></i></td>";
-                                                        echo "<td><i class='fa fa-fw {$_btn_switch_grid_list_search} j-btn-switch-list-search-field' rel-screen-type='gridlist'></i></td>";
-                                                        echo "<td><i class='fa fa-fw {$_btn_switch_grid_list_export} j-btn-switch-list-export-field' rel-screen-type='gridlist'></i></td>";
-                                                        echo "<td class='text-center j_order_gridlist' style='width:5px;'><i class='fa fa-arrows'></i></td>";
-                                                        echo "<td class='j_btn_modal_edit_fields_table_gridlist btn-show-modal-aguarde'>" . $_row_field_table_gridlist['field_name'] . $_grid_list_field_type_trash_icon . (($_row_field_table_gridlist['primary_key'] == 1) ? '<small class="label margin-left-5 bg-green j-tooltip" data-placement="bottom" data-toggle="tooltip" data-original-title="Chave Primária"><i class="fa fa-fw fa-key text-whrite"></i></small>' : '') . "</td>";
-                                                        echo "<td class='j_btn_modal_edit_fields_table_gridlist btn-show-modal-aguarde'>" . $_row_field_table_gridlist['field_length'] . "</td>";
-                                                        echo "</tr>";
-
-
-                                                    endforeach;
-                                                    ?>
-                                                </tbody>
-                                            </table>
+                                                        endforeach;
+                                                        ?>
+                                                    </tbody>
+                                                </table>
+                                            </div>
                                         </div>
                                     </div>
 
-                                    <div id="gridformaddedit" class="tab-pane fade <?= ($this->input->get('tab') == 'formaddedit') ? 'in active' : null; ?>">
-                                        <!--BUTTON EDIT CODE CSS/JQUERY-->
-                                        <div class="btn-group pull-right">
-                                            <button type="button" class="btn btn-default btn-flat"><i class="fa fa-fw fa-code"></i> FORM SCRIPTS</button>
-                                            <button type="button" class="btn btn-default btn-flat dropdown-toggle" data-toggle="dropdown">
-                                                <span class="caret"></span>
-                                                <span class="sr-only"></span>
-                                            </button>
-                                            <ul class="dropdown-menu" role="menu">
-                                                <li class="border-bottom-1"><span><b>FORM ADD</b></span></li>
-                                                <li><a class="padding-left-5" href="<?= site_url($this->router->fetch_class() . '/codeeditor/' . $dados->id . '/formadd/css?tab=formaddedit'); ?>"><?= ( (!empty($_formadd_css_jquery['css']) ) ? '<i class="fa fa-fw fa-check-square-o color_blue margin-right-5"></i>' : '<i class="fa fa-fw margin-right-5"></i>'); ?>CSS</a></li>
-                                                <li><a class="padding-left-5" href="<?= site_url($this->router->fetch_class() . '/codeeditor/' . $dados->id . '/formadd/jquery?tab=formaddedit'); ?>"><?= ( (!empty($_formadd_css_jquery['jquery']) ) ? '<i class="fa fa-fw fa-check-square-o color_blue margin-right-5"></i>' : '<i class="fa fa-fw margin-right-5"></i>'); ?>jQuery</a></li>
-
-                                                <br/>
-
-                                                <li class="border-bottom-1"><span><b>FORM EDIT</b></span></li>
-                                                <li><a class="padding-left-5" href="<?= site_url($this->router->fetch_class() . '/codeeditor/' . $dados->id . '/formedit/css?tab=formaddedit'); ?>"><?= ( (!empty($_formedit_css_jquery['css']) ) ? '<i class="fa fa-fw fa-check-square-o color_blue margin-right-5"></i>' : '<i class="fa fa-fw margin-right-5"></i>'); ?>CSS</a></li>
-                                                <li><a class="padding-left-5" href="<?= site_url($this->router->fetch_class() . '/codeeditor/' . $dados->id . '/formedit/jquery?tab=formaddedit'); ?>"><?= ( (!empty($_formedit_css_jquery['jquery']) ) ? '<i class="fa fa-fw fa-check-square-o color_blue margin-right-5"></i>' : '<i class="fa fa-fw margin-right-5"></i>'); ?>jQuery</a></li>
-                                            </ul>
-                                        </div>
-                                        <!--BUTTON EDIT CODE CSS/JQUERY-->
 
 
 
-                                        <h3>Campos Form ADD/EDIT</h3>
-                                        <div class="table-responsive">          
-                                            <table id="tableGridlistFormAddEdit" class="table table-striped table-bordered table-mark-row">
-                                                <thead class="ENIO bg-<?= ___BZ_LAYOUT_SKINCOLOR___; ?>">
-                                                    <tr>
-                                                        <th class="text-center" style="width:5px;">#</th>
-                                                        <th class="text-center" style="width:5px;"><span class="label label-default text-center mouse-cursor-pointer j-tooltip" tabindex="0" data-placement="top" data-toggle="tooltip" data-original-title="Status dos Campos<br/>Ativo ou Inativo">S</span></th>
-                                                        <th class="text-center" style="width:5px;"><span class="label label-default text-center mouse-cursor-pointer j-tooltip" tabindex="0" data-placement="top" data-toggle="tooltip" data-original-title="Ordenação dos Campos">O</span></th>
-                                                        <th>Campo</th>
-                                                        <th>Caracteres</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody class="fields_table_formaddedit">
-                                                    <?php
-                                                    $_c = 0;
-
-                                                    foreach ($_fields_table_formAddEdit['_result'] as $_row_field_table_formAddEdit):
-
-                                                        $_c++;
-
-                                                        $_json = json_decode($_row_field_table_formAddEdit['param_formaddedit']);
-                                                        $_bg_color_grid_list_show = ($_json->form_add_edit_field_show == 'off') ? 'font-color-gray-light' : '';
-                                                        $_btn_switch_form_add_edit_field_show = ($_json->form_add_edit_field_show == 'off') ? 'fa-toggle-off' : 'fa-toggle-on text-green';
-
-                                                        echo "<tr id='" . $_row_field_table_formAddEdit['field_name'] . "' rel-projeto-id='" . $dados->id . "' rel-primary-key='" . $_row_field_table_formAddEdit['primary_key'] . "' class='j_drag_active_gridlist_formAddEdit mouse-cursor-pointer " . $_bg_color_grid_list_show . "' />";
-                                                        echo "<td class='j_btn_modal_edit_fields_table_formaddedit btn-show-modal-aguarde text-center table-line-order' style='width:5px;'>" . $_c . "</td>";
-                                                        echo "<td><i class='fa fa-fw {$_btn_switch_form_add_edit_field_show} j-btn-switch-list-show-field' rel-screen-type='formaddedit'></i></td>";
-                                                        echo "<td class='text-center j_order_gridlist_formAddEdit' style='width:5px;'><i class='fa fa-arrows'></i></td>";
-                                                        echo "<td class='j_btn_modal_edit_fields_table_formaddedit btn-show-modal-aguarde'>" . $_row_field_table_formAddEdit['field_name'] . (($_row_field_table_formAddEdit['primary_key'] == 1) ? '<small class="label margin-left-5 bg-green j-tooltip" data-placement="bottom" data-toggle="tooltip" data-original-title="Chave Primária"><i class="fa fa-fw fa-key text-whrite"></i></small>' : '') . "</td>";
-                                                        echo "<td>" . $_row_field_table_formAddEdit['field_length'] . "</td>";
-                                                        echo "</tr>";
 
 
-                                                    endforeach;
-                                                    ?>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
                                 </div>
+                            </div>
+                            <!--END TABLE FIELDs proj_build_fields-->
 
+                            <div class="box-footer text-right">
 
-
-
-
+                                <div class="text-center"><i class="fa fa-asterisk margin-right-5 text-error" style="font-size: 0.7em;"></i> Campos Obrigatórios</div>
 
                             </div>
-                        </div>
-                        <!--END TABLE FIELDs proj_build_fields-->
-
-
-
-                        <input type="hidden" name="id" value="<?= (set_value('id')) ? set_value('id') : $dados->id; ?>" readonly/>
-                        <input type="hidden" class="" name="task" value="edit-app" readonly/>
-
-
-                        <div class="box-footer text-right">
-
-                            <div class="text-center"><i class="fa fa-asterisk margin-right-5 text-error" style="font-size: 0.7em;"></i> Campos Obrigatórios</div>
 
                         </div>
-
                     </div>
-                </div>
+                <?php endif; ?>
                 <!-- END Table Grid List / Form Add/EDIT -->
 
 
+
+                <!-- CODE EDITOR -->
+                <?php if ($dados->type_project == 'blank'): ?>
+                    <div class="box-body pad codeeditor">
+                        <textarea id="codeeditor_1"  class="col-xs-12" name="code_script" rows="30" width=="100%" autofocus /><?= (($dados->_codeEditorBlank->code_script) ? base64_decode($dados->_codeEditorBlank->code_script) : null); ?></textarea>
+                    </div>
+                <?php endif; ?>
+
+                <!-- END CODE EDITOR -->
+
+
+                <!-- FIELDS HIDDEN -->
+                <input type="hidden" name="id" value="<?= (set_value('id')) ? set_value('id') : $dados->id; ?>" readonly/>
+                <input type="hidden" name="type_project" value="<?= (set_value('type_project')) ? set_value('type_project') : $dados->type_project; ?>" readonly/>
+                <input type="hidden" name="task" value="edit-app" readonly/>
+                <!-- END FIELDS HIDDEN -->
 
 
             </div>
@@ -995,11 +1052,7 @@
                     window.location = _url;
 
 
-
                 });
-
-
-
 
 
             });

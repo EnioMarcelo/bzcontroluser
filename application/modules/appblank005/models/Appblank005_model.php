@@ -1,14 +1,14 @@
 <?php
 
 /*
-  Created on : 05/08/2019, 16:28PM
+  Created on : 06/08/2019, 16:18PM
   Author     : Enio Marcelo - eniomarcelo@gmail.com
  */
 
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Cadcliente_model extends MY_Model {
+class Appblank005_model extends MY_Model {
 
     public function __construct() {
         parent::__construct();
@@ -16,7 +16,13 @@ class Cadcliente_model extends MY_Model {
     //END function __construct()
 
     
-    
+    /* MODELS PHP - fcn_get_genero */
+public function fcn_get_genero($_p = null) {
+return 'MODEL GET GENERO: '.$_p['genero'];
+}
+/* END MODELS PHP - fcn_get_genero */
+
+
     
    
 }

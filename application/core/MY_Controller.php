@@ -22,7 +22,7 @@ class MY_Controller extends MX_Controller {
     protected $_redirect_parametros_url = '';
     private $saveAuditoria = false;
 
-    public function __construct() {
+    public function __construct( $_security = true ) {
 
         parent::__construct();
 
@@ -78,7 +78,7 @@ class MY_Controller extends MX_Controller {
             /*
              * CHECK SE USUÁRIO ESTÁ LOGADO, SE OK, REDIRECIONA PARA O PAINEL.
              */
-            if (!check_is_user_login()):
+            if (!check_is_user_login() && $_security):
 
                 //GRAVA AUDITORIA
                 $dados_auditoria['description'] = 'Acesso não Permitido';
@@ -109,7 +109,7 @@ class MY_Controller extends MX_Controller {
              * CHECK SE USUÁRIO TEM PERMISSÃO PARA ACESSAR O MÓDULO DO SISTEMA
              */
 
-            if ($this->session->userdata('user_login')['user_super_admin'] !== 'Y'):
+            if ($this->session->userdata('user_login')['user_super_admin'] !== 'Y' && $_security):
 
                 /*
                  * GET ACL DO USUÁRIO LOGADO NO SISTEMA

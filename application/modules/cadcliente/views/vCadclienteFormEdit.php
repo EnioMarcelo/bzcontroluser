@@ -1,6 +1,6 @@
 <?php
 /*
-  Created on : 02/08/2019, 18:04PM
+  Created on : 05/08/2019, 16:28PM
   Author     : Enio Marcelo - eniomarcelo@gmail.com
  */
 
@@ -96,6 +96,14 @@
                                                 </div>
                                                 
 
+                                                <?php $_error = form_error("endereco", "<small class='text-danger col-xs-12 bz-input-error'>", "</small>"); ?>
+                                                <div id="endereco" class="form-group has-feedback col-sm-12">
+                                                    <label for="endereco"><i class="fa fa-asterisk margin-right-5 text-error " style="font-size: 0.7em;"></i>Endereço</label>
+                                                    <input type="text" name="endereco" class="form-control  j-mask-endereco " placeholder="Endereço Completo"  value="<?=set_value("endereco",!empty($dados->endereco) ? $dados->endereco : set_value("endereco"));?>" />
+                                                    <?= $_error; ?>
+                                                </div>
+                                                
+
                                                 <?php $_error = form_error("imagem_nome", "<small class='text-danger col-xs-12 bz-input-error'>", "</small>"); ?>
                                                 <div id="imagem_nome" class="form-group has-feedback col-sm-12">
                                                     <label for="imagem_nome"><i class="fa fa-asterisk margin-right-5 text-error " style="font-size: 0.7em;"></i>Enviar Foto</label>
@@ -178,6 +186,7 @@
 
 $(function(){
 
+$(".j-mask-endereco").mask(" ", );
 $(".j-mask-data").mask("00/00/0000", {placeholder: "__/__/____"});
 $(".j-mask-data_hora").mask("00/00/0000 00:00", {placeholder: "__/__/____ __:__"});
 

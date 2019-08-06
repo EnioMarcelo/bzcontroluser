@@ -69,6 +69,30 @@
 
                 <div class="box-body">
 
+
+                    <div class="row">
+                        <!--TYPE PROJECT-->
+
+                        <?php
+                        $type_project_list = array(
+                            'crud' => 'CRUD',
+                            'blank' => 'BLANK',
+                        );
+                        ?>
+
+                        <div class="col-xs-12 col-sm-4 col-md-4 form-group">
+                            <?php $_error = form_error("type_project", "<small class='text-danger col-xs-12 bz-input-error'>", "</small>"); ?>
+                            <div class="form-group has-feedback">
+                                <label for="type_project"><i class="fa fa-asterisk margin-right-5 text-error" style="font-size: 0.7em;"></i>Projeto</label>
+                                <?= form_dropdown('type_project', $type_project_list, (set_value('type_project') ? set_value('type_project') : "crud"), ' id="type_project" class="form-control"'); ?>
+                                <?= $_error; ?>
+                            </div>
+                        </div>
+                        <!--END TYPE PROJECT-->
+                    </div>
+
+
+
                     <div class="row">
 
                         <!--NOME APP-->
@@ -118,7 +142,7 @@
                     </div>
 
 
-                    <div class="row">
+                    <div class="row row-table-data">
 
                         <!--TABELAS-->
                         <div class="col-xs-12 col-sm-4 col-md-4 form-group">
@@ -183,7 +207,7 @@
 
 
                     <!--TABLE FIELDs proj_build_fields-->
-                    <div class="row">
+                    <div class="row row-table-data">
                         <div class="col-md-12 col-sm-12 col-xs-12">
 
                             <h3>Campos</h3>
@@ -236,6 +260,19 @@
     <script>
 
         $(function () {
+
+            $('#type_project').change(function () {
+
+                var _selected = $(this).val()
+
+                if (_selected == 'blank') {
+                    $('.row-table-data').hide();
+                } else {
+                    $('.row-table-data').show();
+                }
+
+            });
+
 
 
             $('#primary_key').change(function () {

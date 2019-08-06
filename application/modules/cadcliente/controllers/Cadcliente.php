@@ -1,7 +1,7 @@
 <?php
 
 /*
-  Created on : 02/08/2019, 18:04PM
+  Created on : 05/08/2019, 16:28PM
   Author     : Enio Marcelo - eniomarcelo@gmail.com
  */
 
@@ -63,6 +63,7 @@
 
         /* VALIDAÇÃO DOS DADOS */
         $this->form_validation->set_rules('nome', '<b>Nome</b>', 'trim|strtoupper|max_length[255]|required');
+$this->form_validation->set_rules('endereco', '<b>Endereço</b>', 'trim|required');
 $this->form_validation->set_rules('imagem_nome', '<b>Enviar Foto</b>', 'trim|callback_validation_upload_images_imagem_nome');
 $this->form_validation->set_rules('valor', '<b>Valor</b>', 'trim');
 $this->form_validation->set_rules('data', '<b>Data</b>', 'trim|date|required');
@@ -150,6 +151,7 @@ $_dados["data_hora"] = bz_formatdata($_dados["data_hora"],"Y-m-d H:i:s");
 
       /* VALIDAÇÃO DOS DADOS */
       $this->form_validation->set_rules('nome', '<b>Nome</b>', 'trim|strtoupper|max_length[255]|required');
+$this->form_validation->set_rules('endereco', '<b>Endereço</b>', 'trim|required');
 $this->form_validation->set_rules('imagem_nome', '<b>Enviar Foto</b>', 'trim|callback_validation_upload_images_imagem_nome');
 $this->form_validation->set_rules('valor', '<b>Valor</b>', 'trim');
 $this->form_validation->set_rules('data', '<b>Data</b>', 'trim|date|required');
