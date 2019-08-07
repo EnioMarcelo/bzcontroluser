@@ -1,7 +1,7 @@
 <?php
 
 /*
-  Created on : 05/08/2019, 16:28PM
+  Created on : 07/08/2019, 13:42PM
   Author     : Enio Marcelo - eniomarcelo@gmail.com
  */
 
@@ -32,8 +32,7 @@
       $this->table_gridlist_name = 'cad_cliente';
       $this->table_formaddedit_name = 'cad_cliente';
 
-      $this->fcn_onScriptinit();
-
+      
 
     }
     /* END function __construct() */
@@ -71,8 +70,7 @@ $this->form_validation->set_rules('data_hora', '<b>Data/Hora</b>', 'trim|require
 
         /* END VALIDAÇÃO DOS DADOS */
 
-        $this->fcn_onBeforeInsert();
-
+        
 
         if ($this->form_validation->run() == true ):
 
@@ -113,8 +111,7 @@ $_dados["data_hora"] = bz_formatdata($_dados["data_hora"],"Y-m-d H:i:s");
 
             set_mensagem_notfit(___MSG_ADD_REGISTRO___, 'success');
 
-            $this->fcn_onAfterInsert();
-
+            
 
           else:
             echo 'Erro ao inserir Dados... SQL: ' . $this->db->set($dados)->get_compiled_insert($this->table_formaddedit_name);
@@ -159,8 +156,7 @@ $this->form_validation->set_rules('data_hora', '<b>Data/Hora</b>', 'trim|require
 
       /* END VALIDAÇÃO DOS DADOS */
 
-      $this->fcn_onBeforeUpdate();
-
+      
 
       if ($this->form_validation->run() == true ):
 
@@ -210,8 +206,7 @@ $_dados["data_hora"] = bz_formatdata($_dados["data_hora"],"Y-m-d H:i:s");
 
           set_mensagem_notfit(___MSG_UPDATE_REGISTRO___, 'success');
 
-          $this->fcn_onAfterUpdate();
-
+          
 
       else:
           echo 'Erro ao inserir Dados... SQL: ' . $this->db->set($dados)->get_compiled_insert($this->table_formaddedit_name);
@@ -262,8 +257,7 @@ public function del(){
  $this->form_validation->set_rules('btndel', '<b>BTN Del</b>', 'trim|required');
  $this->form_validation->set_rules('dadosdel', '<b>REGISTROS DEL</b>', 'trim|required');
 
- $this->fcn_onBeforeDelete();
-
+ 
 
  if ($this->form_validation->run() == TRUE):
 
@@ -306,8 +300,7 @@ endforeach;
     $dados_auditoria['last_query'] = $this->db->last_query();
     add_auditoria($dados_auditoria);
 
-    $this->fcn_onAfterDelete();
-
+    
 
   else:
     set_mensagem_notfit(___MSG_ERROR_DEL_REGISTRO___, 'error');
@@ -325,8 +318,7 @@ exit;
 /* function export() - Print Report */
     public function export() {
             
-    $this->fcn_onScriptInitExport();
-
+    
         
     /* CARREGA O HELPER */
     /* $this->load->helper('printtopdf'); */
@@ -344,8 +336,7 @@ exit;
     $this->export['_dados'] = $this->get_paginacao();
     
     
-    $this->fcn_onScriptBeforeExport();
-
+    
     
     
     /* GERA O RELATÓRIO PARA SER EXPORTADO */
@@ -482,14 +473,12 @@ exit;
 
     $this->export['_loadHtml'] .= '</script>' . PHP_EOL;
     
-    $this->fcn_onScriptAfterExport();
-
+    
     
     /* IMPRIME */
     echo $this->export['_loadHtml'] ;
     
-    $this->fcn_onScriptEndExport();
-
+    
     
 
 }
@@ -554,83 +543,6 @@ private function get_paginacao() {
 }
 /* END function get_paginacao()  */
 
-
-/* METODO PHP - fcn_onScriptInitExport */
-private function fcn_onScriptInitExport($_p = null) {
-echo '';
-}
-/* END METODO PHP - fcn_onScriptInitExport */
-
-/* METODO PHP - fcn_onScriptInit */
-private function fcn_onScriptInit($_p = null) {
-/*$this->where = ['nome LIKE'=>'%buza%'];
-$this->or_where = ['nome'=>'michel'];*/
-
-}
-/* END METODO PHP - fcn_onScriptInit */
-
-/* METODO PHP - fcn_onScriptEndExport */
-private function fcn_onScriptEndExport($_p = null) {
-echo '';
-}
-/* END METODO PHP - fcn_onScriptEndExport */
-
-/* METODO PHP - fcn_onScriptBeforeExport */
-private function fcn_onScriptBeforeExport($_p = null) {
-echo '';
-}
-/* END METODO PHP - fcn_onScriptBeforeExport */
-
-/* METODO PHP - fcn_onScriptAfterExport */
-private function fcn_onScriptAfterExport($_p = null) {
-echo '';
-}
-/* END METODO PHP - fcn_onScriptAfterExport */
-
-/* METODO PHP - fcn_onBeforeUpdate */
-private function fcn_onBeforeUpdate($_p = null) {
-echo '';
-}
-/* END METODO PHP - fcn_onBeforeUpdate */
-
-/* METODO PHP - fcn_onBeforeInsert */
-private function fcn_onBeforeInsert($_p = null) {
-echo '<br><br>before insert';
-
-}
-/* END METODO PHP - fcn_onBeforeInsert */
-
-/* METODO PHP - fcn_onBeforeDelete */
-private function fcn_onBeforeDelete($_p = null) {
-echo '';
-}
-/* END METODO PHP - fcn_onBeforeDelete */
-
-/* METODO PHP - fcn_onAfterUpdate */
-private function fcn_onAfterUpdate($_p = null) {
-echo '';
-}
-/* END METODO PHP - fcn_onAfterUpdate */
-
-/* METODO PHP - fcn_onAfterInsert */
-private function fcn_onAfterInsert($_p = null) {
-echo '';
-}
-/* END METODO PHP - fcn_onAfterInsert */
-
-/* METODO PHP - fcn_onAfterDelete */
-private function fcn_onAfterDelete($_p = null) {
-echo '';
-}
-/* END METODO PHP - fcn_onAfterDelete */
-
-/* METODO PHP - fcn_teste */
-protected function fcn_teste($_p = null) {
-echo 'ola....';
-
-$this->fcn_onBeforeInsert();
-}
-/* END METODO PHP - fcn_teste */
 
 
 

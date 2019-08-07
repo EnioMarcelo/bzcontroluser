@@ -1,7 +1,7 @@
 <?php
 
 /*
-  Created on : 06/08/2019, 16:18PM
+  Created on : 07/08/2019, 13:35PM
   Author     : Enio Marcelo - eniomarcelo@gmail.com
  */
 
@@ -30,7 +30,10 @@
     /* function index() */
     public function index() {
 
-        $this->load->view("vAppblank005");
+        /* TEMPLATE QUE SERÁ USADO PELO MÓDULO DO SISTEMA */
+$this->dados['_conteudo_masterPageIframe'] = $this->router->fetch_class() . '/' . 'vAppblank005';
+$this->load->view('vMasterPageIframe', $this->dados);
+
 
     }
     /* END function index() */

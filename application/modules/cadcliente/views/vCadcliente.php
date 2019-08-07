@@ -1,7 +1,7 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 <!--
 /*
-  Created on : 05/08/2019, 16:28PM
+  Created on : 07/08/2019, 13:42PM
   Author     : Enio Marcelo - eniomarcelo@gmail.com
  */
 -->
@@ -183,17 +183,7 @@
 						<?php $_c++; ?>
                     
                         <?php
-                        /* ON RECORD */
-//if( !empty( $_row['imagem_nome'] ) ){
-     //$_row['imagem_nome'] = mc_image_thumb_modal( $_row['imagem_nome'] );
-     
-     //$_row['imagem_nome'] = mc_image_link_modal($_row['imagem_nome']) ;
-     
-    //$_row['imagem_nome'] = mc_image_url( $_row['imagem_nome'] );
-//}     
-/* END ON RECORD */
-
-
+                        
                         ?>
 
                         <tr id="<?=$_row['id'];?>" style="<?=$_style_tr;?>" class="ClTableGridListTbodyTr <?=$_class_tr;?>">
