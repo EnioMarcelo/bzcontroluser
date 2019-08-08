@@ -198,6 +198,7 @@
                                     <option value="">Selecione...</option>
                                     <option value="text">Texto</option>
                                     <option value="text-long">Texto Longo</option>
+                                    <option value="text-ckeditor">Editor Texto HTML - cKeditor</option>
                                     <option value="email">E-Mail</option>
                                     <option value="date">Data</option>
                                     <option value="time">Hora</option>
@@ -485,6 +486,17 @@
 
 
 
+                            <!--ALTURA DO CKEDITOR-->
+                            <div class="form-group col-bg-12 col-md-12 col-sm-12 col-xs-12 hide">
+                                <label>Altura do Editor:</label>
+                                <div class="input-group col-bg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <input class="form-control input-sm" style="text-transform: lowercase;" type="text" placeholder="Altura do editor vai refletir na quantidade de linhas de texto." name="form_add_edit_field_editorhtml_ckeditor_line_height" value="">
+                                </div>
+                                <span class="margin-left-0" style="font-size: 0.9em; font-weight: 100;">Unidades de Medidas: px, em, vh</span>
+                            </div>
+
+
+
                             <!--UPLOAD IMAGEM-->
                             <div id="id-div-upload-imagem" class="col-bg-12 col-md-12 col-sm-12 col-xs-12">
                                 <div class="form-group col-bg-12 col-md-12 col-sm-12 col-xs-12">
@@ -602,6 +614,7 @@
                     $('select[name="form_add_edit_field_type_characters"]').val('');
                     $('input[name="form_add_edit_field_min_length"]').val('');
                     $('input[name="form_add_edit_field_max_length"]').val('');
+                    $('input[name="form_add_edit_field_editorhtml_ckeditor_line_height"]').val('');
 //                    $('input[name="form_add_edit_field_upload_imagem_extensao_permitida"]').val('');
 //                    $('input[name="form_add_edit_field_upload_imagem_tamanho_maximo"]').val('');
 
@@ -663,6 +676,14 @@
                         $('input[name="form_add_edit_field_max_length"]').parent().parent().removeClass('hide');
                     } else {
                         $('input[name="form_add_edit_field_max_length"]').parent().parent().addClass('hide');
+                    }
+
+                    // INPUT LINE HEIGHT CKEDITOR
+                    if (result.form_add_edit_field_type == 'text-ckeditor') {
+                        $('input[name="form_add_edit_field_editorhtml_ckeditor_line_height"]').val(result.form_add_edit_field_editorhtml_ckeditor_line_height);
+                        $('input[name="form_add_edit_field_editorhtml_ckeditor_line_height"]').parent().parent().removeClass('hide');
+                    } else {
+                        $('input[name="form_add_edit_field_editorhtml_ckeditor_line_height"]').parent().parent().addClass('hide');
                     }
 
                     //INPUT UPLOAD IMAGEM upload-imagem
@@ -844,6 +865,8 @@
 
                     $('input[name="form_add_edit_field_max_length"]').val(result.form_add_edit_field_max_length);
 
+                    $('input[name="form_add_edit_field_max_length"]').val(result.form_add_edit_field_editorhtml_ckeditor_line_height);
+
                     $('#modal-btn-edit-field-table-formaddedit').css('display', 'block');
 
 
@@ -906,6 +929,7 @@
             $('input[name="form_add_edit_field_complement"]').val('');
             $('input[name="form_add_edit_field_min_length"]').val('');
             $('input[name="form_add_edit_field_max_length"]').val('');
+            $('input[name="form_add_edit_field_editorhtml_ckeditor_line_height"]').val('');
             $('select[name="form_add_edit_field_convert_letter_into"]').val('');
             $('select[name="form_add_edit_field_type_characters"]').val('');
             $('input[name="form_add_edit_field_upload_imagem_extensao_permitida"]').val('');
@@ -950,6 +974,15 @@
             } else {
                 $('input[name="form_add_edit_field_max_length"]').parent().parent().addClass('hide');
             }
+
+            //INPUT MAX LENGHT
+            if (_selected == 'text-ckeditor') {
+                $('input[name="form_add_edit_field_editorhtml_ckeditor_line_height"]').parent().parent().removeClass('hide');
+            } else {
+                $('input[name="form_add_edit_field_editorhtml_ckeditor_line_height"]').parent().parent().addClass('hide');
+            }
+
+
 
             //INPUT UPLOAD IMAGEM upload-imagem
             if (_selected == 'upload-imagem') {

@@ -2267,6 +2267,40 @@ class ProjectbuildCrud extends MY_Controller {
 
                                 $this->_formAddEditConfigInput = '<textarea rows="5" name="' . $_row['field_name'] . '" class="form-control" placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" ' . $this->_formAddEditConfigInputAtributos . '/><?=set_value("' . $_row['field_name'] . '",isset($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : set_value("' . $_row['field_name'] . '"));?></textarea>';
 
+                            elseif ($_param_formAddEditField['form_add_edit_field_type'] == 'text-ckeditor'):
+
+                                $this->_formAddEditConfigInput = '<textarea id="ckeditor-' . $_row['field_name'] . '" rows="5" name="' . $_row['field_name'] . '" class="form-control" placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" ' . $this->_formAddEditConfigInputAtributos . '/><?=set_value("' . $_row['field_name'] . '",isset($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : set_value("' . $_row['field_name'] . '"));?></textarea>';
+
+                                /* FORM ADD */
+                                $this->_formAddCodeEditorJS .= "<!--" . PHP_EOL;
+                                $this->_formAddCodeEditorJS .= " * JQUERY SCRIPT - EDITOR DE TEXTO HTML - CKEDITOR" . PHP_EOL;
+                                $this->_formAddCodeEditorJS .= "-->" . PHP_EOL;
+                                $this->_formAddCodeEditorJS .= "<script>" . PHP_EOL;
+                                $this->_formAddCodeEditorJS .= "    $(function(){" . PHP_EOL;
+                                $this->_formAddCodeEditorJS .= "        CKEDITOR.replace('ckeditor-" . $_row['field_name'] . "', {" . PHP_EOL;
+                                $this->_formAddCodeEditorJS .= "            height: ['" . $_param_formAddEditField['form_add_edit_field_editorhtml_ckeditor_line_height'] . "']" . PHP_EOL;
+                                $this->_formAddCodeEditorJS .= "        });" . PHP_EOL;
+                                $this->_formAddCodeEditorJS .= "    });" . PHP_EOL;
+                                $this->_formAddCodeEditorJS .= "</script>" . PHP_EOL;
+                                $this->_formAddCodeEditorJS .= "<!--" . PHP_EOL;
+                                $this->_formAddCodeEditorJS .= " * END JQUERY SCRIPT - EDITOR DE TEXTO HTML - CKEDITOR" . PHP_EOL;
+                                $this->_formAddCodeEditorJS .= "-->" . PHP_EOL . PHP_EOL . PHP_EOL;
+
+                                /* FORM EDIT */
+                                $this->_formEditCodeEditorJS .= "<!--" . PHP_EOL;
+                                $this->_formEditCodeEditorJS .= " * JQUERY SCRIPT - EDITOR DE TEXTO HTML - CKEDITOR" . PHP_EOL;
+                                $this->_formEditCodeEditorJS .= "-->" . PHP_EOL;
+                                $this->_formEditCodeEditorJS .= "<script>" . PHP_EOL;
+                                $this->_formEditCodeEditorJS .= "   $(function(){" . PHP_EOL;
+                                $this->_formEditCodeEditorJS .= "       CKEDITOR.replace('ckeditor-" . $_row['field_name'] . "', {" . PHP_EOL;
+                                $this->_formEditCodeEditorJS .= "           height: ['" . $_param_formAddEditField['form_add_edit_field_editorhtml_ckeditor_line_height'] . "']" . PHP_EOL;
+                                $this->_formEditCodeEditorJS .= "       });" . PHP_EOL;
+                                $this->_formEditCodeEditorJS .= "   });" . PHP_EOL;
+                                $this->_formEditCodeEditorJS .= "</script>" . PHP_EOL;
+                                $this->_formEditCodeEditorJS .= "<!--" . PHP_EOL;
+                                $this->_formEditCodeEditorJS .= " * END JQUERY SCRIPT - EDITOR DE TEXTO HTML - CKEDITOR" . PHP_EOL;
+                                $this->_formEditCodeEditorJS .= "-->" . PHP_EOL . PHP_EOL . PHP_EOL;
+
                             elseif ($_param_formAddEditField['form_add_edit_field_type'] == 'date'):
 
                                 $this->_formAddEditConfigInput = '<input type="text" name="' . $_row['field_name'] . '" class="form-control datepicker j-mask-data-ptbr j-mask-' . $_row['field_name'] . '" placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" value="<?=set_value("' . $_row['field_name'] . '",isset($dados->' . $_row['field_name'] . ') ? bz_formatdata($dados->' . $_row['field_name'] . ',"d/m/Y") : set_value("' . $_row['field_name'] . '"));?>" ' . $this->_formAddEditConfigInputAtributos . ' />';
@@ -3520,16 +3554,16 @@ class ProjectbuildCrud extends MY_Controller {
         echo '<pre class="vardump"> xxxx';
         var_dump($this->_templatePadrao);
         echo '</pre>';
-        
+
         /*
          * IMPORTA O TEMPLATE DO CONTROLLER
          */
-        if( $this->_templatePadrao == 'NAO' ){
+        if ($this->_templatePadrao == 'NAO') {
             $_template = file(FCPATH . 'application/modules/ProjectbuildCrud/views/tpl/tplBlankView.php');
-        }else{
+        } else {
             $_template = file(FCPATH . 'application/modules/ProjectbuildCrud/views/tpl/tplBlankViewDefaultTemplate.php');
         }
-        
+
         $this->_dadosController = '';
 
         foreach ($_template as $_row):

@@ -130,6 +130,10 @@
         <script src="<?= base_url(); ?>/assets/plugins/lightbox/js/lightbox.min.js" type="text/javascript"></script>
         <!--COPY TO CLIPBOARD - https://www.jqueryscript.net/text/jQuery-Plugin-To-Copy-Any-Text-Into-Your-Clipboard-Copy-to-Clipboard.html-->
         <script src="<?= base_url(); ?>/assets/js/jquery.copy-to-clipboard.js" type="text/javascript"></script>
+        <!--CKEDITOR-->
+        <script src="<?= base_url(); ?>/assets/plugins/ckeditorFull/ckeditor.js" type="text/javascript"></script>
+        <script src="<?= base_url(); ?>/assets/plugins/ckeditorFull/config.js" type="text/javascript"></script>
+
         <!--COMMON JS-->
         <script src="<?= base_url('assets'); ?>/js/common-js.js" type="text/javascript"></script>
         <!-- ROTINAS JQUERY/JAVASCRIPT -->

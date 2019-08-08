@@ -10,7 +10,6 @@ $(function () {
         });
     });
 });
-
 function fcnShowModalAguarde() {
 
     $('#modal-aguarde').modal({
@@ -18,7 +17,6 @@ function fcnShowModalAguarde() {
         keyboard: false,
         show: true,
     });
-
 }
 
 
@@ -29,8 +27,6 @@ function fcnShowModalAguarde() {
 $(function () {
     parent.$('#modal-aguarde').modal('hide');
 });
-
-
 function fcnHideModalAguarde() {
     $('#modal-aguarde').modal('hide');
 }
@@ -45,19 +41,12 @@ $(function () {
         $('.alert').fadeOut(1000);
     }, 3000);
 });
-
-
-
 /*
  * TOOLTIP
  */
 $(function () {
     $('.j-tooltip').tooltip({html: true});
-
 });
-
-
-
 /*
  * POPOVER
  */
@@ -71,8 +60,6 @@ $(function () {
         });
     });
 });
-
-
 /**
  * LIGHTBOX POPUP
  */
@@ -80,4 +67,3 @@ lightbox.option({
     'resizeDuration': 200,
     'wrapAround': true
 });
-
