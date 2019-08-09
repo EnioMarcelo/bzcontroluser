@@ -39,12 +39,12 @@
             </div>
         </div>
 
-        <div class="col-md-12 col-xs-12 padding-top-5 margin-left-15">
+<!--        <div class="col-md-12 col-xs-12 padding-top-5 margin-left-15">
             <ol class='breadcrumb col-md-12' style="margin-bottom:-10px;">
                 <li><a href='<?= site_url('dashboard'); ?>' target='_top' class='active btn-show-modal-aguarde'><i class='fa fa-dashboard margin-left-5'></i>&nbsp;Dashboard</a></li>
                 <li class='active'><i class='<?= $_font_icon; ?> margin-right-5'></i><?= $_titulo_app; ?></li>
             </ol>
-        </div>
+        </div>-->
 
     </div>
 
@@ -111,19 +111,7 @@
 							<!-- BTN INATIVO -->
 							<a href='<?= site_url($this->router->fetch_class()); ?>?ativo=N<?= (($this->input->get('search')) ? '&search=' . $this->input->get('search') : ''); ?>' class='btn btn-sm btn-danger btn-show-modal-aguarde j-tooltip <?= (strtoupper($this->input->get('ativo', TRUE)) == 'N') ? 'disabled' : ''; ?>' data-placement='bottom' data-toggle='tooltip' data-original-title='DESATIVADO'><i class='fa fa-circle-o'></i></a>
 							<!-- BTN INATIVO -->
-						<?php endif; ?>
-						<!-- BTN ATIVO/INATIVO -->
-                        
-                        
-                        
-                        <!-- BTN FULL SCREEN -->
-						<a class='btn btn-sm btn-flat j-btn-open-modal-fullscreen j-tooltip' data-placement='bottom' data-toggle='tooltip' data-original-title='Tela Cheia'><i class='fa fa-external-link'></i></a>
-						<!-- BTN FULL SCREEN -->	
-
-                        <!-- BTN CLOSE FULL SCREEN -->
-                        <a style="display: none" class='btn btn-sm btn-flat j-btn-close-modal-fullscreen j-tooltip' data-placement='bottom' data-toggle='tooltip' data-original-title='Fechar Tela'><i class='fa fa-close'></i></a>
-                        <!-- BTN CLOSE FULL SCREEN -->	
-                        
+						<?php endif; ?>                       
                         
 
 					</div>

@@ -1,6 +1,6 @@
 <!--MODAL BUILD APP-->
 
-<div class="modal" id="modalBuildApp" tabindex="-1" role="dialog" aria-labelledby="modalBuildAppLabel" aria-hidden="true">
+<div id="modalBuildApp" class="modal" style="margin-top:-20px;" tabindex="-1" role="dialog" aria-labelledby="modalBuildAppLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -35,7 +35,7 @@
             $("#modalBuildApp").find('iframe').attr('src', _src);
             // $("#modalBuildApp").find('iframe').hide();
 
-            $('#modalBuildAppIframe').load(function() {
+            $('#modalBuildAppIframe').load(function () {
                 $('#modalBuildAppIframe').contents().find(".j-btn-open-modal-fullscreen").remove();
                 // $("#modalBuildApp").find('iframe').show();
             });

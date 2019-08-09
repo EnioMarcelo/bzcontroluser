@@ -1,6 +1,6 @@
 <?php
 /*
-  Created on : 07/08/2019, 13:35PM
+  Created on : 09/08/2019, 14:29PM
   Author     : Enio Marcelo - eniomarcelo@gmail.com
  */
 
@@ -18,10 +18,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         <i class="<?= $_font_icon; ?>"></i>
         <?= $_titulo_app; ?>
     </h1>
-    <ol class="breadcrumb">
-        <li><a href="<?= site_url('dashboard'); ?>" target="_top" class="active btn-show-modal-aguarde"><i class="fa fa-dashboard"></i>Dashboard</a></li>
-        <li class=""><a href="<?= site_url($this->router->fetch_class()); ?>" class="btn-show-modal-aguarde"><i class="<?= $_font_icon; ?>"></i><?= $_titulo_app; ?></a></li>
-    </ol>
+    <!--    <ol class="breadcrumb">
+            <li><a href="<?= site_url('dashboard'); ?>" target="_top" class="active btn-show-modal-aguarde"><i class="fa fa-dashboard"></i>Dashboard</a></li>
+            <li class=""><a href="<?= site_url($this->router->fetch_class()); ?>" class="btn-show-modal-aguarde"><i class="<?= $_font_icon; ?>"></i><?= $_titulo_app; ?></a></li>
+        </ol>-->
 </section>
 <!-- END BREADCUMBS -->
 
@@ -39,15 +39,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     <div class="input-group-btn text-right"></div>
 
                 </div>
-
-
-                <!-- BTN FULL SCREEN -->
-                <a class='btn btn-sm btn-flat j-btn-open-modal-fullscreen j-tooltip' data-placement='bottom' data-toggle='tooltip' data-original-title='Tela Cheia'><i class='fa fa-external-link'></i></a>
-                <!-- BTN FULL SCREEN -->	
-
-                <!-- BTN CLOSE FULL SCREEN -->
-                <a style="display: none" class='btn btn-sm btn-flat j-btn-close-modal-fullscreen j-tooltip' data-placement='bottom' data-toggle='tooltip' data-original-title='Fechar Tela'><i class='fa fa-close'></i></a>
-                <!-- BTN CLOSE FULL SCREEN -->	
 
             </div>
         </div><!-- /.box-header -->

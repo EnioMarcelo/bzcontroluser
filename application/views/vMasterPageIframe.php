@@ -134,6 +134,7 @@
         <script src="<?= base_url(); ?>/assets/plugins/ckeditorFull/ckeditor.js" type="text/javascript"></script>
         <script src="<?= base_url(); ?>/assets/plugins/ckeditorFull/config.js" type="text/javascript"></script>
 
+
         <!--COMMON JS-->
         <script src="<?= base_url('assets'); ?>/js/common-js.js" type="text/javascript"></script>
         <!-- ROTINAS JQUERY/JAVASCRIPT -->

@@ -1,16 +1,12 @@
 <?php
-
-    /**
-     * Created on : 18/12/2018, 11:28:28
-     * Author     : Enio Marcelo Buzaneli - eniomarcelo@gmail.com
-     */
-
+/**
+ * Created on : 18/12/2018, 11:28:28
+ * Author     : Enio Marcelo Buzaneli - eniomarcelo@gmail.com
+ */
 ?>
 
 
 <script>
-
-
     /*
      *  FUNÇÃO TESTA O TIMEOUT DA SESSÃO DO USUÁRIO
      */
@@ -56,21 +52,25 @@
     $(function () {
 
 
-        function _sizeContainer() {
+        function _sizeContainer(_iframe_modulo) {
             var _container_fluid_width = $('.content-wrapper').width();
-            var _container_fluid_height = $('.content-wrapper').height();
-
-            $('.iframe-modulos').css('height', _container_fluid_height - 5);
-
+            var _container_fluid_height = $('.sidebar').height() - 20;
+            $('.iframe-modulo-' + _iframe_modulo).parent().css('height', _container_fluid_height);
         }
 
+
         $('.j-btn-linkmenu').click(function () {
+            event.preventDefault();
 
             $('#modal-aguarde').modal({
                 backdrop: 'static',
                 keyboard: false,
                 show: true,
             });
+
+            var nameModulo = $(this).attr('href');
+            nameModulo = nameModulo.replace("#", "");
+
 
             $("li a").removeClass("bg-<?= ___BZ_LAYOUT_SKINCOLOR___; ?>-active");
             $(this).addClass('bg-<?= ___BZ_LAYOUT_SKINCOLOR___; ?>-active');
@@ -80,14 +80,43 @@
             var url = '<?= site_url(); ?>/' + $(this).attr('href');
             url = url.replace("#", "");
 
-            $('.iframe-modulos').attr('src', url);
-            $('.iframe-modulos').removeClass('invisible');
+            /*$('.iframe-modulos').attr('src', url);
+             $('.iframe-modulos').removeClass('invisible');*/
 
-            _sizeContainer();
+            var _iframe_modulos_content = $('.iframe-modulos').val();
 
             $('body').removeClass('sidebar-open');
 
-            return false;
+            if ($("#bz-tab-modulos").find("#" + nameModulo + "-tab").length) {
+                
+                $('#modal-aguarde').modal('hide');
+                $('.iframe-modulo-' + nameModulo).attr('src', url);
+                
+            } else {
+
+                $('#bz-tab-modulos #bzTab').append('<li class="nav-item"><a class="nav-link" id="' + nameModulo + '-tab" data-toggle="tab" href="#' + nameModulo + '" role="tab" aria-controls="' + nameModulo + '" aria-selected="true">' + $(this).html() + '</a></li>');
+                $('#bz-tab-modulos #bzTabContent').append('<div class="tab-pane fade" id="' + nameModulo + '" role="tabpanel" aria-labelledby="' + nameModulo + '-tab"></div>');
+
+                $('#bz-tab-modulos #bzTabContent #' + nameModulo).html('<iframe class="iframe-modulo-' + nameModulo + ' invisible margin-top-0" src="" width="100%"  scrolling="yes" style="border: none; min-height: 100% !important"></iframe>');
+
+                $('.iframe-modulo-' + nameModulo).attr('src', url);
+                $('.iframe-modulo-' + nameModulo).removeClass('invisible');
+
+
+            }
+
+            $('#' + nameModulo + '-tab').trigger("click");
+
+            _sizeContainer(nameModulo);
+
+
+
+
+
+
+
+
+
         });
 
     });
@@ -128,7 +157,7 @@
 
                         //swal('SUCESSO', 'Configurações Gerais Alterado com Sucesso.', 'success')
                         //    .then((value) => {
-                        //        //window.location.href = "<?////= site_url(); ?>////";
+                        //        //window.location.href = "<? ////= site_url();                                                               ?>////";
                         //        location.reload(true);
                         //    });
 

@@ -130,7 +130,7 @@
                 if ($_icon_menu_pai):
                     $_menuBuild = str_replace('fa fa-caret-right', 'fa ' . $_icon_menu_pai, $_menuBuild);
                 endif;
-                $_menuFilho .= '   <li><a href="#' . strtolower($row_menu_filho['app']) . '" style="padding-left:40px;" class="j-btn-linkmenu"><i class=\'fa ' . ($row_menu_filho['icon'] ? $row_menu_filho['icon'] : 'fa-caret-right') . '\'></i>' . $row_menu_filho['nome_menu'] . '</a></li>';
+                $_menuFilho .= '   <li><a href="#' . strtolower($row_menu_filho['app']) . '" style="padding-left:40px;" class="j-btn-linkmenu"><i class=\'margin-right-5 fa ' . ($row_menu_filho['icon'] ? $row_menu_filho['icon'] : 'fa-caret-right') . '\'></i>' . $row_menu_filho['nome_menu'] . '</a></li>';
 
 //                $_menuFilho .= '<li class="treeview margin-left-10" style="display: block;">';
 //                $_menuFilho .= ' <a href="#"><i class=\'fa ' . ($row_menu_filho['icon'] ? $row_menu_filho['icon'] : 'fa-caret-right') . '\'></i> <span class="margin-0">' . $row_menu_filho['nome_menu'] . '</span> <i class="fa fa-angle-left pull-right"></i></a>';
@@ -390,28 +390,28 @@
                                     <li><a href="#menu" style="padding-left:40px;" class="j-btn-linkmenu">Menus</a></li>
                                     <li><a href="#auditoria" style="padding-left:40px;" class="j-btn-linkmenu margin-left: -20px;'">Auditoria</a></li>
 
-                                                                    <!--                                    <li class="treeview" style="display: block;"><a href="#"><i class='fa fa-circle-o'></i> <span>Administração</span> <i class="fa fa-angle-left pull-right"></i></a>
-                                                                                                            <ul class="treeview-menu">
+                                                                                                                                            <!--                                    <li class="treeview" style="display: block;"><a href="#"><i class='fa fa-circle-o'></i> <span>Administração</span> <i class="fa fa-angle-left pull-right"></i></a>
+                                                                                                                                                                                    <ul class="treeview-menu">
 
 
-                                                                                                                <li><a href="#usuarios" class="j-btn-linkmenu">Usuários</a></li>
-                                                                                                                <li><a href="#grupos" class="j-btn-linkmenu">Grupos</a></li>
-                                                                                                                <li><a href="#apps" class="j-btn-linkmenu">Aplicativos</a></li>
-                                                                                                                <li class="treeview" style="display: block;"><a href="#"><i class='fa fa-circle-o'></i> <span>Administração</span> <i class="fa fa-angle-left pull-right"></i></a>
-                                                                                                                    <ul class="treeview-menu">
+                                                                                                                                                                                        <li><a href="#usuarios" class="j-btn-linkmenu">Usuários</a></li>
+                                                                                                                                                                                        <li><a href="#grupos" class="j-btn-linkmenu">Grupos</a></li>
+                                                                                                                                                                                        <li><a href="#apps" class="j-btn-linkmenu">Aplicativos</a></li>
+                                                                                                                                                                                        <li class="treeview" style="display: block;"><a href="#"><i class='fa fa-circle-o'></i> <span>Administração</span> <i class="fa fa-angle-left pull-right"></i></a>
+                                                                                                                                                                                            <ul class="treeview-menu">
 
 
-                                                                                                                        <li><a href="#usuarios" class="j-btn-linkmenu">Usuários</a></li>
-                                                                                                                        <li><a href="#grupos" class="j-btn-linkmenu">Grupos</a></li>
-                                                                                                                        <li><a href="#apps" class="j-btn-linkmenu">Aplicativos</a></li>
+                                                                                                                                                                                                <li><a href="#usuarios" class="j-btn-linkmenu">Usuários</a></li>
+                                                                                                                                                                                                <li><a href="#grupos" class="j-btn-linkmenu">Grupos</a></li>
+                                                                                                                                                                                                <li><a href="#apps" class="j-btn-linkmenu">Aplicativos</a></li>
 
 
-                                                                                                                    </ul>
-                                                                                                                </li>
+                                                                                                                                                                                            </ul>
+                                                                                                                                                                                        </li>
 
 
-                                                                                                            </ul>
-                                                                                                        </li>-->
+                                                                                                                                                                                    </ul>
+                                                                                                                                                                                </li>-->
 
 
                                 </ul>
@@ -468,10 +468,10 @@
                     endif;
                     ?>
 
-
-                    <iframe class="iframe-modulos invisible margin-top-0" src="" width="100%"  scrolling="yes" style="border: none; min-height: 100% !important">
-                    </iframe>
-
+                    <div id="bz-tab-modulos" class="margin-top-5">
+                        <ul class="nav nav-tabs" id="bzTab" role="tablist"></ul>
+                        <div class="tab-content" id="bzTabContent"></div>
+                    </div>
 
                     <!-- END CONTENT -->
 
@@ -607,22 +607,5 @@
 <!-- END MODAL AGUARDE -->
 
 
-<!-- MODAL FULL SCREEN -->
-<div class="modal modal-fullscreen footer-to-bottom" id="bzModalFullscreen" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog animated zoomInLeft">
-        <div class="modal-content">
-            <!--            <div class="modal-header">
-                            <button type="button" style="" class="close padding-right-20 padding-left-20 j-tooltip" data-original-title='Sair Tela Cheia' data-placement='bottom' data-toggle='tooltip' data-dismiss="modal" aria-hidden="true">×</button>
-                        </div>-->
-            <div class="modal-body">
-                <iframe class="iframe-modulos margin-top-0" src="<?= site_url($this->router->fetch_class()); ?>" width="100%"  scrolling="yes" style="border: none; min-height: 100% !important">
-                </iframe>
-            </div>
-        </div>
-        <!-- /.modal-content -->
-    </div>
-    <!-- /.modal-dialog -->
-</div>
-<!-- /.modal -->
-<!-- END MODAL FULL SCREEN -->
+
 
