@@ -1,6 +1,6 @@
 <?php
 /*
-  Created on : 09/08/2019, 14:29PM
+  Created on : 19/08/2019, 08:13AM
   Author     : Enio Marcelo - eniomarcelo@gmail.com
  */
 
@@ -96,6 +96,31 @@
                                                 </div>
                                                 
 
+                                                <?php $_error = form_error("profissao", "<small class='text-danger col-xs-12 bz-input-error'>", "</small>"); ?>
+                                                <div id="profissao" class="form-group has-feedback col-sm-12">
+                                                    <label for="profissao"><i class="fa fa-asterisk margin-right-5 text-error " style="font-size: 0.7em;"></i>Profissão</label>
+                                                    <p style="margin-bottom: 0">
+<?php
+$_results_profissao = $this->db->query("SELECT id,UPPER(profissao) FROM cad_profissao ORDER BY profissao");
+$_last_query_profissao = strtolower($this->db->last_query());
+$_options_profissao = $_results_profissao->result_array();
+$_options_profissao = $_options_profissao[0];
+$_keyOptions_profissao = array();
+$_list_profissao[0] = 'Selecione...' ;
+foreach ($_options_profissao as $key => $value_profissao):
+$_keyOptions_profissao[] = $key;
+endforeach;
+foreach ($_results_profissao->result_array() as $_r_profissao):
+$_list_profissao[ $_r_profissao[ $_keyOptions_profissao[0] ] ] = $_r_profissao[ $_keyOptions_profissao[1] ];
+endforeach;
+echo form_dropdown('profissao', $_list_profissao, set_value('profissao',isset($dados->profissao) ? $dados->profissao : set_value('profissao')), 'class="form-control select2"  style="width:100%;"');
+?>
+</p>
+
+                                                    <?= $_error; ?>
+                                                </div>
+                                                
+
                                                 <?php $_error = form_error("endereco", "<small class='text-danger col-xs-12 bz-input-error'>", "</small>"); ?>
                                                 <div id="endereco" class="form-group has-feedback col-sm-12">
                                                     <label for="endereco"><i class="fa fa-asterisk margin-right-5 text-error " style="font-size: 0.7em;"></i>Editor de Texto</label>
@@ -128,19 +153,25 @@
 
   </div><!--END BOX -->
     
-    <!--MODAL bzModal() FORM EDIT-->
-    <?php
-    if( !empty($_modalFormEdit) ){
-        echo $_modalFormEdit;
-    }
-    ?>
-    <!--END MODAL bzModal() FORM EDIT-->    
     
 </div><!--END ROW -->
 
 <?= form_close(); ?>
 <!--END  OPEN FORM -->
 
+
+  
+  
+<!--MODAL mc_modal() FORM ADD-->
+<?php
+if( !empty($modalFormEdit) ){
+  echo $modalFormEdit;
+}
+?>
+<!--END MODAL mc_modal() FORM ADD-->
+  
+  
+  
 
 
 
@@ -150,7 +181,7 @@
 <script>
    $(function(){
        CKEDITOR.replace('ckeditor-endereco', {
-           height: ['']
+           height: ['100vh']
        });
    });
 </script>

@@ -362,6 +362,7 @@
                     <!-- /.search form -->
 
                     <!-- Sidebar Menu -->
+                    
                     <ul class="sidebar-menu">
                         <?php if (check_system_is_manutencao()): ?>
                             <li class="header text-center bg-orange-active margin-top-15 margin-bottom-10 j-em-manutencao" style="color: black !important">EM MANUTENÇÃO</li>
@@ -371,7 +372,7 @@
 
                         <li class="header text-center margin-top-10">MENU</li>
                         <!-- Optionally, you can add icons to the links -->
-                        <li class="active btn-show-modal-aguarde"><a href="<?= site_url('dashboard'); ?>"><i class='fa fa-dashboard'></i> <span>Dashboard</span></a></li>
+                        <li class="active btn-show-modal-aguarde"><a href="<?= site_url('dashboard'); ?>"><i class='fa fa-dashboard'></i><span>Dashboard</span></a></li>
                         <!--                        <li><a href="#"><i class='fa fa-link'></i> <span>Another Link</span></a></li>-->
 
 
@@ -383,36 +384,11 @@
                                 <a href="#"><i class='fa fa-server'></i> <span>Administração</span> <i class="fa fa-angle-left pull-right"></i></a>
                                 <ul class="treeview-menu">
 
-
-                                    <li><a href="#usuarios" style="padding-left:40px;" class="j-btn-linkmenu">Usuários</a></li>
-                                    <li><a href="#grupos" style="padding-left:40px;" class="j-btn-linkmenu">Grupos</a></li>
-                                    <li><a href="#apps" style="padding-left:40px;" class="j-btn-linkmenu">Aplicativos</a></li>
-                                    <li><a href="#menu" style="padding-left:40px;" class="j-btn-linkmenu">Menus</a></li>
-                                    <li><a href="#auditoria" style="padding-left:40px;" class="j-btn-linkmenu margin-left: -20px;'">Auditoria</a></li>
-
-                                                                                                                                            <!--                                    <li class="treeview" style="display: block;"><a href="#"><i class='fa fa-circle-o'></i> <span>Administração</span> <i class="fa fa-angle-left pull-right"></i></a>
-                                                                                                                                                                                    <ul class="treeview-menu">
-
-
-                                                                                                                                                                                        <li><a href="#usuarios" class="j-btn-linkmenu">Usuários</a></li>
-                                                                                                                                                                                        <li><a href="#grupos" class="j-btn-linkmenu">Grupos</a></li>
-                                                                                                                                                                                        <li><a href="#apps" class="j-btn-linkmenu">Aplicativos</a></li>
-                                                                                                                                                                                        <li class="treeview" style="display: block;"><a href="#"><i class='fa fa-circle-o'></i> <span>Administração</span> <i class="fa fa-angle-left pull-right"></i></a>
-                                                                                                                                                                                            <ul class="treeview-menu">
-
-
-                                                                                                                                                                                                <li><a href="#usuarios" class="j-btn-linkmenu">Usuários</a></li>
-                                                                                                                                                                                                <li><a href="#grupos" class="j-btn-linkmenu">Grupos</a></li>
-                                                                                                                                                                                                <li><a href="#apps" class="j-btn-linkmenu">Aplicativos</a></li>
-
-
-                                                                                                                                                                                            </ul>
-                                                                                                                                                                                        </li>
-
-
-                                                                                                                                                                                    </ul>
-                                                                                                                                                                                </li>-->
-
+                                    <li><a href="#usuarios" style="padding-left:40px;" class="j-btn-linkmenu"><i class='fa fa fa-user margin-right-5'></i>Usuários</a></li>
+                                    <li><a href="#grupos" style="padding-left:40px;" class="j-btn-linkmenu"><i class='fa fa fa-group margin-right-5'></i>Grupos</a></li>
+                                    <li><a href="#apps" style="padding-left:40px;" class="j-btn-linkmenu"><i class='fa fa fa-code margin-right-5'></i>Aplicativos</a></li>
+                                    <li><a href="#menu" style="padding-left:40px;" class="j-btn-linkmenu"><i class='fa fa fa-list margin-right-5'></i>Menus</a></li>
+                                    <li><a href="#auditoria" style="padding-left:40px;" class="j-btn-linkmenu margin-left: -20px;'"><i class='fa fa fa-map-o margin-right-5'></i>Auditoria</a></li>
 
                                 </ul>
 
@@ -425,7 +401,7 @@
                                     <a href="#"><i class='fa fa-cogs'></i> <span>Build</span> <i class="fa fa-angle-left pull-right"></i></a>
                                     <ul class="treeview-menu">
 
-                                        <li><a href="#projectbuildcrud" style="padding-left:40px;" class="j-btn-linkmenu">Projeto</a></li>
+                                        <li><a href="#projectbuildcrud" style="padding-left:40px;" class="j-btn-linkmenu"><i class='fa fa-codepen margin-right-5'></i>Projeto</a></li>
 
                                     </ul>
 

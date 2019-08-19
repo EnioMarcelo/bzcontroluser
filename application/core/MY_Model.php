@@ -101,12 +101,6 @@ class MY_Model extends CI_Model {
         if ($_orderBY != NULL) {
             $this->db->order_by($_orderBY);
         }
-
-        echo '<pre class="vardump">';
-        var_dump($this->order_by);
-        echo '</pre>';
-        exit;
-
         return $this->db->get($_dataBaseName);
     }
 

@@ -38,9 +38,11 @@
             <small style=" font-size: 0.9em;"><?= $_dados_projeto->app_titulo; ?></small>
         </h3>
 
-        <h3 class="box-title"> - Tabela:
-            <small style=" font-size: 0.9em;"><?= $_dados_projeto->tabela; ?></small>
-        </h3>
+        <?php if (!empty($_parametros['type_project']) && $_parametros['type_project'] !== 'blank'): ?>
+            <h3 class="box-title"> - Tabela:
+                <small style=" font-size: 0.9em;"><?= $_dados_projeto->tabela; ?></small>
+            </h3>
+        <?php endif; ?>
 
         <div class="row pull-right margin-right-5">
 
@@ -71,6 +73,12 @@
                 <span class="fa fa-external-link-square j-tooltip" data-placement="bottom" data-toggle="tooltip" data-original-title="Executar Aplicação"></span>
             </a>
             <!-- END BTN EXECUTAR APLICAÇÃO-->
+
+            <!-- BTN SIDEBAR MACRO CASE-->
+            <a class="btn btn-sm bg-fuchsia-active margin-left-20 j-tooltip" data-toggle="control-sidebar" data-placement="bottom" data-toggle="tooltip" data-original-title="Estojo de Macros">
+                <span class="fa fa-align-justify"></span>
+            </a>
+            <!-- END BTN SIDEBAR MACRO CASE-->
 
         </div>
 
@@ -129,9 +137,10 @@
 
         <textarea id="codeeditor_1"  class="col-xs-12" name="code_script" rows="30" width=="100%" autofocus /><?= (($_parametros['code_script']) ? base64_decode($_parametros['code_script']) : null); ?></textarea>
 
-
     </div>
+
 </div>
+
 
 
 <?= form_close(); ?>
@@ -184,3 +193,6 @@
 
 
 <?php $this->load->view('modalBuildApp'); ?>
+
+
+<?php $this->load->view('sidebarCaseMacros'); ?>

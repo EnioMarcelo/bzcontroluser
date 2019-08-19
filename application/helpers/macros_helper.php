@@ -45,7 +45,7 @@ function mc_image_link_modal($_image_name, $_type = 'single') {
 
         $_btn_view_copy_image = '<div class="btn-group btn-xs">'
                 . '<button type="button" class="btn btn-default btn-xs j-tooltip" data-toggle="tooltip" data-original-title="Download"><a href="' . $_url_imagem . '" download="' . $_image_name . '"><i class="fa fa-download"></i></a></button>'
-                . '<button type="button" class="btn btn-default btn-xs j-tooltip" data-toggle="tooltip" data-original-title="Copiar Link"  data-clipboard-text="' . $_url_imagem . '"><a><i class="fa fa-copy"></i></a></button>'
+                . '<button type="button" class="btn btn-default btn-xs j-tooltip" data-toggle="tooltip" data-original-title="Copiar Link" data-clipboard-message="Link da imagem copiado com sucesso." data-clipboard-text="' . $_url_imagem . '"><a><i class="fa fa-copy"></i></a></button>'
                 . '<button type="button" class="btn btn-default btn-xs btn-image-link-lightbox j-tooltip" data-toggle="tooltip" data-original-title="Ver Imagem">' . $_imagem . '</button>'
                 . '</div>';
 
@@ -74,7 +74,7 @@ function mc_image_thumb_modal($_image_name, $_type = 'single') {
         $_btn_view_copy_image = '<div class="display-flex display-flex-wrap display-flex-justify-content-right">'
                 . '     <div class="margin-bottom-0"><div class="btn-image-link-lightbox j-tooltip" data-toggle="tooltip" data-placement="left" data-original-title="Ver Imagem">' . $_imagem . '</div></div>'
                 . '     <div class="btn btn-default btn-xs margin-bottom-0 margin-top-3"><a href="' . $_url_imagem . '" download="' . $_image_name . '" class="j-tooltip" data-toggle="tooltip" data-original-title="Download"><i class="fa fa-download"></i></a>'
-                . '                                                                      &nbsp;&nbsp;|&nbsp;&nbsp;<a class="j-tooltip" data-toggle="tooltip" data-original-title="Copiar Link"  data-clipboard-text="' . $_url_imagem . '"><i class="fa fa-copy"></i></a></div>'
+                . '                                                                      &nbsp;&nbsp;|&nbsp;&nbsp;<a class="j-tooltip" data-toggle="tooltip" data-original-title="Copiar Link"  data-clipboard-message="Link da imagem copiado com sucesso." data-clipboard-text="' . $_url_imagem . '"><i class="fa fa-copy"></i></a></div>'
                 . '</div>';
 
 
@@ -86,44 +86,40 @@ function mc_image_thumb_modal($_image_name, $_type = 'single') {
 
 /**
  *  ==================================================================================================================================================================
- *      ARRAY SERACH'S
+ *      ARRAY's
  *  ==================================================================================================================================================================
  */
 
 /**
- * FILTRA O CONTEUDO DE UM ARRAY POR UM FIELD ESPECÍFICO.
+ * FILTRA O CONTEÚDO DE UM ARRAY POR UM CAMPO ESPECÍFICO.
  *
  * 
- * @param type $_array              ARRAY COM OS DADOS A SEREM PESQUISADOS
- * @param type $_field              NOME DO CAMPO/COLUNA DO ARRAY
- * @param type $_value              VALOR A SER PESQUISADO NO CAMPO/COLUNA DO ARRAY
- * @return type
+ * $_filterArray['array']            Passa o ARRAY para ser filtrado
+ * $_filterArray['field']            Passa o NOME DO CAMPO que contém o valor a ser filtrado
+ * $_filterArray['value']            Passa o VALOR do CAMPO a ser filtrado
+ * $_filterArray['like_value']       Y = Se contém a ocorrência em qualquer parte do campo ou N = Procura pelo valor exato da ocorrência no campo
  */
-function mc_search_exact_field_array($_array, $_field, $_value) {
-
-    $p['array'] = $_array;
-    $p['field'] = $_field;
-    $p['value'] = $_value;
+function mc_filter_field_array($_p) {
 
     return bz_filter_array($_p);
 }
 
 /**
- * SEARCH AS IN THE ARRAY IN ALL THE COLUMNS
+ * FILTRA O CONTEÚDO DE UM ARRAY QUE CONTENHA UMA OCORRÊNCIA EM QUALQUER CAMPO DO ARRAY.
  * 
- * @param type $array
- * @param type $search
- * @return type
+ * @param array $array       Passa o ARRAY para ser filtrado
+ * @param string $search      Passa o VALOR a ser pesquisado dentro do ARRAY
+ *
+ * @return array
  */
-function mc_search_like_array($array, $search) {
+function mc_filter_like_array($array, $search) {
 
     $_returnArray = [];
 
     foreach ($array as $row) {
-        $_json = json_encode($row);
-        $_pos = strpos($_json, $search);
+        $_json = json_encode($row, JSON_UNESCAPED_UNICODE);
 
-        if ($_pos > 0) {
+        if (mb_stristr($_json, $search)) {
             array_push($_returnArray, $row);
         }
     }
@@ -132,6 +128,48 @@ function mc_search_like_array($array, $search) {
 }
 
 /* END function mc_search_like_array() */
+
+/**
+ * ALTERAR PARA MAIÚSCULO OU MINÚSCULO OS VALORES DO ARRAY RECURSIVAMENTE (SUPORTA UTF8 / MULTIBYTE)
+ * 
+ * Prâmetros: (CASE_LOWER: para minúsculo | CASE_UPPER: para maiúsculo)
+ * 
+ * @param array $array The array
+ * @param int $case Case to transform (CASE_LOWER | CASE_UPPER)
+ * @return array Final array
+ * @return array
+ */
+function mc_change_values_case_array(array $array, $case = CASE_LOWER) {
+    if (!is_array($array)) {
+        return [];
+    }
+
+    /** @var integer $theCase */
+    $theCase = ($case === CASE_LOWER) ? MB_CASE_LOWER : MB_CASE_UPPER;
+
+    foreach ($array as $key => $value) {
+        $array[$key] = is_array($value) ? mc_change_values_case_array($value, $case) : mb_convert_case($array[$key], $theCase, 'UTF-8');
+    }
+
+    return $array;
+}
+
+/**
+ * EXCLUI UMA OU MAIS COLUNAS DE UM ARRAY
+ *
+ * @param array $array     Passa o array com os dados.
+ * @param array $fields    Nome das Colunas/Campos do array que serão exluidas. EX: array('field-1','field-2','field-3');
+ *
+ * @return array
+ */
+function mc_exclude_column_array(array $array, array $fields) {
+
+    foreach ($fields as $field):
+        $array = bz_queryResultExcludeCol($array, $field);
+    endforeach;
+
+    return $array;
+}
 
 /**
  *  ==================================================================================================================================================================
@@ -211,10 +249,21 @@ function mc_alertToast($titulo, $mensagem, $tipo = 'info', $position = 'top-righ
 
 /* function mc_alertToast() */
 
+/**
+ * SETA OS ALERTAS DO SISTEMA EM BOOTSTRAP DEFAULT
+ * danger, warning, success, info
+ * @param type $titulo
+ * @param type $mensagem
+ * @param type $fa_icon
+ * @param type $tipo
+ * @return type
+ */
 function mc_alert($titulo = NULL, $mensagem = NULL, $fa_icon = 'fa-times', $tipo = NULL) {
     set_mensagem($titulo, $mensagem, $fa_icon, $tipo);
     return;
 }
+
+/* function mc_alert() */
 
 /* ================================================================================================================================================================== */
 
@@ -264,7 +313,7 @@ function mc_findByIdDataDB($_dataBaseName, $_id) {
  */
 function mc_findByFieldDataDB($_dataBaseName, $_field, $_value, $_condition = NULL, $_orderBY = NULL) {
     $CI = & get_instance();
-    return $CI->m->findByField($_dataBaseName, $_field, $_value, $_condition);
+    return $CI->m->findByField($_dataBaseName, $_field, $_value, $_condition, $_orderBY);
 }
 
 /* END function mc_findByFieldDataDB() */
@@ -284,6 +333,18 @@ function mc_selectDataDB($table_name, $where = NULL, $param = array()) {
 }
 
 /**
+ * INSERT DATA ON DATABASE
+ *
+ * @param type $table_name
+ * @param array $dados
+ * @return type
+ */
+function mc_insertDataDB($table_name, array $dados) {
+    $CI = & get_instance();
+    return $CI->create->ExecCreate($table_name, $dados);
+}
+
+/**
  * UPDATE DATA ON DATABASE
  * 
  * @param type $table_name
@@ -296,7 +357,120 @@ function mc_updateDataDB($table_name, array $dados, $termos) {
     return $CI->update->ExecUpdate($table_name, $dados, $termos);
 }
 
+/**
+ * MACRO DELETE DATA ON DATABASE
+ *
+ * @param type $table_name
+ * @param type $termos
+ * @return type
+ */
+function mc_deleteDataDB($table_name, $termos) {
+    $CI = & get_instance();
+    return $CI->update->ExecDelete($table_name, $termos);
+}
+
 /* ================================================================================================================================================================== */
+
+/**
+ *  ==================================================================================================================================================================
+ *      EMAIL
+ *  ==================================================================================================================================================================
+ */
+
+/**
+ * MACRO ENVIAR EMAIL
+ *
+ * @param string $para              Para quem vai ser mandado este email - DESTINO
+ * @param string $assunto           Qual o assunto do email
+ * @param string $mensagem          Mensagem/Corpo do email
+ * @param string $formato           Por padrão será HTML
+ */
+function mc_send_mail($para, $assunto, $mensagem, $formato = 'html') {
+    return bz_enviar_email($para, $assunto, $mensagem, $formato);
+}
+
+/**
+ *  ==================================================================================================================================================================
+ *      DIVERSOS
+ *  ==================================================================================================================================================================
+ */
+
+/**
+ * MACRO REDIRECT PAGE
+ * 
+ * @param string $_redirectApp      Nome do APP para onde deverá ser redirecionado
+ * @param string $_parametros       Parâmetros para do redirecionamento. Ex. search=nome&field=text
+ */
+function mc_redirect($_redirectApp = NULL, $_parametros = NULL) {
+    $CI = & get_instance();
+
+    if (empty($_redirectApp)) {
+        $_redirectApp = $CI->router->fetch_class();
+    }
+
+    if (empty($_parametros)) {
+        redirect($CI->_redirect . '/' . $_redirectApp . '?' . mc_get_parameters_url());
+    } else {
+        redirect($CI->_redirect . '/' . $_redirectApp . '?' . $_parametros);
+    }
+}
+
+/**
+ * MACRO QUE PEGA OS PARÂMETROS DA URL
+ *
+ * @return type
+ */
+function mc_get_parameters_url() {
+    return bz_app_parametros_url();
+}
+
+/**
+ * MACRO GRAVAR AUDITORIA
+ *
+ * @param array $dados  Array com os dados para gravar auditoria
+ * 
+ * $dados['action'] = 'add';
+ * $dados['description'] = 'Mensagem da Auditoria';
+ *
+ * @return type
+ */
+function mc_add_auditoria($dados = array()) {
+    return add_auditoria($dados);
+}
+
+/**
+ * MACRO CONVERTE DATA PARA O PADRÃO QUE FOR PASSADO NO PARAMETRO $mascara
+ *
+ * Exemplo : mc_format_date(DATA,'d/m/Y H:i:s');
+ * 
+ * @param date $data
+ * @param type $mascara
+ * @return type
+ */
+function mc_format_date($data, $mascara) {
+    return bz_formatdata($data, $mascara);
+}
+
+/**
+ * MACRO PARA FORMATAÇÃO DE VALORES
+ *
+ * Exemplo : mc_format_date(DATA,'d/m/Y H:i:s');
+ * 
+ * @param type $valor
+ * @param type $decimal
+ * @param type $lang
+ * @param type $cifrao
+ * @return boolean
+ */
+function mc_format_moeda($valor, $decimal = 2, $lang = "br", $cifrao = null) {
+    if ($lang == 'br') {
+        return bz_converteMoedaBrasil($valor, $decimal, $cifrao);
+    } elseif ($lang == 'en') {
+        return bz_converteMoedaAmericana($valor, $decimal, $cifrao);
+    } else {
+        return false;
+    }
+}
 
 /**
  *  ==================================================================================================================================================================

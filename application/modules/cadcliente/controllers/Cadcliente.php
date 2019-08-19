@@ -1,7 +1,7 @@
 <?php
 
 /*
-  Created on : 09/08/2019, 14:29PM
+  Created on : 19/08/2019, 08:13AM
   Author     : Enio Marcelo - eniomarcelo@gmail.com
  */
 
@@ -21,7 +21,7 @@
 
       /* TÍTULO DA APLICAÇÃO */
       $this->dados['_titulo_app'] = 'Cadastro de Clientes';
-      $this->dados['_font_icon'] = 'fa fa-user';
+      $this->dados['_font_icon'] = 'fa fa-user-plus';
 
       /* VIEW DA APLICAÇÃO */
       $this->dados['_view_app_list'] = 'vCadcliente';
@@ -62,6 +62,7 @@
 
         /* VALIDAÇÃO DOS DADOS */
         $this->form_validation->set_rules('nome', '<b>Nome</b>', 'trim|strtoupper|max_length[255]|required');
+$this->form_validation->set_rules('profissao', '<b>Profissão</b>', 'trim|callback_validation_required_profissao');
 $this->form_validation->set_rules('endereco', '<b>Editor de Texto</b>', 'trim|required');
 
         /* END VALIDAÇÃO DOS DADOS */
@@ -74,7 +75,10 @@ $this->form_validation->set_rules('endereco', '<b>Editor de Texto</b>', 'trim|re
 
           unset($_dados['btn-salvar']);
           
-          
+          /* CONVERTE DADOS PARA GRAVAR NA TABELA */
+$_dados["endereco"] = $this->input->post("endereco",FALSE);
+/* CONVERTE DADOS PARA GRAVAR NA TABELA */
+
 
           /* GRAVA REGISTRO */
 
@@ -137,6 +141,7 @@ $this->form_validation->set_rules('endereco', '<b>Editor de Texto</b>', 'trim|re
 
       /* VALIDAÇÃO DOS DADOS */
       $this->form_validation->set_rules('nome', '<b>Nome</b>', 'trim|strtoupper|max_length[255]|required');
+$this->form_validation->set_rules('profissao', '<b>Profissão</b>', 'trim|callback_validation_required_profissao');
 $this->form_validation->set_rules('endereco', '<b>Editor de Texto</b>', 'trim|required');
 
       /* END VALIDAÇÃO DOS DADOS */
@@ -150,7 +155,10 @@ $this->form_validation->set_rules('endereco', '<b>Editor de Texto</b>', 'trim|re
          unset($_dados['btn-editar']);
          
          
-         
+         /* CONVERTE DADOS PARA GRAVAR NA TABELA */
+$_dados["endereco"] = $this->input->post("endereco",FALSE);
+/* CONVERTE DADOS PARA GRAVAR NA TABELA */
+
 
          /* UPDATE REGISTRO */
 
@@ -459,7 +467,7 @@ private function get_paginacao() {
   $_dados_pag['table'] = $this->table_gridlist_name;
 
   if ($this->input->get('search', TRUE)):
-                            $_dados_pag['search'] = array('_concat_fields' => 'nome,data,data_hora', '_string' => $this->input->get('search', TRUE));
+                            $_dados_pag['search'] = array('_concat_fields' => 'nome', '_string' => $this->input->get('search', TRUE));
                         endif;
 
   $_dados_pag['filter'] = $_filter;
@@ -507,6 +515,16 @@ private function get_paginacao() {
 /* END function get_paginacao()  */
 
 
+
+
+
+                                                 /* VALIDAÇÃO POR CALLBACK DO CAMPO profissao. */
+                                                  public function validation_required_profissao() {
+                                                      if ($this->input->post('profissao')) return true;
+                                                      $this->form_validation->set_message('validation_required_profissao', 'O campo <b>Profissão</b> é obrigatório.');
+                                                      return false;
+                                                  }
+                                                  /* END VALIDAÇÃO POR CALLBACK DO CAMPO profissao. */
 
 
 

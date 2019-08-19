@@ -109,7 +109,7 @@ class ProjectbuildCrud extends MY_Controller {
          * TÍTULO DA APLICAÇÃO
          */
         $this->dados['_titulo_app'] = 'Projeto';
-        $this->dados['_font_icon'] = 'fa fa-cogs';
+        $this->dados['_font_icon'] = 'fa fa-codepen';
 
         /*
          * VIEW DA APLICAÇÃO
@@ -1190,8 +1190,7 @@ class ProjectbuildCrud extends MY_Controller {
                     $_reponse['message'] = 'SAVE-SWITCH-OK';
 
                     echo json_encode($_reponse);
-                    exit;
-                elseif ($this->input->post('screen_type') == 'formaddedit'):
+                    exit; elseif ($this->input->post('screen_type') == 'formaddedit'):
 
                     $_dados = json_decode($_r_param_formaddedit, true);
                     $_dados['form_add_edit_field_show'] = $this->input->post('grid_list_show');
@@ -1388,7 +1387,6 @@ class ProjectbuildCrud extends MY_Controller {
 
     public function codeeditor($_idProjeto = null, $_code_screen = null, $_code_type = null) {
 
-
         /*
          * CHECK SE EXISTE
          */
@@ -1503,9 +1501,6 @@ class ProjectbuildCrud extends MY_Controller {
         endif;
 
 
-
-
-
         /*
          * PARÂMETROS
          */
@@ -1536,6 +1531,13 @@ class ProjectbuildCrud extends MY_Controller {
 
             $this->dados['_dados_projeto'] = $_result->row();
 
+            /* TITULO APP */
+            if ($this->dados['_dados_projeto']->type_project == 'blank') {
+                $this->dados['_titulo_app'] .= ' BLANK';
+            }elseif ($this->dados['_dados_projeto']->type_project == 'crud'){
+                $this->dados['_titulo_app'] .= ' CRUD';
+            }
+
             /*
              * GET CODE SCRIPT
              */
@@ -1553,6 +1555,7 @@ class ProjectbuildCrud extends MY_Controller {
                 $this->dados['_parametros']['code_access_ajax_only'] = ($_r_CodeEditor['code_access_ajax_only'] == '1' ? 'checked' : '');
                 $this->dados['_parametros']['code_type_method'] = $_r_CodeEditor['code_type_method'];
                 $this->dados['_parametros']['code_script'] = $_r_CodeEditor['code_script'];
+                $this->dados['_parametros']['type_project'] = $this->dados['_dados_projeto']->type_project;
             endif;
 
 
@@ -2270,6 +2273,10 @@ class ProjectbuildCrud extends MY_Controller {
                             elseif ($_param_formAddEditField['form_add_edit_field_type'] == 'text-ckeditor'):
 
                                 $this->_formAddEditConfigInput = '<textarea id="ckeditor-' . $_row['field_name'] . '" rows="5" name="' . $_row['field_name'] . '" class="form-control" placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" ' . $this->_formAddEditConfigInputAtributos . '/><?=set_value("' . $_row['field_name'] . '",isset($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : set_value("' . $_row['field_name'] . '"));?></textarea>';
+
+                                $this->_formAddConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = $this->input->post("' . $_row['field_name'] . '",FALSE);';
+                                $this->_formEditConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = $this->input->post("' . $_row['field_name'] . '",FALSE);';
+
 
                                 /* FORM ADD */
                                 $this->_formAddCodeEditorJS .= "<!--" . PHP_EOL;
@@ -3153,17 +3160,17 @@ class ProjectbuildCrud extends MY_Controller {
                             if ($_row_getCode_ControllerMetodosPHP->code_screen == 'fcn_onScriptInit') {
                                 $this->_controller_onScriptinit = "\$this->fcn_onScriptinit();" . PHP_EOL;
                             } elseif ($_row_getCode_ControllerMetodosPHP->code_screen == 'fcn_onBeforeInsert') {
-                                $this->_controller_onBeforeInsert = "\$this->fcn_onBeforeInsert();" . PHP_EOL;
+                                $this->_controller_onBeforeInsert = "\$this->fcn_onBeforeInsert(array('post' => \$this->input->post()));" . PHP_EOL;
                             } elseif ($_row_getCode_ControllerMetodosPHP->code_screen == 'fcn_onAfterInsert') {
-                                $this->_controller_onAfterInsert = "\$this->fcn_onAfterInsert();" . PHP_EOL;
+                                $this->_controller_onAfterInsert = "\$this->fcn_onAfterInsert(array('result' => \$result, 'post' => \$this->input->post()));" . PHP_EOL;
                             } elseif ($_row_getCode_ControllerMetodosPHP->code_screen == 'fcn_onBeforeUpdate') {
-                                $this->_controller_onBeforeUpdate = "\$this->fcn_onBeforeUpdate();" . PHP_EOL;
+                                $this->_controller_onBeforeUpdate = "\$this->fcn_onBeforeUpdate(array('id' => \$_id, 'post' => \$this->input->post()));" . PHP_EOL;
                             } elseif ($_row_getCode_ControllerMetodosPHP->code_screen == 'fcn_onAfterUpdate') {
-                                $this->_controller_onAfterUpdate = "\$this->fcn_onAfterUpdate();" . PHP_EOL;
+                                $this->_controller_onAfterUpdate = "\$this->fcn_onAfterUpdate(array('result' => \$_result_update, 'post' => \$this->input->post()));" . PHP_EOL;
                             } elseif ($_row_getCode_ControllerMetodosPHP->code_screen == 'fcn_onBeforeDelete') {
-                                $this->_controller_onBeforeDelete = "\$this->fcn_onBeforeDelete();" . PHP_EOL;
+                                $this->_controller_onBeforeDelete = "\$this->fcn_onBeforeDelete(array('post' => \$this->input->post()));" . PHP_EOL;
                             } elseif ($_row_getCode_ControllerMetodosPHP->code_screen == 'fcn_onAfterDelete') {
-                                $this->_controller_onAfterDelete = "\$this->fcn_onAfterDelete();" . PHP_EOL;
+                                $this->_controller_onAfterDelete = "\$this->fcn_onAfterDelete(array('post' => \$this->input->post()));" . PHP_EOL;
                             } elseif ($_row_getCode_ControllerMetodosPHP->code_screen == 'fcn_onScriptInitExport') {
                                 $this->_controller_onScriptInitExport = "\$this->fcn_onScriptInitExport();" . PHP_EOL;
                             } elseif ($_row_getCode_ControllerMetodosPHP->code_screen == 'fcn_onScriptBeforeExport') {

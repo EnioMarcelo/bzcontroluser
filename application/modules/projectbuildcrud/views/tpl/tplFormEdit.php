@@ -112,19 +112,25 @@
 
   </div><!--END BOX -->
     
-    <!--MODAL bzModal() FORM EDIT-->
-    <?php
-    if( !empty($_modalFormEdit) ){
-        echo $_modalFormEdit;
-    }
-    ?>
-    <!--END MODAL bzModal() FORM EDIT-->    
     
 </div><!--END ROW -->
 
 <?= form_close(); ?>
 <!--END  OPEN FORM -->
 
+
+  
+  
+<!--MODAL mc_modal() FORM ADD-->
+<?php
+if( !empty($modalFormEdit) ){
+  echo $modalFormEdit;
+}
+?>
+<!--END MODAL mc_modal() FORM ADD-->
+  
+  
+  
 
 {{form-edit-scripts-css}}
 

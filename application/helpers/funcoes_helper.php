@@ -176,18 +176,22 @@ function set_mensagem_toastr($titulo = NULL, $mensagem = NULL, $tipo = 'info', $
  */
 function set_mensagem($titulo = NULL, $mensagem = NULL, $fa_icon = 'fa-times', $tipo = NULL) {
     $CI = & get_instance();
-    if (empty($mensagem) or empty($titulo) or empty($tipo)):
+    if (empty($mensagem) or empty($tipo)):
         return false;
     endif;
 
-    $result = '<div class="alert alert-' . $tipo . '" role="alert">
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-    <span aria-hidden="true">&times;</span>
-    </button>
-    <h4 class="alert-heading"><i class = "margin-right-5 fa ' . $fa_icon . '"></i>' . $titulo . '</h4>
-    ' . $mensagem . '
-    <br />
-    </div>';
+    $result = '<div class="alert alert-' . $tipo . '" role="alert">';
+    $result .= '     <button type="button" class="close" data-dismiss="alert" aria-label="Close">';
+    $result .= '         <span aria-hidden="true">&times;</span>';
+    $result .= '     </button>';
+
+    if (!empty($titulo)) {
+        $result .= '     <h4 class="alert-heading">' . ($fa_icon ? '<i class = "margin-right-5 fa ' . $fa_icon . '">' : '') . '</i>' . $titulo . '</h4>';
+    }
+
+    $result .= '    ' . $mensagem;
+    $result .= '     <br />';
+    $result .= '</div>';
 
     $CI->session->set_flashdata('mensagem_sistema', $result);
 
@@ -323,6 +327,7 @@ function bz_find_in_multiarray($elem, $array) {
  * @param string $_p['array']       Passa o ARRAY para ser filtrado
  * @param string $_p['field']       Passa o NOME DO CAMPO que contém o valor a ser filtrado
  * @param string $_p['value']       Passa o VALOR do CAMPO a ser filtrado
+ * @param string $_p['like_value']  Y = Se contém a ocorrência no campo ou N = Procura pelo valor exato da ocorrência no campo
  *
  */
 function bz_filter_array($_p = array()) {
@@ -336,10 +341,23 @@ function bz_filter_array($_p = array()) {
 
             if (isset($_data[$_p['field']])) {
 
-                if ($_data[$_p['field']] != $_p['value']):
-                    unset($_array[$_key]);
+
+                if (!empty($_p['like_value']) && $_p['like_value'] == 'Y'):
+
+                    if (stristr($_data[$_p['field']], $_p['value'])) :
+                        $_new_array[] = $_data;
+                    else:
+                        unset($_array[$_key]);
+                    endif;
+
                 else:
-                    $_new_array[] = $_data;
+
+                    if ($_data[$_p['field']] != $_p['value']):
+                        unset($_array[$_key]);
+                    else:
+                        $_new_array[] = $_data;
+                    endif;
+
                 endif;
             }
 
@@ -353,7 +371,7 @@ function bz_filter_array($_p = array()) {
 //END function bz_filter_array();
 
 /**
- * FUNÇÃO QUE GERA UMA STRING RANDOMICA.
+ * MACRO QUE GERA UMA STRING RANDOMICA.
  *
  * @param string $chars_min = 6                     Mínimo de caracteres a ser gerado
  * @param string $chars_max = 6                     Máximo de caracteres a ser gerado
@@ -363,7 +381,7 @@ function bz_filter_array($_p = array()) {
  * @param string $include_special_chars = false     Se vai ter caracteres especiais na string
  *
  */
-function get_random_number($chars_min = 6, $chars_max = 6, $use_upper_case = false, $include_letter = false, $include_numbers = true, $include_special_chars = false) {
+function mc_random_number($chars_min = 6, $chars_max = 6, $use_upper_case = false, $include_letter = false, $include_numbers = true, $include_special_chars = false) {
     $length = rand($chars_min, $chars_max);
     $selection = '';
     if ($include_letter) {
@@ -493,30 +511,36 @@ function bz_converteMoedaAmericana($get_valor, $decimal = 2, $cifrao = null) {
 //END bz_converteMoedaAmericana()
 
 /**
- * Pesquisa um ocorrência dentro de uma string
+ * PESQUISA UM OCORRÊNCIA DENTRO DE UMA STRING
  * 
  * Usando a analogia de encontrar uma agulha em um palheiro.
  * 
- * @param type $_agulha         Agulha - O quê vc deseja encontrar
- * @param type $_palheiro       Palheiro - Onde você deseja encontrar
- * @return type
+ * @param string $_agulha         Agulha - O quê vc deseja encontrar
+ * @param string $_palheiro       Palheiro - Onde você deseja encontrar
+ * @return boolean
  */
-function bz_contains_in_string($_agulha, $_palheiro) {
-    return strstr($_palheiro, $_agulha);
+function mc_contains_in_string($_agulha, $_palheiro) {
+    $_r = strstr($_palheiro, $_agulha);
+
+    if ($_r) {
+        return TRUE;
+    } else {
+        return FALSE;
+    }
 }
 
 /**
- * Preenche uma string qual caracteres
+ * MACRO QUE PREENCHE UMA STRING COM CARACTERES
+ * 
  * @param string $string            Passa a string com os dados
  * @param string $orientacao        Esquerda LEFT, Diretia RIGHT. Por padrão será LEFT
  * @param string $caracter          Qual o tipo de caractar que será adicionado a String. Por padrão será *
  * @param string $quantidade        Quantidade de caractar que será adicionado a String
  */
-function bz_preencheString($string = '', $orientacao = "LEFT", $caracter = "*", $quantidade = '10') {
+function mc_fill_string($string = '', $orientacao = "LEFT", $caracter = "*", $quantidade = '10') {
     $tamanhoString = strlen(trim($string));
-    $quantidade = ( $quantidade - $tamanhoString ) + 1;
+    $quantidade = ( $quantidade - $tamanhoString ) + 3;
     $retorno = $string;
-
 
     if ($orientacao == 'LEFT'):
         return str_pad($retorno, $quantidade, $caracter, STR_PAD_LEFT);
@@ -527,7 +551,7 @@ function bz_preencheString($string = '', $orientacao = "LEFT", $caracter = "*", 
     endif;
 }
 
-//END bz_preencheString()
+//END mc_fill_string()
 
 /**
  * Exclui uma coluna específica de uma Query Result
@@ -1238,6 +1262,10 @@ function add_auditoria($dados = array()) {
         return FALSE;
     endif;
 
+    if (empty($dados['creator'])) {
+        $dados['creator'] = 'user';
+    }
+
     /*
      * Insert Dados
      */
@@ -1258,6 +1286,8 @@ function add_auditoria($dados = array()) {
 
 
     $result = $CI->create->ExecCreate('sec_auditoria', $dados);
+
+    return $result;
 }
 
 //END add_auditoria()
@@ -1326,15 +1356,20 @@ function getAgentUser($auditoria = FALSE) {
 
 
 /*
- * Retorna o mês de uma data
- * Se nome=true, retorna o mes por extenso.
+ * MACRO QUE RETORNA O MÊS DE UMA DATA
+ * Se nome=true, retorna o mês por extenso.
+ *
+ * @param date $data
+ * @param boolean $nome
+ * @return boolean|string
  */
 
-function get_month_date($data = null, $nome = TRUE) {
+function mc_month_date($data = null, $extenso = FALSE) {
 
     if ($data != NULL):
+        $data = bz_formatdata($data, 'Y-m-d');
         $mes = date("m", strtotime($data));
-        if ($nome = TRUE):
+        if ($extenso == TRUE):
             $mes_extenso = array('01' => 'JANEIRO', '02' => 'FEVEREIRO', '03' => 'MARÇO', '04' => 'ABRIL', '05' => 'MAIO', '06' => 'JUNHO', '07' => 'JULHO', '08' => 'AGOSTO', '09' => 'SETEMBRO', '10' => 'OUTUBRO', '11' => 'NOVEMBRO', '12' => 'DEZEMBRO');
             return $mes_extenso[$mes];
         else:
@@ -1345,13 +1380,20 @@ function get_month_date($data = null, $nome = TRUE) {
     endif;
 }
 
-//END get_month_date()
+//END mc_month_date()
 
 
 /*
- * Gera o resumo de uma string
+ * MACRO CORTA PALAVRAS DE UMA STRING
+ *
+ * @param string $string
+ * @param string $palavras
+ * @param boolean $decodifica_html
+ * @param boolean $remove_tags
+ * @return boolean|string
  */
-function resumo_post($string = NULL, $palavras = 50, $decodifica_html = TRUE, $remove_tags = TRUE) {
+
+function mc_cut_word_string($string = NULL, $palavras = 50, $decodifica_html = TRUE, $remove_tags = TRUE) {
     if ($string != NULL):
         if ($decodifica_html)
             $string = to_html($string);
@@ -1360,12 +1402,11 @@ function resumo_post($string = NULL, $palavras = 50, $decodifica_html = TRUE, $r
         $retorno = word_limiter($string, $palavras);
         return $retorno;
     else:
-        $retorno = FALSE;
-        return $retorno;
+        return FALSE;
     endif;
 }
 
-//END Gera o resumo de uma string
+//END mc_cut_word_string() MACRO CORTA PALAVRAS DE UMA STRING
 
 
 
@@ -1392,10 +1433,13 @@ function to_html($string = NULL) {
  * echo valorPorExtenso("R$ 1.487.257,55", true, false);
  *
  * //Vai exibir na tela "duas mil e setecentas e oitenta e sete"
- * echo valorPorExtenso("2787", false, true);
+ * echo valorPorExtenso("2787", false, true);ENIO
  */
-function valorPorExtenso($valor = 0, $bolExibirMoeda = true, $bolPalavraFeminina = false) {
-    $valor = removerFormatacaoNumero($valor);
+function mc_extensive_value($valor = 0, $bolExibirMoeda = true, $bolPalavraFeminina = false) {
+
+    $source = array('.', ',');
+    $replace = array('', '.');
+    $valor = str_replace($source, $replace, $valor);
 
     $singular = null;
     $plural = null;
@@ -1495,17 +1539,8 @@ function bz_modal($_p = []) {
     if (empty($_p['modalTitle'])) {
         $_p['modalTitle'] = 'ATENÇÃO...';
     }
-
-    if (empty($_p['modalBtnClose'])) {
-        $_p['modalBtnClose'] = 'Fechar';
-    }
-
-    if (empty($_p['modalBtnConfirm'])) {
-        $_p['modalBtnConfirm'] = 'Confirmar';
-    }
-
-    if (empty($_p['modalShow'])) {
-        $_p['modalShow'] = false;
+    if (empty($_p['modalText'])) {
+        $_p['modalText'] = 'SEU TEXTO AQUI.';
     }
 
     if (empty($_p['modalSize'])) {
@@ -1518,14 +1553,14 @@ function bz_modal($_p = []) {
         $_p['modalSize'] = 'modal-md';
     }
 
-
-
-
+    if (empty($_p['modalShow'])) {
+        $_p['modalShow'] = false;
+    }
 
 
     $_modal = '';
 
-    $_modal .= '<div id="bzModal' . (!empty($_p['modalName']) ? $_p['modalName'] : '') . '" class="modal fade ' . (!empty($_p['modalClass']) ? $_p['modalClass'] : '') . '">' . PHP_EOL;
+    $_modal .= '<div id="bzModal' . (!empty($_p['modalName']) ? $_p['modalName'] : '') . '" class="modal fade ' . (!empty($_p['modalClassCss']) ? $_p['modalClassCss'] : '') . '">' . PHP_EOL;
     $_modal .= '    <div class="modal-dialog ' . $_p['modalSize'] . '">' . PHP_EOL;
     $_modal .= '        <div class="modal-content">' . PHP_EOL;
     $_modal .= '            <div class="modal-header">' . PHP_EOL;
@@ -1534,13 +1569,25 @@ function bz_modal($_p = []) {
     $_modal .= '            </div>' . PHP_EOL;
     $_modal .= '            <div class="modal-body">' . PHP_EOL;
     $_modal .= '                <p>' . (!empty($_p['modalText']) ? $_p['modalText'] : '') . '</p>' . PHP_EOL;
-    $_modal .= '                <p class="text-warning"><small>' . (!empty($_p['modalTextSmall']) ? $_p['modalTextSmall'] : '') . '</small></p>' . PHP_EOL;
+
+    if (!empty($_p["modalTextSmall"])) {
+        $_modal .= '                <p class="text-warning"><small>' . $_p['modalTextSmall'] . '</small></p>' . PHP_EOL;
+    }
+
     $_modal .= '            </div>' . PHP_EOL;
-    $_modal .= '            <div class="modal-footer">' . PHP_EOL;
-    $_modal .= '                <button type="button" id="' . (!empty($_p['modalBtnCloseID']) ? $_p['modalBtnCloseID'] : '') . '" class="btn btn-default" data-dismiss="modal">' . (!empty($_p['modalBtnClose']) ? $_p['modalBtnClose'] : '') . '</button>' . PHP_EOL;
-    $_modal .= '                <button type="button" id="' . (!empty($_p['modalBtnConfirmID']) ? $_p['modalBtnConfirmID'] : '') . '" class="btn btn-primary">' . (!empty($_p['modalBtnConfirm']) ? $_p['modalBtnConfirm'] : '') . '</button>' . PHP_EOL;
-    $_modal .= '            </div>' . PHP_EOL;
-    $_modal .= '            </div>' . PHP_EOL;
+
+    if (!empty($_p["modalBtnClose"]) || !empty($_p["modalBtnConfirm"])) {
+        $_modal .= '            <div class="modal-footer">' . PHP_EOL;
+        if (!empty($_p["modalBtnClose"])) {
+            $_modal .= '                <button type="button" id="' . (!empty($_p['modalBtnCloseIdCss']) ? $_p['modalBtnCloseIdCss'] : '') . '" class="btn btn-default" data-dismiss="modal">' . (!empty($_p['modalBtnClose']) ? $_p['modalBtnClose'] : '') . '</button>' . PHP_EOL;
+        }
+        if (!empty($_p["modalBtnConfirm"])) {
+            $_modal .= '                    <button type="button" id="' . (!empty($_p['modalBtnConfirmIdCss']) ? $_p['modalBtnConfirmIdCss'] : '') . '" class="btn btn-primary">' . (!empty($_p['modalBtnConfirm']) ? $_p['modalBtnConfirm'] : '') . '</button>' . PHP_EOL;
+        }
+        $_modal .= '            </div>' . PHP_EOL;
+    }
+
+    $_modal .= '        </div>' . PHP_EOL;
     $_modal .= '    </div>' . PHP_EOL;
     $_modal .= '</div>' . PHP_EOL;
 

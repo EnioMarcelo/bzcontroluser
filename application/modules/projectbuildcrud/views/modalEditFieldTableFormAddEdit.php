@@ -492,7 +492,7 @@
                                 <div class="input-group col-bg-12 col-md-12 col-sm-12 col-xs-12">
                                     <input class="form-control input-sm" style="text-transform: lowercase;" type="text" placeholder="Altura do editor vai refletir na quantidade de linhas de texto." name="form_add_edit_field_editorhtml_ckeditor_line_height" value="">
                                 </div>
-                                <span class="margin-left-0" style="font-size: 0.9em; font-weight: 100;">Unidades de Medidas: px, em, vh</span>
+                                <span class="margin-left-0" style="font-size: 0.9em; font-weight: 100;">Unidade de Medida: px, em, vh</span>
                             </div>
 
 

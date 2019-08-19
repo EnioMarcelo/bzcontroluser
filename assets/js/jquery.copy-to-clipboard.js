@@ -8,30 +8,32 @@
  *
  */
 
-$.fn.CopyToClipboard = function() {
+$.fn.CopyToClipboard = function () {
     var textToCopy = false;
-    if(this.is('select') || this.is('textarea') || this.is('input')){
+    if (this.is('select') || this.is('textarea') || this.is('input')) {
         textToCopy = this.val();
-    }else {
+    } else {
         textToCopy = this.text();
     }
     CopyToClipboard(textToCopy);
-    
+
 };
 
-function CopyToClipboard( val ){
-    
+function CopyToClipboard(val, _msg) {
+
+//    console.clear();
+//    console.log('--> ' + val + ' - ' + _msg);
     $.toast({
         heading: '',
-        text: 'Link da imagem copiado com sucesso.',
+        text: _msg,
         position: 'top-center',
         icon: 'info',
         loaderBg: '#29a7d8'
     });
-    
-    
+
+
     var hiddenClipboard = $('#_hiddenClipboard_');
-    if(!hiddenClipboard.length){
+    if (!hiddenClipboard.length) {
         $('body').append('<textarea style="position:absolute;top: -9999px;" id="_hiddenClipboard_"></textarea>');
         hiddenClipboard = $('#_hiddenClipboard_');
     }
@@ -41,16 +43,17 @@ function CopyToClipboard( val ){
     document.getSelection().removeAllRanges();
 }
 
-$(function(){
-    
-    $('[data-clipboard-target]').each(function(){
-        $(this).click(function() {
+$(function () {
+
+    $('[data-clipboard-target]').each(function () {
+        $(this).click(function () {
             $($(this).data('clipboard-target')).CopyToClipboard();
         });
     });
-    $('[data-clipboard-text]').each(function(){
-        $(this).click(function(){
-            CopyToClipboard($(this).data('clipboard-text'));
+    $('[data-clipboard-text]').each(function () {
+        $(this).click(function () {
+            CopyToClipboard($(this).data('clipboard-text'), $(this).data('clipboard-message'));
         });
     });
+
 });

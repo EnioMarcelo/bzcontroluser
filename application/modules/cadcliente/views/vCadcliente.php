@@ -1,7 +1,7 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 <!--
 /*
-  Created on : 09/08/2019, 14:29PM
+  Created on : 19/08/2019, 08:13AM
   Author     : Enio Marcelo - eniomarcelo@gmail.com
  */
 -->
@@ -146,9 +146,7 @@
 						<th class='text-center' style='width:3%;'>#</th>
 
 						<th class="thClNome" class="text-left" style="text-align:left">Nome</th>
-<th class="thClValor" class="text-right" style="text-align:right">Valor</th>
-<th class="thClData" class="text-left" style="text-align:left">Data</th>
-<th class="thClData_hora" class="text-center" style="text-align:center">Data/Hora</th>
+<th class="thClProfissao" class="text-left" style="text-align:left">Profissão</th>
 
 
 						<th class='col-md-1 text-center'>Ação</th>
@@ -182,9 +180,7 @@
 
 							<!-- CAMPOS DA TABLE -->
 							<td class="tdClNome" class="text-left" style="text-align:left"><?= $_row["nome"]; ?></td>
-<td class="tdClValor" class="text-right" style="text-align:right">R$ <?= bz_converteMoedaBrasil($_row["valor"]); ?></td>
-<td class="tdClData" class="text-left" style="text-align:left"><?= bz_formatdata($_row["data"]); ?></td>
-<td class="tdClData_hora" class="text-center" style="text-align:center"><?= bz_formatdata($_row["data_hora"], "d/m/Y H:i:s"); ?></td>
+<td class="tdClProfissao" class="text-left" style="text-align:left"><?= $_row["profissao"]; ?></td>
 
 							<!-- CAMPOS DA TABLE -->
 
@@ -242,14 +238,15 @@
 
 
 	</div><!-- /.box -->
+    
 
-    <!--MODAL bzModal() GRID LIST-->
+    <!--MODAL mc_modal() GRID LIST-->
     <?php
-    if( !empty($_modalGridList) ){
-        echo $_modalGridList;
+    if( !empty($modalGridList) ){
+        echo $modalGridList;
     }
     ?>
-    <!--END MODAL bzModal() GRID LIST-->
+    <!--END MODAL mc_modal() GRID LIST-->
 
 </div>
 

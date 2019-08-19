@@ -56,7 +56,7 @@ class Changepass extends MY_Controller {
         $_expiration = 90;
 
         $vals = array(
-            'word' => get_random_number(6, 6, true, true),
+            'word' => mc_random_number(6, 6, true, true),
             'img_path' => './captcha/',
             'img_url' => base_url() . '/captcha/',
             'font_path' => './assets/fonts/verdana.ttf',

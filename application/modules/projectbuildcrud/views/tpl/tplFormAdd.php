@@ -106,20 +106,24 @@
 
 
     </div><!--END BOX -->
-    
-    <!--MODAL bzModal() FORM ADD-->
-    <?php
-    if( !empty($_modalFormAdd) ){
-        echo $_modalFormAdd;
-    }
-    ?>
-    <!--END MODAL bzModal() FORM ADD-->
 
   </div><!--END ROW -->
 
   <?= form_close(); ?>
   <!--END  OPEN FORM -->
 
+  
+  
+  <!--MODAL mc_modal() FORM ADD-->
+  <?php
+  if( !empty($modalFormAdd) ){
+      echo $modalFormAdd;
+  }
+  ?>
+  <!--END MODAL mc_modal() FORM ADD-->
+  
+  
+  
 
   {{form-add-scripts-css}}
 

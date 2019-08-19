@@ -108,7 +108,7 @@ class Usuarios extends MY_Controller {
                 /*
                  * GERA UMA SENHA RANDOMINCA
                  */
-                $_senha = get_random_number(6, 6, false, true, true);
+                $_senha = mc_random_number(6, 6, false, true, true);
                 $_dados['senha'] = md5($_senha);
 
                 /**

@@ -228,14 +228,15 @@
 
 
 	</div><!-- /.box -->
+    
 
-    <!--MODAL bzModal() GRID LIST-->
+    <!--MODAL mc_modal() GRID LIST-->
     <?php
-    if( !empty($_modalGridList) ){
-        echo $_modalGridList;
+    if( !empty($modalGridList) ){
+        echo $modalGridList;
     }
     ?>
-    <!--END MODAL bzModal() GRID LIST-->
+    <!--END MODAL mc_modal() GRID LIST-->
 
 </div>
 
