@@ -1,6 +1,6 @@
 <?php
 /*
-  Created on : 19/08/2019, 08:13AM
+  Created on : 11/09/2019, 17:59PM
   Author     : Enio Marcelo - eniomarcelo@gmail.com
  */
 
@@ -37,7 +37,7 @@
 
 
   <!-- OPEN FORM -->
-  <?= form_open(site_url($this->router->fetch_class() . '/add' . '?' . bz_app_parametros_url()), 'id="IdFormADD_'.$this->router->fetch_class().'" name="formADD_'.$this->router->fetch_class().'" role="form" ' ); ?>
+  <?= form_open_multipart(site_url($this->router->fetch_class() . '/add' . '?' . bz_app_parametros_url()), 'id="IdFormADD_'.$this->router->fetch_class().'" name="formADD_'.$this->router->fetch_class().'" role="form" ' ); ?>
 
   <div class="row hide-reload-screen">
 
@@ -116,10 +116,11 @@ echo form_dropdown('profissao', $_list_profissao, set_value('profissao',isset($d
                                                 </div>
                                                 
 
-                                                <?php $_error = form_error("endereco", "<small class='text-danger col-xs-12 bz-input-error'>", "</small>"); ?>
-                                                <div id="endereco" class="form-group has-feedback col-sm-12">
-                                                    <label for="endereco"><i class="fa fa-asterisk margin-right-5 text-error " style="font-size: 0.7em;"></i>Editor de Texto</label>
-                                                    <textarea id="ckeditor-endereco" rows="5" name="endereco" class="form-control" placeholder="Seu texto aqui..." /><?=set_value("endereco",isset($dados->endereco) ? $dados->endereco : set_value("endereco"));?></textarea>
+                                                <?php $_error = form_error("imagem_nome", "<small class='text-danger col-xs-12 bz-input-error'>", "</small>"); ?>
+                                                <div id="imagem_nome" class="form-group has-feedback col-sm-12">
+                                                    <label for="imagem_nome"><i class="fa fa-asterisk margin-right-5 text-error " style="font-size: 0.7em;"></i>Enviar Foto</label>
+                                                    <input type="file" name="imagem_nome" class="form-control" placeholder="" value="<?=set_value("imagem_nome",isset($dados->imagem_nome) ? $dados->imagem_nome : set_value("imagem_nome"));?>"  />
+<div class="btn-ver-imagem margin-top-5 margin-bottom-5" style="font-size: 0.8em"><i class="fa fa-fw fa-camera"></i> <?= anchor(___CONF_UPLOAD_DIR___ . "/" . ___CONF_UPLOAD_IMAGE_DIR___ . "/" . set_value("imagem_nome", isset($dados->imagem_nome) ? $dados->imagem_nome : set_value("imagem_nome")), "Ver Imagem", "data-lightbox='imagem_nome'"); ?></div>
                                                     <?= $_error; ?>
                                                 </div>
                                                 
@@ -168,22 +169,7 @@ echo form_dropdown('profissao', $_list_profissao, set_value('profissao',isset($d
 
   
 
-  <!--
- * JQUERY SCRIPT - EDITOR DE TEXTO HTML - CKEDITOR
--->
-<script>
-    $(function(){
-        CKEDITOR.replace('ckeditor-endereco', {
-            height: ['100vh']
-        });
-    });
-</script>
-<!--
- * END JQUERY SCRIPT - EDITOR DE TEXTO HTML - CKEDITOR
--->
-
-
-
+  
 
   
 

@@ -170,8 +170,11 @@ class ProjectbuildCrud extends MY_Controller {
             unset($_dados['screen_type']);
 
 
-
             if ($this->input->post('task') == 'save'):
+
+
+                $_dados['grid_list_field_value_select'] = base64_encode($_dados['grid_list_field_value_select']);
+
 
                 $_where = 'WHERE proj_build_id = ' . $this->input->post('projeto_id') . ' AND field_name = "' . $this->input->post('field_name') . '" AND screen_type = "' . $_screen_type . '"';
                 if ($this->update->ExecUpdate('proj_build_fields', array('param_gridlist' => json_encode($_dados, JSON_UNESCAPED_UNICODE)), $_where)):
@@ -189,7 +192,15 @@ class ProjectbuildCrud extends MY_Controller {
 
                 $_setupGridList = $this->read->ExecRead('proj_build_fields', 'WHERE proj_build_id = ' . $_projeto_id . ' AND field_name = "' . $_field_name . '" AND screen_type = "' . $_screen_type . '"')->row()->param_gridlist;
 
+
                 $_r = json_decode($_setupGridList);
+
+
+                if (isset($_r->grid_list_field_value_select)):
+                    $_r->grid_list_field_value_select = base64_decode($_r->grid_list_field_value_select);
+                endif;
+
+
                 echo json_encode($_r);
                 exit;
 
@@ -1534,7 +1545,7 @@ class ProjectbuildCrud extends MY_Controller {
             /* TITULO APP */
             if ($this->dados['_dados_projeto']->type_project == 'blank') {
                 $this->dados['_titulo_app'] .= ' BLANK';
-            }elseif ($this->dados['_dados_projeto']->type_project == 'crud'){
+            } elseif ($this->dados['_dados_projeto']->type_project == 'crud') {
                 $this->dados['_titulo_app'] .= ' CRUD';
             }
 
@@ -1786,11 +1797,11 @@ class ProjectbuildCrud extends MY_Controller {
                             $this->_primary_key_field = $_row['field_name'];
                         endif;
 
-// CAMPOS PARA FILTRAGEM DOS DADOS
+                        /* CAMPOS PARA FILTRAGEM DOS DADOS */
                         if ($_param_gridListField['grid_list_search'] == 'on' && (empty($_param_gridListField['grid_list_field_type']) || $_param_gridListField['grid_list_field_type'] != 'virtual')):
                             $this->_gridListSearchFields .= $_row['field_name'] . ',';
                         endif;
-// END CAMPOS PARA FILTRAGEM DOS DADOS
+                        /* END CAMPOS PARA FILTRAGEM DOS DADOS */
 
 
                         /*
@@ -1799,13 +1810,13 @@ class ProjectbuildCrud extends MY_Controller {
                         if ($_param_gridListField['grid_list_show'] == 'on'):
 
 
-//CAMPOS VIRTUAIS
+                            /* CAMPOS VIRTUAIS */
                             if (!empty($_param_gridListField['grid_list_field_type'])):
                                 if ($_param_gridListField['grid_list_field_type'] == 'virtual'):
                                     $this->_gridListVirtualFieldsTable[] = $_row['field_name'];
                                 endif;
                             endif;
-//END CAMPOS VIRTUAIS
+                            /* END CAMPOS VIRTUAIS */
 
 
                             if (strtolower($_row['field_name']) == 'ativo'):
@@ -1914,6 +1925,16 @@ class ProjectbuildCrud extends MY_Controller {
                                         $this->_gridListFieldsTable .= '<td class="tdCl' . ucfirst($_row['field_name']) . '" class="' . $_class . '" style="' . $_width_field . '"><?= bz_formatdata($_row["' . $_row['field_name'] . '"], "d/m/Y H:i:s"); ?></td>' . PHP_EOL;
 
                                         /* END CAMPO INPUT DATETIME grid_list_field_input_type */
+                                        /**/
+                                        /* CAMPO INPUT SELECT grid_list_field_input_type  */
+                                    } elseif ($_param_gridListField['grid_list_field_input_type'] == 'select') {
+
+                                        $_pkSelect = strtolower(base64_decode($_param_gridListField['grid_list_field_value_select']));
+                                        $_pkSelect = substr($_pkSelect, 7, (strpos($_pkSelect, ',') - 7));
+
+                                        $this->_gridListFieldsTable .= '<td class="tdCl' . ucfirst($_row['field_name']) . '" class="' . $_class . '" style="' . $_width_field . '"><?=$this->db->query("' . base64_decode($_param_gridListField['grid_list_field_value_select']) . ' WHERE ' . $_pkSelect . ' = \"$_row[' . $_row['field_name'] . ']\"")->row()->' . $_row['field_name'] . ';?></td>' . PHP_EOL;
+
+                                        /* END CAMPO INPUT SELECT grid_list_field_input_type */
                                         /**/
                                     } else {
                                         /**/

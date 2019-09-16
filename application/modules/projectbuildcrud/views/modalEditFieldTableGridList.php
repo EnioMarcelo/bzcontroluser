@@ -229,7 +229,7 @@
                                     <!--<option value="senha">Senha</option>-->
                                     <option value="upload-imagem">Upload de Imagem</option>
                                     <!--<option value="select-manual">Select Dropdown - Manual</option>-->
-                                    <!--<option value="select-dinamic">Select Dropdown - Dinâmico</option>-->
+                                    <option value="select">Select</option>
                                     <!--<option value="select-multiple-manual">Select Multiplo - Manual</option>-->
                                     <!--<option value="select-multiple-dinamic">Select Multiplo - Dinâmico</option>-->
                                     <!--<option value="radio-manual">Radio Button - Manual</option>-->
@@ -293,6 +293,17 @@
                                     <option value="thumb">Thumbnail</option>
                                 </select>
                             </div>
+
+
+
+                            <!--SELECT-->
+                            <div class="form-group col-bg-12 col-md-12 col-sm-12 col-xs-12 hide">
+                                <label>Valor(es) do Select. <span style="font-size: 0.9em; font-weight: 100">QUERY Ex: SELECT id,profissao FROM cad_profissao ORDER BY profissao</span></label>
+                                <div class="input-group col-bg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <textarea class="form-control input-sm" name="grid_list_field_value_select" placeholder="QUERY Ex: SELECT id,profissao FROM cad_profissao ORDER BY profissao" rows="3" wrap="hard" value=""></textarea>
+                                </div>
+                            </div>
+
 
 
                         </div>
@@ -544,6 +555,25 @@
 
 
         /**
+         * QUANDO O SELECT Tipo do Campo É SELECIONADO
+         */
+        $('select[name="grid_list_field_input_type"]').change(function (e) {
+            e.preventDefault();
+            var _selected = $(this).val();
+
+            /* SELECT */
+            if (_selected == 'select') {
+                $('*[name="grid_list_field_value_select"]').parent().parent().removeClass('hide');
+            } else {
+                $('*[name="grid_list_field_value_select"]').parent().parent().addClass('hide');
+                $('*[name="grid_list_field_value_select"]').val('');
+                $('*[name="grid_list_field_value_select"]').val('');
+            }
+
+        });
+
+
+        /**
          * MODAL EDIT FIELDS OPEN
          */
         $('.j_btn_modal_edit_fields_table_gridlist').click(function (e) {
@@ -592,6 +622,10 @@
                     $('select[name="grid_list_field_aligne"]').val('text-left');
                     $('select[name="grid_list_field_type"]').val('');
                     $('select[name="grid_list_field_type_modal_image"]').val('icon-link');
+                    $('*[name="grid_list_field_value_select"]').val('');
+                    $('*[name="grid_list_field_value_select"]').text('');
+
+
 
                     if (_primary_key == 1) {
                         $('.j-flag-pk').show();
@@ -656,6 +690,18 @@
                     }
                     /* END SELECT TYPE IMAGEM MODAL  */
 
+
+                    /* SELECT */
+                    if (result.grid_list_field_input_type == 'select') {
+                        $('*[name="grid_list_field_value_select"]').parent().parent().removeClass('hide');
+                        $('*[name="grid_list_field_value_select"]').val(result.grid_list_field_value_select);
+                    } else {
+                        $('*[name="grid_list_field_value_select"]').parent().parent().addClass('hide');
+                        $('*[name="grid_list_field_value_select"]').val('');
+                        $('*[name="grid_list_field_value_select"]').text('');
+                    }
+                    /* END SELECT  */
+
                     $('input[name="grid_list_field_type"]').val(result.grid_list_field_type);
 
                     $('#modal-btn-edit-field-table-gridlist').css('display', 'block');
@@ -702,6 +748,12 @@
             if ($('select[name="grid_list_field_input_type"]').val() !== 'upload-imagem') {
                 $('select[name="grid_list_field_type_modal_image"]').val('icon-link');
             }
+
+
+//            if (result.grid_list_field_input_type !== 'select') {
+//                $('*[name="grid_list_field_value_select"]').val('');
+//            }
+
             /* RESET CAMPOS ANTES DE GRAVAR */
 
 
@@ -714,6 +766,7 @@
             var _action = $('#formGridList').attr('action');
             var _data = $('#formGridList').serialize();
             var _dataArray = $('#formGridList').serializeArray();
+
 
             $.ajax({
                 type: "POST",
