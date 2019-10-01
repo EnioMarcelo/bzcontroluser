@@ -39,11 +39,13 @@
                             $('#' + _id + ' span').attr('data-original-title', 'Usuário Desconectado');
 
                             swal("SUCESSO!", "O Usuário " + _name + "\nfoi DESCONECTADO do Sistema!", "success");
+
                         }
 
                     }, complete: function () {
 
-                        parent.$('#modal-aguarde').modal('hide');
+//                        parent.$('#modal-aguarde').modal('hide');
+                        $('#modal-aguarde').modal('hide');
 
                     }, error: function (error) {
 

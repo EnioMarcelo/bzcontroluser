@@ -13,7 +13,7 @@ class ProjectbuildCrud extends MY_Controller {
      * VARIÁVEIS DO APP BLANK
      */
 
-    // CONTROLLER
+// CONTROLLER
     protected $_blankCode = '';
 
 
@@ -1201,7 +1201,8 @@ class ProjectbuildCrud extends MY_Controller {
                     $_reponse['message'] = 'SAVE-SWITCH-OK';
 
                     echo json_encode($_reponse);
-                    exit; elseif ($this->input->post('screen_type') == 'formaddedit'):
+                    exit;
+                elseif ($this->input->post('screen_type') == 'formaddedit'):
 
                     $_dados = json_decode($_r_param_formaddedit, true);
                     $_dados['form_add_edit_field_show'] = $this->input->post('grid_list_show');
@@ -3503,13 +3504,7 @@ class ProjectbuildCrud extends MY_Controller {
 
         $this->_dadosController = str_replace('{{controller-security}}', $this->_security, $this->_dadosController);
 
-        echo '<pre class="vardump">';
-        echo $this->_templatePadrao;
-        echo '</pre>';
-
         if ($this->_templatePadrao == 'SIM') {
-
-            echo '<pre>aqui...</pre>';
 
             $_t = "";
             $_t .= "/* TEMPLATE QUE SERÁ USADO PELO MÓDULO DO SISTEMA */" . PHP_EOL;
@@ -3578,10 +3573,6 @@ class ProjectbuildCrud extends MY_Controller {
      */
 
     private function ger_viewBlank() {
-
-        echo '<pre class="vardump"> xxxx';
-        var_dump($this->_templatePadrao);
-        echo '</pre>';
 
         /*
          * IMPORTA O TEMPLATE DO CONTROLLER
@@ -3759,6 +3750,13 @@ class ProjectbuildCrud extends MY_Controller {
 
 
         /* MÉTODOS */
+
+        //EXPORT REPORT
+        if (!empty($this->_gridListHeaderTableExport)) {
+            $this->_controller_onScriptinit .= '/* EXPORT REPORT */' . PHP_EOL;
+            $this->_controller_onScriptinit .= '$this->_exportReport = true;' . PHP_EOL . PHP_EOL;
+        }
+
         $this->_dadosController = str_replace('{{controller-metodos-php}}', $this->_controller_metodos_php, $this->_dadosController);
         $this->_dadosController = str_replace('{{controller-onScriptInit}}', $this->_controller_onScriptinit, $this->_dadosController);
         $this->_dadosController = str_replace('{{controller-onBeforeInsert}}', $this->_controller_onBeforeInsert, $this->_dadosController);
@@ -3778,7 +3776,6 @@ class ProjectbuildCrud extends MY_Controller {
         $this->_dadosController = str_replace('{{controller-virtual-field}}', ((count($this->_gridListVirtualFieldsTable) > 0) ? "'" . implode("','", $this->_gridListVirtualFieldsTable) . "'" : ''), $this->_dadosController);
         /* END CAMPOS VIRTUAIS DA GRIDLIST */
 
-
         /* EXPORT REPORT */
         $this->_dadosController = str_replace('{{grid-list-header-table-export}}', $this->_gridListHeaderTableExport, $this->_dadosController);
         $this->_dadosController = str_replace('{{grid-list-fields-table-export}}', $this->_gridListFieldsTableExport, $this->_dadosController);
@@ -3786,6 +3783,7 @@ class ProjectbuildCrud extends MY_Controller {
         $this->_dadosController = str_replace("; ?>", ".'", $this->_dadosController);
 
         $this->_dadosController = str_replace('{{export-on-record}}', $this->_exportCodeEditorOnRecord, $this->_dadosController);
+
         /* END EXPORT REPORT */
 
         /* GERA O ARQUIVO controller DA APLICAÇÃO */

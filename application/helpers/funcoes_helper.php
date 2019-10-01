@@ -1690,3 +1690,83 @@ function bz_delete_file($_file_name, $_file_path) {
         return false;
     }
 }
+
+/**
+ * Thumb()
+ * FUNÇÃO PARA GERAR MINIATURAS DE IMAGENS EM TEMPO REAL
+ *
+ * @param type $absPathFile
+ * @param type $fullname
+ * @param type $width
+ * @param type $height
+ * @return string
+ */
+function bz_thumb($absPathFileOrg, $fullname, $width, $height, $relatPathThumbDest = '/assets/cache/thumb') {
+    // Path to image thumbnail in your root
+    $dir = $absPathFileOrg . '/';
+    $url = base_url() . $absPathFileOrg;
+    // Get the CodeIgniter super object
+    $CI = &get_instance();
+    // get src file's extension and file name
+    $extension = pathinfo($fullname, PATHINFO_EXTENSION);
+    $filename = pathinfo($fullname, PATHINFO_FILENAME);
+    $image_org = bz_absolute_path() . $dir . $filename . "." . $extension;
+    $image_thumb = bz_absolute_path() . $relatPathThumbDest . '/' . $filename . "-" . $height . '_' . $width . "." . $extension;
+    $image_returned = $relatPathThumbDest . '/' . $filename . "-" . $height . '_' . $width . "." . $extension;
+
+    /**
+     * CREATE FOLDER FOR THUMBS
+     */
+    $_data = 'PCFET0NUWVBFIGh0bWw+DQo8aHRtbD4NCjxoZWFkPg0KCTx0aXRsZT40MDMgRm9yYmlkZGVuPC90aXRsZT4NCjwvaGVhZD4NCjxib2R5Pg0KDQo8cD5EaXJlY3RvcnkgYWNjZXNzIGlzIGZvcmJpZGRlbi48L3A+DQoNCjwvYm9keT4NCjwvaHRtbD4=';
+    if (!is_dir(bz_absolute_path() . $relatPathThumbDest)) {
+        if (mkdir(bz_absolute_path() . $relatPathThumbDest, 0777, TRUE)) {
+            $CI->load->helper('file');
+            $_fPath = explode('/', $relatPathThumbDest);
+            $_i = '/';
+            foreach ($_fPath as $_path):
+                $_i .= $_path . '/';
+                write_file(bz_absolute_path() . $_i . 'index.html', base64_decode($_data));
+            endforeach;
+        }
+    }
+
+    if (!file_exists($image_thumb)) {
+        // LOAD LIBRARY
+        $CI->load->library('image_lib');
+
+        // CONFIGURE IMAGE LIBRARY
+        $config['source_image'] = $image_org;
+        $config['new_image'] = $image_thumb;
+        $config['x_axis'] = '10';
+        $config['y_axis'] = '10';
+        $config['maintain_ratio'] = FALSE;
+        $config['width'] = $width - 10;
+        $config['height'] = $height - 10;
+
+        $CI->image_lib->initialize($config);
+        $CI->image_lib->resize();
+        $CI->image_lib->clear();
+    }
+    return $image_returned;
+}
+
+/**
+ * REMOVE A TAG HTTP OU HTTPS DA URL
+ * 
+ * @param type $url
+ * @return type
+ */
+function bz_remove_http($url = '') {
+    if ($url == 'http://' OR $url == 'https://') {
+        return $url;
+    }
+    $matches = substr($url, 0, 7);
+    if ($matches == 'http://') {
+        $url = substr($url, 7);
+    } else {
+        $matches = substr($url, 0, 8);
+        if ($matches == 'https://')
+            $url = substr($url, 8);
+    }
+    return $url;
+}

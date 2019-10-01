@@ -57,11 +57,11 @@
 
                     <div class="input-group-btn">
                         <button class="btn btn-sm btn-primary btn-show-modal-aguarde j-tooltip" data-placement="bottom" data-toggle="tooltip" data-original-title="Pesquisa"><i class="fa fa-search"></i></button>
-                        <a href="<?= site_url($this->router->fetch_class()); ?>" class="btn btn-sm btn-default btn-show-modal-aguarde j-tooltip" data-placement="bottom" data-toggle="tooltip" data-original-title="Limpar"><i class="fa fa-refresh"></i></a>
+                        <a href="<?= site_url($this->router->fetch_class()); ?>" class="btn btn-sm btn-default btn-show-modal-aguarde j-tooltip" data-placement="bottom" data-toggle="tooltip" data-original-title="Limpar"><i class="glyphicon glyphicon-minus"></i></a>
 
                         <a href="<?= site_url($this->router->fetch_class()); ?>?ativo=Y<?= (($this->input->get('search')) ? '&search=' . $this->input->get('search') : ''); ?>" class="btn btn-sm btn-success btn-show-modal-aguarde j-tooltip margin-left-10 <?= (strtoupper($this->input->get('ativo', TRUE)) == 'Y') ? 'disabled' : ''; ?>" data-placement="bottom" data-toggle="tooltip" data-original-title="ATIVADO"><i class="fa fa-check-circle-o"></i></a>
                         <a href="<?= site_url($this->router->fetch_class()); ?>?ativo=N<?= (($this->input->get('search')) ? '&search=' . $this->input->get('search') : ''); ?>" class="btn btn-sm btn-danger btn-show-modal-aguarde j-tooltip <?= (strtoupper($this->input->get('ativo', TRUE)) == 'N') ? 'disabled' : ''; ?>" data-placement="bottom" data-toggle="tooltip" data-original-title="DESATIVADO"><i class="fa fa-circle-o"></i></a>
-                        
+
                     </div>
 
                 </div>
@@ -133,7 +133,8 @@
                                     foreach ($_usu_arr as $_urr):
                                         if (!strpos($_usu, $_urr['usuario_nome'])):
                                             $_usu_class_inativo = ($_urr['usuario_ativo'] == 'N') ? "class='text-gray'" : '';
-                                            $_usu .= "<a " . $_usu_class_inativo . " href='" . site_url('usuarios/edit/') . $_urr['usuario_id'] . "?btnvoltarorigem=grupos&" . bz_app_parametros_url() . "'><div class='text-left'><i class='fa fa-fw fa-check-square margin-right-5'></i>" . $_urr['usuario_nome'] . '</div></a>';
+//                                            $_usu .= "<a " . $_usu_class_inativo . " href='" . site_url('usuarios/edit/') . $_urr['usuario_id'] . "?btnvoltarorigem=grupos&" . bz_app_parametros_url() . "'><div class='text-left'><i class='fa fa-fw fa-check-square margin-right-5'></i>" . $_urr['usuario_nome'] . '</div></a>';
+                                            $_usu .= "<a " . $_usu_class_inativo . "><div class='text-left'><i class='fa fa-fw fa-check-square margin-right-5'></i>" . $_urr['usuario_nome'] . '</div></a>';
                                         endif;
                                     endforeach;
                                 endif;
@@ -158,14 +159,14 @@
                                     foreach ($_app_arr as $_arr):
                                         if (!strpos($_app, $_arr['app_name'])):
                                             $_app_class_inativo = ($_arr['app_ativo'] == 'N') ? "class='text-gray'" : '';
-                                            $_app .= "<a " . $_app_class_inativo . " href='" . site_url('apps/edit/') . $_arr['app_name'] . "?btnvoltarorigem=grupos&" . bz_app_parametros_url() . "'><div class='text-left'><i class='fa fa-fw fa-check-square margin-right-5'></i>" . $_arr['app_descricao'] . '</div></a>';
+//                                            $_app .= "<a " . $_app_class_inativo . " href='" . site_url('apps/edit/') . $_arr['app_name'] . "?btnvoltarorigem=grupos&" . bz_app_parametros_url() . "'><div class='text-left'><i class='fa fa-fw fa-check-square margin-right-5'></i>" . $_arr['app_descricao'] . '</div></a>';
+                                            $_app .= "<a " . $_app_class_inativo . "><div class='text-left'><i class='fa fa-fw fa-check-square margin-right-5'></i>" . $_arr['app_descricao'] . '</div></a>';
                                         endif;
                                     endforeach;
                                 endif;
-                                                                  
                                 ?>
-                                
-                                
+
+
 
                                 <!-- APRESENTA A TAG DOS USUÁRIOS -->
                                 <?php if ($_usu): ?>

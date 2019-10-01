@@ -1,6 +1,6 @@
 <?php
 /*
-  Created on : 11/09/2019, 17:59PM
+  Created on : 01/10/2019, 10:40AM
   Author     : Enio Marcelo - eniomarcelo@gmail.com
  */
 
@@ -109,6 +109,31 @@ foreach ($_results_profissao->result_array() as $_r_profissao):
 $_list_profissao[ $_r_profissao[ $_keyOptions_profissao[0] ] ] = $_r_profissao[ $_keyOptions_profissao[1] ];
 endforeach;
 echo form_dropdown('profissao', $_list_profissao, set_value('profissao',isset($dados->profissao) ? $dados->profissao : set_value('profissao')), 'class="form-control select2"  style="width:100%;"');
+?>
+</p>
+
+                                                    <?= $_error; ?>
+                                                </div>
+                                                
+
+                                                <?php $_error = form_error("genero", "<small class='text-danger col-xs-12 bz-input-error'>", "</small>"); ?>
+                                                <div id="genero" class="form-group has-feedback col-sm-12">
+                                                    <label for="genero"><i class="fa fa-asterisk margin-right-5 text-error " style="font-size: 0.7em;"></i>Gênero</label>
+                                                    <p style="margin-bottom: 0">
+<?php
+$_results_genero = $this->db->query("SELECT id,genero FROM cad_genero ORDER BY genero");
+$_last_query_genero = strtolower($this->db->last_query());
+$_options_genero = $_results_genero->result_array();
+$_options_genero = $_options_genero[0];
+$_keyOptions_genero = array();
+$_list_genero[0] = 'Selecione...' ;
+foreach ($_options_genero as $key => $value_genero):
+$_keyOptions_genero[] = $key;
+endforeach;
+foreach ($_results_genero->result_array() as $_r_genero):
+$_list_genero[ $_r_genero[ $_keyOptions_genero[0] ] ] = $_r_genero[ $_keyOptions_genero[1] ];
+endforeach;
+echo form_dropdown('genero', $_list_genero, set_value('genero',isset($dados->genero) ? $dados->genero : set_value('genero')), 'class="form-control select2"  style="width:100%;"');
 ?>
 </p>
 

@@ -298,7 +298,7 @@
 
                             <!--SELECT-->
                             <div class="form-group col-bg-12 col-md-12 col-sm-12 col-xs-12 hide">
-                                <label>Valor(es) do Select. <span style="font-size: 0.9em; font-weight: 100">QUERY Ex: SELECT id,profissao FROM cad_profissao ORDER BY profissao</span></label>
+                                <label>Valor(es) do Select. <span style="font-size: 0.9em; font-weight: 100">QUERY Ex: SELECT id,profissao FROM cad_profissao</span></label>
                                 <div class="input-group col-bg-12 col-md-12 col-sm-12 col-xs-12">
                                     <textarea class="form-control input-sm" name="grid_list_field_value_select" placeholder="QUERY Ex: SELECT id,profissao FROM cad_profissao ORDER BY profissao" rows="3" wrap="hard" value=""></textarea>
                                 </div>

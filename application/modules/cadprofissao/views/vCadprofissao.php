@@ -1,7 +1,7 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 <!--
 /*
-  Created on : 01/10/2019, 10:40AM
+  Created on : 01/10/2019, 10:03AM
   Author     : Enio Marcelo - eniomarcelo@gmail.com
  */
 -->
@@ -146,8 +146,7 @@
                         <th class='text-center' style='width:3%;'><input class='checkbox-all flat-red' type='checkbox'></th>
                         <th class='text-center' style='width:3%;'>#</th>
 
-                        <th class="thClNome" class="text-left" style="text-align:left">Nome</th>
-<th class="thClGenero" class="text-center" style="text-align:center">Gênero</th>
+                        <th class="thClProfissao" class="text-left" style="text-align:left">Profissão</th>
 
 
                         <th class='col-md-1 text-center'>Ação</th>
@@ -169,7 +168,11 @@
                         <?php $_c++; ?>
 
                         <?php
-                            
+                            /* ON RECORD */
+$_row['profissao'] = mb_strtoupper( $_row['profissao'] );
+/* END ON RECORD */
+
+
                         ?>
 
                         <tr id="<?= $_row['id']; ?>" style="<?= $_style_tr; ?>" class="ClTableGridListTbodyTr <?= $_class_tr; ?>">
@@ -180,8 +183,7 @@
                             <td class='text-center'  ><?= $_c; ?></td>
 
                             <!-- CAMPOS DA TABLE -->
-                            <td class="tdClNome" class="text-left" style="text-align:left"><?= $_row["nome"]; ?></td>
-<td class="tdClGenero" class="text-center" style="text-align:center"><?=$this->db->query("SELECT id,genero FROM cad_genero WHERE id = \"$_row[genero]\"")->row()->genero;?></td>
+                            <td class="tdClProfissao" class="text-left" style="text-align:left"><?= $_row["profissao"]; ?></td>
 
                             <!-- CAMPOS DA TABLE -->
 

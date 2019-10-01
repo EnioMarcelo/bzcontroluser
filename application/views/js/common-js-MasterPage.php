@@ -102,13 +102,8 @@
             var _strPos = nameModulo.substring(nameModulo.indexOf("?"));
             _strPos = nameModulo.length - _strPos.length;
             if (_strPos > 0) {
-                
                 nameModulo = nameModulo.substr(0, _strPos);
             }
-
-            console.clear();
-            console.log(_strPos);
-
 
             /* END Get Name Module in URL */
 
@@ -188,7 +183,7 @@
 
                         //swal('SUCESSO', 'Configurações Gerais Alterado com Sucesso.', 'success')
                         //    .then((value) => {
-                        //        //window.location.href = "<? ////= site_url();                                                                                                                               ?>////";
+                        //        //window.location.href = "<? ////= site_url();                                                                                                                                ?>////";
                         //        location.reload(true);
                         //    });
 

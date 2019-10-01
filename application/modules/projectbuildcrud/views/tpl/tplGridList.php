@@ -30,21 +30,22 @@
                     <span class='glyphicon glyphicon-trash'></span> Deleta
                 </button>
 
-
-                <a href='<?= site_url($this->router->fetch_class() . '/export' . '?' . bz_app_parametros_url()); ?>' class='btn btn-sm btn-primary btn-show-modal-aguarde' name='btn-export' value='btn-export'>
-                    <span class='glyphicon glyphicon-print'></span> Imprimir
-                </a>
+                <?php if ($_exportReport): ?>
+                    <a href='<?= site_url($this->router->fetch_class() . '/export' . '?' . bz_app_parametros_url()); ?>' class='btn btn-sm btn-primary btn-show-modal-aguarde' name='btn-export' value='btn-export'>
+                        <span class='glyphicon glyphicon-print'></span> Imprimir
+                    </a>
+                <?php endif; ?>
 
 
             </div>
         </div>
 
-<!--        <div class="col-md-12 col-xs-12 padding-top-5 margin-left-15">
-            <ol class='breadcrumb col-md-12' style="margin-bottom:-10px;">
-                <li><a href='<?= site_url('dashboard'); ?>' target='_top' class='active btn-show-modal-aguarde'><i class='fa fa-dashboard margin-left-5'></i>&nbsp;Dashboard</a></li>
-                <li class='active'><i class='<?= $_font_icon; ?> margin-right-5'></i><?= $_titulo_app; ?></li>
-            </ol>
-        </div>-->
+        <!--        <div class="col-md-12 col-xs-12 padding-top-5 margin-left-15">
+                    <ol class='breadcrumb col-md-12' style="margin-bottom:-10px;">
+                        <li><a href='<?= site_url('dashboard'); ?>' target='_top' class='active btn-show-modal-aguarde'><i class='fa fa-dashboard margin-left-5'></i>&nbsp;Dashboard</a></li>
+                        <li class='active'><i class='<?= $_font_icon; ?> margin-right-5'></i><?= $_titulo_app; ?></li>
+                    </ol>
+                </div>-->
 
     </div>
 
@@ -59,180 +60,180 @@
 
 <div class='row hide-reload-screen'>
 
-	<div class='box'>
+    <div class='box'>
 
-		<!-- HEADER -->
-		<div class='box-header'>
-			<h3 class='box-title'></h3>
-			<div class='box-tools'>
+        <!-- HEADER -->
+        <div class='box-header'>
+            <h3 class='box-title'></h3>
+            <div class='box-tools'>
 
-				<!-- FORM DE PESQUISA -->
-				<?= form_open('', 'id="IdFormSearch_'.$this->router->fetch_class().'" role="form" method="GET"'); ?>
-				<div class='input-group margin-top-10'>
-                    
-                    
+                <!-- FORM DE PESQUISA -->
+                <?= form_open('', 'id="IdFormSearch_' . $this->router->fetch_class() . '" role="form" method="GET"'); ?>
+                <div class='input-group margin-top-10'>
+
+
                     <!-- BOTÕES AVULSOS -->
                     <a id="buttons-loose-before-inputsearch" class="pull-right"></a>
                     <!-- BOTÕES AVULSOS -->
 
                     {{grid-list-input-search}}
-                    
+
                     <!-- BOTÕES AVULSOS -->
                     <a id="buttons-loose-after-inputsearch" class="pull-right"></a>
                     <!-- BOTÕES AVULSOS -->
-                    
 
-					<div class='input-group-btn {{grid-list-div-buttons}}'>
 
-                        
+                    <div class='input-group-btn {{grid-list-div-buttons}}'>
+
+
                         <!-- BOTÕES AVULSOS -->
                         <a id="buttons-loose-before"></a>
                         <!-- BOTÕES AVULSOS -->
-                        
-                        
+
+
                         {{grid-list-button-search}}
 
                         {{grid-list-button-clear}}
-                        
-                        
-                        
+
+
+
                         <!-- BOTÕES AVULSOS -->
                         <a id="buttons-loose-after"></a>
                         <!-- BOTÕES AVULSOS -->
-                        
-                        
-                        
-						<!-- BTN ATIVO/INATIVO -->
-						<?php if(  '{{grid-list-show-status}}' == 'Y'  ):?>
-							<!-- BTN ATIVO -->
-							<a href='<?= site_url($this->router->fetch_class()); ?>?ativo=Y<?= (($this->input->get('search')) ? '&search=' . $this->input->get('search') : ''); ?>' class='btn btn-sm btn-success btn-show-modal-aguarde j-tooltip margin-left-10 <?= (strtoupper($this->input->get('ativo', TRUE)) == 'Y') ? 'disabled' : ''; ?>' data-placement='bottom' data-toggle='tooltip' data-original-title='ATIVADO'><i class='fa fa-check-circle-o'></i></a>
-							<!-- BTN ATIVO -->
-
-							<!-- BTN INATIVO -->
-							<a href='<?= site_url($this->router->fetch_class()); ?>?ativo=N<?= (($this->input->get('search')) ? '&search=' . $this->input->get('search') : ''); ?>' class='btn btn-sm btn-danger btn-show-modal-aguarde j-tooltip <?= (strtoupper($this->input->get('ativo', TRUE)) == 'N') ? 'disabled' : ''; ?>' data-placement='bottom' data-toggle='tooltip' data-original-title='DESATIVADO'><i class='fa fa-circle-o'></i></a>
-							<!-- BTN INATIVO -->
-						<?php endif; ?>                       
-                        
-
-					</div>
-
-				</div>
-				<?= form_close(); ?>
-				<!-- END FORM DE PESQUISA -->
-
-			</div>
-		</div><!-- /.box-header -->
-		<!-- END HEADER -->
 
 
 
-		<!-- CONTEÚDO DA TABLE -->
-		<div class='box-body table-responsive no-padding margin-top-20'>
+                        <!-- BTN ATIVO/INATIVO -->
+                        <?php if ('{{grid-list-show-status}}' == 'Y'): ?>
+                            <!-- BTN ATIVO -->
+                            <a href='<?= site_url($this->router->fetch_class()); ?>?ativo=Y<?= (($this->input->get('search')) ? '&search=' . $this->input->get('search') : ''); ?>' class='btn btn-sm btn-success btn-show-modal-aguarde j-tooltip margin-left-10 <?= (strtoupper($this->input->get('ativo', TRUE)) == 'Y') ? 'disabled' : ''; ?>' data-placement='bottom' data-toggle='tooltip' data-original-title='ATIVADO'><i class='fa fa-check-circle-o'></i></a>
+                            <!-- BTN ATIVO -->
+
+                            <!-- BTN INATIVO -->
+                            <a href='<?= site_url($this->router->fetch_class()); ?>?ativo=N<?= (($this->input->get('search')) ? '&search=' . $this->input->get('search') : ''); ?>' class='btn btn-sm btn-danger btn-show-modal-aguarde j-tooltip <?= (strtoupper($this->input->get('ativo', TRUE)) == 'N') ? 'disabled' : ''; ?>' data-placement='bottom' data-toggle='tooltip' data-original-title='DESATIVADO'><i class='fa fa-circle-o'></i></a>
+                            <!-- BTN INATIVO -->
+                        <?php endif; ?>                       
 
 
-			<!-- TABLE -->
-			<table id="IdTableGridList_<?=$this->router->fetch_class();?>" class='table table-hover table-striped table-bordered table-mark-row'>
+                    </div>
 
-				<!-- HEADER DA TABLE -->
-				<thead class='thead-inverse bg-<?= ___BZ_LAYOUT_SKINCOLOR___; ?>'>
-					<tr id="IdTableGridListTheadTr">
-						<th class='text-center' style='width:3%;'><input class='checkbox-all flat-red' type='checkbox'></th>
-						<th class='text-center' style='width:3%;'>#</th>
+                </div>
+                <?= form_close(); ?>
+                <!-- END FORM DE PESQUISA -->
 
-						{{grid-list-header-table}}
+            </div>
+        </div><!-- /.box-header -->
+        <!-- END HEADER -->
 
-						<th class='col-md-1 text-center'>Ação</th>
-					</tr>
-				</thead>
-				<!-- END HEADER DA TABLE -->
 
-				<!-- DADOS DA TABLE -->
-				<tbody>
 
-					<?php $_c = 0; ?>
-                    <?php $_class_tr = '';?>
-                    <?php $_style_tr = '';?>
+        <!-- CONTEÚDO DA TABLE -->
+        <div class='box-body table-responsive no-padding margin-top-20'>
 
-					<?php foreach ($_result['results_paginacao_array'] as $_key => $_row): ?> 
-                    
+
+            <!-- TABLE -->
+            <table id="IdTableGridList_<?= $this->router->fetch_class(); ?>" class='table table-hover table-striped table-bordered table-mark-row'>
+
+                <!-- HEADER DA TABLE -->
+                <thead class='thead-inverse bg-<?= ___BZ_LAYOUT_SKINCOLOR___; ?>'>
+                    <tr id="IdTableGridListTheadTr">
+                        <th class='text-center' style='width:3%;'><input class='checkbox-all flat-red' type='checkbox'></th>
+                        <th class='text-center' style='width:3%;'>#</th>
+
+                        {{grid-list-header-table}}
+
+                        <th class='col-md-1 text-center'>Ação</th>
+                    </tr>
+                </thead>
+                <!-- END HEADER DA TABLE -->
+
+                <!-- DADOS DA TABLE -->
+                <tbody>
+
+                    <?php $_c = 0; ?>
+                    <?php $_class_tr = ''; ?>
+                    <?php $_style_tr = ''; ?>
+
+                    <?php foreach ($_result['results_paginacao_array'] as $_key => $_row): ?> 
+
                         <?php $_row['btn-action'] = ''; ?>
-                    
-						<?php $_c++; ?>
-                    
+
+                        <?php $_c++; ?>
+
                         <?php
-                        {{grid-list-on-record}}
+                            {{grid-list-on-record}}
                         ?>
 
-                        <tr id="<?=$_row['{{primary_key_field}}'];?>" style="<?=$_style_tr;?>" class="ClTableGridListTbodyTr <?=$_class_tr;?>">
-							<!-- MARCA REGISTRO PARA SER DELETADO -->
-							<td class="text-center" style='width:3%;'><input class="checkbox checkbox-unit flat-red text-center" type="checkbox" name="btn-delete[]" value="<?= $_row['{{primary_key_field}}']; ?>"></td>
-							<!-- END MARCA REGISTRO PARA SER DELETADO -->
+                        <tr id="<?= $_row['{{primary_key_field}}']; ?>" style="<?= $_style_tr; ?>" class="ClTableGridListTbodyTr <?= $_class_tr; ?>">
+                            <!-- MARCA REGISTRO PARA SER DELETADO -->
+                            <td class="text-center" style='width:3%;'><input class="checkbox checkbox-unit flat-red text-center" type="checkbox" name="btn-delete[]" value="<?= $_row['{{primary_key_field}}']; ?>"></td>
+                            <!-- END MARCA REGISTRO PARA SER DELETADO -->
 
-							<td class='text-center'  ><?= $_c; ?></td>
+                            <td class='text-center'  ><?= $_c; ?></td>
 
-							<!-- CAMPOS DA TABLE -->
-							{{grid-list-fields-table}}
-							<!-- CAMPOS DA TABLE -->
+                            <!-- CAMPOS DA TABLE -->
+                            {{grid-list-fields-table}}
+                            <!-- CAMPOS DA TABLE -->
 
-							<!-- BTN ACTION'S -->
-							<td class="tdBtnAction">
+                            <!-- BTN ACTION'S -->
+                            <td class="tdBtnAction">
                                 <!-- BTN EDITA REGISTRO -->
-								<?php $_edit = site_url($this->router->fetch_class() . '/edit/' . $_row['{{primary_key_field}}'] . '?' . bz_app_parametros_url()); ?>
-								<a href="<?= $_edit; ?>" class="btn btn-xs btn-primary btn-show-modal-aguarde ">
-									<span class="glyphicon glyphicon-edit j-tooltip" data-placement="bottom" data-toggle="tooltip" data-original-title="Editar"></span>
-								</a>
+    <?php $_edit = site_url($this->router->fetch_class() . '/edit/' . $_row['{{primary_key_field}}'] . '?' . bz_app_parametros_url()); ?>
+                                <a href="<?= $_edit; ?>" class="btn btn-xs btn-primary btn-show-modal-aguarde ">
+                                    <span class="glyphicon glyphicon-edit j-tooltip" data-placement="bottom" data-toggle="tooltip" data-original-title="Editar"></span>
+                                </a>
                                 <!-- END BTN EDITA REGISTRO -->
-                                
+
                                 <!-- BTN ACTION CUSTOM -->
                                 <?php
-                                if( !empty($_row['btn-action']) ):
-                                    echo $_row['btn-action'] ;
+                                if (!empty($_row['btn-action'])):
+                                    echo $_row['btn-action'];
                                 endif;
                                 ?>
                                 <!-- BTN ACTION CUSTOM -->
-							</td>
+                            </td>
                             <!-- END BTN ACTION'S -->
-							
-						</tr>
 
-					<?php endforeach; ?>
+                        </tr>
 
-
-				</tbody>
-				<!-- END DADOS DA TABLE -->
+<?php endforeach; ?>
 
 
-			</table>
-			<!-- END TABLE -->
+                </tbody>
+                <!-- END DADOS DA TABLE -->
 
 
-
-			<!-- PAGINAÇÃO -->
-			<div class="box-footer clearfix">
-				<div class="text-center paginacao-links pagination pagination-sm no-margin pull-right">
-					<?= $_result['links_paginacao']; ?>
-				</div>
-				<div class="text-left paginacao-links pagination pagination-sm no-margin text-primary">
-					<div class="padding-top-5">
-						<?= $_result['dados_paginacao']; ?>
-					</div>
-				</div>
-			</div>
-			<!-- END PAGINAÇÃO -->
+            </table>
+            <!-- END TABLE -->
 
 
 
-		</div><!-- /.box-body -->
-		<!-- END CONTEÚDO DA TABLE -->
+            <!-- PAGINAÇÃO -->
+            <div class="box-footer clearfix">
+                <div class="text-center paginacao-links pagination pagination-sm no-margin pull-right">
+<?= $_result['links_paginacao']; ?>
+                </div>
+                <div class="text-left paginacao-links pagination pagination-sm no-margin text-primary">
+                    <div class="padding-top-5">
+<?= $_result['dados_paginacao']; ?>
+                    </div>
+                </div>
+            </div>
+            <!-- END PAGINAÇÃO -->
 
 
 
-	</div><!-- /.box -->
-    
+        </div><!-- /.box-body -->
+        <!-- END CONTEÚDO DA TABLE -->
+
+
+
+    </div><!-- /.box -->
+
 
     <!--MODAL mc_modal() GRID LIST-->
     <?php
-    if( !empty($modalGridList) ){
+    if (!empty($modalGridList)) {
         echo $modalGridList;
     }
     ?>

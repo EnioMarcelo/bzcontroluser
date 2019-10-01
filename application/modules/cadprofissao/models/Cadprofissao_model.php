@@ -1,14 +1,14 @@
 <?php
 
 /*
-  Created on : 01/10/2019, 10:40AM
+  Created on : 01/10/2019, 10:03AM
   Author     : Enio Marcelo - eniomarcelo@gmail.com
  */
 
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Cadcliente_model extends MY_Model {
+class Cadprofissao_model extends MY_Model {
 
     public function __construct() {
         parent::__construct();

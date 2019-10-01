@@ -1002,7 +1002,10 @@
                     var icon = $(this).text();
                     icon = icon.trim();
                     $(window.parent.document).find("#app_icone").val(icon);
-                    $(window.parent.document).find(".bz_modal_icon").fadeOut(100);
+                    $(window.parent.document).find(".bz_modal_icon").fadeOut(100, function(){
+                        /* save */
+                        $(window.parent.document).find('#btn-editar').trigger("click");
+                    });
                 });
 
                 $('#search-icon').on('keyup', function (event) {

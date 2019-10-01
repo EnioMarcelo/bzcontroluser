@@ -228,7 +228,7 @@
                                 <?php $_error = form_error("app_titulo", "<small class='text-danger col-xs-12 bz-input-error'>", "</small>"); ?>
                                 <div class="form-group has-feedback">
                                     <label for="app_titulo"><i class="fa fa-asterisk margin-right-5 text-error" style="font-size: 0.7em;"></i>Título do APP</label>
-                                    <input type="text" name="app_titulo" class="form-control" placeholder="Título do APP" value="<?= (set_value('app_titulo')) ? set_value('app_titulo') : $dados->app_titulo; ?>" maxlength="250" />
+                                    <input type="text" name="app_titulo" class="form-control outInputTriggerBtnEditar" placeholder="Título do APP" value="<?= (set_value('app_titulo')) ? set_value('app_titulo') : $dados->app_titulo; ?>" maxlength="250" />
                                     <?= $_error; ?>
                                 </div>
                             </div>
@@ -261,7 +261,7 @@
                                             'NAO' => 'NÃO',
                                         );
                                         ?>
-                                        <?= form_dropdown('app_template_padrao', $_templatePadraoOptions, (set_value('app_template_padrao')) ? set_value('app_template_padrao') : $dados->app_template_padrao, 'id="app_template_padrao" class="form-control"'); ?>
+                                        <?= form_dropdown('app_template_padrao', $_templatePadraoOptions, (set_value('app_template_padrao')) ? set_value('app_template_padrao') : $dados->app_template_padrao, 'id="app_template_padrao" class="form-control triggerBtnEditar"'); ?>
                                     </div><!-- /.input group -->
                                 </div>
                             <?php endif; ?>
@@ -280,7 +280,7 @@
                                             'NAO' => 'NÃO',
                                         );
                                         ?>
-                                        <?= form_dropdown('app_security', $_securityOptions, (set_value('app_security')) ? set_value('app_security') : $dados->app_security, 'id="app_security" class="form-control"'); ?>
+                                        <?= form_dropdown('app_security', $_securityOptions, (set_value('app_security')) ? set_value('app_security') : $dados->app_security, 'id="app_security" class="form-control triggerBtnEditar"'); ?>
                                     </div><!-- /.input group -->
                                 </div>
                             <?php endif; ?>
@@ -304,7 +304,7 @@
                                 <div class="col-xs-12 col-sm-4 col-md-4 form-group">
                                     <div class="form-group has-feedback">
                                         <label for="primary_key">Chave Primária</label>
-                                        <select id="primary_key" class="form-control" name="primary_key">
+                                        <select id="primary_key" class="form-control triggerBtnEditar" name="primary_key">
 
                                             <?php
                                             foreach ($_fields_table_gridlist['_result'] as $_row_field_table_gridlist):
@@ -321,7 +321,7 @@
                                 <div class="col-xs-12 col-sm-4 col-md-4 form-group">
                                     <div class="form-group has-feedback">
                                         <label for="order_by">Campos Order By</label>
-                                        <input type="text" name="order_by" class="form-control" placeholder="Ex: campo1 ASC, campos2 DESC" value="<?= (set_value('order_by')) ? set_value('order_by') : $dados->order_by; ?>"/>
+                                        <input type="text" name="order_by" class="form-control outInputTriggerBtnEditar" placeholder="Ex: campo1 ASC, campos2 DESC" value="<?= (set_value('order_by')) ? set_value('order_by') : $dados->order_by; ?>"/>
                                     </div>
                                 </div>
                                 <!--END ORDER BY-->
@@ -1108,6 +1108,22 @@
 
 
             });
+            
+            /**
+             * BTN ON CHANGE EXECUTE BTN EDITAR TO SAVE
+             */
+             $('.triggerBtnEditar').change(function(){
+                 $('#btn-editar').trigger("click");
+                 return false;
+             });
+             
+             /**
+             * INPUT OUT FOCUS OU BLUR EXECUTE BTN EDITAR TO SAVE
+             */
+             $('.outInputTriggerBtnEditar').blur(function(){
+                 $('#btn-editar').trigger("click");
+                 return false;
+             });
 
 
 
