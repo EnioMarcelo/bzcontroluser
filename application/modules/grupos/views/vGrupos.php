@@ -116,7 +116,7 @@
                                  */
 
                                 $_usu = '';
-                                $_usu_arr = '';
+                                $_usu_arr = [];
 
                                 $_c = 0;
 
@@ -143,7 +143,7 @@
                                  */
 
                                 $_app = '';
-                                $_app_arr = '';
+                                $_app_arr = [];
 
                                 $_c = 0;
 
@@ -164,6 +164,7 @@
                                         endif;
                                     endforeach;
                                 endif;
+                                
                                 ?>
 
 

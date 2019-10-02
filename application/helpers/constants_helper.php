@@ -31,9 +31,20 @@ define('___CONF_TITULO_SISTEMA___', 'BUZZAControl');
 define('___CONF_NOME_SISTEMA___', '<b>BUZZA</b>Control');
 define('___CONF_NOME_SISTEMA_ABREVIADO___', '<b>BZ</b>CN');
 
+/* LOGIN */
+define('___CONF_LOGIN_BG_IMAGE___', 'style="background: url(assets/img/bg-login.jpg) no-repeat center center; background-size:cover"');
+define('___CONF_LOGIN_LOGO___', '<div style="color:#000000"><b>Admin</b>' . ___CONF_TITULO_SISTEMA___ . '</a></div>');
+define('___CONF_LOGIN_FOOTER___', '<div style="text-align: center; margin-top: 5px; font-size: 0.8em;"><a style="color:#ffffff">ENIO MARCELO</a><p><a style="color:#ffffff">&copy 2017</a></p></div>');
+
+/* LOGIN - CHANGE PASSWORD */
+define('___CONF_LOGIN_CHANGE_PASS_BG_IMAGE___', 'style="background: url(assets/img/bg-login.jpg) no-repeat center center; background-size:cover"');
+define('___CONF_LOGIN_CHANGE_PASS_LOGO___', '<div style="color:#000000"><b>Admin</b>' . ___CONF_TITULO_SISTEMA___ . '</a></div>');
+define('___CONF_LOGIN_CHANGE_PASS_FOOTER___', '<div style="text-align: center; margin-top: 5px; font-size: 0.8em;"><a style="color:#ffffff">ENIO MARCELO</a><p><a style="color:#ffffff">&copy 2017</a></p></div>');
+
+
 /**
  * ========================================================================================================================================================================
- * END DIVERSOS
+ * END SISTEMA
  * ========================================================================================================================================================================
  */
 /**
@@ -47,7 +58,7 @@ define("___CONF_UPLOAD_FILE_DIR___", "files");
 define("___CONF_UPLOAD_MEDIA_DIR___", "medias");
 /**
  * ========================================================================================================================================================================
- * UPLOAD
+ * END UPLOAD
  * ========================================================================================================================================================================
  */
 /**

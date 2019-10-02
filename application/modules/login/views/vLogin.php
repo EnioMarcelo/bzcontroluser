@@ -62,18 +62,30 @@
     </head>
 
 
-    <body class="login-page">
+    <body class="login-page" <?= (___CONF_LOGIN_BG_IMAGE___) ? ___CONF_LOGIN_BG_IMAGE___ : ''; ?> >
         <div class="login-box">
+
             <div class="login-logo">
-                <a href="<?= site_url(); ?>"><b>Admin</b><?= ___CONF_TITULO_SISTEMA___; ?></a>
+
+                <!-- LOGO -->
+                <?php if (___CONF_LOGIN_LOGO___): ?>
+                    <div class="login-logo-img">
+                        <?= ___CONF_LOGIN_LOGO___; ?>
+                    </div>
+                <?php else: ?>
+                    <a href="<?= site_url(); ?>"><b>Admin</b><?= ___CONF_TITULO_SISTEMA___; ?></a>
+                <?php endif; ?>
+                <!-- LOGO -->
+
             </div><!-- /.login-logo -->
+
             <div class="login-box-body">
                 <p class="login-box-msg">Faça login para iniciar sua sessão</p>
 
 
                 <?= get_mensagem(); ?>
 
-                <?= form_open('', 'role="form"'); ?>
+                <?= form_open('', ' role="form" autocomplete="off" '); ?>
 
                 <?php $_error = form_error("email", "<small class='text-danger'>", "</small>"); ?>
                 <div class="form-group has-feedback <?= $_error ? 'has-error' : ''; ?>">
@@ -97,8 +109,7 @@
                         <button type="submit" class="btn btn-primary btn-block btn-flat"><i class="fa fa-sign-in margin-right-5" aria-hidden="true"></i>Logar</button>
                     </div><!-- /.col -->
                 </div>
-                <?= form_close(); ?></form></form>
-
+                <?= form_close(); ?>
 
 
                 <div class="margin-top-10">
@@ -106,8 +117,18 @@
                 </div>
 
             </div><!-- /.login-box-body -->
+
+
+            <!-- FOOTER -->
+            <?php if (___CONF_LOGIN_FOOTER___): ?>
+                <div class="login-footer">
+                    <?= ___CONF_LOGIN_FOOTER___; ?>
+                </div><!-- /.login-footer -->
+            <?php endif; ?>                
+            <!-- FOOTER -->
+
         </div><!-- /.login-box -->
-        
+
     </body>
 </html>
 
@@ -116,12 +137,3 @@
 <?php
 $this->load->view($this->router->fetch_class() . '/ajax/ajax-js');
 ?>
-
-
-
-
-
-
-
-
-

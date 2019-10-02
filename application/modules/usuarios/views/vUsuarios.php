@@ -114,10 +114,10 @@
                                  * PREPARA A TAG DOS GRUPOS E APPS
                                  */
                                 $_grupos = '';
-                                $_grupos_arr = '';
+                                $_grupos_arr = [];
 
                                 $_apps = '';
-                                $_apps_arr = '';
+                                $_apps_arr = [];
 
                                 $_c = 0;
 
