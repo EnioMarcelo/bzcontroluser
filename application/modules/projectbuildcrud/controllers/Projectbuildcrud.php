@@ -179,7 +179,7 @@ class ProjectbuildCrud extends MY_Controller {
                 $_where = 'WHERE proj_build_id = ' . $this->input->post('projeto_id') . ' AND field_name = "' . $this->input->post('field_name') . '" AND screen_type = "' . $_screen_type . '"';
                 if ($this->update->ExecUpdate('proj_build_fields', array('param_gridlist' => json_encode($_dados, JSON_UNESCAPED_UNICODE)), $_where)):
 
-                    $_r = array('return' => 'SAVE-SETUP-GRIDLIST-OK');
+                    $_r = array('csrf_token' => $this->security->get_csrf_hash(), 'return' => 'SAVE-SETUP-GRIDLIST-OK');
                     echo json_encode($_r);
                     exit;
 
@@ -192,18 +192,16 @@ class ProjectbuildCrud extends MY_Controller {
 
                 $_setupGridList = $this->read->ExecRead('proj_build_fields', 'WHERE proj_build_id = ' . $_projeto_id . ' AND field_name = "' . $_field_name . '" AND screen_type = "' . $_screen_type . '"')->row()->param_gridlist;
 
-
                 $_r = json_decode($_setupGridList);
-
 
                 if (isset($_r->grid_list_field_value_select)):
                     $_r->grid_list_field_value_select = base64_decode($_r->grid_list_field_value_select);
                 endif;
 
+                $_r->csrf_token = $this->security->get_csrf_hash();
 
                 echo json_encode($_r);
                 exit;
-
 
 
             endif;
@@ -256,7 +254,7 @@ class ProjectbuildCrud extends MY_Controller {
                 if (!empty($_dados['form_add_edit_field_hidden'])):
                     if ($_dados['form_add_edit_field_hidden'] == 'on'):
 
-//SE O BOTÃO OCULTO ESTIVER ON E A OPÇÃO ESTIVER EM TODOS, DESATIVA O BOTÃO SOMENTE LEITURA E O BOTÃO OBRIGATÓRIO.
+                        /* SE O BOTÃO OCULTO ESTIVER ON E A OPÇÃO ESTIVER EM TODOS, DESATIVA O BOTÃO SOMENTE LEITURA E O BOTÃO OBRIGATÓRIO. */
                         if ($_dados['form_add_edit_field_hidden_in_form'] == 'todos'):
                             $_dados['form_add_edit_field_read_only'] = '';
                             $_dados['form_add_edit_field_read_only_in_form'] = 'todos';
@@ -265,8 +263,11 @@ class ProjectbuildCrud extends MY_Controller {
 
                         elseif ($_dados['form_add_edit_field_hidden_in_form'] == 'formadd'):
 
-//SE O BOTÃO OCULTO ESTIVER ON E A OPÇÃO ESTIVER EM SOMENT FORM ADD, DESATIVA O BOTÃO OBRIGATÓRIO E PERMITE SOMENTE A OPÇÃO
-//FORM EDIT DO BOTÃO SOMENTE LEITURA.
+                            /*
+                             * E O BOTÃO OCULTO ESTIVER ON E A OPÇÃO ESTIVER EM SOMENT FORM ADD, DESATIVA O BOTÃO OBRIGATÓRIO E PERMITE SOMENTE A OPÇÃO
+                             * FORM EDIT DO BOTÃO SOMENTE LEITURA.
+                             */
+
                             if (!empty($_dados['form_add_edit_field_read_only'])):
                                 if ($_dados['form_add_edit_field_read_only'] == 'on'):
                                     if ($_dados['form_add_edit_field_read_only_in_form'] !== 'formedit'):
@@ -280,8 +281,10 @@ class ProjectbuildCrud extends MY_Controller {
 
                         elseif ($_dados['form_add_edit_field_hidden_in_form'] == 'formedit'):
 
-//SE O BOTÃO OCULTO ESTIVER ON E A OPÇÃO ESTIVER EM SOMENT FORM EDIT, DESATIVA O BOTÃO OBRIGATÓRIO E PERMITE SOMENTE A OPÇÃO
-//SOMETE FORM ADD DO BOTÃO SOMENTE LEITURA.
+                            /*
+                             * SE O BOTÃO OCULTO ESTIVER ON E A OPÇÃO ESTIVER EM SOMENT FORM EDIT, DESATIVA O BOTÃO OBRIGATÓRIO E PERMITE SOMENTE A OPÇÃO
+                             * SOMETE FORM ADD DO BOTÃO SOMENTE LEITURA.
+                             */
                             if (!empty($_dados['form_add_edit_field_read_only'])):
                                 if ($_dados['form_add_edit_field_read_only'] == 'on'):
                                     if ($_dados['form_add_edit_field_read_only_in_form'] !== 'formadd'):
@@ -296,7 +299,7 @@ class ProjectbuildCrud extends MY_Controller {
                         endif;
                     endif;
                 endif;
-//END REGRAS DE VALIDAÇÃO DO BOTÃO "OCULTO/HIDDEN" DO FORM ADD/EDIT DAS CONFIGURAÇÕES DOS INPUTS DO FORM
+                /* END REGRAS DE VALIDAÇÃO DO BOTÃO "OCULTO/HIDDEN" DO FORM ADD/EDIT DAS CONFIGURAÇÕES DOS INPUTS DO FORM */
 
 
                 /*
@@ -305,15 +308,17 @@ class ProjectbuildCrud extends MY_Controller {
                 if (!empty($_dados['form_add_edit_field_read_only'])):
                     if ($_dados['form_add_edit_field_read_only'] == 'on'):
 
-//SE O BOTÃO SOMENTE ESTIVER ON E A OPÇÃO ESTIVER EM TODOS, DESATIVA O BOTÃO OBRIGATÓRIO.
+                        /* SE O BOTÃO SOMENTE ESTIVER ON E A OPÇÃO ESTIVER EM TODOS, DESATIVA O BOTÃO OBRIGATÓRIO. */
                         if ($_dados['form_add_edit_field_read_only_in_form'] == 'todos'):
                             $_dados['form_add_edit_field_required'] = '';
                             $_dados['form_add_edit_field_required_in_form'] = 'todos';
 
                         elseif ($_dados['form_add_edit_field_read_only_in_form'] == 'formadd'):
 
-//SE O BOTÃO SOMENTE LEITURA ESTIVER ON E A OPÇÃO ESTIVER EM SOMENT FORM ADD, PERMITE SOMENTE A OPÇÃO
-//FORM EDIT DO BOTÃO OBRIGATORIO.
+                            /*
+                             * SE O BOTÃO SOMENTE LEITURA ESTIVER ON E A OPÇÃO ESTIVER EM SOMENT FORM ADD, PERMITE SOMENTE A OPÇÃO
+                             * FORM EDIT DO BOTÃO OBRIGATORIO.
+                             */
                             if (!empty($_dados['form_add_edit_field_required'])):
                                 if ($_dados['form_add_edit_field_required'] == 'on'):
                                     if ($_dados['form_add_edit_field_required_in_form'] !== 'formedit'):
@@ -325,8 +330,10 @@ class ProjectbuildCrud extends MY_Controller {
 
                         elseif ($_dados['form_add_edit_field_read_only_in_form'] == 'formedit'):
 
-//SE O BOTÃO SOMENTE LEITURA ESTIVER ON E A OPÇÃO ESTIVER EM SOMENT FORM EDIT, PERMITE SOMENTE A OPÇÃO
-//FORM ADD DO BOTÃO OBRIGATORIO.
+                            /*
+                             * SE O BOTÃO SOMENTE LEITURA ESTIVER ON E A OPÇÃO ESTIVER EM SOMENT FORM EDIT, PERMITE SOMENTE A OPÇÃO
+                             * FORM ADD DO BOTÃO OBRIGATORIO.
+                             */
                             if (!empty($_dados['form_add_edit_field_required'])):
                                 if ($_dados['form_add_edit_field_required'] == 'on'):
                                     if ($_dados['form_add_edit_field_required_in_form'] !== 'formadd'):
@@ -341,7 +348,7 @@ class ProjectbuildCrud extends MY_Controller {
 
                     endif;
                 endif;
-//END REGRAS DE VALIDAÇÃO DO BOTÃO "SOMENTE LEITURA/READ ONLY" DO FORM ADD/EDIT DAS CONFIGURAÇÕES DOS INPUTS DO FORM
+                /* END REGRAS DE VALIDAÇÃO DO BOTÃO "SOMENTE LEITURA/READ ONLY" DO FORM ADD/EDIT DAS CONFIGURAÇÕES DOS INPUTS DO FORM */
 
 
                 /*
@@ -350,8 +357,10 @@ class ProjectbuildCrud extends MY_Controller {
                 if (!empty($_dados['form_add_edit_field_hidden'])):
                     if ($_dados['form_add_edit_field_hidden'] == 'on'):
 
-// SE O BOTÃO OCULTO ESTIVER NA OPÇÃO SOMENTE FORM ADD E O BOTÃO OBRIGATÓRIO ESTIVER NA OPÇÃO SOMENTE FORM ADD,
-// ENTÃO DELIGUE O BOTÃO OBRIGATÓRIO.
+                        /*
+                         * SE O BOTÃO OCULTO ESTIVER NA OPÇÃO SOMENTE FORM ADD E O BOTÃO OBRIGATÓRIO ESTIVER NA OPÇÃO SOMENTE FORM ADD,
+                         * ENTÃO DELIGUE O BOTÃO OBRIGATÓRIO.
+                         */
                         if ($_dados['form_add_edit_field_hidden_in_form'] == 'formadd'):
                             if (!empty($_dados['form_add_edit_field_required'])):
                                 if ($_dados['form_add_edit_field_required'] == 'on'):
@@ -362,8 +371,10 @@ class ProjectbuildCrud extends MY_Controller {
                                 endif;
                             endif;
 
-// SE O BOTÃO OCULTO ESTIVER NA OPÇÃO SOMENTE FORM EDIT E O BOTÃO OBRIGATÓRIO ESTIVER NA OPÇÃO SOMENTE FORM EDIT,
-// ENTÃO DELIGUE O BOTÃO OBRIGATÓRIO.
+                        /*
+                         * SE O BOTÃO OCULTO ESTIVER NA OPÇÃO SOMENTE FORM EDIT E O BOTÃO OBRIGATÓRIO ESTIVER NA OPÇÃO SOMENTE FORM EDIT,
+                         * ENTÃO DELIGUE O BOTÃO OBRIGATÓRIO.
+                         */
                         elseif ($_dados['form_add_edit_field_hidden_in_form'] == 'formedit'):
                             if (!empty($_dados['form_add_edit_field_required'])):
                                 if ($_dados['form_add_edit_field_required'] == 'on'):
@@ -380,7 +391,7 @@ class ProjectbuildCrud extends MY_Controller {
                 endif;
 
 
-//END REGRAS DE VALIDAÇÃO DO BOTÃO "OBRIGATÓRIO/REQUIRED" DO FORM ADD/EDIT DAS CONFIGURAÇÕES DOS INPUTS DO FORM
+                /* END REGRAS DE VALIDAÇÃO DO BOTÃO "OBRIGATÓRIO/REQUIRED" DO FORM ADD/EDIT DAS CONFIGURAÇÕES DOS INPUTS DO FORM */
 
 
                 /* if (empty($_dados['form_add_edit_field_hidden'])):
@@ -394,7 +405,7 @@ class ProjectbuildCrud extends MY_Controller {
                 $_where = 'WHERE proj_build_id = ' . $this->input->post('modal_projeto_id') . ' AND field_name = "' . $this->input->post('field_name') . '" AND screen_type = "' . $_screen_type . '"';
                 if ($this->update->ExecUpdate('proj_build_fields', array('param_formaddedit' => json_encode($_dados, JSON_UNESCAPED_UNICODE)), $_where)):
 
-                    $_r = array('return' => 'SAVE-SETUP-FORMADDEDIT-OK');
+                    $_r = array('csrf_token' => $this->security->get_csrf_hash(), 'return' => 'SAVE-SETUP-FORMADDEDIT-OK');
                     echo json_encode($_r);
                     exit;
 
@@ -429,6 +440,8 @@ class ProjectbuildCrud extends MY_Controller {
                     $_r->form_add_edit_field_mask_complement = base64_decode($_r->form_add_edit_field_mask_complement);
                 endif;
 
+                $_r->csrf_token = $this->security->get_csrf_hash();
+
                 echo json_encode($_r);
                 exit;
 
@@ -446,6 +459,14 @@ class ProjectbuildCrud extends MY_Controller {
      * FUNÇÃO CADASTRO DE CAMPO DA GRIDLIST
      */
     public function addFieldGridList() {
+
+        /*
+         * CERTIFICA SE O ACESSO A ESTA FUNCTION REALMENTE ESTÁ SENDO FEITO POR AJAX.
+         */
+        bz_check_is_ajax_request();
+
+        $_response = [];
+        $_response['csrf_token'] = $this->security->get_csrf_hash();
 
         if ($this->input->post()) :
 
@@ -469,13 +490,13 @@ class ProjectbuildCrud extends MY_Controller {
 
                     if ($result):
 
-                        $_r['title'] = 'OK !!!';
-                        $_r['msg'] = 'Campo da Grid List Gravado com Sucesso.';
-                        $_r['type'] = 'success';
+                        $_response['title'] = 'OK !!!';
+                        $_response['msg'] = 'Campo da Grid List Gravado com Sucesso.';
+                        $_response['type'] = 'success';
 
-                        set_mensagem_notfit($_r['msg'], $_r['type']);
+                        set_mensagem_notfit($_response['msg'], $_response['type']);
 
-                        echo json_encode($_r);
+                        echo json_encode($_response);
 
                     endif;
 
@@ -483,11 +504,11 @@ class ProjectbuildCrud extends MY_Controller {
 
                 else:
 
-                    $_r['title'] = 'ATENÇÃO !!!';
-                    $_r['msg'] = 'Favor informar o nome do campo da Grid List.';
-                    $_r['type'] = 'warning';
+                    $_response['title'] = 'ATENÇÃO !!!';
+                    $_response['msg'] = 'Favor informar o nome do campo da Grid List.';
+                    $_response['type'] = 'warning';
 
-                    echo json_encode($_r);
+                    echo json_encode($_response);
                     exit;
 
                 endif;
@@ -499,21 +520,21 @@ class ProjectbuildCrud extends MY_Controller {
                 $_d = $this->delete->ExecDelete('proj_build_fields', $termosDB);
 
                 if ($_d):
-                    $_r['title'] = 'OK !!!';
-                    $_r['msg'] = 'Campo da Grid List Deletado com Sucesso.';
-                    $_r['type'] = 'success';
+                    $_response['title'] = 'OK !!!';
+                    $_response['msg'] = 'Campo da Grid List Deletado com Sucesso.';
+                    $_response['type'] = 'success';
 
-                    set_mensagem_notfit($_r['msg'], $_r['type']);
+                    set_mensagem_notfit($_response['msg'], $_response['type']);
                 else:
-                    $_r['title'] = 'ERRO !!!';
-                    $_r['msg'] = ___MSG_GENERIC_UNEXPECTED_ERROR___;
-                    $_r['type'] = 'error';
+                    $_response['title'] = 'ERRO !!!';
+                    $_response['msg'] = ___MSG_GENERIC_UNEXPECTED_ERROR___;
+                    $_response['type'] = 'error';
 
-                    set_mensagem_notfit($_r['msg'], $_r['type']);
+                    set_mensagem_notfit($_response['msg'], $_response['type']);
                 endif;
 
 
-                echo json_encode($_r);
+                echo json_encode($_response);
                 exit;
 
 
@@ -980,6 +1001,8 @@ class ProjectbuildCrud extends MY_Controller {
          */
         bz_check_is_ajax_request();
 
+        $_response['csrf_token'] = $this->security->get_csrf_hash();
+
         if ($this->input->post()):
 
 
@@ -996,8 +1019,8 @@ class ProjectbuildCrud extends MY_Controller {
                 /**/
                 endif;
 
-                $_r = array('message' => 'SAVE-REORDER-FIELDS-GRIDLIST-OK');
-                echo json_encode($_r);
+                $_response['message'] = 'SAVE-REORDER-FIELDS-GRIDLIST-OK';
+                echo json_encode($_response);
                 exit;
 
 
@@ -1014,22 +1037,22 @@ class ProjectbuildCrud extends MY_Controller {
                 /**/
                 endif;
 
-                $_r = array('message' => 'SAVE-REORDER-FIELDS-GRIDLIST-OK');
-                echo json_encode($_r);
+                $_response['message'] = 'SAVE-REORDER-FIELDS-GRIDLIST-OK';
+                echo json_encode($_response);
                 exit;
 
             else:
 
-                $_r = array('message' => 'ERRO...');
-                echo json_encode($_r);
+                $_response['message'] = 'ERRO...';
+                echo json_encode($_response);
                 exit;
 
             endif;
 
         else:
 
-            $_r = array('message' => 'ERRO...');
-            echo json_encode($_r);
+            $_response['message'] = 'ERRO...';
+            echo json_encode($_response);
             exit;
 
         endif;
@@ -1054,13 +1077,15 @@ class ProjectbuildCrud extends MY_Controller {
 
         if ($this->input->post('task') == 'SAVE-SWITCH'):
 
-            $_reponse['post'] = $this->input->post();
+            $_response['post'] = $this->input->post();
 
             /* GET DADOS FIELDS */
             $_r = $this->db->get_where('proj_build_fields', array('proj_build_id' => $this->input->post('project_id'), 'field_name' => $this->input->post('field_name'), 'screen_type' => $this->input->post('screen_type')))->row();
             $_r_param_gridlist = $_r->param_gridlist;
             $_r_param_formaddedit = $_r->param_formaddedit;
             $_dados = '';
+            $_response = [];
+            $_response['csrf_token'] = $this->security->get_csrf_hash();
 
             if ($_r):
 
@@ -1072,8 +1097,8 @@ class ProjectbuildCrud extends MY_Controller {
                     $_dados = json_encode($_dados, JSON_UNESCAPED_UNICODE);
 
                     /* if ($_grid_list_show == 'off') {
-                      $_reponse['message'] = 'SAVE-SWITCH-OK';
-                      echo json_encode($_reponse);
+                      $_response['message'] = 'SAVE-SWITCH-OK';
+                      echo json_encode($_response);
                       exit;
                       } */
 
@@ -1081,10 +1106,10 @@ class ProjectbuildCrud extends MY_Controller {
                     $this->db->where('proj_build_id', $this->input->post('project_id'));
                     $this->db->where('field_name', $this->input->post('field_name'));
                     $this->db->where('screen_type', $this->input->post('screen_type'));
-                    $_reponse['update'] = $this->db->update('proj_build_fields');
+                    $_response['update'] = $this->db->update('proj_build_fields');
 
-                    $_reponse['message'] = 'SAVE-SWITCH-OK';
-                    echo json_encode($_reponse);
+                    $_response['message'] = 'SAVE-SWITCH-OK';
+                    echo json_encode($_response);
                     exit;
 
                 endif;
@@ -1111,13 +1136,15 @@ class ProjectbuildCrud extends MY_Controller {
 
         if ($this->input->post('task') == 'SAVE-SWITCH'):
 
-            $_reponse['post'] = $this->input->post();
+            $_response['post'] = $this->input->post();
 
-//GET DADOS FIELDS
+            /* GET DADOS FIELDS */
             $_r = $this->db->get_where('proj_build_fields', array('proj_build_id' => $this->input->post('project_id'), 'field_name' => $this->input->post('field_name'), 'screen_type' => $this->input->post('screen_type')))->row();
             $_r_param_gridlist = $_r->param_gridlist;
             $_r_param_formaddedit = $_r->param_formaddedit;
             $_dados = '';
+            $_response = [];
+            $_response['csrf_token'] = $this->security->get_csrf_hash();
 
             if ($_r):
 
@@ -1129,8 +1156,8 @@ class ProjectbuildCrud extends MY_Controller {
                     $_dados = json_encode($_dados, JSON_UNESCAPED_UNICODE);
 
                     /* if ($_grid_list_show == 'off') {
-                      $_reponse['message'] = 'SAVE-SWITCH-OK';
-                      echo json_encode($_reponse);
+                      $_response['message'] = 'SAVE-SWITCH-OK';
+                      echo json_encode($_response);
                       exit;
                       } */
 
@@ -1138,10 +1165,10 @@ class ProjectbuildCrud extends MY_Controller {
                     $this->db->where('proj_build_id', $this->input->post('project_id'));
                     $this->db->where('field_name', $this->input->post('field_name'));
                     $this->db->where('screen_type', $this->input->post('screen_type'));
-                    $_reponse['update'] = $this->db->update('proj_build_fields');
+                    $_response['update'] = $this->db->update('proj_build_fields');
 
-                    $_reponse['message'] = 'SAVE-SWITCH-OK';
-                    echo json_encode($_reponse);
+                    $_response['message'] = 'SAVE-SWITCH-OK';
+                    echo json_encode($_response);
                     exit;
 
                 endif;
@@ -1170,17 +1197,19 @@ class ProjectbuildCrud extends MY_Controller {
 
         if ($this->input->post('task') == 'SAVE-SWITCH'):
 
-            $_reponse['post'] = $this->input->post();
+            $_response['post'] = $this->input->post();
 
-//GET DADOS FIELDS
+            /* GET DADOS FIELDS */
             $_r = $this->db->get_where('proj_build_fields', array('proj_build_id' => $this->input->post('project_id'), 'field_name' => $this->input->post('field_name'), 'screen_type' => $this->input->post('screen_type')))->row();
             $_r_param_gridlist = $_r->param_gridlist;
             $_r_param_formaddedit = $_r->param_formaddedit;
             $_dados = '';
+            $_response = [];
+            $_response['csrf_token'] = $this->security->get_csrf_hash();
 
             if ($_r):
 
-                if ($this->input->post('screen_type') == 'gridlist'):
+                if ($this->input->post('screen_type') == 'gridlist') {
 
                     $_dados = json_decode($_r_param_gridlist, true);
                     $_dados['grid_list_show'] = $this->input->post('grid_list_show');
@@ -1196,13 +1225,13 @@ class ProjectbuildCrud extends MY_Controller {
                     $this->db->where('proj_build_id', $this->input->post('project_id'));
                     $this->db->where('field_name', $this->input->post('field_name'));
                     $this->db->where('screen_type', $this->input->post('screen_type'));
-                    $_reponse['update'] = $this->db->update('proj_build_fields');
+                    $_response['update'] = $this->db->update('proj_build_fields');
 
-                    $_reponse['message'] = 'SAVE-SWITCH-OK';
+                    $_response['message'] = 'SAVE-SWITCH-OK';
 
-                    echo json_encode($_reponse);
+                    echo json_encode($_response);
                     exit;
-                elseif ($this->input->post('screen_type') == 'formaddedit'):
+                } elseif ($this->input->post('screen_type') == 'formaddedit') {
 
                     $_dados = json_decode($_r_param_formaddedit, true);
                     $_dados['form_add_edit_field_show'] = $this->input->post('grid_list_show');
@@ -1212,14 +1241,13 @@ class ProjectbuildCrud extends MY_Controller {
                     $this->db->where('proj_build_id', $this->input->post('project_id'));
                     $this->db->where('field_name', $this->input->post('field_name'));
                     $this->db->where('screen_type', $this->input->post('screen_type'));
-                    $_reponse['update'] = $this->db->update('proj_build_fields');
+                    $_response['update'] = $this->db->update('proj_build_fields');
 
-                    $_reponse['message'] = 'SAVE-SWITCH-OK';
+                    $_response['message'] = 'SAVE-SWITCH-OK';
 
-                    echo json_encode($reponse);
+                    echo json_encode($_response);
                     exit;
-
-                endif;
+                }
 
             endif;
 
@@ -1377,6 +1405,7 @@ class ProjectbuildCrud extends MY_Controller {
             $_rows[$_c]['field_type'] = $_field->type;
             $_rows[$_c]['field_length'] = $_field->max_length;
             $_rows[$_c]['primary_key'] = $_field->primary_key;
+            $_rows[$_c]['csrf_token'] = $this->security->get_csrf_hash();
 
             $_c++;
 
@@ -1848,15 +1877,9 @@ class ProjectbuildCrud extends MY_Controller {
                                     endif;
                                 endif;
 
-//                            echo '<pre class="vardump">';
-//                            var_dump( $_row );
-//                            echo '</pre>';
-
-
 
                                 $this->_gridListFields .= $_row['field_name'] . ',';
                                 $this->_gridListHeaderTable .= '<th class="thCl' . ucfirst($_row['field_name']) . '" class="' . $_class . '" style="' . $_width_field . '">' . $_param_gridListField['grid_list_label'] . '</th>' . PHP_EOL;
-
 
 
                                 /**

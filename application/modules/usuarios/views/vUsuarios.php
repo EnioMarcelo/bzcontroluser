@@ -220,9 +220,11 @@
                                     $_btn_conected_tooltip_msg = 'Desconectar Usuário';
                                     $_btn_conected_status = 'poweron';
                                 endif;
+
+                                $_btn_conected_disable = (($this->session->userdata('user_login')['user_email'] == $_row->email) ? 'disabled' : '');
                                 ?>
 
-                                <a id="<?= $_row->id; ?>" class="btn btn-xs <?= $_btn_conected; ?> btn-show-modal-aguarde j-btn-poweroff-user" data-rel="<?= $_btn_conected_status; ?>" data-id="<?= $_row->id; ?>" data-email="<?= $_row->email; ?>" data-nome="<?= $_row->nome; ?>" >
+                                <a id="<?= $_row->id; ?>" class="btn btn-xs <?= $_btn_conected; ?> btn-show-modal-aguarde j-btn-poweroff-user <?= (($_btn_conected_status == 'poweroff') ? 'disabled' : ''); ?> <?= $_btn_conected_disable; ?>" data-rel="<?= $_btn_conected_status; ?>" data-id="<?= $_row->id; ?>" data-email="<?= $_row->email; ?>" data-nome="<?= $_row->nome; ?>" >
                                     <span class="fa fa-power-off j-tooltip" data-placement="bottom" data-toggle="tooltip" data-original-title="<?= $_btn_conected_tooltip_msg; ?>"></span>
                                 </a>
                                 <!-- END BTN DESCONECTA USUÁRIO -->

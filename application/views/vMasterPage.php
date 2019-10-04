@@ -310,6 +310,7 @@
                                                                     </ul>
                                                                 </li>-->
                             <!-- Control Sidebar Toggle Button -->
+
                             <li>
                                 <a href="#userprofile" class="j-btn-linkmenu hidden-sm hidden-md hidden-lg j-tooltip" data-placement="bottom" data-toggle="tooltip" data-original-title="Meus Dados"><i class="fa fa-user margin-right-5"></i><span class="hidden-xs">Meus Dados</span></a>
                                 <a href="#userprofile" class="j-btn-linkmenu hidden-xs"><i class="fa fa-user margin-right-5"></i><span>Meus Dados</span></a>
@@ -362,7 +363,7 @@
                     <!-- /.search form -->
 
                     <!-- Sidebar Menu -->
-                    
+
                     <ul class="sidebar-menu">
                         <?php if (check_system_is_manutencao()): ?>
                             <li class="header text-center bg-orange-active margin-top-15 margin-bottom-10 j-em-manutencao" style="color: black !important">EM MANUTENÇÃO</li>

@@ -622,7 +622,7 @@ class Usuarios extends MY_Controller {
             $_r = '';
 
             if ($this->session->userdata('user_login')['user_email'] == $_email):
-                $_r = array('notpoweroff' => 'true');
+                $_r = array('notpoweroff' => 'true', 'csrf_token' => $this->security->get_csrf_hash());
                 echo json_encode($_r);
                 exit;
             else:
@@ -640,7 +640,7 @@ class Usuarios extends MY_Controller {
                     $dados_auditoria['last_query'] = $this->db->last_query();
                     add_auditoria($dados_auditoria);
 
-                    $_r = array('success' => 'true');
+                    $_r = array('success' => 'true', 'csrf_token' => $this->security->get_csrf_hash());
                     echo json_encode($_r);
                     exit;
 
@@ -691,7 +691,7 @@ class Usuarios extends MY_Controller {
 
                 if ($this->update->ExecUpdate($this->table_name, $_dados, $_where)):
 
-                    $_r = array('success' => 'true');
+                    $_r = array('success' => 'true', 'csrf_token' => $this->security->get_csrf_hash());
 
                     //GRAVA AUDITORIA
                     $dados_auditoria['creator'] = 'user';

@@ -567,6 +567,13 @@
 
         $(function () {
 
+            var csrfName = '<?php echo $this->security->get_csrf_token_name(); ?>';
+            var csrfHash = '';
+
+            if (csrfHash === '') {
+                csrfHash = '<?php echo $this->security->get_csrf_hash(); ?>';
+            }
+
             $(window).scroll(function () {
 
                 var _s = $(window).scrollTop();
@@ -648,16 +655,25 @@
                             _screen_type = '';
                         }
 
+//                        csrfHash = $("input[name='<?php echo $this->security->get_csrf_token_name(); ?>']").val();
+//                        $("input[name='<?php echo $this->security->get_csrf_token_name(); ?>']").attr('value', '<?php echo $this->security->get_csrf_hash(); ?>');
+
                         $.ajax({
                             type: "POST",
                             url: "<?= site_url($this->router->fetch_class() . '/reorder_linegridlist'); ?>",
-                            data: {'task': 'SAVE-REORDER-GRID-LIST', 'screen_type': _screen_type, 'projeto_id': _projeto_id, 'field_name': _field_name, 'order_field_gridlist': _r},
+                            data: {[csrfName]: csrfHash, 'task': 'SAVE-REORDER-GRID-LIST', 'screen_type': _screen_type, 'projeto_id': _projeto_id, 'field_name': _field_name, 'order_field_gridlist': _r},
                             dataType: "json",
                             beforeSend: function () {
 
 
                             }, //END beforeSend
                             success: function (result) {
+
+                                if (result.csrf_token) {
+                                    csrfHash = result.csrf_token;
+                                }
+
+                                $("input[name='<?php echo $this->security->get_csrf_token_name(); ?>']").attr('value', csrfHash);
 
                                 if (result.message === 'SAVE-REORDER-FIELDS-GRIDLIST-OK') {
                                     /**/
@@ -778,16 +794,25 @@
                             _screen_type = '';
                         }
 
+//                        csrfHash = $("input[name='<?php echo $this->security->get_csrf_token_name(); ?>']").val();
+//                        $("input[name='<?php echo $this->security->get_csrf_token_name(); ?>']").attr('value', '<?php echo $this->security->get_csrf_hash(); ?>');
+
                         $.ajax({
                             type: "POST",
                             url: "<?= site_url($this->router->fetch_class() . '/reorder_linegridlist'); ?>",
-                            data: {'task': 'SAVE-REORDER-GRID-LIST-FORM-ADD-EDIT', 'screen_type': _screen_type, 'projeto_id': _projeto_id, 'field_name': _field_name, 'order_field_form': _r},
+                            data: {[csrfName]: csrfHash, 'task': 'SAVE-REORDER-GRID-LIST-FORM-ADD-EDIT', 'screen_type': _screen_type, 'projeto_id': _projeto_id, 'field_name': _field_name, 'order_field_form': _r},
                             dataType: "json",
                             beforeSend: function () {
 
 
                             }, //END beforeSend
                             success: function (result) {
+
+                                if (result.csrf_token) {
+                                    csrfHash = result.csrf_token;
+                                }
+
+                                $("input[name='<?php echo $this->security->get_csrf_token_name(); ?>']").attr('value', csrfHash);
 
                                 if (result.message === 'SAVE-REORDER-FIELDS-GRIDLIST-OK') {
                                     /**/
@@ -869,9 +894,12 @@
                     _switch = 'off';
                 }
 
+                csrfHash = $("input[name='<?php echo $this->security->get_csrf_token_name(); ?>']").val();
+                $("input[name='<?php echo $this->security->get_csrf_token_name(); ?>']").attr('value', '<?php echo $this->security->get_csrf_hash(); ?>');
 
                 $.post("<?= site_url($this->router->fetch_class() . '/switch_show_field_on_off'); ?>",
                         {
+                            [csrfName]: csrfHash,
                             task: "SAVE-SWITCH",
                             screen_type: _screen_type,
                             project_id: "<?= $dados->id; ?>",
@@ -880,6 +908,12 @@
 
                         },
                         function (data, status) {
+
+                            if (data.csrf_token) {
+                                csrfHash = data.csrf_token;
+                            }
+
+                            $("input[name='" + [csrfName] + "']").val(csrfHash);
 
                             if (data.message === 'SAVE-SWITCH-OK') {
                             } else {
@@ -925,6 +959,7 @@
 
                 $.post("<?= site_url($this->router->fetch_class() . '/switch_search_field_on_off'); ?>",
                         {
+                            [csrfName]: csrfHash,
                             task: "SAVE-SWITCH",
                             screen_type: _screen_type,
                             project_id: "<?= $dados->id; ?>",
@@ -933,6 +968,12 @@
 
                         },
                         function (data, status) {
+
+                            if (data.csrf_token) {
+                                csrfHash = data.csrf_token;
+                            }
+
+                            $("input[name='" + [csrfName] + "']").val(csrfHash);
 
                             if (data.message === 'SAVE-SWITCH-OK') {
                             } else {
@@ -979,6 +1020,7 @@
 
                 $.post("<?= site_url($this->router->fetch_class() . '/switch_export_field_on_off'); ?>",
                         {
+                            [csrfName]: csrfHash,
                             task: "SAVE-SWITCH",
                             screen_type: _screen_type,
                             project_id: "<?= $dados->id; ?>",
@@ -987,6 +1029,12 @@
 
                         },
                         function (data, status) {
+
+                            if (data.csrf_token) {
+                                csrfHash = data.csrf_token;
+                            }
+
+                            $("input[name='" + [csrfName] + "']").val(csrfHash);
 
                             if (data.message === 'SAVE-SWITCH-OK') {
                             } else {
@@ -1108,22 +1156,22 @@
 
 
             });
-            
+
             /**
              * BTN ON CHANGE EXECUTE BTN EDITAR TO SAVE
              */
-             $('.triggerBtnEditar').change(function(){
-                 $('#btn-editar').trigger("click");
-                 return false;
-             });
-             
-             /**
+            $('.triggerBtnEditar').change(function () {
+                $('#btn-editar').trigger("click");
+                return false;
+            });
+
+            /**
              * INPUT OUT FOCUS OU BLUR EXECUTE BTN EDITAR TO SAVE
              */
-             $('.outInputTriggerBtnEditar').blur(function(){
-                 $('#btn-editar').trigger("click");
-                 return false;
-             });
+            $('.outInputTriggerBtnEditar').blur(function () {
+                $('#btn-editar').trigger("click");
+                return false;
+            });
 
 
 

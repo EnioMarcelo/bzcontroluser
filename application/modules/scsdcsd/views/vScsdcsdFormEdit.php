@@ -1,6 +1,6 @@
 <?php
 /*
-  Created on : 01/10/2019, 10:03AM
+  Created on : 04/10/2019, 13:39PM
   Author     : Enio Marcelo - eniomarcelo@gmail.com
  */
 
@@ -89,7 +89,7 @@
 
           
                                             <?php $_error = form_error("id", "<small class='text-danger col-xs-12 bz-input-error'>", "</small>"); ?>
-                                            <div id="id" class="form-group has-feedback col-sm-12">
+                                            <div id="id" class="form-group has-feedback col-sm-2  ">
                                                 <label for="id">ID</label>
                                                 <input type="number" name="id" class="form-control" placeholder="" value="<?=set_value("id",isset($dados->id) ? $dados->id : set_value("id"));?>" pattern="[0-9]" onkeypress="return (event.charCode >= 48 && event.charCode <= 57) ||  event.charCode == 0 " disabled  />
                                                 <?= $_error; ?>
@@ -99,7 +99,7 @@
                                                 <?php $_error = form_error("profissao", "<small class='text-danger col-xs-12 bz-input-error'>", "</small>"); ?>
                                                 <div id="profissao" class="form-group has-feedback col-sm-12">
                                                     <label for="profissao"><i class="fa fa-asterisk margin-right-5 text-error " style="font-size: 0.7em;"></i>Profissão</label>
-                                                    <input type="text" name="profissao" class="form-control uppercase  " placeholder="" autofocus  value="<?=set_value("profissao",!empty($dados->profissao) ? $dados->profissao : set_value("profissao"));?>" />
+                                                    <input type="text" name="profissao" class="form-control   " placeholder="Digite a Profissão" autofocus  value="<?=set_value("profissao",!empty($dados->profissao) ? $dados->profissao : set_value("profissao"));?>" />
                                                     <?= $_error; ?>
                                                 </div>
                                                 

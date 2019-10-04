@@ -261,6 +261,15 @@
 
         $(function () {
 
+            var csrfName = '<?php echo $this->security->get_csrf_token_name(); ?>';
+            var csrfHash = '';
+
+            if (csrfHash === '') {
+                csrfHash = '<?php echo $this->security->get_csrf_hash(); ?>';
+            }
+
+
+
             $('#type_project').change(function () {
 
                 var _selected = $(this).val()
@@ -297,8 +306,11 @@
 
             $("#tabela").change(function () {
 
+                csrfHash = $("input[name='<?php echo $this->security->get_csrf_token_name(); ?>']").val();
+                $("input[name='<?php echo $this->security->get_csrf_token_name(); ?>']").attr('value', '<?php echo $this->security->get_csrf_hash(); ?>');
+
                 var table = $(this).val(); /* GET THE VALUE OF THE SELECTED DATA */
-                var dataString = "table=" + table;
+                var dataString = "table=" + table + "&" + [csrfName] + '=' + csrfHash;
 
                 if (table.length > 0) {
                     $.ajax({/* THEN THE AJAX CALL */
@@ -306,7 +318,9 @@
                         url: "<?= site_url('projectbuildcrud/ajax_get_fields_table') ?>",
                         data: dataString,
                         beforeSend: function () {
+
                             $("#primary_key").html('<option value="">Selecione...</option>');
+
                         },
                         success: function (result) {
 
@@ -332,18 +346,23 @@
                                     $("#primary_key").append('<option value="' + itemData.field_name + '">' + itemData.field_name + '</option>');
                                 }
 
+                                if (itemData.csrf_token) {
+                                    csrfHash = itemData.csrf_token;
+                                }
+
+                                $("input[name='" + [csrfName] + "']").val(csrfHash);
 
                             });
 
                             $(".fields_table").html(_body_table);
-
-                            console.log(result);
 
                         }
                     });
                 }
 
             });
+
+
 
 
         });

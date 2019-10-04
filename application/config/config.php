@@ -465,11 +465,11 @@ $config['global_xss_filtering'] = TRUE;
   | 'csrf_regenerate' = Regenerate token on every submission
   | 'csrf_exclude_uris' = Array of URIs which ignore CSRF checks
  */
-$config['csrf_protection'] = FALSE;
-$config['csrf_token_name'] = 'csrf_token_admin_buzzaScript';
-$config['csrf_cookie_name'] = 'csrf_cookie_admin_buzzaScript';
+$config['csrf_protection'] = TRUE;
+$config['csrf_token_name'] = 'csrf_token_buzzaScript';
+$config['csrf_cookie_name'] = 'csrf_cookie_buzzaScript';
 $config['csrf_expire'] = 3600;
-$config['csrf_regenerate'] = TRUE;
+$config['csrf_regenerate'] = FALSE;
 $config['csrf_exclude_uris'] = array();
 
 /*

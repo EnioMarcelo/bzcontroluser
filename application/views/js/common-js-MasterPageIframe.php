@@ -445,6 +445,13 @@
      */
     $(function () {
 
+        var csrfName = '<?php echo $this->security->get_csrf_token_name(); ?>';
+        var csrfHash = '';
+
+        if (csrfHash === '') {
+            csrfHash = '<?php echo $this->security->get_csrf_hash(); ?>';
+        }
+
         $("#btn-delete").on("click", function () {
 
             var deleteditems = $('input:checkbox[name="btn-delete[]"]:checked')
@@ -487,7 +494,7 @@
                                 /*
                                  * DELETA O REGISTRO
                                  */
-                                var formData = {btndel: "btn-del", dadosdel: deleteditems}; //Array
+                                var formData = {[csrfName]: csrfHash, btndel: "btn-del", dadosdel: deleteditems}; //Array
 
                                 $.ajax({
                                     url: "<?= site_url($this->router->fetch_class() . '/del'); ?>",

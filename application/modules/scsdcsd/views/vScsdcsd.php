@@ -1,7 +1,7 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 <!--
 /*
-  Created on : 01/10/2019, 10:03AM
+  Created on : 04/10/2019, 13:39PM
   Author     : Enio Marcelo - eniomarcelo@gmail.com
  */
 -->
@@ -76,16 +76,14 @@
                     <a id="buttons-loose-before-inputsearch" class="pull-right"></a>
                     <!-- BOTÕES AVULSOS -->
 
-                    <!-- INPUT SEARCH -->
-                            <input type='text' name='search' value='<?= $this->input->get('search'); ?>' class='form-control input-sm pull-right' style ='width: 150px;' placeholder='Pesquisar' autofocus>
-                            <!-- INPUT SEARCH -->
+                    
 
                     <!-- BOTÕES AVULSOS -->
                     <a id="buttons-loose-after-inputsearch" class="pull-right"></a>
                     <!-- BOTÕES AVULSOS -->
 
 
-                    <div class='input-group-btn '>
+                    <div class='input-group-btn pull-right margin-right-25'>
 
 
                         <!-- BOTÕES AVULSOS -->
@@ -93,13 +91,9 @@
                         <!-- BOTÕES AVULSOS -->
 
 
-                        <!-- BTN SEARCH -->
-                            <button class='btn btn-sm btn-primary btn-show-modal-aguarde j-tooltip' data-placement='bottom' data-toggle='tooltip' data-original-title='Pesquisa'><i class='fa fa-search'></i></button>
-                            <!-- BTN SEARCH -->
+                        
 
-                        <!-- BTN LIMPAR -->
-                            <a href='<?= site_url($this->router->fetch_class()); ?>' class='btn btn-sm btn-default btn-show-modal-aguarde j-tooltip' data-placement='bottom' data-toggle='tooltip' data-original-title='Limpar'><i class='glyphicon glyphicon-minus'></i></a>
-                            <!-- BTN LIMPAR -->
+                        
 
 
 
@@ -146,7 +140,8 @@
                         <th class='text-center' style='width:3%;'><input class='checkbox-all flat-red' type='checkbox'></th>
                         <th class='text-center' style='width:3%;'>#</th>
 
-                        <th class="thClProfissao" class="text-left" style="text-align:left">Profissão</th>
+                        <th class="thClId" class="text-center" style="width:10%; text-align:center">ID</th>
+<th class="thClProfissao" class="text-left" style="text-align:left">Profissão</th>
 
 
                         <th class='col-md-1 text-center'>Ação</th>
@@ -168,11 +163,7 @@
                         <?php $_c++; ?>
 
                         <?php
-                            /* ON RECORD */
-$_row['profissao'] = mb_strtoupper( $_row['profissao'] );
-/* END ON RECORD */
-
-
+                            
                         ?>
 
                         <tr id="<?= $_row['id']; ?>" style="<?= $_style_tr; ?>" class="ClTableGridListTbodyTr <?= $_class_tr; ?>">
@@ -183,7 +174,8 @@ $_row['profissao'] = mb_strtoupper( $_row['profissao'] );
                             <td class='text-center'  ><?= $_c; ?></td>
 
                             <!-- CAMPOS DA TABLE -->
-                            <td class="tdClProfissao" class="text-left" style="text-align:left"><?= $_row["profissao"]; ?></td>
+                            <td class="tdClId" class="text-center" style="width:10%; text-align:center"><?= number_format($_row["id"], 0, "", ""); ?></td>
+<td class="tdClProfissao" class="text-left" style="text-align:left"><?= $_row["profissao"]; ?></td>
 
                             <!-- CAMPOS DA TABLE -->
 

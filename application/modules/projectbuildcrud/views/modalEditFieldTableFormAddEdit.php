@@ -575,6 +575,13 @@
 
     $(function () {
 
+        var csrfName = '<?php echo $this->security->get_csrf_token_name(); ?>';
+        var csrfHash = '';
+
+        if (csrfHash === '') {
+            csrfHash = '<?php echo $this->security->get_csrf_hash(); ?>';
+        }
+
         function hide_notifit_msg() {
             $("#ui_notifIt").remove();
         }
@@ -582,17 +589,28 @@
         //GET DADOS
         function get_dados(_screen_type, _projeto_id, _field_name, _primary_key) {
 
+            csrfHash = $("input[name='<?php echo $this->security->get_csrf_token_name(); ?>']").val();
+            $("input[name='<?php echo $this->security->get_csrf_token_name(); ?>']").attr('value', '<?php echo $this->security->get_csrf_hash(); ?>');
+
             $.ajax({
                 type: "POST",
                 url: "<?= site_url($this->router->fetch_class() . '/setup_formaddedit'); ?>",
-                data: {task: 'get-dados', screen_type: _screen_type, projeto_id: _projeto_id, field_name: _field_name},
+                data: {[csrfName]: csrfHash, task: 'get-dados', screen_type: _screen_type, projeto_id: _projeto_id, field_name: _field_name},
                 dataType: "json",
                 beforeSend: function () {
 
                 }, //END beforeSend
                 success: function (result) {
 
-                    console.log('Sucesso...');
+                    /**
+                     * RENEW TOKEN CSRF
+                     */
+                    if (result.csrf_token) {
+                        csrfHash = result.csrf_token;
+                    }
+                    $("input[name='<?php echo $this->security->get_csrf_token_name(); ?>']").attr('value', csrfHash);
+                    /* END RENEW TOKEN CSRF */
+
 
                     //RESET CAMPOS
                     $('input[name="form_add_edit_field_show"]').filter(':radio').iCheck('uncheck');
@@ -655,9 +673,6 @@
                     }
 
                     //INPUT TYPE CHARACTERS
-                    console.clear();
-                    console.log(result.form_add_edit_field_type);
-
                     if (result.form_add_edit_field_type == 'text' || result.form_add_edit_field_type == 'senha') {
                         $('select[name="form_add_edit_field_type_characters"]').parent().parent().removeClass('hide');
                     } else {
@@ -845,7 +860,6 @@
                     }
 
 
-                    //console.log('xxx >>' +  result.form_add_edit_field_read_only);
                     // REQUIRED
                     /*if (result.form_add_edit_field_hidden !== 'on' || result.form_add_edit_field_read_only !== 'on') {
                      $('input[name="form_add_edit_field_required"]').bootstrapToggle('off');
@@ -868,11 +882,6 @@
                     $('input[name="form_add_edit_field_max_length"]').val(result.form_add_edit_field_editorhtml_ckeditor_line_height);
 
                     $('#modal-btn-edit-field-table-formaddedit').css('display', 'block');
-
-
-                    //console.log('Campo :  ' + result.grid_list_label + ' - Aligne : ' + result.grid_list_aligne_label + ' - PK : ' + _primary_key);
-                    console.log(result);
-
 
                 }, //END success
                 complete: function (result) {
@@ -1089,8 +1098,6 @@
                 _screen_type = '';
             }
 
-            console.log('-- > ' + _field_name + ' - ' + _screen_type + ' - ' + _primary_key);
-
             $('#form_add_edit_modal_field_name').html(_field_name);
 
             $('input[name="modal_projeto_id"]').val(_projeto_id);
@@ -1098,15 +1105,7 @@
             $('input[name="screen_type"]').val(_screen_type);
             $('input[name="primary_key"]').val(_primary_key);
 
-
-            console.log('_screen_type: ' + _screen_type);
-            console.log('_projeto_id: ' + _projeto_id);
-            console.log('_field_name: ' + _field_name);
-            console.log('_primary_key: ' + _primary_key);
-
-
             get_dados(_screen_type, _projeto_id, _field_name, _primary_key);
-
 
 
         });//END $('.j_btn_modal_edit_fields_table_formaddedit').click()
@@ -1116,8 +1115,6 @@
         $('input[name="form_add_edit_field_read_only"]').on('change', function (e) {
 
             var _r = $(this).parent().hasClass('off');
-
-            console.log('Read Only > ' + _r);
 
             var _r = $(this).parent().hasClass('off');
             if (_r === true) {
@@ -1138,10 +1135,6 @@
 
             var _r = $(this).parent().hasClass('off');
             var _v = $(this).children().children().val();
-
-            console.log('Hidden > ' + _r);
-
-            console.log('Valor > ' + _v);
 
             if (_r === true) {
                 $('select[name="form_add_edit_field_hidden_in_form"]').val('todos');
@@ -1164,8 +1157,6 @@
         $('input[name="form_add_edit_field_required"]').on('change', function (e) {
 
             var _r = $(this).parent().hasClass('off');
-
-            console.log('Required > ' + _r);
 
             if (_r === true) {
                 $('select[name="form_add_edit_field_required_in_form"]').val('todos');
@@ -1208,21 +1199,12 @@
             var _screen_type = $('input[name="screen_type"]').val();
             var _primary_key = $('input[name="primary_key"]').val();
 
-            console.log('SUBMIT FORM');
-            console.log('_screen_type: ' + _screen_type);
-            console.log('_projeto_id: ' + _projeto_id);
-            console.log('_field_name: ' + _field_name);
-            console.log('_primary_key: ' + _primary_key);
-
-
             btnDataObj = {};
 
             $(_dataArray).each(function (i, field) {
                 btnDataObj[field.name] = field.value;
             });
 
-
-            //console.log($('input[name="form_add_edit_field_hidden"]').val());
 
             //if (btnDataObj['form_add_edit_field_hidden'] === 'on' || btnDataObj['form_add_edit_field_read_only'] === 'on') {
 
@@ -1251,11 +1233,20 @@
                 dataType: "json",
                 beforeSend: function () {
 
-                    console.log('AJAX SUBMIT IN');
                     _btn_save.hide();
 
                 }, //END beforeSend
                 success: function (result) {
+
+                    /**
+                     * RENEW TOKEN CSRF
+                     */
+                    if (result.csrf_token) {
+                        csrfHash = result.csrf_token;
+                    }
+                    $("input[name='<?php echo $this->security->get_csrf_token_name(); ?>']").attr('value', csrfHash);
+
+                    /* END RENEW TOKEN CSRF */
 
                     if (result.return === 'SAVE-SETUP-FORMADDEDIT-OK') {
 

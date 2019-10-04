@@ -355,6 +355,15 @@
 
     $(function () {
 
+        var csrfName = '<?php echo $this->security->get_csrf_token_name(); ?>';
+        var csrfHash = '<?php echo $this->security->get_csrf_hash(); ?>';
+
+        if (csrfHash === '') {
+            csrfHash = '<?php echo $this->security->get_csrf_hash(); ?>';
+        }
+
+
+
         function hide_notifit_msg() {
             $("#ui_notifIt").remove();
         }
@@ -382,6 +391,9 @@
         //DELETE VIRTUAL FIELD
         $('.j-btn-delete-virtual-field').click(function (e) {
             e.preventDefault();
+
+//            $("input[name='<?php echo $this->security->get_csrf_token_name(); ?>']").attr('type', 'text');
+//            $("input[name='<?php echo $this->security->get_csrf_token_name(); ?>']").addClass('container');
 
             var _projeto_id = $(this).parent().parent().attr('rel-projeto-id');
             var _field_name = $(this).attr('rel-field-name');
@@ -412,12 +424,17 @@
                              * DELETA O REGISTRO
                              */
 
+                            csrfHash = $("input[name='<?php echo $this->security->get_csrf_token_name(); ?>']").val();
+                            $("input[name='<?php echo $this->security->get_csrf_token_name(); ?>']").attr('value', '<?php echo $this->security->get_csrf_hash(); ?>');
+
+
                             $.ajax({
                                 type: "POST",
                                 url: "<?= site_url($this->router->fetch_class() . '/addFieldGridList'); ?>",
-                                data: {task: 'delete-field-gridlist', screen_type: 'gridlist', proj_build_id: _projeto_id, field_name: _field_name},
+                                data: {[csrfName]: csrfHash, task: 'delete-field-gridlist', screen_type: 'gridlist', proj_build_id: _projeto_id, field_name: _field_name},
                                 dataType: "json",
                                 beforeSend: function () {
+
 
                                 }, //END beforeSend
                                 success: function (result) {
@@ -460,6 +477,9 @@
         $('.j_btn_modal_add_fields_table_gridlist').click(function (e) {
             e.preventDefault();
 
+//            $("input[name='<?php echo $this->security->get_csrf_token_name(); ?>']").attr('type', 'text');
+//            $("input[name='<?php echo $this->security->get_csrf_token_name(); ?>']").addClass('container');
+
             var _projeto_id = $(this).attr('rel-projeto-id');
 
             $(document).keydown(function (e) {
@@ -500,12 +520,16 @@
 
                     $('#modal-aguarde').modal('show');
 
+                    csrfHash = $("input[name='<?php echo $this->security->get_csrf_token_name(); ?>']").val();
+                    $("input[name='<?php echo $this->security->get_csrf_token_name(); ?>']").attr('value', '<?php echo $this->security->get_csrf_hash(); ?>');
+
                     $.ajax({
                         type: "POST",
                         url: "<?= site_url($this->router->fetch_class() . '/addFieldGridList'); ?>",
-                        data: {task: 'add-field-gridlist', screen_type: 'gridlist', proj_build_id: _projeto_id, field_name: _field_name},
+                        data: {[csrfName]: csrfHash, task: 'add-field-gridlist', screen_type: 'gridlist', proj_build_id: _projeto_id, field_name: _field_name},
                         dataType: "json",
                         beforeSend: function () {
+
 
                         }, //END beforeSend
                         success: function (result) {
@@ -513,7 +537,6 @@
                             if (result.type === 'warning') {
                                 swal(result.title, result.msg, 'warning');
                             } else if (result.type === 'success') {
-//                                swal(result.title, result.msg, 'success');
                                 window.location.href = "<?= site_url($this->router->fetch_class() . '/edit/"+_projeto_id+"/' . '?' . bz_app_parametros_url()); ?>";
                             }
 
@@ -590,8 +613,6 @@
                 _screen_type = '';
             }
 
-            console.log('-- > ' + _field_name + ' - ' + _screen_type);
-
             $('#modal_field_name').html(_field_name);
 
             $('input[name="projeto_id"]').val(_projeto_id);
@@ -600,16 +621,30 @@
 
             $('input[name="grid_list_label"]').val(_field_name);
 
+            console.clear();
+
+            csrfHash = $("input[name='<?php echo $this->security->get_csrf_token_name(); ?>']").val();
+            $("input[name='<?php echo $this->security->get_csrf_token_name(); ?>']").attr('value', '<?php echo $this->security->get_csrf_hash(); ?>');
 
             $.ajax({
                 type: "POST",
                 url: "<?= site_url($this->router->fetch_class() . '/setup_gridlist'); ?>",
-                data: {task: 'get-dados', screen_type: _screen_type, projeto_id: _projeto_id, field_name: _field_name},
+                data: {[csrfName]: csrfHash, task: 'get-dados', screen_type: _screen_type, projeto_id: _projeto_id, field_name: _field_name},
                 dataType: "json",
                 beforeSend: function () {
 
                 }, //END beforeSend
                 success: function (result) {
+
+                    /**
+                     * RENEW TOKEN CSRF
+                     */
+                    if (result.csrf_token) {
+                        csrfHash = result.csrf_token;
+                    }
+                    $("input[name='<?php echo $this->security->get_csrf_token_name(); ?>']").attr('value', csrfHash);
+                    /* END RENEW TOKEN CSRF */
+
 
                     //RESET CAMPOS
                     $('input[name="grid_list_show"]').filter(':radio').iCheck('uncheck');
@@ -706,9 +741,6 @@
 
                     $('#modal-btn-edit-field-table-gridlist').css('display', 'block');
 
-                    console.log('Campo :  ' + result.grid_list_label + ' - Aligne : ' + result.grid_list_aligne_label + ' - PK : ' + _primary_key);
-
-
                 }, //END success
                 complete: function (result) {
 
@@ -778,6 +810,15 @@
                 }, //END beforeSend
                 success: function (result) {
 
+                    /**
+                     * RENEW TOKEN CSRF
+                     */
+                    if (result.csrf_token) {
+                        csrfHash = result.csrf_token;
+                    }
+                    $("input[name='<?php echo $this->security->get_csrf_token_name(); ?>']").attr('value', csrfHash);
+                    /* END RENEW TOKEN CSRF */
+
                     if (result.return === 'SAVE-SETUP-GRIDLIST-OK') {
 
                         /*
@@ -791,10 +832,6 @@
                                 $(_dataArray).each(function (i, field) {
                                     dataObj[field.name] = field.value;
                                 });
-
-
-                                console.clear();
-                                console.log(dataObj);
 
                                 if (dataObj['grid_list_show'] === 'off') {
 

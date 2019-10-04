@@ -1,14 +1,14 @@
 <?php
 
 /*
-  Created on : 01/10/2019, 10:03AM
+  Created on : 04/10/2019, 13:39PM
   Author     : Enio Marcelo - eniomarcelo@gmail.com
  */
 
 
   defined('BASEPATH') OR exit('No direct script access allowed');
 
-  class Cadprofissao extends MY_Controller {
+  class Scsdcsd extends MY_Controller {
     
     /* EXPORT REPORT*/
     protected $_exportReport = false;
@@ -18,26 +18,23 @@
   		parent::__construct();
 
       /* LOAD MODEL */
-      $this->load->model('Cadprofissao_model', 'm', TRUE);
+      $this->load->model('Scsdcsd_model', 'm', TRUE);
 
 
       /* TÍTULO DA APLICAÇÃO */
-      $this->dados['_titulo_app'] = 'Cadastro de Profissões';
-      $this->dados['_font_icon'] = 'fa fa-bullhorn';
+      $this->dados['_titulo_app'] = 'Teste do Buzza';
+      $this->dados['_font_icon'] = 'fa fa-birthday-cake';
 
       /* VIEW DA APLICAÇÃO */
-      $this->dados['_view_app_list'] = 'vCadprofissao';
-      $this->dados['_view_app_add'] = 'vCadprofissaoFormAdd';
-      $this->dados['_view_app_edit'] = 'vCadprofissaoFormEdit';
+      $this->dados['_view_app_list'] = 'vScsdcsd';
+      $this->dados['_view_app_add'] = 'vScsdcsdFormAdd';
+      $this->dados['_view_app_edit'] = 'vScsdcsdFormEdit';
 
       /* TABELA QUE SERÁ USADO PELO MÓDULO DO SISTEMA */
       $this->table_gridlist_name = 'cad_profissao';
       $this->table_formaddedit_name = 'cad_profissao';
 
-      /* EXPORT REPORT */
-$this->_exportReport = true;
-
-
+      
 
     }
     /* END function __construct() */
@@ -71,7 +68,7 @@ $this->_exportReport = true;
 
         /* VALIDAÇÃO DOS DADOS */
         $this->form_validation->set_rules('id', '<b>ID</b>', 'trim|numeric|integer');
-$this->form_validation->set_rules('profissao', '<b>Profissão</b>', 'trim|strtoupper|required');
+$this->form_validation->set_rules('profissao', '<b>Profissão</b>', 'trim|required');
 
         /* END VALIDAÇÃO DOS DADOS */
 
@@ -146,7 +143,7 @@ $this->form_validation->set_rules('profissao', '<b>Profissão</b>', 'trim|strtou
 
       /* VALIDAÇÃO DOS DADOS */
       $this->form_validation->set_rules('id', '<b>ID</b>', 'trim|numeric|integer');
-$this->form_validation->set_rules('profissao', '<b>Profissão</b>', 'trim|strtoupper|required');
+$this->form_validation->set_rules('profissao', '<b>Profissão</b>', 'trim|required');
 
       /* END VALIDAÇÃO DOS DADOS */
 
@@ -363,8 +360,7 @@ exit;
 	$this->export['_loadHtml'] .= "     <thead class='bg-black'" . PHP_EOL;
 	$this->export['_loadHtml'] .= "         <tr id='IdTableGridListTheadTr'>" . PHP_EOL;
 	$this->export['_loadHtml'] .= "             <th class='text-center' style='width:3%;'>#</th>" . PHP_EOL;
-	$this->export['_loadHtml'] .= '             <th class="thClProfissao" class="text-left" style="text-align:left; text-align:left">Profissão</th>
-' . PHP_EOL;
+	$this->export['_loadHtml'] .= '             ' . PHP_EOL;
 	$this->export['_loadHtml'] .= "			</tr>" . PHP_EOL;
 	$this->export['_loadHtml'] .= "		</thead>" . PHP_EOL;
 	$this->export['_loadHtml'] .= "     <!-- END HEADER DA TABLE -->" . PHP_EOL;
@@ -388,8 +384,7 @@ exit;
             $this->export['_loadHtml'] .= "    <td class='text-center'  >".$_c."</td>" . PHP_EOL;
 
             $this->export['_loadHtml'] .= "    <!-- CAMPOS DA TABLE -->" . PHP_EOL;
-            $this->export['_loadHtml'] .= '     <td class="tdClProfissao" class="text-left" style="text-align:left; text-align:left">'.$_row["profissao"].'</td>
-' . PHP_EOL;
+            $this->export['_loadHtml'] .= '     ' . PHP_EOL;
             $this->export['_loadHtml'] .= "    <!-- CAMPOS DA TABLE -->" . PHP_EOL;
 
             $this->export['_loadHtml'] .= "</tr>" . PHP_EOL;
@@ -472,12 +467,10 @@ private function get_paginacao() {
   /* DADOS PARA PAGINAÇÃO */
   $_dados_pag['table'] = $this->table_gridlist_name;
 
-  if ($this->input->get('search', TRUE)):
-                            $_dados_pag['search'] = array('_concat_fields' => 'profissao', '_string' => $this->input->get('search', TRUE));
-                        endif;
+  
 
   $_dados_pag['filter'] = $_filter;
-  $_dados_pag['order_by'] = 'profissao';
+  $_dados_pag['order_by'] = '';
   $_dados_pag['programa'] = $this->router->fetch_class();
         
   /* WHERE GLOBAL DO CONTROLLER PAI - MY_CONTROLLER */
@@ -526,4 +519,4 @@ private function get_paginacao() {
 
 
 }
-/* END class Cadprofissao */
+/* END class Scsdcsd */

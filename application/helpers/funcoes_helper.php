@@ -1692,6 +1692,35 @@ function bz_delete_file($_file_name, $_file_path) {
 }
 
 /**
+ * CREATE FOLDER
+ *
+ * @param type $p
+ * @param type $mask
+ * @return boolean
+ */
+function bz_createFolder($p, $mask = 0777) {
+    // Get the CodeIgniter super object
+    $CI = &get_instance();
+
+    if (empty($p)) {
+        return false;
+    }
+
+    $_data = ___DEFAULT_FILE_INDEX_CONTENT___;
+    if (!is_dir(bz_absolute_path() . $p)) {
+        if (mkdir(bz_absolute_path() . $p, $mask, TRUE)) {
+            $CI->load->helper('file');
+            $paths = explode('/', $p);
+            $_i = '/';
+            foreach ($paths as $path):
+                $_i .= $path . '/';
+                write_file(bz_absolute_path() . $_i . 'index.html', base64_decode($_data));
+            endforeach;
+        }
+    }
+}
+
+/**
  * Thumb()
  * FUNÇÃO PARA GERAR MINIATURAS DE IMAGENS EM TEMPO REAL
  *
@@ -1717,18 +1746,21 @@ function bz_thumb($absPathFileOrg, $fullname, $width, $height, $relatPathThumbDe
     /**
      * CREATE FOLDER FOR THUMBS
      */
-    $_data = 'PCFET0NUWVBFIGh0bWw+DQo8aHRtbD4NCjxoZWFkPg0KCTx0aXRsZT40MDMgRm9yYmlkZGVuPC90aXRsZT4NCjwvaGVhZD4NCjxib2R5Pg0KDQo8cD5EaXJlY3RvcnkgYWNjZXNzIGlzIGZvcmJpZGRlbi48L3A+DQoNCjwvYm9keT4NCjwvaHRtbD4=';
-    if (!is_dir(bz_absolute_path() . $relatPathThumbDest)) {
-        if (mkdir(bz_absolute_path() . $relatPathThumbDest, 0777, TRUE)) {
-            $CI->load->helper('file');
-            $_fPath = explode('/', $relatPathThumbDest);
-            $_i = '/';
-            foreach ($_fPath as $_path):
-                $_i .= $_path . '/';
-                write_file(bz_absolute_path() . $_i . 'index.html', base64_decode($_data));
-            endforeach;
-        }
-    }
+    bz_createFolder($relatPathThumbDest);
+
+//    $_data = 'PCFET0NUWVBFIGh0bWw+DQo8aHRtbD4NCjxoZWFkPg0KCTx0aXRsZT40MDMgRm9yYmlkZGVuPC90aXRsZT4NCjwvaGVhZD4NCjxib2R5Pg0KDQo8cD5EaXJlY3RvcnkgYWNjZXNzIGlzIGZvcmJpZGRlbi48L3A+DQoNCjwvYm9keT4NCjwvaHRtbD4=';
+//    if (!is_dir(bz_absolute_path() . $relatPathThumbDest)) {
+//        if (mkdir(bz_absolute_path() . $relatPathThumbDest, 0777, TRUE)) {
+//            $CI->load->helper('file');
+//            $_fPath = explode('/', $relatPathThumbDest);
+//            $_i = '/';
+//            foreach ($_fPath as $_path):
+//                $_i .= $_path . '/';
+//                write_file(bz_absolute_path() . $_i . 'index.html', base64_decode($_data));
+//            endforeach;
+//        }
+//    }
+
 
     if (!file_exists($image_thumb)) {
         // LOAD LIBRARY

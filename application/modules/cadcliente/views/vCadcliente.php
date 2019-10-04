@@ -1,7 +1,7 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 <!--
 /*
-  Created on : 02/10/2019, 14:36PM
+  Created on : 03/10/2019, 14:18PM
   Author     : Enio Marcelo - eniomarcelo@gmail.com
  */
 -->
@@ -147,7 +147,7 @@
                         <th class='text-center' style='width:3%;'>#</th>
 
                         <th class="thClNome" class="text-left" style="text-align:left">Nome</th>
-<th class="thClGenero" class="text-center" style="text-align:center">Gênero</th>
+<th class="thClImagem_nome" class="text-center" style="width:10%; text-align:center">Imagem</th>
 
 
                         <th class='col-md-1 text-center'>Ação</th>
@@ -181,7 +181,7 @@
 
                             <!-- CAMPOS DA TABLE -->
                             <td class="tdClNome" class="text-left" style="text-align:left"><?= $_row["nome"]; ?></td>
-<td class="tdClGenero" class="text-center" style="text-align:center"><?=$this->db->query("SELECT id,genero FROM cad_genero WHERE id = \"$_row[genero]\"")->row()->genero;?></td>
+<td class="tdClImagem_nome" class="text-center" style="width:10%; text-align:center"><?= mc_image_thumb_modal($_row["imagem_nome"]); ?></td>
 
                             <!-- CAMPOS DA TABLE -->
 

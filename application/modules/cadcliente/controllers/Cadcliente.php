@@ -1,7 +1,7 @@
 <?php
 
 /*
-  Created on : 02/10/2019, 14:36PM
+  Created on : 03/10/2019, 14:18PM
   Author     : Enio Marcelo - eniomarcelo@gmail.com
  */
 
@@ -23,7 +23,7 @@
 
       /* TÍTULO DA APLICAÇÃO */
       $this->dados['_titulo_app'] = 'Cadastro de Clientes';
-      $this->dados['_font_icon'] = 'fa fa-user-plus';
+      $this->dados['_font_icon'] = 'fa fa-adjust';
 
       /* VIEW DA APLICAÇÃO */
       $this->dados['_view_app_list'] = 'vCadcliente';
@@ -71,8 +71,6 @@ $this->_exportReport = true;
 
         /* VALIDAÇÃO DOS DADOS */
         $this->form_validation->set_rules('nome', '<b>Nome</b>', 'trim|strtoupper|max_length[255]|required');
-$this->form_validation->set_rules('profissao', '<b>Profissão</b>', 'trim|callback_validation_required_profissao');
-$this->form_validation->set_rules('genero', '<b>Gênero</b>', 'trim|callback_validation_required_genero');
 $this->form_validation->set_rules('imagem_nome', '<b>Enviar Foto</b>', 'trim|callback_validation_upload_images_imagem_nome');
 
         /* END VALIDAÇÃO DOS DADOS */
@@ -153,8 +151,6 @@ endif;
 
       /* VALIDAÇÃO DOS DADOS */
       $this->form_validation->set_rules('nome', '<b>Nome</b>', 'trim|strtoupper|max_length[255]|required');
-$this->form_validation->set_rules('profissao', '<b>Profissão</b>', 'trim|callback_validation_required_profissao');
-$this->form_validation->set_rules('genero', '<b>Gênero</b>', 'trim|callback_validation_required_genero');
 $this->form_validation->set_rules('imagem_nome', '<b>Enviar Foto</b>', 'trim|callback_validation_upload_images_imagem_nome');
 
       /* END VALIDAÇÃO DOS DADOS */
@@ -392,7 +388,6 @@ exit;
 	$this->export['_loadHtml'] .= "         <tr id='IdTableGridListTheadTr'>" . PHP_EOL;
 	$this->export['_loadHtml'] .= "             <th class='text-center' style='width:3%;'>#</th>" . PHP_EOL;
 	$this->export['_loadHtml'] .= '             <th class="thClNome" class="text-left" style="text-align:left; text-align:left">Nome</th>
-<th class="thClGenero" class="text-center" style="text-align:center; text-align:center">Gênero</th>
 ' . PHP_EOL;
 	$this->export['_loadHtml'] .= "			</tr>" . PHP_EOL;
 	$this->export['_loadHtml'] .= "		</thead>" . PHP_EOL;
@@ -418,7 +413,6 @@ exit;
 
             $this->export['_loadHtml'] .= "    <!-- CAMPOS DA TABLE -->" . PHP_EOL;
             $this->export['_loadHtml'] .= '     <td class="tdClNome" class="text-left" style="text-align:left; text-align:left">'.$_row["nome"].'</td>
-<td class="tdClGenero" class="text-center" style="text-align:center; text-align:center">'.$_row["genero"].'</td>
 ' . PHP_EOL;
             $this->export['_loadHtml'] .= "    <!-- CAMPOS DA TABLE -->" . PHP_EOL;
 
@@ -551,26 +545,6 @@ private function get_paginacao() {
 /* END function get_paginacao()  */
 
 
-
-
-
-                                                 /* VALIDAÇÃO POR CALLBACK DO CAMPO profissao. */
-                                                  public function validation_required_profissao() {
-                                                      if ($this->input->post('profissao')) return true;
-                                                      $this->form_validation->set_message('validation_required_profissao', 'O campo <b>Profissão</b> é obrigatório.');
-                                                      return false;
-                                                  }
-                                                  /* END VALIDAÇÃO POR CALLBACK DO CAMPO profissao. */
-
-
-
-                                                 /* VALIDAÇÃO POR CALLBACK DO CAMPO genero. */
-                                                  public function validation_required_genero() {
-                                                      if ($this->input->post('genero')) return true;
-                                                      $this->form_validation->set_message('validation_required_genero', 'O campo <b>Gênero</b> é obrigatório.');
-                                                      return false;
-                                                  }
-                                                  /* END VALIDAÇÃO POR CALLBACK DO CAMPO genero. */
 
 
 

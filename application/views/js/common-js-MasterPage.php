@@ -75,8 +75,7 @@
      */
 
     $(function () {
-
-
+    
         function _sizeContainer(_iframe_modulo) {
             var _container_fluid_width = $('.content-wrapper').width();
             var _container_fluid_height = $('.sidebar').height() - 20;
