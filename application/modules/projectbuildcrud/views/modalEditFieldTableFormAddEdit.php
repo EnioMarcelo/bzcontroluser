@@ -208,6 +208,7 @@
                                     <option value="moeda">Moeda</option>
                                     <option value="senha">Senha</option>
                                     <option value="upload-imagem">Upload de Imagem</option>
+                                    <option value="upload-arquivo">Upload de Arquivos</option>
                                     <option value="select-manual">Select Dropdown - Manual</option>
                                     <option value="select-dinamic">Select Dropdown - Dinâmico</option>
                                     <option value="select-multiple-manual">Select Multiplo - Manual</option>
@@ -502,7 +503,7 @@
                                 <div class="form-group col-bg-12 col-md-12 col-sm-12 col-xs-12">
                                     <label>Extensões Permitidas:</label>
                                     <div class="input-group col-bg-12 col-md-12 col-sm-12 col-xs-12">
-                                        <input class="form-control input-sm" type="text" name="form_add_edit_field_upload_imagem_extensao_permitida" value="">
+                                        <input class="form-control input-sm" type="text" name="form_add_edit_field_upload_imagem_extensao_permitida" value="xxx">
                                     </div>
                                 </div>
 
@@ -535,6 +536,28 @@
                                         </div>
                                     </div>
 
+                                </div>
+
+                            </div>
+
+
+
+
+                            <!--UPLOAD ARQUIVO-->
+                            <div id="id-div-upload-arquivo" class="col-bg-12 col-md-12 col-sm-12 col-xs-12">
+                                <div class="form-group col-bg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <label>Extensões Permitidas:</label>
+                                    <div class="input-group col-bg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <input class="form-control input-sm" type="text" name="form_add_edit_field_upload_arquivo_extensao_permitida" value="">
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-bg-12 col-md-12 col-sm-12 col-xs-12" style="line-height: 1.2em;">
+                                    <label>Tamanho máximo do arquivo (em kilobytes):</label>
+                                    <div class="input-group col-bg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <input class="form-control input-sm" type="number" name="form_add_edit_field_upload_arquivo_tamanho_maximo" value="">
+                                    </div>
+                                    <span class="margin-left-0" style="font-size: 0.9em; font-weight: 100;">Nota: A maioria das instalações do PHP tem seu próprio limite, conforme especificado no arquivo php.ini. Geralmente 2 MB (ou 2048 KB) por padrão.</span>
                                 </div>
 
                             </div>
@@ -633,8 +656,24 @@
                     $('input[name="form_add_edit_field_min_length"]').val('');
                     $('input[name="form_add_edit_field_max_length"]').val('');
                     $('input[name="form_add_edit_field_editorhtml_ckeditor_line_height"]').val('');
-//                    $('input[name="form_add_edit_field_upload_imagem_extensao_permitida"]').val('');
-//                    $('input[name="form_add_edit_field_upload_imagem_tamanho_maximo"]').val('');
+
+                    $('#id-div-upload-imagem').addClass('hide');
+                    $('input[name="form_add_edit_field_upload_imagem_extensao_permitida"]').val('');
+                    $('input[name="form_add_edit_field_upload_imagem_tamanho_maximo"]').val('');
+                    $('input[name="form_add_edit_field_upload_imagem_max_width"]').val('0');
+                    $('input[name="form_add_edit_field_upload_imagem_max_height"]').val('0');
+                    $('input[name="form_add_edit_field_placeholder"]').parent().removeClass('hide');
+                    $('.btn_form_add_edit_field_hidden').parent().parent().parent().removeClass('hide');
+                    $('.btn_form_add_edit_field_read_only').parent().parent().parent().removeClass('hide');
+                    $('select[name="form_add_edit_field_required_in_form"]').removeClass('hide');
+
+                    $('#id-div-upload-arquivo').addClass('hide');
+                    $('input[name="form_add_edit_field_upload_arquivo_extensao_permitida"]').val('');
+                    $('input[name="form_add_edit_field_upload_arquivo_tamanho_maximo"]').val('');
+                    $('input[name="form_add_edit_field_placeholder"]').parent().removeClass('hide');
+                    $('.btn_form_add_edit_field_hidden').parent().parent().parent().removeClass('hide');
+                    $('.btn_form_add_edit_field_read_only').parent().parent().parent().removeClass('hide');
+                    $('select[name="form_add_edit_field_required_in_form"]').removeClass('hide');
 
 
                     if (_primary_key == 1) {
@@ -714,17 +753,40 @@
                         $('select[name="form_add_edit_field_required_in_form"]').addClass('hide');
 
                     } else {
-                        $('#id-div-upload-imagem').addClass('hide');
-                        $('input[name="form_add_edit_field_upload_imagem_extensao_permitida"]').val('');
-                        $('input[name="form_add_edit_field_upload_imagem_tamanho_maximo"]').val('');
-                        $('input[name="form_add_edit_field_upload_imagem_max_width"]').val('0');
-                        $('input[name="form_add_edit_field_upload_imagem_max_height"]').val('0');
-                        $('input[name="form_add_edit_field_placeholder"]').parent().removeClass('hide');
-                        $('.btn_form_add_edit_field_hidden').parent().parent().parent().removeClass('hide');
-                        $('.btn_form_add_edit_field_read_only').parent().parent().parent().removeClass('hide');
-                        $('select[name="form_add_edit_field_required_in_form"]').removeClass('hide');
+//                        $('#id-div-upload-imagem').addClass('hide');
+//                        $('input[name="form_add_edit_field_upload_imagem_extensao_permitida"]').val('');
+//                        $('input[name="form_add_edit_field_upload_imagem_tamanho_maximo"]').val('');
+//                        $('input[name="form_add_edit_field_upload_imagem_max_width"]').val('0');
+//                        $('input[name="form_add_edit_field_upload_imagem_max_height"]').val('0');
+//                        $('input[name="form_add_edit_field_placeholder"]').parent().removeClass('hide');
+//                        $('.btn_form_add_edit_field_hidden').parent().parent().parent().removeClass('hide');
+//                        $('.btn_form_add_edit_field_read_only').parent().parent().parent().removeClass('hide');
+//                        $('select[name="form_add_edit_field_required_in_form"]').removeClass('hide');
 
                     }
+
+
+                    //INPUT UPLOAD ARQUIVO upload-arquivo
+                    if (result.form_add_edit_field_type == 'upload-arquivo') {
+                        $('#id-div-upload-arquivo').removeClass('hide');
+                        $('input[name="form_add_edit_field_upload_arquivo_extensao_permitida"]').val(result.form_add_edit_field_upload_arquivo_extensao_permitida);
+                        $('input[name="form_add_edit_field_upload_arquivo_tamanho_maximo"]').val(result.form_add_edit_field_upload_arquivo_tamanho_maximo);
+                        $('input[name="form_add_edit_field_placeholder"]').parent().addClass('hide');
+                        $('.btn_form_add_edit_field_hidden').parent().parent().parent().addClass('hide');
+                        $('.btn_form_add_edit_field_read_only').parent().parent().parent().addClass('hide');
+                        $('select[name="form_add_edit_field_required_in_form"]').addClass('hide');
+
+                    } else {
+//                        $('#id-div-upload-arquivo').addClass('hide');
+//                        $('input[name="form_add_edit_field_upload_arquivo_extensao_permitida"]').val('');
+//                        $('input[name="form_add_edit_field_upload_arquivo_tamanho_maximo"]').val('');
+//                        $('input[name="form_add_edit_field_placeholder"]').parent().removeClass('hide');
+//                        $('.btn_form_add_edit_field_hidden').parent().parent().parent().removeClass('hide');
+//                        $('.btn_form_add_edit_field_read_only').parent().parent().parent().removeClass('hide');
+//                        $('select[name="form_add_edit_field_required_in_form"]').removeClass('hide');
+
+                    }
+
 
 
                     if (result.form_add_edit_field_type === 'select-manual') {
@@ -944,6 +1006,14 @@
             $('input[name="form_add_edit_field_upload_imagem_extensao_permitida"]').val('');
             $('input[name="form_add_edit_field_upload_imagem_tamanho_maximo"]').val('');
 
+            $('#id-div-upload-arquivo').addClass('hide');
+            $('#id-div-upload-imagem').addClass('hide');
+            $('input[name="form_add_edit_field_placeholder"]').parent().removeClass('hide');
+            $('.btn_form_add_edit_field_hidden').parent().parent().parent().removeClass('hide');
+            $('.btn_form_add_edit_field_read_only').parent().parent().parent().removeClass('hide');
+            $('select[name="form_add_edit_field_required_in_form"]').removeClass('hide');
+            $('input[name="form_add_edit_field_upload_imagem_extensao_permitida"]').parent().parent().parent().addClass('hide');
+            $('input[name="form_add_edit_field_upload_arquivo_extensao_permitida"]').parent().parent().parent().addClass('hide');
 
 
             //INPUT MASK
@@ -1005,12 +1075,27 @@
                 $('.btn_form_add_edit_field_read_only').parent().parent().parent().addClass('hide');
                 $('select[name="form_add_edit_field_required_in_form"]').addClass('hide');
 
-            } else {
-                $('#id-div-upload-imagem').addClass('hide');
-                $('input[name="form_add_edit_field_placeholder"]').parent().removeClass('hide');
-                $('.btn_form_add_edit_field_hidden').parent().parent().parent().removeClass('hide');
-                $('.btn_form_add_edit_field_read_only').parent().parent().parent().removeClass('hide');
-                $('select[name="form_add_edit_field_required_in_form"]').removeClass('hide');
+                $('input[name="form_add_edit_field_upload_imagem_extensao_permitida"]').parent().parent().parent().removeClass('hide');
+
+            }
+
+
+
+            //INPUT UPLOAD ARQUIVO upload-arquivo
+            if (_selected == 'upload-arquivo') {
+                $('#id-div-upload-arquivo').removeClass('hide');
+                $('input[name="form_add_edit_field_upload_arquivo_extensao_permitida"]').val('pdf|txt|doc|docx|xls|xlsx');
+                $('input[name="form_add_edit_field_upload_arquivo_tamanho_maximo"]').val('2000');
+                $('input[name="form_add_edit_field_upload_arquivo_max_width"]').val('0');
+                $('input[name="form_add_edit_field_upload_arquivo_max_height"]').val('0');
+                $('input[name="form_add_edit_field_placeholder"]').parent().addClass('hide');
+                $('.btn_form_add_edit_field_hidden').parent().parent().parent().addClass('hide');
+                $('.btn_form_add_edit_field_read_only').parent().parent().parent().addClass('hide');
+                $('select[name="form_add_edit_field_required_in_form"]').addClass('hide');
+
+                $('input[name="form_add_edit_field_upload_arquivo_extensao_permitida"]').parent().parent().parent().removeClass('hide');
+
+
             }
 
 

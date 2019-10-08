@@ -1,7 +1,7 @@
 <?php
 /*
-  Created on : 03/10/2019, 14:18PM
-  Author     : Enio Marcelo - eniomarcelo@gmail.com
+  Created on : 08/10/2019, 16:08PM
+  Author     : Enio Marcelo Buzaneli - eniomarcelo@gmail.com
  */
 
 
@@ -96,11 +96,21 @@
                                                 </div>
                                                 
 
-                                                <?php $_error = form_error("imagem_nome", "<small class='text-danger col-xs-12 bz-input-error'>", "</small>"); ?>
-                                                <div id="imagem_nome" class="form-group has-feedback col-sm-12">
-                                                    <label for="imagem_nome"><i class="fa fa-asterisk margin-right-5 text-error " style="font-size: 0.7em;"></i>Enviar Foto</label>
-                                                    <input type="file" name="imagem_nome" class="form-control" placeholder="" value="<?=set_value("imagem_nome",isset($dados->imagem_nome) ? $dados->imagem_nome : set_value("imagem_nome"));?>"  />
-<div class="btn-ver-imagem margin-top-5 margin-bottom-5" style="font-size: 0.8em"><i class="fa fa-fw fa-camera"></i> <?= anchor(___CONF_UPLOAD_DIR___ . "/" . ___CONF_UPLOAD_IMAGE_DIR___ . "/" . set_value("imagem_nome", isset($dados->imagem_nome) ? $dados->imagem_nome : set_value("imagem_nome")), "Ver Imagem", "data-lightbox='imagem_nome'"); ?></div>
+                                                <?php $_error = form_error("arquivo_nome", "<small class='text-danger col-xs-12 bz-input-error'>", "</small>"); ?>
+                                                <div id="arquivo_nome" class="form-group has-feedback col-sm-12">
+                                                    <label for="arquivo_nome"><i class="fa fa-asterisk margin-right-5 text-error " style="font-size: 0.7em;"></i>Arquivo</label>
+                                                    <input type="file" name="arquivo_nome" class="form-control-file margin-bottom-10" placeholder="" value="<?= set_value("arquivo_nome", isset($dados->arquivo_nome) ? $dados->arquivo_nome : set_value("arquivo_nome")); ?>"  />
+<?php if ($this->uri->segment(2) == "edit"): ?>
+     <div class="col-xs-12 col-sm-12 col-md-3 col-lg-2"><?= mc_image_thumb_modal($dados->arquivo_nome); ?></div>
+     <div class="btn-ver-imagem margin-top-5 margin-bottom-5" style="font-size: 0.8em"><i class="fa fa-fw fa-camera"></i> <?= anchor(___CONF_UPLOAD_DIR___ . "/" . ___CONF_UPLOAD_IMAGE_DIR___ . "/" . set_value("imagem_nome", isset($dados->arquivo_nome) ? $dados->arquivo_nome : set_value("arquivo_nome")), "Ver Imagem", "data-lightbox='arquivo_nome'"); ?></div>
+     <input type="hidden" name="arquivo_nome" value="<?= $dados->arquivo_nome;?>">
+     
+<?php else: ?>
+     
+     
+     
+<?php endif; ?>
+
                                                     <?= $_error; ?>
                                                 </div>
                                                 

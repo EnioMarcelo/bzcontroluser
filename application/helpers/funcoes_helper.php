@@ -74,6 +74,52 @@ function check_system_is_manutencao() {
 
 /**
  * SETA OS ALERTAS DO SISTEMA EM NOTFIT MESSENGER
+ * Type : info, error, warning, success
+ * Position: tr=Top Right, tr=Top Left, tc=Top Center
+ *           br=Bottom Right, br=Bottom Left, bc=Bottom Center
+ * 
+ * @param type $titulo
+ * @param type $mensagem
+ * @param string $tipo
+ * @param type $position
+ * @return boolean
+ */
+function set_mensagem_nice($titulo = NULL, $mensagem = NULL, $tipo = 'info', $position = 'br', $duration = 3200) {
+    $CI = & get_instance();
+    if (empty($mensagem)):
+        return false;
+    endif;
+
+    $_tipo = '.';
+
+    if ($tipo == 'success') {
+        $_tipo .= 'notice';
+    } elseif ($tipo == 'error') {
+        $_tipo .= 'error';
+    } elseif ($tipo == 'warning') {
+        $_tipo .= 'warning';
+    } else {
+        $_tipo = '';
+    }
+
+    $result = "<script>"
+            . "$(function () {"
+            . "     $.HP" . $_tipo . "({"
+            . "         message: '" . $mensagem . "',"
+            . "         title: '" . $titulo . "',"
+            . "         location: '" . $position . "',"
+            . "         duration:  " . $duration
+            . "     });"
+            . "});"
+            . "</script>";
+
+    $CI->session->set_flashdata('mensagem_sistema', $result);
+
+    return;
+}
+
+/**
+ * SETA OS ALERTAS DO SISTEMA EM NOTFIT MESSENGER
  * info, error, warning, success
  * @param string $mensagem      Mensagem de erro ou aviso
  * @param string $tipo          Informa o tipo de mensagem a ser mostrado: info, warning, error, success
@@ -1646,13 +1692,16 @@ function bz_upload_file($_file_name, $_upload_path, $_allowed_types, $_max_size 
     $config['upload_path'] = ___CONF_UPLOAD_DIR___ . '/' . $_upload_path;
     $config['allowed_types'] = $_allowed_types;
     $config['max_size'] = $_max_size;
-    $config['max_width'] = $_max_width;
-    $config['max_height'] = $_max_height;
-    $config['encrypt_name'] = TRUE;
-    $config['xss_clean'] = TRUE;
-    $config['remove_spaces'] = TRUE;
-    $config['file_ext_tolower'] = TRUE;
 
+    if (strpos($_FILES[$_file_name]['type'], 'image/') == 1) {
+        $config['max_width'] = $_max_width;
+        $config['max_height'] = $_max_height;
+        $config['xss_clean'] = TRUE;
+        $config['remove_spaces'] = TRUE;
+        $config['file_ext_tolower'] = TRUE;
+    }
+
+    $config['encrypt_name'] = TRUE;
     $CI->load->library('upload', $config);
 
     $_error = array();
@@ -1663,6 +1712,7 @@ function bz_upload_file($_file_name, $_upload_path, $_allowed_types, $_max_size 
 
         $_error['error']['file'] = $_file_name;
         $_error['error']['message'] = trim($CI->upload->display_errors());
+
         return $_error;
     } else {
 
@@ -1706,15 +1756,16 @@ function bz_createFolder($p, $mask = 0777) {
         return false;
     }
 
-    $_data = ___DEFAULT_FILE_INDEX_CONTENT___;
     if (!is_dir(bz_absolute_path() . $p)) {
-        if (mkdir(bz_absolute_path() . $p, $mask, TRUE)) {
+
+        if (mkdir($p, $mask, TRUE)) {
             $CI->load->helper('file');
             $paths = explode('/', $p);
-            $_i = '/';
+            $_i = '';
+            $_data = ___DEFAULT_FILE_INDEX_CONTENT___;
             foreach ($paths as $path):
                 $_i .= $path . '/';
-                write_file(bz_absolute_path() . $_i . 'index.html', base64_decode($_data));
+                write_file($_i . 'index.html', base64_decode($_data));
             endforeach;
         }
     }
@@ -1747,20 +1798,6 @@ function bz_thumb($absPathFileOrg, $fullname, $width, $height, $relatPathThumbDe
      * CREATE FOLDER FOR THUMBS
      */
     bz_createFolder($relatPathThumbDest);
-
-//    $_data = 'PCFET0NUWVBFIGh0bWw+DQo8aHRtbD4NCjxoZWFkPg0KCTx0aXRsZT40MDMgRm9yYmlkZGVuPC90aXRsZT4NCjwvaGVhZD4NCjxib2R5Pg0KDQo8cD5EaXJlY3RvcnkgYWNjZXNzIGlzIGZvcmJpZGRlbi48L3A+DQoNCjwvYm9keT4NCjwvaHRtbD4=';
-//    if (!is_dir(bz_absolute_path() . $relatPathThumbDest)) {
-//        if (mkdir(bz_absolute_path() . $relatPathThumbDest, 0777, TRUE)) {
-//            $CI->load->helper('file');
-//            $_fPath = explode('/', $relatPathThumbDest);
-//            $_i = '/';
-//            foreach ($_fPath as $_path):
-//                $_i .= $_path . '/';
-//                write_file(bz_absolute_path() . $_i . 'index.html', base64_decode($_data));
-//            endforeach;
-//        }
-//    }
-
 
     if (!file_exists($image_thumb)) {
         // LOAD LIBRARY

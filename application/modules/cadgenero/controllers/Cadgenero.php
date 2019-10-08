@@ -1,14 +1,14 @@
 <?php
 
 /*
-  Created on : {{created-date}}, {{created-time}}
-  Author     : {{author-name}} - {{author-email}}
+  Created on : 07/10/2019, 11:35AM
+  Author     : Enio Marcelo Buzaneli - eniomarcelo@gmail.com
  */
 
 
   defined('BASEPATH') OR exit('No direct script access allowed');
 
-  class {{class-name}} extends MY_Controller {
+  class Cadgenero extends MY_Controller {
     
     /* EXPORT REPORT*/
     protected $_exportReport = false;
@@ -18,23 +18,26 @@
   		parent::__construct();
 
       /* LOAD MODEL */
-      $this->load->model('{{app-nome}}_model', 'm', TRUE);
+      $this->load->model('Cadgenero_model', 'm', TRUE);
 
 
       /* TÍTULO DA APLICAÇÃO */
-      $this->dados['_titulo_app'] = '{{titulo-app}}';
-      $this->dados['_font_icon'] = 'fa {{icone-app}}';
+      $this->dados['_titulo_app'] = 'Gêneros';
+      $this->dados['_font_icon'] = 'fa fa-bed';
 
       /* VIEW DA APLICAÇÃO */
-      $this->dados['_view_app_list'] = 'v{{app-nome}}';
-      $this->dados['_view_app_add'] = 'v{{app-nome}}FormAdd';
-      $this->dados['_view_app_edit'] = 'v{{app-nome}}FormEdit';
+      $this->dados['_view_app_list'] = 'vCadgenero';
+      $this->dados['_view_app_add'] = 'vCadgeneroFormAdd';
+      $this->dados['_view_app_edit'] = 'vCadgeneroFormEdit';
 
       /* TABELA QUE SERÁ USADO PELO MÓDULO DO SISTEMA */
-      $this->table_gridlist_name = '{{table-gridlist-name}}';
-      $this->table_formaddedit_name = '{{table-formaddedit-name}}';
+      $this->table_gridlist_name = 'cad_genero';
+      $this->table_formaddedit_name = 'cad_genero';
 
-      {{controller-onScriptInit}}
+      /* EXPORT REPORT */
+$this->_exportReport = true;
+
+
 
     }
     /* END function __construct() */
@@ -67,18 +70,29 @@
 
 
         /* VALIDAÇÃO DOS DADOS */
-        {{add-validation}}
+        $this->form_validation->set_rules('id', '<b>id</b>', 'trim');
+$this->form_validation->set_rules('genero', '<b>genero</b>', 'trim');
+$this->form_validation->set_rules('created', '<b>created</b>', 'trim');
+$this->form_validation->set_rules('user_created', '<b>user_created</b>', 'trim');
+$this->form_validation->set_rules('updated', '<b>updated</b>', 'trim');
+$this->form_validation->set_rules('user_updated', '<b>user_updated</b>', 'trim');
+
         /* END VALIDAÇÃO DOS DADOS */
 
-        {{controller-onBeforeInsert}}
+        
 
         if ($this->form_validation->run() == true ):
 
           $_dados = $this->input->post();
 
           unset($_dados['btn-salvar']);
-          {{form-add-unset-fields}}
-          {{form-add-convert-dados-to-database}}
+          
+          /* CONVERTE DADOS PARA GRAVAR NA TABELA */
+$_dados["created"] = bz_formatdata($_dados["created"],"Y-m-d H:i:s");
+$_dados["updated"] = bz_formatdata($_dados["updated"],"Y-m-d H:i:s");
+
+/* CONVERTE DADOS PARA GRAVAR NA TABELA */
+
 
           /* GRAVA REGISTRO */
 
@@ -104,7 +118,7 @@
 
             set_mensagem_nice('',___MSG_ADD_REGISTRO___, 'success','br');
 
-            {{controller-onAfterInsert}}
+            
 
           else:
             echo 'Erro ao inserir Dados... SQL: ' . $this->db->set($dados)->get_compiled_insert($this->table_formaddedit_name);
@@ -142,23 +156,35 @@
     if ($this->input->post() && $this->input->post('btn-editar') == 'btn-editar'):
 
       /* VALIDAÇÃO DOS DADOS */
-      {{edit-validation}}
+      $this->form_validation->set_rules('id', '<b>id</b>', 'trim');
+$this->form_validation->set_rules('genero', '<b>genero</b>', 'trim');
+$this->form_validation->set_rules('created', '<b>created</b>', 'trim');
+$this->form_validation->set_rules('user_created', '<b>user_created</b>', 'trim');
+$this->form_validation->set_rules('updated', '<b>updated</b>', 'trim');
+$this->form_validation->set_rules('user_updated', '<b>user_updated</b>', 'trim');
+
       /* END VALIDAÇÃO DOS DADOS */
 
-      {{controller-onBeforeUpdate}}
+      
 
       if ($this->form_validation->run() == true ):
 
          $_dados = $this->input->post();
 
          unset($_dados['btn-editar']);
-         {{form-edit-unset-fields}}
-         {{form-edit-unset-primary-key}}
-         {{form-edit-convert-dados-to-database}}
+         
+         unset($_dados['id']);
+
+         /* CONVERTE DADOS PARA GRAVAR NA TABELA */
+$_dados["created"] = bz_formatdata($_dados["created"],"Y-m-d H:i:s");
+$_dados["updated"] = bz_formatdata($_dados["updated"],"Y-m-d H:i:s");
+
+/* CONVERTE DADOS PARA GRAVAR NA TABELA */
+
 
          /* UPDATE REGISTRO */
 
-         $_where_update = {{form-edit-where-update-fields}}
+         $_where_update = 'WHERE id = "'.$_id.'"';
          $_result_update = $this->update->ExecUpdate($this->table_formaddedit_name, $_dados, $_where_update);
 
          if ($this->db->trans_status() === FALSE):
@@ -180,7 +206,7 @@
 
           set_mensagem_nice('',___MSG_UPDATE_REGISTRO___, 'success');
 
-          {{controller-onAfterUpdate}}
+          
 
       else:
           echo 'Erro ao inserir Dados... SQL: ' . $this->db->set($dados)->get_compiled_insert($this->table_formaddedit_name);
@@ -198,7 +224,7 @@ endif;
 if ($_id):
 
   /* GET DADOS */
-  $_where = 'WHERE {{primary_key_field}} = "' . $_id . '" LIMIT 1';
+  $_where = 'WHERE id = "' . $_id . '" LIMIT 1';
   $_result = $this->read->ExecRead($this->table_formaddedit_name, $_where);
 
   if ($_result->result()):
@@ -232,17 +258,17 @@ public function del(){
  $this->form_validation->set_rules('btndel', '<b>BTN Del</b>', 'trim|required');
  $this->form_validation->set_rules('dadosdel', '<b>REGISTROS DEL</b>', 'trim|required');
 
- {{controller-onBeforeDelete}}
+ 
 
  if ($this->form_validation->run() == TRUE):
 
   $_dados = $this->input->post('dadosdel', TRUE);
   $_dados = explode(',', $_dados);
 
-  {{controller_DeleteFileFunction}}
+  
   
   /* DELETA OS REGISTROS */
-  $this->db->where_in('{{primary_key_field}}', $_dados);
+  $this->db->where_in('id', $_dados);
   $this->db->delete($this->table_formaddedit_name);
   if ($this->db->trans_status() === FALSE):
     $this->db->trans_rollback();
@@ -268,7 +294,7 @@ public function del(){
     $dados_auditoria['last_query'] = $this->db->last_query();
     add_auditoria($dados_auditoria);
 
-    {{controller-onAfterDelete}}
+    
 
   else:
     set_mensagem_nice('',___MSG_ERROR_DEL_REGISTRO___, 'error');
@@ -290,7 +316,7 @@ exit;
         redirect($this->_redirect_parametros_url);
     }
             
-    {{controller-onScriptInitExport}}
+    
         
     /* CARREGA O HELPER */
     /* $this->load->helper('printtopdf'); */
@@ -308,7 +334,7 @@ exit;
     $this->export['_dados'] = $this->get_paginacao();
     
     
-    {{controller-onScriptBeforeExport}}
+    
     
     
     /* GERA O RELATÓRIO PARA SER EXPORTADO */
@@ -358,7 +384,9 @@ exit;
 	$this->export['_loadHtml'] .= "     <thead class='bg-black'" . PHP_EOL;
 	$this->export['_loadHtml'] .= "         <tr id='IdTableGridListTheadTr'>" . PHP_EOL;
 	$this->export['_loadHtml'] .= "             <th class='text-center' style='width:3%;'>#</th>" . PHP_EOL;
-	$this->export['_loadHtml'] .= '             {{grid-list-header-table-export}}' . PHP_EOL;
+	$this->export['_loadHtml'] .= '             <th class="thClId" class="text-left" style="text-align:left; text-align:left">id</th>
+<th class="thClGenero" class="text-left" style="text-align:left; text-align:left">genero</th>
+' . PHP_EOL;
 	$this->export['_loadHtml'] .= "			</tr>" . PHP_EOL;
 	$this->export['_loadHtml'] .= "		</thead>" . PHP_EOL;
 	$this->export['_loadHtml'] .= "     <!-- END HEADER DA TABLE -->" . PHP_EOL;
@@ -375,14 +403,16 @@ exit;
 
             $_c++;
         
-            {{export-on-record}}
+            
 
             $this->export['_loadHtml'] .= "<tr class='".$_class_tr."' style='font-size:12px;line-height: 0.6em; ".$_style_tr."'>" . PHP_EOL;
             
             $this->export['_loadHtml'] .= "    <td class='text-center'  >".$_c."</td>" . PHP_EOL;
 
             $this->export['_loadHtml'] .= "    <!-- CAMPOS DA TABLE -->" . PHP_EOL;
-            $this->export['_loadHtml'] .= '     {{grid-list-fields-table-export}}' . PHP_EOL;
+            $this->export['_loadHtml'] .= '     <td class="tdClId" class="text-left" style="text-align:left; text-align:left">'.$_row["id"].'</td>
+<td class="tdClGenero" class="text-left" style="text-align:left; text-align:left">'.$_row["genero"].'</td>
+' . PHP_EOL;
             $this->export['_loadHtml'] .= "    <!-- CAMPOS DA TABLE -->" . PHP_EOL;
 
             $this->export['_loadHtml'] .= "</tr>" . PHP_EOL;
@@ -404,7 +434,7 @@ exit;
     $this->export['_loadHtml'] .= '        <div class="bz-aguarde-modal-content">';
     $this->export['_loadHtml'] .= '            <div class="bz-aguarde-modal-body">';
     $this->export['_loadHtml'] .= '                <p class="text-center">Aguarde</p>';
-    $this->export['_loadHtml'] .= '                <p class="text-center"><img src="<?= base_url("assets"); ?>/img/Facebook.gif" width="50px" style="margin-top: -20px;"></p>';
+    $this->export['_loadHtml'] .= '                <p class="text-center"><img src="'.base_url("assets").'/img/Facebook.gif" width="50px" style="margin-top: -20px;"></p>';
     $this->export['_loadHtml'] .= '            </div>';
     $this->export['_loadHtml'] .= '        </div><!-- /.bz-aguarde-modal-content -->';
     $this->export['_loadHtml'] .= '    </div><!-- /.bz-aguarde-modal-dialog -->';
@@ -419,7 +449,7 @@ exit;
     $this->export['_loadHtml'] .= '<script src="' . site_url() . 'assets/plugins/jQuery/jQuery-2.1.4.min.js"></script>' . PHP_EOL;
     
     $this->export['_loadHtml'] .= '<!-- Bootstrap 3.3.2 JS -->';
-    $this->export['_loadHtml'] .= '<script src="<?= base_url("assets"); ?>/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>';
+    $this->export['_loadHtml'] .= '<script src="'.base_url("assets").'/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>';
     
     $this->export['_loadHtml'] .= '<script>' . PHP_EOL;
     /* IMPRIME A PÁGINA */
@@ -443,12 +473,12 @@ exit;
 
     $this->export['_loadHtml'] .= '</script>' . PHP_EOL;
     
-    {{controller-onScriptAfterExport}}
+    
     
     /* IMPRIME */
     echo $this->export['_loadHtml'] ;
     
-    {{controller-onScriptEndExport}}
+    
     
 
 }
@@ -465,10 +495,12 @@ private function get_paginacao() {
   /* DADOS PARA PAGINAÇÃO */
   $_dados_pag['table'] = $this->table_gridlist_name;
 
-  {{grid-list-search-fields}}
+  if ($this->input->get('search', TRUE)):
+                            $_dados_pag['search'] = array('_concat_fields' => 'id,genero', '_string' => $this->input->get('search', TRUE));
+                        endif;
 
   $_dados_pag['filter'] = $_filter;
-  $_dados_pag['order_by'] = '{{grid-list-fields-order-by}}';
+  $_dados_pag['order_by'] = 'genero';
   $_dados_pag['programa'] = $this->router->fetch_class();
         
   /* WHERE GLOBAL DO CONTROLLER PAI - MY_CONTROLLER */
@@ -497,7 +529,7 @@ private function get_paginacao() {
 
   $_result_pag = bz_paginacao($_dados_pag);
 
-  $_y = [{{controller-virtual-field}}];
+  $_y = [];
   if($_y):
     $_z = $_result_pag['results_paginacao_array'];
     foreach ($_y as $_y_key => $_y_row):
@@ -512,9 +544,9 @@ private function get_paginacao() {
 /* END function get_paginacao()  */
 
 
-{{controller-metodos-php}}
 
-{{callback-validation}}
+
+
 
 }
-/* END class {{class-name}} */
+/* END class Cadgenero */

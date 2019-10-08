@@ -1,7 +1,7 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 <!--
 /*
-  Created on : 08/10/2019, 16:08PM
+  Created on : 07/10/2019, 11:35AM
   Author     : Enio Marcelo Buzaneli - eniomarcelo@gmail.com
  */
 -->
@@ -146,8 +146,8 @@
                         <th class='text-center' style='width:3%;'><input class='checkbox-all flat-red' type='checkbox'></th>
                         <th class='text-center' style='width:3%;'>#</th>
 
-                        <th class="thClNome" class="text-left" style="text-align:left">Nome</th>
-<th class="thClArquivo_nome" class="text-center" style="width:10%; text-align:center">Arquivo</th>
+                        <th class="thClId" class="text-left" style="text-align:left">id</th>
+<th class="thClGenero" class="text-left" style="text-align:left">genero</th>
 
 
                         <th class='col-md-1 text-center'>Ação</th>
@@ -180,8 +180,8 @@
                             <td class='text-center'  ><?= $_c; ?></td>
 
                             <!-- CAMPOS DA TABLE -->
-                            <td class="tdClNome" class="text-left" style="text-align:left"><?= $_row["nome"]; ?></td>
-<td class="tdClArquivo_nome" class="text-center" style="width:10%; text-align:center"><?= mc_image_thumb_modal($_row["arquivo_nome"]); ?></td>
+                            <td class="tdClId" class="text-left" style="text-align:left"><?= number_format($_row["id"], 0, "", ""); ?></td>
+<td class="tdClGenero" class="text-left" style="text-align:left"><?= $_row["genero"]; ?></td>
 
                             <!-- CAMPOS DA TABLE -->
 

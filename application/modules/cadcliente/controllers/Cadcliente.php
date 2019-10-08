@@ -1,8 +1,8 @@
 <?php
 
 /*
-  Created on : 03/10/2019, 14:18PM
-  Author     : Enio Marcelo - eniomarcelo@gmail.com
+  Created on : 08/10/2019, 16:08PM
+  Author     : Enio Marcelo Buzaneli - eniomarcelo@gmail.com
  */
 
 
@@ -71,7 +71,7 @@ $this->_exportReport = true;
 
         /* VALIDAÇÃO DOS DADOS */
         $this->form_validation->set_rules('nome', '<b>Nome</b>', 'trim|strtoupper|max_length[255]|required');
-$this->form_validation->set_rules('imagem_nome', '<b>Enviar Foto</b>', 'trim|callback_validation_upload_images_imagem_nome');
+$this->form_validation->set_rules('arquivo_nome', '<b>Arquivo</b>', 'trim|callback_validation_upload_images_arquivo_nome');
 
         /* END VALIDAÇÃO DOS DADOS */
 
@@ -85,7 +85,7 @@ $this->form_validation->set_rules('imagem_nome', '<b>Enviar Foto</b>', 'trim|cal
           
           /* CONVERTE DADOS PARA GRAVAR NA TABELA */
 if( !empty($this->task['result_upload']['file_name']) ):
-     $_dados['imagem_nome'] = $this->task['result_upload']['file_name'];
+     $_dados['arquivo_nome'] = $this->task['result_upload']['file_name'];
 endif;
 /* CONVERTE DADOS PARA GRAVAR NA TABELA */
 
@@ -112,7 +112,7 @@ endif;
 
             add_auditoria($dados_auditoria);
 
-            set_mensagem_notfit(___MSG_ADD_REGISTRO___, 'success');
+            set_mensagem_nice('',___MSG_ADD_REGISTRO___, 'success','br');
 
             
 
@@ -125,7 +125,9 @@ endif;
         redirect($this->_redirect . '/add');
 
         /* END GRAVA REGISTRO */
-
+                
+      else:
+            set_mensagem_nice('', ___MSG_ERROR_CAMPOS_OBRIGATORIOS___, 'error', 'br');
       endif;
 
     endif;
@@ -151,7 +153,7 @@ endif;
 
       /* VALIDAÇÃO DOS DADOS */
       $this->form_validation->set_rules('nome', '<b>Nome</b>', 'trim|strtoupper|max_length[255]|required');
-$this->form_validation->set_rules('imagem_nome', '<b>Enviar Foto</b>', 'trim|callback_validation_upload_images_imagem_nome');
+$this->form_validation->set_rules('arquivo_nome', '<b>Arquivo</b>', 'trim|callback_validation_upload_images_arquivo_nome');
 
       /* END VALIDAÇÃO DOS DADOS */
 
@@ -167,14 +169,14 @@ $this->form_validation->set_rules('imagem_nome', '<b>Enviar Foto</b>', 'trim|cal
  * DELETA IMAGEM
  */
 if (isset($this->task['uploaded_image']) && $this->task['uploaded_image']) {
-     $_file_name = mc_findByIdDataDB($this->table_formaddedit_name, $_id)->row()->imagem_nome;
+     $_file_name = mc_findByIdDataDB($this->table_formaddedit_name, $_id)->row()->arquivo_nome;
      bz_delete_file($_file_name, ___CONF_UPLOAD_DIR___ . '/' . ___CONF_UPLOAD_IMAGE_DIR___);
 }
 /* END DELETA IMAGEM */
          
          /* CONVERTE DADOS PARA GRAVAR NA TABELA */
 if( !empty($this->task['result_upload']['file_name']) ):
-     $_dados['imagem_nome'] = $this->task['result_upload']['file_name'];
+     $_dados['arquivo_nome'] = $this->task['result_upload']['file_name'];
 endif;
 /* CONVERTE DADOS PARA GRAVAR NA TABELA */
 
@@ -201,7 +203,7 @@ endif;
           $dados_auditoria['last_query'] = $this->db->last_query();
           add_auditoria($dados_auditoria);
 
-          set_mensagem_notfit(___MSG_UPDATE_REGISTRO___, 'success');
+          set_mensagem_nice('',___MSG_UPDATE_REGISTRO___, 'success');
 
           
 
@@ -210,7 +212,8 @@ endif;
           exit;
       endif;
       /* END UPDATE REGISTRO */
-
+  else:
+      set_mensagem_nice('', ___MSG_ERROR_CAMPOS_OBRIGATORIOS___, 'error', 'br');
   endif;
 
 endif;
@@ -226,7 +229,7 @@ if ($_id):
   if ($_result->result()):
     $this->dados['dados'] = $_result->row();
   else:
-    set_mensagem_notfit(___MSG_ERROR_SELECT_UPDATE_REGISTRO___, 'error');
+    set_mensagem_nice('',___MSG_ERROR_SELECT_UPDATE_REGISTRO___, 'error');
     redirect($this->_redirect_parametros_url);
   endif;
 
@@ -265,7 +268,7 @@ public function del(){
  * DELETA IMAGEM
  */
 foreach ($_dados as $_value):
-     $_file_name = mc_findByIdDataDB($this->table_formaddedit_name, $_value)->row()->imagem_nome;
+     $_file_name = mc_findByIdDataDB($this->table_formaddedit_name, $_value)->row()->arquivo_nome;
      bz_delete_file($_file_name, ___CONF_UPLOAD_DIR___ . '/' . ___CONF_UPLOAD_IMAGE_DIR___);
 endforeach;
 /* END DELETA IMAGEM */
@@ -284,10 +287,10 @@ endforeach;
 
   if ($this->db->affected_rows()):
     if (count($_dados) > 1):
-      set_mensagem_notfit(str_replace('Registro Deletado', 'Registros Deletados', ___MSG_DEL_REGISTRO___), 'success');
+      set_mensagem_nice('',str_replace('Registro Deletado', 'Registros Deletados', ___MSG_DEL_REGISTRO___), 'success');
       $dados_auditoria['description'] = str_replace('Registro Deletado', 'Registros Deletados', ___MSG_AUDITORIA_DEL_SUCCESS___);
     else:
-      set_mensagem_notfit(___MSG_DEL_REGISTRO___, 'success');
+      set_mensagem_nice('',___MSG_DEL_REGISTRO___, 'success');
       $dados_auditoria['description'] = ___MSG_AUDITORIA_DEL_SUCCESS___;
     endif;
 
@@ -300,11 +303,11 @@ endforeach;
     
 
   else:
-    set_mensagem_notfit(___MSG_ERROR_DEL_REGISTRO___, 'error');
+    set_mensagem_nice('',___MSG_ERROR_DEL_REGISTRO___, 'error');
   endif;
 
 else:
-  set_mensagem_notfit(___MSG_ERROR_DE_VALIDACAO___, 'error');
+  set_mensagem_notfit('',___MSG_ERROR_DE_VALIDACAO___, 'error');
 endif;
 
 exit;
@@ -388,6 +391,7 @@ exit;
 	$this->export['_loadHtml'] .= "         <tr id='IdTableGridListTheadTr'>" . PHP_EOL;
 	$this->export['_loadHtml'] .= "             <th class='text-center' style='width:3%;'>#</th>" . PHP_EOL;
 	$this->export['_loadHtml'] .= '             <th class="thClNome" class="text-left" style="text-align:left; text-align:left">Nome</th>
+<th class="thClArquivo_nome" class="text-center" style="width:10%; text-align:centerwidth:10%; text-align:center">Arquivo</th>
 ' . PHP_EOL;
 	$this->export['_loadHtml'] .= "			</tr>" . PHP_EOL;
 	$this->export['_loadHtml'] .= "		</thead>" . PHP_EOL;
@@ -413,6 +417,7 @@ exit;
 
             $this->export['_loadHtml'] .= "    <!-- CAMPOS DA TABLE -->" . PHP_EOL;
             $this->export['_loadHtml'] .= '     <td class="tdClNome" class="text-left" style="text-align:left; text-align:left">'.$_row["nome"].'</td>
+<td class="tdClArquivo_nome" class="text-center" style="width:10%; text-align:centerwidth:10%; text-align:center">'.$_row["arquivo_nome"].'</td>
 ' . PHP_EOL;
             $this->export['_loadHtml'] .= "    <!-- CAMPOS DA TABLE -->" . PHP_EOL;
 
@@ -497,7 +502,7 @@ private function get_paginacao() {
   $_dados_pag['table'] = $this->table_gridlist_name;
 
   if ($this->input->get('search', TRUE)):
-                            $_dados_pag['search'] = array('_concat_fields' => 'nome', '_string' => $this->input->get('search', TRUE));
+                            $_dados_pag['search'] = array('_concat_fields' => 'nome,arquivo_nome', '_string' => $this->input->get('search', TRUE));
                         endif;
 
   $_dados_pag['filter'] = $_filter;
@@ -548,28 +553,33 @@ private function get_paginacao() {
 
 
 
-                                                 /* VALIDAÇÃO POR CALLBACK UPLOAD DE IMAGENS imagem_nome. */
-                                                  public function validation_upload_images_imagem_nome() {
-                                                        if (empty($_FILES['imagem_nome']['name'])) {
-                                                            $this->form_validation->set_message('validation_upload_images_imagem_nome', 'Nenhuma imagem selecionada para ser enviada.');
+                                                 /* VALIDAÇÃO POR CALLBACK UPLOAD DE IMAGENS arquivo_nome. */
+                                                  public function validation_upload_images_arquivo_nome() {
+                                                      
+                                                        if (empty($_FILES['arquivo_nome']['name']) && !empty($this->input->post('arquivo_nome')) ) {
+                                                            return true;
+                                                        }
+
+                                                        if (empty($_FILES['arquivo_nome']['name'])) {
+                                                            $this->form_validation->set_message('validation_upload_images_arquivo_nome', 'Nenhuma imagem selecionada para ser enviada.');
                                                             return false;
                                                         }
                                                         
-                                                        if (strpos($_FILES['imagem_nome']['type'], 'image/') !== 0) {
-                                                            $this->form_validation->set_message('validation_upload_images_imagem_nome', 'Este arquivo não é um arquivo de imagem.');
+                                                        if (strpos($_FILES['arquivo_nome']['type'], 'image/') !== 0) {
+                                                            $this->form_validation->set_message('validation_upload_images_arquivo_nome', 'Este arquivo não é um arquivo de imagem.');
                                                             return false;
                                                         }
 
-                                                        $this->task['result_upload'] = bz_upload_file('imagem_nome', ___CONF_UPLOAD_IMAGE_DIR___, 'jpg|jpeg|gif|png', '1024', '0', '0');
+                                                        $this->task['result_upload'] = bz_upload_file('arquivo_nome', ___CONF_UPLOAD_IMAGE_DIR___, 'jpg|jpeg|gif|png', '1024', '0', '0');
 
                                                         if (isset($this->task['result_upload']['error'])) {
-                                                            $this->form_validation->set_message('validation_upload_images_imagem_nome', $this->task['result_upload']['error']['message']);
+                                                            $this->form_validation->set_message('validation_upload_images_arquivo_nome', $this->task['result_upload']['error']['message']);
                                                             return false;
                                                         }
                                                         
                                                         $this->task['uploaded_image'] = true;
                                                   }
-                                                  /* END VALIDAÇÃO POR CALLBACK UPLOAD DE IMAGENS imagem_nome. */
+                                                  /* END VALIDAÇÃO POR CALLBACK UPLOAD DE IMAGENS arquivo_nome. */
 
 
 

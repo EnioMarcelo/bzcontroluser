@@ -30,7 +30,7 @@ function mc_image_url($_image_name) {
  * GERA UM LINK DA IMAGEM COM CLICK LIGHTBOX 
  *
  * @param type $_image_name
- * @param type $_model              [ single ] para uma única image / [ group ] para um grupo de imagens, tipo galeria de fotos
+ * @param string $_type         [ single ] para uma única image / [ group ] para um grupo de imagens, tipo galeria de fotos
  * @return string
  */
 function mc_image_link_modal($_image_name, $_type = 'single') {
@@ -50,6 +50,34 @@ function mc_image_link_modal($_image_name, $_type = 'single') {
                 . '</div>';
 
         return $_btn_view_copy_image;
+    } elseif ($_type = 'group') {
+        
+    }
+}
+
+/**
+ * GERA UM LINK PARA DOWNLOAD DO ARQUIVO 
+ *
+ * @param type $_file_name
+ * @param type $_type              [ single ] para um único arquivo / [ group ] para um grupo de arquivos
+ * @return string
+ */
+function mc_file_link_download($_file_name, $_type = 'single') {
+
+    $_file = '';
+
+    if ($_type == 'single') {
+
+        $_url_file = base_url(___CONF_UPLOAD_DIR___ . '/' . ___CONF_UPLOAD_FILE_DIR___ . '/') . $_file_name;
+
+        $_file = '<div class="btn-copy-to-clipboard btn-file-link-lightbox" ><i class="fa fa-fw fa-camera"></i> </a></div>';
+
+        $_btn_view_copy_file = '<div class="btn-group btn-xs">'
+                . '<button type="button" class="btn btn-default btn-xs j-tooltip" data-toggle="tooltip" data-original-title="Download"><a href="' . $_url_file . '" download="' . $_file_name . '"><i class="fa fa-download"></i></a></button>'
+                . '<button type="button" class="btn btn-default btn-xs j-tooltip" data-toggle="tooltip" data-original-title="Copiar Link" data-clipboard-message="Link da imagem copiado com sucesso." data-clipboard-text="' . $_url_file . '"><a><i class="fa fa-copy"></i></a></button>'
+                . '</div>';
+
+        return $_btn_view_copy_file;
     } elseif ($_type = 'group') {
         
     }

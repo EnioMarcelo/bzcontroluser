@@ -32,6 +32,14 @@
     }
 
     /**
+     * FUNCTION LIGA MODAL AGUARDE
+     */
+    function modalAguardeOn() {
+        $('#modal-aguarde').modal('show');
+    }
+
+
+    /**
      * AJAX FORM SUBMIT POST
      */
     $(function () {
@@ -79,19 +87,24 @@
          *
          */
 
-        $(".j_ajax_form").submit(function (e) {
+        $(".j_btn_ajax_form").click(function (e) {
             e.preventDefault();
+            var _form = "#" + $(this).data("formId");
+            var _url = $(this).data("formAction");
+            var _data = $(form).serializeArray();
 
-            var form = $(this);
-            var url = form.attr("action");
-            console.log(url);
+            console.clear();
+            console.log(_form);
+            console.log(_url);
+            console.log(_data);
 
             $.ajax({
-                url: url,
+                url: _url,
                 type: "POST",
                 dataType: "json",
-                data: form.serialize(),
+                data: _data,
                 beforeSend: function () {
+                    modalAguardeOn();
                 },
                 success: function (response) {
 
@@ -109,6 +122,18 @@
                     if (response.reset) {
                         form[0].reset();
                     }
+
+                    //debug
+                    if (response.debug) {
+                        console.log('Debug:');
+                        console.log(response.debug);
+                    }
+
+                    //data
+                    if (response.data) {
+                        return esponse.data;
+                    }
+
 
                     //message toastr
                     if (response.message && response.message.toastr) {
@@ -132,13 +157,16 @@
                         setTimeout(function () {
                             $('.alert').fadeOut(1000);
                         }, 3000);
+                    }//end message toastr
 
-                    }
+
 
                     //message swal
                     if (response.message && response.message.swal) {
                         swal(response.message.swal.titulo, response.message.swal.mensagem, response.message.swal.tipo);
-                    }
+                    }//end message swal
+
+
 
                     //message notfit
                     if (response.message && response.message.notfit) {
@@ -151,7 +179,74 @@
                         } else {
                             notfit_msg_info(response.message.notfit.mensagem);
                         }
-                    }
+                    }//end message notfit
+
+
+
+                    //message nice
+                    if (response.message && response.message.nice) {
+                        var type = response.message.nice.type;
+                        var text = response.message.nice.text;
+                        var title = response.message.nice.title;
+                        var position = response.message.nice.position;
+                        var duration = response.message.nice.duration;
+
+                        console.log(response.message.nice);
+
+                        if (text == 'undefined' || text == null) {
+                            text = 'Faltou informar o texto.';
+                        }
+
+                        if (title == 'undefined' || title == null) {
+                            title = '';
+                        }
+
+
+                        if (position == 'undefined' || position == null) {
+                            position = 'br';
+                        }
+
+                        if (duration == 'undefined' || duration == null) {
+                            duration = '3200';
+                        }
+
+                        if (type == 'success') {
+                            $.HP.notice({
+                                message: text,
+                                title: title,
+                                location: position,
+                                duration: duration
+                            });
+                        } else if (type == 'error') {
+                            $.HP.error({
+                                message: text,
+                                title: title,
+                                location: position,
+                                duration: duration
+                            });
+                        } else if (type == 'warning') {
+                            $.HP.warning({
+                                message: text,
+                                title: title,
+                                location: position,
+                                duration: duration
+                            });
+                        } else {
+                            $.HP({
+                                message: text,
+                                title: title,
+                                location: position,
+                                duration: duration
+                            });
+                        }
+
+
+                        return
+
+                    }//end message nice
+
+
+
 
                 },
                 complete: function () {
@@ -162,17 +257,8 @@
                     swal('ATENÇÃO !!!', message, 'error');
                 }
             });
-
-
-
-
         });
-
-
-
     });
-
-
     /**
      * LIGA O MODAL DE AGUARDE DEPOIS QUE CARREGA TODO O CONTEÚDO
      */
@@ -186,8 +272,6 @@
             });
         });
     });
-
-
     /*
      * BUTTON BACK PAGE
      */
@@ -197,8 +281,6 @@
             history.back(1);
         });
     });
-
-
     /*
      * MARCA A LINHA SELECIONADA
      */
@@ -211,14 +293,9 @@
                     $(this).parent().parent().find("td").removeClass('bg-danger');
                 }
             });
-
             checkbox_count();
         });
-
-
     });
-
-
     /*
      * CODE EDITOR TEXTAREA
      */
@@ -241,7 +318,6 @@
                 , toolbar: "search, go_to_line, |, undo, redo, |, select_font, |, syntax_selection,|, help"
                 , replace_tab_by_spaces: 5
             });
-
             editAreaLoader.init({
                 id: "codeeditor_2"	// id of the textarea to transform
                 , start_highlight: true
@@ -254,7 +330,6 @@
                 , EA_load_callback: "editAreaLoaded"
                 , show_line_colors: true
             });
-
             editAreaLoader.init({
                 id: "codeeditor_3"	// id of the textarea to transform
                 , start_highlight: true
@@ -271,13 +346,8 @@
                 , charmap_default: "arrows"
 
             });
-
-
-
         };
     });
-
-
     /*
      * MARCA E DESMARCA TODAS AS LINHAS DA TABLE
      */
@@ -293,10 +363,7 @@
         $('.checkbox-all').on('ifUnchecked', function (event) {
             $('input.checkbox-unit').iCheck('uncheck');
         });
-
     });
-
-
     /*
      * MARCA E DESMARCA LINHA POR LINHA (INDIVIDUAL) DA TABLE
      */
@@ -306,19 +373,13 @@
             $(this).closest("input").attr('checked', true);
             $(this).parent().parent().parent().find("td").addClass('bg-danger');
             checkbox_count();
-
         });
-
         $('input.checkbox-unit').on('ifUnchecked', function (event) {
             $(this).closest("input").attr('checked', false);
             $(this).parent().parent().parent().find("td").removeClass('bg-danger');
             checkbox_count();
         });
-
-
     });
-
-
     /*
      * iCheck
      */
@@ -333,7 +394,6 @@
             checkboxClass: 'icheckbox_flat-blue',
             radioClass: 'iradio_flat-blue'
         });
-
         $('input[type="checkbox"].minimal-green, input[type="radio"].minimal-green').iCheck({
             checkboxClass: 'icheckbox_minimal-green',
             radioClass: 'iradio_minimal-green'
@@ -342,8 +402,6 @@
             checkboxClass: 'icheckbox_flat-green',
             radioClass: 'iradio_flat-green'
         });
-
-
         /* Red color scheme for iCheck */
         $('input[type="checkbox"].minimal-red, input[type="radio"].minimal-red').iCheck({
             checkboxClass: 'icheckbox_minimal-red',
@@ -355,8 +413,6 @@
             radioClass: 'iradio_flat-red'
         });
     });
-
-
     /**
      * SELECT 2
      * Initialize Select2 Elements
@@ -369,7 +425,6 @@
 
 
         });
-
         $('.select2-multiple-selection').select2({
             language: "pt-BR",
             placeholder: "Selecione...",
@@ -378,10 +433,7 @@
             closeOnSelect: false
 
         });
-
     });
-
-
     /**
      * NUMBERED LINE TEXTAREA
      */
@@ -407,7 +459,6 @@
             });
             input[0].selectionStart = input[0].selectionEnd = start;
         });
-
         $(".lowercase").bind('keyup', function (e) {
             var input = $(this);
             var start = input[0].selectionStart;
@@ -416,10 +467,7 @@
             });
             input[0].selectionStart = input[0].selectionEnd = start;
         });
-
     });
-
-
     /**
      * MÁSCARAS COM JQUERY MASK INPUT
      */
@@ -427,19 +475,13 @@
 
         /** VALOR MOEDA PT BR **/
         $('.j-mask-moeda-ptbr').mask('#.##0,00', {reverse: true});
-
         /** DATA PT BR **/
         $('.j-mask-data-ptbr').mask('00/00/0000');
-
         /** HORA PT BR **/
         $('.j-mask-hora-ptbr').mask('00:00');
-
         /** DATA E HORA PT BR **/
         $('.j-mask-datahora-ptbr').mask('00/00/0000 00:00');
-
     });
-
-
     /*
      * BOTÃO DELETA REGISTROS
      */
@@ -447,7 +489,6 @@
 
         var csrfName = '<?php echo $this->security->get_csrf_token_name(); ?>';
         var csrfHash = '';
-
         if (csrfHash === '') {
             csrfHash = '<?php echo $this->security->get_csrf_hash(); ?>';
         }
@@ -464,7 +505,6 @@
 
                 swal("ATENÇÃO !", "Nenhum registro selecionado", "warning");
                 return false;
-
             } else {
 
                 var p = deleteditems.indexOf(",");
@@ -490,7 +530,6 @@
                                     keyboard: false,
                                     show: true,
                                 });
-
                                 /*
                                  * DELETA O REGISTRO
                                  */
@@ -507,7 +546,6 @@
                                         swal("ERRO !", "Erro ao deletar registro", "error");
                                     }
                                 });
-
                             } else {
 
                                 $('#modal-aguarde').modal({
@@ -515,11 +553,9 @@
                                     keyboard: false,
                                     show: true,
                                 });
-
                                 window.location.href = "<?= site_url($this->router->fetch_class() . '?' . bz_app_parametros_url()); ?>";
                             }
                         });
-
             }
 
         });
@@ -555,10 +591,8 @@
 
         $('#IdFormADD_<?= $this->router->fetch_class(); ?>').find(".hide-formadd").parent().next().removeAttr('placeholder');
         $('#IdFormADD_<?= $this->router->fetch_class(); ?>').find(".hide-formadd").remove();
-
         $('#IdFormEDIT_<?= $this->router->fetch_class(); ?>').find(".hide-formedit").parent().next().removeAttr('placeholder');
         $('#IdFormEDIT_<?= $this->router->fetch_class(); ?>').find(".hide-formedit").remove();
-
     });
     //END REMOVE ELEMENTOS MARCADOS COM A CLASSE .hide-formadd ou .hide-formedit
 

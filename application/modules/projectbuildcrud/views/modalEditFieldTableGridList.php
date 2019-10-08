@@ -228,6 +228,7 @@
                                     <option value="moeda">Moeda</option>
                                     <!--<option value="senha">Senha</option>-->
                                     <option value="upload-imagem">Upload de Imagem</option>
+                                    <option value="upload-arquivo">Upload de Arquivo</option>
                                     <!--<option value="select-manual">Select Dropdown - Manual</option>-->
                                     <option value="select">Select</option>
                                     <!--<option value="select-multiple-manual">Select Multiplo - Manual</option>-->

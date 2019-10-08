@@ -19,7 +19,7 @@ class MY_Upload extends CI_Upload {
         parent::__construct($config);
 
         if (!file_exists($config['upload_path'])) {
-            mkdir($config['upload_path'], 0777, true);
+            bz_createFolder($config['upload_path']);
         }
     }
 

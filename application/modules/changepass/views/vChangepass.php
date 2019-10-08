@@ -37,6 +37,8 @@
         <link href="<?= base_url('assets'); ?>/css/jquery.toast.css" rel="stylesheet" type="text/css"/>
         <!-- SweetAlert JS -->
         <script src="<?= base_url('assets'); ?>/js/jquery.sweetalert.min.js" type="text/javascript"></script>
+        <!-- Stick de Mensagens - NICE - http://demo.hackandphp.com/jquery-nice-notify-notification-messages/ -->
+        <link href="<?= base_url('assets'); ?>/css/jquery.nice.css<?= '?' . date('YmdHis'); ?>" rel="stylesheet" type="text/css"/>
         <!-- CUSTOM MASTERPAGE -->
         <link href="<?= base_url('assets'); ?>/css/custom-masterpage.css" rel="stylesheet" type="text/css" />
         <!-- BOOT BUZA -->
@@ -52,6 +54,8 @@
         <script src="<?= base_url('assets'); ?>/js/jquery.toast.js" type="text/javascript"></script>
         <!-- SweetAlert JS -->
         <script src="<?= base_url('assets'); ?>/js/jquery.sweetalert.min.js" type="text/javascript"></script>
+        <!-- NICE MENSAGENS-->
+        <script src="<?= base_url('assets'); ?>/js/jquery.nice.js" type="text/javascript"></script>
 
         <!-- Common JS -->
         <script src="<?= base_url('assets'); ?>/js/common-js.js" type="text/javascript"></script>

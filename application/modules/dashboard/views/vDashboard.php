@@ -28,6 +28,14 @@
     </ol>
 </section>
 
-
-
-
+<?php
+//$_posistion = 'br';
+////
+//set_mensagem_nice('', ___MSG_UPDATE_REGISTRO___, 'info', $_posistion);
+//echo get_mensagem();
+//set_mensagem_nice('', 'Sucesso', 'success', $_posistion);
+//echo get_mensagem();
+//set_mensagem_nice('', 'Aviso', 'warning', $_posistion);
+//echo get_mensagem();
+//set_mensagem_nice('', 'Erro', 'error', $_posistion);
+//echo get_mensagem();

@@ -30,6 +30,8 @@
         <link href="<?= base_url('assets'); ?>/css/jquery.toast.css<?= '?' . date('YmdHis'); ?>" rel="stylesheet" type="text/css"/>
         <!-- Stick de Mensagens - NOTIFIT -->
         <link href="<?= base_url('assets'); ?>/css/notifIt.css<?= '?' . date('YmdHis'); ?>" rel="stylesheet" type="text/css"/>
+        <!-- Stick de Mensagens - NICE - http://demo.hackandphp.com/jquery-nice-notify-notification-messages/ -->
+        <link href="<?= base_url('assets'); ?>/css/jquery.nice.css<?= '?' . date('YmdHis'); ?>" rel="stylesheet" type="text/css"/>
         <!-- Font Awesome Icons -->
         <link href="<?= base_url('assets'); ?>/font/font-awesome.min.css<?= '?' . date('YmdHis'); ?>" rel="stylesheet" type="text/css"/>
         <!-- Ionicons -->
@@ -104,6 +106,8 @@
         <script src="<?= base_url('assets'); ?>/js/notifIt.js" type="text/javascript"></script>
         <!-- NOTIFIT MENSAGENS-->
         <script src="<?= base_url('assets'); ?>/js/notifit-mensagens.js" type="text/javascript"></script>
+        <!-- NICE MENSAGENS-->
+        <script src="<?= base_url('assets'); ?>/js/jquery.nice.js" type="text/javascript"></script>
         <!-- MD5 -->
         <script src="<?= base_url('assets'); ?>/js/jquery.md5.js" type="text/javascript"></script>
         <!-- BASE64 https://github.com/carlo/jquery-base64 -->

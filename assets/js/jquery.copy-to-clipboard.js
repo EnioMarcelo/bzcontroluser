@@ -23,13 +23,23 @@ function CopyToClipboard(val, _msg) {
 
 //    console.clear();
 //    console.log('--> ' + val + ' - ' + _msg);
-    $.toast({
-        heading: '',
-        text: _msg,
-        position: 'top-center',
-        icon: 'info',
-        loaderBg: '#29a7d8'
+//    $.toast({
+//        heading: '',
+//        text: _msg,
+//        position: 'top-center',
+//        icon: 'info',
+//        loaderBg: '#29a7d8'
+//    });
+
+
+    $.HP({
+        message: 'Copiado com sucesso.',
+        title: '',
+        location: 'br',
+        duration: '3200'
     });
+
+
 
 
     var hiddenClipboard = $('#_hiddenClipboard_');

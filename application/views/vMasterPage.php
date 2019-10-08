@@ -24,6 +24,8 @@
         <link href="<?= base_url('assets'); ?>/css/jquery.toast.css<?= '?' . date('YmdHis'); ?>" rel="stylesheet" type="text/css"/>
         <!-- Stick de Mensagens - NOTIFIT -->
         <link href="<?= base_url('assets'); ?>/css/notifIt.css<?= '?' . date('YmdHis'); ?>" rel="stylesheet" type="text/css"/>
+        <!-- Stick de Mensagens - NICE - http://demo.hackandphp.com/jquery-nice-notify-notification-messages/ -->
+        <link href="<?= base_url('assets'); ?>/css/jquery.nice.css<?= '?' . date('YmdHis'); ?>" rel="stylesheet" type="text/css"/>
 
 
         <!-- Bootstrap 3.3.4 -->
@@ -74,6 +76,8 @@
         <script src="<?= base_url('assets'); ?>/js/notifIt.js" type="text/javascript"></script>
         <!-- NOTIFIT MENSAGENS-->
         <script src="<?= base_url('assets'); ?>/js/notifit-mensagens.js" type="text/javascript"></script>
+        <!-- NICE MENSAGENS-->
+        <script src="<?= base_url('assets'); ?>/js/jquery.nice.js" type="text/javascript"></script>
         <!--COMMON JS-->
         <script src="<?= base_url('assets'); ?>/js/common-js.js" type="text/javascript"></script>
 

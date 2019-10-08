@@ -1,0 +1,93 @@
+/*
+jQuery Nice notify
+Copyright 2016 HackandPhp
+Website : www.hackandphp.com
+http://demo.hackandphp.com/jquery-nice-notify-notification-messages/
+ */
+
+#HPs {
+  z-index: 50000 !important ;
+  position: fixed !important ; 
+  margin-bottom: 10px !important ;
+  margin-top: 40px !important ;
+  margin-right: -11px !important ;
+
+}
+  #HPs.default {
+    top: 10px !important ;
+    right: 10px !important ; }
+  #HPs.tl {
+    top: 10px !important ;
+    left: 10px !important ; }
+  #HPs.tr {
+    top: 10px !important ;
+    right: 10px !important ; }
+  #HPs.bl {
+    bottom: 10px !important ;
+    left: 10px !important ; }
+  #HPs.br {
+    bottom: 10px !important ;
+    right: 10px !important ; }
+  #HPs.tc {
+    top: 10px !important ;
+    right: 10px !important ;
+    left: 10px !important ; }
+  #HPs.bc {
+    bottom: 10px !important ;
+    right: 10px !important ;
+    left: 10px !important ; }
+  #HPs.tc .HP, #HPs.bc .HP {
+    margin-left: auto !important ;
+    margin-right: auto !important ; }
+
+.HP {
+  opacity: 0.8 !important ;
+  filter: alpha(opacity=80) !important ;
+  position: relative !important ;
+  border-radius: 4px !important ;
+  -webkit-transition: all 0.4s ease-in-out !important ;
+  -moz-transition: all 0.4s ease-in-out !important ;
+  transition: all 0.4s ease-in-out !important ; }
+  .HP.HP-incoming {
+    opacity: 0 !important ;
+    filter: alpha(opacity=0) !important ; }
+  .HP.HP-outgoing {
+    opacity: 0 !important ;
+    filter: alpha(opacity=0) !important ; }
+  .HP.HP-small {
+    width: 200px !important ;
+    padding: 5px !important ;
+    margin: 5px !important ; }
+  .HP.HP-medium {
+    width: 250px !important ;
+    padding: 10px !important ;
+    margin: 10px !important ; }
+  .HP.HP-large {
+    width: 300px !important ;
+    padding: 15px !important ;
+    margin: 15px !important ; }
+  .HP.HP-default {
+    color: #FFF !important ;
+    background: #0259C4 !important ; }
+  .HP.HP-error {
+    color: #FFF !important ;
+    background: #C0392B !important ; }
+  .HP.HP-notice {
+    color: #FFF !important ;
+    background: #2ECC71 !important ; }
+  .HP.HP-warning {
+    color: #FFF !important ;
+    background: #F39C12 !important ; }
+  .HP .HP-close {
+    cursor: pointer !important ;
+    float: right !important ;
+    font-size: 14px !important ;
+    line-height: 18px !important ;
+    font-weight: normal !important ;
+    font-family: helvetica, verdana, sans-serif !important !important ; }
+  .HP .HP-title {
+    font-size: 18px !important ;
+    line-height: 24px !important ; }
+  .HP .HP-message {
+    font-size: 14px !important ;
+    line-height: 18px !important ; }

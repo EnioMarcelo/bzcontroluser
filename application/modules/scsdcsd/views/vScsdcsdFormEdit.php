@@ -1,7 +1,7 @@
 <?php
 /*
-  Created on : 04/10/2019, 13:39PM
-  Author     : Enio Marcelo - eniomarcelo@gmail.com
+  Created on : 07/10/2019, 11:35AM
+  Author     : Enio Marcelo Buzaneli - eniomarcelo@gmail.com
  */
 
 
@@ -89,9 +89,9 @@
 
           
                                             <?php $_error = form_error("id", "<small class='text-danger col-xs-12 bz-input-error'>", "</small>"); ?>
-                                            <div id="id" class="form-group has-feedback col-sm-2  ">
+                                            <div id="id" class="form-group has-feedback col-sm-1  ">
                                                 <label for="id">ID</label>
-                                                <input type="number" name="id" class="form-control" placeholder="" value="<?=set_value("id",isset($dados->id) ? $dados->id : set_value("id"));?>" pattern="[0-9]" onkeypress="return (event.charCode >= 48 && event.charCode <= 57) ||  event.charCode == 0 " disabled  />
+                                                <input type="text" name="id" class="form-control   " placeholder="" disabled  value="<?=set_value("id",!empty($dados->id) ? $dados->id : set_value("id"));?>" />
                                                 <?= $_error; ?>
                                             </div>
                                             

@@ -339,7 +339,7 @@ class Apps extends MY_Controller {
                     add_auditoria($dados_auditoria);
 
                     //set_mensagem_toastr('<i class="fa fa-fw fa-thumbs-o-up" style="font-size: 1.5em"></i>', _MSG_STATUS_REGISTRO_, 'success', 'top-center');
-                    set_mensagem_notfit(___MSG_STATUS_REGISTRO___, 'success');
+                    set_mensagem_nice('',___MSG_STATUS_REGISTRO___, 'success');
                 else:
                     //GRAVA AUDITORIA
                     $dados_auditoria['creator'] = 'system';
