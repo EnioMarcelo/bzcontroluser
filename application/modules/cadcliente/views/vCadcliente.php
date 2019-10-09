@@ -1,7 +1,7 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 <!--
 /*
-  Created on : 08/10/2019, 18:06PM
+  Created on : 09/10/2019, 10:26AM
   Author     : Enio Marcelo Buzaneli - eniomarcelo@gmail.com
  */
 -->
@@ -181,7 +181,7 @@
 
                             <!-- CAMPOS DA TABLE -->
                             <td class="tdClNome" class="text-left" style="text-align:left"><?= $_row["nome"]; ?></td>
-<td class="tdClArquivo_nome" class="text-center" style="width:10%; text-align:center"><?= mc_image_thumb_modal($_row["arquivo_nome"]); ?></td>
+<td class="tdClArquivo_nome" class="text-center" style="width:10%; text-align:center"><?= mc_file_link_download($_row["arquivo_nome"]); ?></td>
 
                             <!-- CAMPOS DA TABLE -->
 

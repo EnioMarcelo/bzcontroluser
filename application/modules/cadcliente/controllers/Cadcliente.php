@@ -1,7 +1,7 @@
 <?php
 
 /*
-  Created on : 08/10/2019, 18:06PM
+  Created on : 09/10/2019, 10:26AM
   Author     : Enio Marcelo Buzaneli - eniomarcelo@gmail.com
  */
 
@@ -71,7 +71,7 @@ $this->_exportReport = true;
 
         /* VALIDAÇÃO DOS DADOS */
         $this->form_validation->set_rules('nome', '<b>Nome</b>', 'trim|strtoupper|max_length[255]|required');
-$this->form_validation->set_rules('arquivo_nome', '<b>Arquivo</b>', 'trim|callback_validation_upload_images_arquivo_nome');
+$this->form_validation->set_rules('arquivo_nome', '<b>Arquivo</b>', 'trim|callback_validation_upload_files_arquivo_nome');
 
         /* END VALIDAÇÃO DOS DADOS */
 
@@ -153,7 +153,7 @@ endif;
 
       /* VALIDAÇÃO DOS DADOS */
       $this->form_validation->set_rules('nome', '<b>Nome</b>', 'trim|strtoupper|max_length[255]|required');
-$this->form_validation->set_rules('arquivo_nome', '<b>Arquivo</b>', 'trim|callback_validation_upload_images_arquivo_nome');
+$this->form_validation->set_rules('arquivo_nome', '<b>Arquivo</b>', 'trim|callback_validation_upload_files_arquivo_nome');
 
       /* END VALIDAÇÃO DOS DADOS */
 
@@ -166,13 +166,13 @@ $this->form_validation->set_rules('arquivo_nome', '<b>Arquivo</b>', 'trim|callba
          unset($_dados['btn-editar']);
          /**
 
- * DELETA IMAGEM
+ * DELETA ARQUIVO
  */
-if (isset($this->task['uploaded_image']) && $this->task['uploaded_image']) {
+if (isset($this->task['uploaded_file']) && $this->task['uploaded_file']) {
      $_file_name = mc_findByIdDataDB($this->table_formaddedit_name, $_id)->row()->arquivo_nome;
-     bz_delete_file($_file_name, bz_absolute_path(___CONF_APP_RELATIVE_PATH___) . ___CONF_UPLOAD_DIR___ . ___CONF_UPLOAD_IMAGE_DIR___);
+     bz_delete_file($_file_name, bz_absolute_path() . ___CONF_UPLOAD_DIR___ . ___CONF_UPLOAD_FILE_DIR___);
 }
-/* END DELETA IMAGEM */
+/* END DELETA ARQUIVO */
          
          /* CONVERTE DADOS PARA GRAVAR NA TABELA */
 if( !empty($this->task['result_upload']['file_name']) ):
@@ -265,13 +265,13 @@ public function del(){
   $_dados = explode(',', $_dados);
 
   /**
- * DELETA IMAGEM
+ * DELETA ARQUIVO
  */
 foreach ($_dados as $_value):
      $_file_name = mc_findByIdDataDB($this->table_formaddedit_name, $_value)->row()->arquivo_nome;
-     bz_delete_file($_file_name, bz_absolute_path(___CONF_APP_RELATIVE_PATH___) . ___CONF_UPLOAD_DIR___ . ___CONF_UPLOAD_IMAGE_DIR___);
+     bz_delete_file($_file_name, bz_absolute_path() . ___CONF_UPLOAD_DIR___ . ___CONF_UPLOAD_FILE_DIR___);
 endforeach;
-/* END DELETA IMAGEM */
+/* END DELETA ARQUIVO */
   
   /* DELETA OS REGISTROS */
   $this->db->where_in('id', $_dados);
@@ -553,33 +553,28 @@ private function get_paginacao() {
 
 
 
-                                                 /* VALIDAÇÃO POR CALLBACK UPLOAD DE IMAGENS arquivo_nome. */
-                                                  public function validation_upload_images_arquivo_nome() {
-                                                      
+                                                 /* VALIDAÇÃO POR CALLBACK UPLOAD DE ARQUIVOS arquivo_nome. */
+                                                  public function validation_upload_files_arquivo_nome() {
+                                                  
                                                         if (empty($_FILES['arquivo_nome']['name']) && !empty($this->input->post('arquivo_nome')) ) {
                                                             return true;
                                                         }
 
                                                         if (empty($_FILES['arquivo_nome']['name'])) {
-                                                            $this->form_validation->set_message('validation_upload_images_arquivo_nome', 'Nenhuma imagem selecionada para ser enviada.');
-                                                            return false;
-                                                        }
-                                                        
-                                                        if (strpos($_FILES['arquivo_nome']['type'], 'image/') !== 0) {
-                                                            $this->form_validation->set_message('validation_upload_images_arquivo_nome', 'Este arquivo não é um arquivo de imagem.');
+                                                            $this->form_validation->set_message('validation_upload_files_arquivo_nome', 'Nenhuma arquivo selecionado para ser enviado.');
                                                             return false;
                                                         }
 
-                                                        $this->task['result_upload'] = bz_upload_file('arquivo_nome', ___CONF_UPLOAD_IMAGE_DIR___, 'jpg|jpeg|gif|png', '2048', '0', '0');
+                                                        $this->task['result_upload'] = bz_upload_file('arquivo_nome', ___CONF_UPLOAD_FILE_DIR___, 'pdf|txt|doc|docx|xls|xlsx', '2000', '', '');
 
                                                         if (isset($this->task['result_upload']['error'])) {
-                                                            $this->form_validation->set_message('validation_upload_images_arquivo_nome', $this->task['result_upload']['error']['message']);
+                                                            $this->form_validation->set_message('validation_upload_files_arquivo_nome', $this->task['result_upload']['error']['message']);
                                                             return false;
                                                         }
                                                         
-                                                        $this->task['uploaded_image'] = true;
+                                                        $this->task['uploaded_file'] = true;
                                                   }
-                                                  /* END VALIDAÇÃO POR CALLBACK UPLOAD DE IMAGENS arquivo_nome. */
+                                                  /* END VALIDAÇÃO POR CALLBACK UPLOAD DE ARQUIVOS arquivo_nome. */
 
 
 

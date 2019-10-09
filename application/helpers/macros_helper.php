@@ -96,7 +96,7 @@ function mc_image_thumb_modal($_image_name, $_type = 'single') {
 
     if ($_type == 'single') {
 
-        $_url_imagem = base_url(___CONF_UPLOAD_DIR___ . '/' . ___CONF_UPLOAD_IMAGE_DIR___ . '/') . $_image_name;
+        $_url_imagem = base_url(___CONF_UPLOAD_DIR___ . ___CONF_UPLOAD_IMAGE_DIR___) . $_image_name;
         $_imagem = '<a class="btn-image-thumb-lightbox" href="' . $_url_imagem . '" data-lightbox="' . $_image_name . '"><img class="img-responsive" src="' . $_url_imagem . '"></a>';
 
         $_btn_view_copy_image = '<div class="display-flex display-flex-wrap display-flex-justify-content-right">'

@@ -1,6 +1,6 @@
 <?php
 /*
-  Created on : 08/10/2019, 18:06PM
+  Created on : 09/10/2019, 10:26AM
   Author     : Enio Marcelo Buzaneli - eniomarcelo@gmail.com
  */
 
@@ -99,12 +99,10 @@
                                                 <?php $_error = form_error("arquivo_nome", "<small class='text-danger col-xs-12 bz-input-error'>", "</small>"); ?>
                                                 <div id="arquivo_nome" class="form-group has-feedback col-sm-12">
                                                     <label for="arquivo_nome"><i class="fa fa-asterisk margin-right-5 text-error " style="font-size: 0.7em;"></i>Arquivo</label>
-                                                    <input type="file" name="arquivo_nome" class="form-control-file margin-bottom-10" placeholder="" value="<?= set_value("arquivo_nome", isset($dados->arquivo_nome) ? $dados->arquivo_nome : set_value("arquivo_nome")); ?>"  />
+                                                    <input type="file" name="arquivo_nome" class="form-control-file margin-bottom-10" placeholder="" value="<?=set_value("arquivo_nome",isset($dados->arquivo_nome) ? $dados->arquivo_nome : set_value("arquivo_nome"));?>"  />
 <?php if ($this->uri->segment(2) == "edit"): ?>
-     <div class="col-xs-12 col-sm-12 col-md-3 col-lg-2"><?= mc_image_thumb_modal($dados->arquivo_nome); ?></div>
-     <div class="btn-ver-imagem margin-top-5 margin-bottom-5" style="font-size: 0.8em"><i class="fa fa-fw fa-camera"></i> <?= anchor(___CONF_UPLOAD_DIR___ . "/" . ___CONF_UPLOAD_IMAGE_DIR___ . "/" . set_value("imagem_nome", isset($dados->arquivo_nome) ? $dados->arquivo_nome : set_value("arquivo_nome")), "Ver Imagem", "data-lightbox='arquivo_nome'"); ?></div>
      <input type="hidden" name="arquivo_nome" value="<?= $dados->arquivo_nome;?>">
-     
+     <div id="" class=""><?= mc_file_link_download($dados->arquivo_nome); ?></div>
 <?php else: ?>
      
      

@@ -479,7 +479,8 @@ function bz_app_parametros_url() {
  *
  */
 function bz_absolute_path($_param = '') {
-    return $_SERVER['DOCUMENT_ROOT'] . $_param;
+//    return $_SERVER['DOCUMENT_ROOT'] . $_param;
+    return ___CONF_APP_ABSOLUTE_PATH___ . $_param;
 }
 
 //END bz_absolute_path()
@@ -1689,7 +1690,8 @@ function bz_upload_file($_file_name, $_upload_path, $_allowed_types, $_max_size 
 
     $_FILES[$_file_name]['name'] = $CI->security->sanitize_filename($_FILES[$_file_name]['name']);
 
-    $config['upload_path'] = bz_absolute_path(___CONF_APP_RELATIVE_PATH___) . ___CONF_UPLOAD_DIR___ . $_upload_path;
+    $config['upload_path'] = bz_absolute_path() . ___CONF_UPLOAD_DIR___ . $_upload_path;
+
     $config['allowed_types'] = $_allowed_types;
     $config['max_size'] = $_max_size;
 
@@ -1731,7 +1733,7 @@ function bz_delete_file($_file_name, $_file_path) {
     $CI = & get_instance();
     $CI->load->helper("file");
 
-    $_fileDelete = $_file_path . '/' . $_file_name;
+    $_fileDelete = $_file_path . $_file_name;
 
     if (!empty($_fileDelete) && file_exists($_fileDelete)) {
         unlink($_fileDelete);
@@ -1756,17 +1758,21 @@ function bz_createFolder($p, $mask = 0777) {
         return false;
     }
 
-    if (!is_dir(bz_absolute_path(___CONF_APP_RELATIVE_PATH___) . $p)) {
+    if (!is_dir($p)) {
 
         if (mkdir($p, $mask, TRUE)) {
             $CI->load->helper('file');
             $paths = explode('/', $p);
             $_i = '';
             $_data = ___DEFAULT_FILE_INDEX_CONTENT___;
+
+
+
+
             foreach ($paths as $path):
                 $_i .= $path . '/';
 
-                if (strpos($_i, ___CONF_UPLOAD_DIR___)) {
+                if (strpos($_i, str_replace('/', '', ___CONF_UPLOAD_DIR___))) {
                     write_file($_i . 'index.html', base64_decode($_data));
                 }
 

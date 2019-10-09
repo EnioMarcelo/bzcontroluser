@@ -2445,7 +2445,7 @@ class ProjectbuildCrud extends MY_Controller {
                                         . " */" . PHP_EOL
                                         . "foreach (\$_dados as \$_value):" . PHP_EOL
                                         . "     \$_file_name = mc_findByIdDataDB(\$this->table_formaddedit_name, \$_value)->row()->" . $_row['field_name'] . ";" . PHP_EOL
-                                        . "     bz_delete_file(\$_file_name, bz_absolute_path(___CONF_APP_RELATIVE_PATH___) . ___CONF_UPLOAD_DIR___ . ___CONF_UPLOAD_IMAGE_DIR___);" . PHP_EOL
+                                        . "     bz_delete_file(\$_file_name, bz_absolute_path() . ___CONF_UPLOAD_DIR___ . ___CONF_UPLOAD_IMAGE_DIR___);" . PHP_EOL
                                         . "endforeach;" . PHP_EOL
                                         . "/* END DELETA IMAGEM */";
 
@@ -2454,7 +2454,7 @@ class ProjectbuildCrud extends MY_Controller {
                                         . " */" . PHP_EOL
                                         . "if (isset(\$this->task['uploaded_image']) && \$this->task['uploaded_image']) {" . PHP_EOL
                                         . "     \$_file_name = mc_findByIdDataDB(\$this->table_formaddedit_name, \$_id)->row()->" . $_row['field_name'] . ";" . PHP_EOL
-                                        . "     bz_delete_file(\$_file_name, bz_absolute_path(___CONF_APP_RELATIVE_PATH___) . ___CONF_UPLOAD_DIR___ . ___CONF_UPLOAD_IMAGE_DIR___);" . PHP_EOL
+                                        . "     bz_delete_file(\$_file_name, bz_absolute_path() . ___CONF_UPLOAD_DIR___ . ___CONF_UPLOAD_IMAGE_DIR___);" . PHP_EOL
                                         . "}" . PHP_EOL
                                         . "/* END DELETA IMAGEM */";
 
@@ -2482,7 +2482,7 @@ class ProjectbuildCrud extends MY_Controller {
                                         . " */" . PHP_EOL
                                         . "foreach (\$_dados as \$_value):" . PHP_EOL
                                         . "     \$_file_name = mc_findByIdDataDB(\$this->table_formaddedit_name, \$_value)->row()->" . $_row['field_name'] . ";" . PHP_EOL
-                                        . "     bz_delete_file(\$_file_name, bz_absolute_path(___CONF_APP_RELATIVE_PATH___) . ___CONF_UPLOAD_DIR___ . ___CONF_UPLOAD_FILE_DIR___);" . PHP_EOL
+                                        . "     bz_delete_file(\$_file_name, bz_absolute_path() . ___CONF_UPLOAD_DIR___ . ___CONF_UPLOAD_FILE_DIR___);" . PHP_EOL
                                         . "endforeach;" . PHP_EOL
                                         . "/* END DELETA ARQUIVO */";
 
@@ -2491,7 +2491,7 @@ class ProjectbuildCrud extends MY_Controller {
                                         . " */" . PHP_EOL
                                         . "if (isset(\$this->task['uploaded_file']) && \$this->task['uploaded_file']) {" . PHP_EOL
                                         . "     \$_file_name = mc_findByIdDataDB(\$this->table_formaddedit_name, \$_id)->row()->" . $_row['field_name'] . ";" . PHP_EOL
-                                        . "     bz_delete_file(\$_file_name, bz_absolute_path(___CONF_APP_RELATIVE_PATH___) . ___CONF_UPLOAD_DIR___ . ___CONF_UPLOAD_FILE_DIR___);" . PHP_EOL
+                                        . "     bz_delete_file(\$_file_name, bz_absolute_path() . ___CONF_UPLOAD_DIR___ . ___CONF_UPLOAD_FILE_DIR___);" . PHP_EOL
                                         . "}" . PHP_EOL
                                         . "/* END DELETA ARQUIVO */";
 

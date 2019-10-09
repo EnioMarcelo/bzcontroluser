@@ -28,7 +28,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * ========================================================================================================================================================================
  */
 /* CAMINHO RELATIVO DA PASTA ONDE ESTÁ O APP NO SERVIDOR */
-define('___CONF_APP_RELATIVE_PATH___', '/codeigniter/bzcontroluser');
+define('___CONF_APP_ABSOLUTE_PATH___', FCPATH);
 
 
 define('___CONF_TITULO_SISTEMA___', 'BUZZAControl');
@@ -55,10 +55,10 @@ define('___CONF_LOGIN_CHANGE_PASS_FOOTER___', '<div style="text-align: center; m
  * UPLOAD
  * ========================================================================================================================================================================
  */
-define("___CONF_UPLOAD_DIR___", "/storage");
-define("___CONF_UPLOAD_IMAGE_DIR___", "/images");
-define("___CONF_UPLOAD_FILE_DIR___", "/files");
-define("___CONF_UPLOAD_MEDIA_DIR___", "/medias");
+define("___CONF_UPLOAD_DIR___", "storage/");
+define("___CONF_UPLOAD_IMAGE_DIR___", "images/");
+define("___CONF_UPLOAD_FILE_DIR___", "files/");
+define("___CONF_UPLOAD_MEDIA_DIR___", "medias/");
 /**
  * ========================================================================================================================================================================
  * END UPLOAD
