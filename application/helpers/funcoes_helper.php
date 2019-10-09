@@ -1689,7 +1689,7 @@ function bz_upload_file($_file_name, $_upload_path, $_allowed_types, $_max_size 
 
     $_FILES[$_file_name]['name'] = $CI->security->sanitize_filename($_FILES[$_file_name]['name']);
 
-    $config['upload_path'] = ___CONF_UPLOAD_DIR___ . '/' . $_upload_path;
+    $config['upload_path'] = bz_absolute_path(___CONF_APP_RELATIVE_PATH___) . ___CONF_UPLOAD_DIR___ . $_upload_path;
     $config['allowed_types'] = $_allowed_types;
     $config['max_size'] = $_max_size;
 
@@ -1749,14 +1749,14 @@ function bz_delete_file($_file_name, $_file_path) {
  * @return boolean
  */
 function bz_createFolder($p, $mask = 0777) {
-    // Get the CodeIgniter super object
+    // Get the CodeIgniter super object ENIO
     $CI = &get_instance();
 
     if (empty($p)) {
         return false;
     }
 
-    if (!is_dir(bz_absolute_path() . $p)) {
+    if (!is_dir(bz_absolute_path(___CONF_APP_RELATIVE_PATH___) . $p)) {
 
         if (mkdir($p, $mask, TRUE)) {
             $CI->load->helper('file');
@@ -1765,7 +1765,11 @@ function bz_createFolder($p, $mask = 0777) {
             $_data = ___DEFAULT_FILE_INDEX_CONTENT___;
             foreach ($paths as $path):
                 $_i .= $path . '/';
-                write_file($_i . 'index.html', base64_decode($_data));
+
+                if (strpos($_i, ___CONF_UPLOAD_DIR___)) {
+                    write_file($_i . 'index.html', base64_decode($_data));
+                }
+
             endforeach;
         }
     }

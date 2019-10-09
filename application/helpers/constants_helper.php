@@ -27,6 +27,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * SISTEMA
  * ========================================================================================================================================================================
  */
+/* CAMINHO RELATIVO DA PASTA ONDE ESTÁ O APP NO SERVIDOR */
+define('___CONF_APP_RELATIVE_PATH___', '/codeigniter/bzcontroluser');
+
+
 define('___CONF_TITULO_SISTEMA___', 'BUZZAControl');
 define('___CONF_NOME_SISTEMA___', '<b>BUZZA</b>Control');
 define('___CONF_NOME_SISTEMA_ABREVIADO___', '<b>BZ</b>CN');
@@ -41,7 +45,6 @@ define('___CONF_LOGIN_CHANGE_PASS_BG_IMAGE___', 'style="background: url(assets/i
 define('___CONF_LOGIN_CHANGE_PASS_LOGO___', '<div style="color:#000000"><b>Admin</b>' . ___CONF_TITULO_SISTEMA___ . '</a></div>');
 define('___CONF_LOGIN_CHANGE_PASS_FOOTER___', '<div style="text-align: center; margin-top: 5px; font-size: 0.8em;"><a style="color:#ffffff">ENIO MARCELO</a><p><a style="color:#ffffff">&copy 2017</a></p></div>');
 
-
 /**
  * ========================================================================================================================================================================
  * END SISTEMA
@@ -52,10 +55,10 @@ define('___CONF_LOGIN_CHANGE_PASS_FOOTER___', '<div style="text-align: center; m
  * UPLOAD
  * ========================================================================================================================================================================
  */
-define("___CONF_UPLOAD_DIR___", "storage");
-define("___CONF_UPLOAD_IMAGE_DIR___", "images");
-define("___CONF_UPLOAD_FILE_DIR___", "files");
-define("___CONF_UPLOAD_MEDIA_DIR___", "medias");
+define("___CONF_UPLOAD_DIR___", "/storage");
+define("___CONF_UPLOAD_IMAGE_DIR___", "/images");
+define("___CONF_UPLOAD_FILE_DIR___", "/files");
+define("___CONF_UPLOAD_MEDIA_DIR___", "/medias");
 /**
  * ========================================================================================================================================================================
  * END UPLOAD

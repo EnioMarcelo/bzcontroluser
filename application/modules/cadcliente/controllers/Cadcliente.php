@@ -1,7 +1,7 @@
 <?php
 
 /*
-  Created on : 08/10/2019, 16:08PM
+  Created on : 08/10/2019, 18:06PM
   Author     : Enio Marcelo Buzaneli - eniomarcelo@gmail.com
  */
 
@@ -170,7 +170,7 @@ $this->form_validation->set_rules('arquivo_nome', '<b>Arquivo</b>', 'trim|callba
  */
 if (isset($this->task['uploaded_image']) && $this->task['uploaded_image']) {
      $_file_name = mc_findByIdDataDB($this->table_formaddedit_name, $_id)->row()->arquivo_nome;
-     bz_delete_file($_file_name, ___CONF_UPLOAD_DIR___ . '/' . ___CONF_UPLOAD_IMAGE_DIR___);
+     bz_delete_file($_file_name, bz_absolute_path(___CONF_APP_RELATIVE_PATH___) . ___CONF_UPLOAD_DIR___ . ___CONF_UPLOAD_IMAGE_DIR___);
 }
 /* END DELETA IMAGEM */
          
@@ -269,7 +269,7 @@ public function del(){
  */
 foreach ($_dados as $_value):
      $_file_name = mc_findByIdDataDB($this->table_formaddedit_name, $_value)->row()->arquivo_nome;
-     bz_delete_file($_file_name, ___CONF_UPLOAD_DIR___ . '/' . ___CONF_UPLOAD_IMAGE_DIR___);
+     bz_delete_file($_file_name, bz_absolute_path(___CONF_APP_RELATIVE_PATH___) . ___CONF_UPLOAD_DIR___ . ___CONF_UPLOAD_IMAGE_DIR___);
 endforeach;
 /* END DELETA IMAGEM */
   
@@ -570,7 +570,7 @@ private function get_paginacao() {
                                                             return false;
                                                         }
 
-                                                        $this->task['result_upload'] = bz_upload_file('arquivo_nome', ___CONF_UPLOAD_IMAGE_DIR___, 'jpg|jpeg|gif|png', '1024', '0', '0');
+                                                        $this->task['result_upload'] = bz_upload_file('arquivo_nome', ___CONF_UPLOAD_IMAGE_DIR___, 'jpg|jpeg|gif|png', '2048', '0', '0');
 
                                                         if (isset($this->task['result_upload']['error'])) {
                                                             $this->form_validation->set_message('validation_upload_images_arquivo_nome', $this->task['result_upload']['error']['message']);
