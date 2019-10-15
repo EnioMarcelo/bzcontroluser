@@ -1,7 +1,7 @@
 <?php
 
 /*
-  Created on : 09/10/2019, 14:58PM
+  Created on : 15/10/2019, 13:38PM
   Author     : Enio Marcelo Buzaneli - eniomarcelo@gmail.com
  */
 
@@ -23,7 +23,7 @@
 
       /* TÍTULO DA APLICAÇÃO */
       $this->dados['_titulo_app'] = 'Cadastro de Clientes';
-      $this->dados['_font_icon'] = 'fa fa-adjust';
+      $this->dados['_font_icon'] = 'fa fa-bolt';
 
       /* VIEW DA APLICAÇÃO */
       $this->dados['_view_app_list'] = 'vCadcliente';
@@ -112,7 +112,7 @@ endif;
 
             add_auditoria($dados_auditoria);
 
-            set_mensagem_nice('',___MSG_ADD_REGISTRO___, 'success','br');
+            set_mensagem_trigger_notifi(___MSG_ADD_REGISTRO___, 'success');
 
             
 
@@ -127,7 +127,7 @@ endif;
         /* END GRAVA REGISTRO */
                 
       else:
-            set_mensagem_nice('', ___MSG_ERROR_CAMPOS_OBRIGATORIOS___, 'error', 'br');
+            set_mensagem_trigger_notifi( ___MSG_ERROR_CAMPOS_OBRIGATORIOS___, 'error');
       endif;
 
     endif;
@@ -203,7 +203,7 @@ endif;
           $dados_auditoria['last_query'] = $this->db->last_query();
           add_auditoria($dados_auditoria);
 
-          set_mensagem_nice('',___MSG_UPDATE_REGISTRO___, 'success');
+          set_mensagem_trigger_notifi(___MSG_UPDATE_REGISTRO___, 'success');
 
           
 
@@ -213,7 +213,7 @@ endif;
       endif;
       /* END UPDATE REGISTRO */
   else:
-      set_mensagem_nice('', ___MSG_ERROR_CAMPOS_OBRIGATORIOS___, 'error', 'br');
+      set_mensagem_trigger_notifi( ___MSG_ERROR_CAMPOS_OBRIGATORIOS___, 'error');
   endif;
 
 endif;
@@ -229,7 +229,7 @@ if ($_id):
   if ($_result->result()):
     $this->dados['dados'] = $_result->row();
   else:
-    set_mensagem_nice('',___MSG_ERROR_SELECT_UPDATE_REGISTRO___, 'error');
+    set_mensagem_trigger_notifi(___MSG_ERROR_SELECT_UPDATE_REGISTRO___, 'error');
     redirect($this->_redirect_parametros_url);
   endif;
 
@@ -287,10 +287,10 @@ endforeach;
 
   if ($this->db->affected_rows()):
     if (count($_dados) > 1):
-      set_mensagem_nice('',str_replace('Registro Deletado', 'Registros Deletados', ___MSG_DEL_REGISTRO___), 'success');
+      set_mensagem_trigger_notifi(str_replace('Registro Deletado', 'Registros Deletados', ___MSG_DEL_REGISTRO___), 'success');
       $dados_auditoria['description'] = str_replace('Registro Deletado', 'Registros Deletados', ___MSG_AUDITORIA_DEL_SUCCESS___);
     else:
-      set_mensagem_nice('',___MSG_DEL_REGISTRO___, 'success');
+      set_mensagem_trigger_notifi(___MSG_DEL_REGISTRO___, 'success');
       $dados_auditoria['description'] = ___MSG_AUDITORIA_DEL_SUCCESS___;
     endif;
 
@@ -303,11 +303,11 @@ endforeach;
     
 
   else:
-    set_mensagem_nice('',___MSG_ERROR_DEL_REGISTRO___, 'error');
+    set_mensagem_trigger_notifi(___MSG_ERROR_DEL_REGISTRO___, 'error');
   endif;
 
 else:
-  set_mensagem_notfit('',___MSG_ERROR_DE_VALIDACAO___, 'error');
+  set_mensagem_trigger_notifi('',___MSG_ERROR_DE_VALIDACAO___, 'error');
 endif;
 
 exit;

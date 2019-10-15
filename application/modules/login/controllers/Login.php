@@ -106,7 +106,8 @@ class Login extends MY_Controller {
 
                     if ($result_multiplo_login->result()):
                         $this->session->unset_userdata('user_login');
-                        set_mensagem_toastr('ATENÇÃO', 'Usuário já está logado no sistema.', 'warning', 'top-center');
+//                        set_mensagem_toastr('ATENÇÃO', 'Usuário já está logado no sistema.', 'warning', 'top-center');
+                        set_mensagem_trigger_notifi('ATENÇÃO... Usuário já está logado no sistema.', 'warning');
                         redirect('login', 'refresh');
                         exit;
                     endif;
@@ -146,7 +147,7 @@ class Login extends MY_Controller {
             //set_mensagem('Login OK', 'Login Efetuado com Sucesso.', 'fa-thumbs-o-up', 'info');
             //set_mensagem_toastr('Login OK', 'Login Efetuado com Sucesso.', 'info', 'top-center');
 //            set_mensagem_notfit('Login Efetuado com Sucesso.', 'success');
-            set_mensagem_nice('', 'Login Efetuado com Sucesso.', 'success', 'br');
+            set_mensagem_trigger_notifi('Login Efetuado com Sucesso.', 'success');
 
             redirect(site_url('dashboard'), 'refresh');
 
@@ -183,8 +184,8 @@ class Login extends MY_Controller {
 
             $this->session->unset_userdata('user_login');
 
-            //set_mensagem('Logout', 'Usuário Saiu do Sistema com Sucesso.', 'fa-thumbs-o-up', 'info');
-            //set_mensagem_toastr('Logout', 'Usuário Saiu do Sistema com Sucesso.', 'info', 'top-center');
+        //set_mensagem('Logout', 'Usuário Saiu do Sistema com Sucesso.', 'fa-thumbs-o-up', 'info');
+        //set_mensagem_toastr('Logout', 'Usuário Saiu do Sistema com Sucesso.', 'info', 'top-center');
 //                set_mensagem_notfit('Usuário Saiu do Sistema com Sucesso.', 'success');
 //            set_mensagem_nice('', 'Usuário Saiu do Sistema com Sucesso.', 'success', 'br');
 

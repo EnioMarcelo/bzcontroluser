@@ -32,6 +32,8 @@
         <link href="<?= base_url('assets'); ?>/css/notifIt.css<?= '?' . date('YmdHis'); ?>" rel="stylesheet" type="text/css"/>
         <!-- Stick de Mensagens - NICE - http://demo.hackandphp.com/jquery-nice-notify-notification-messages/ -->
         <link href="<?= base_url('assets'); ?>/css/jquery.nice.css<?= '?' . date('YmdHis'); ?>" rel="stylesheet" type="text/css"/>
+        <!-- Stick de Mensagens trigger notify -->
+        <link href="<?= base_url('assets'); ?>/css/trigger_notify.css<?= '?' . date('YmdHis'); ?>" rel="stylesheet" type="text/css"/>
         <!-- Font Awesome Icons -->
         <link href="<?= base_url('assets'); ?>/font/font-awesome.min.css<?= '?' . date('YmdHis'); ?>" rel="stylesheet" type="text/css"/>
         <!-- Ionicons -->
@@ -41,16 +43,16 @@
         <link href="<?= base_url('assets'); ?>/plugins/datepicker/datepicker3.css" rel="stylesheet" type="text/css"/>
         <link href="<?= base_url('assets'); ?>/plugins/datetimepicker/bootstrap-datetimepicker.css<?= '?' . date('YmdHis'); ?>" rel="stylesheet" type="text/css"/>
         <link href="<?= base_url('assets'); ?>/plugins/timepicker/bootstrap-timepicker.css<?= '?' . date('YmdHis'); ?>" rel="stylesheet" type="text/css"/>
-        <link href="<?= base_url('assets'); ?>/plugins/daterangepicker/daterangepicker-bs3.css" rel="stylesheet" type="text/css"/>
-        <link href="<?= base_url('assets'); ?>/plugins/datetimepicker/bootstrap-datetimepicker.css" rel="stylesheet" type="text/css"/>
-        <link href="<?= base_url('assets'); ?>/plugins/timepicker/bootstrap-timepicker.min.css" rel="stylesheet" type="text/css"/>
+        <link href="<?= base_url('assets'); ?>/plugins/daterangepicker/daterangepicker-bs3.css<?= '?' . date('YmdHis'); ?>" rel="stylesheet" type="text/css"/>
+        <link href="<?= base_url('assets'); ?>/plugins/datetimepicker/bootstrap-datetimepicker.css<?= '?' . date('YmdHis'); ?>" rel="stylesheet" type="text/css"/>
+        <link href="<?= base_url('assets'); ?>/plugins/timepicker/bootstrap-timepicker.min.css<?= '?' . date('YmdHis'); ?>" rel="stylesheet" type="text/css"/>
         <!--Numbered Line TextArea-->
         <link href="<?= base_url('assets'); ?>/plugins/linedtextarea/jquery-linedtextarea.css<?= '?' . date('YmdHis'); ?>" rel="stylesheet" type="text/css"/>
         <!--jQueryUI 1.12.1 CSS--> 
-        <link href="<?= base_url('assets'); ?>/plugins/jQueryUI/jquery-ui-1.12.1/jquery-ui.min.css" rel="stylesheet" type="text/css"/>
+        <link href="<?= base_url('assets'); ?>/plugins/jQueryUI/jquery-ui-1.12.1/jquery-ui.min.css<?= '?' . date('YmdHis'); ?>" rel="stylesheet" type="text/css"/>
         <!--Lightbox Popup-->
         <!--https://lokeshdhakar.com/projects/lightbox2/#examples-->
-        <link href="<?= base_url(); ?>/assets/plugins/lightbox/css/lightbox.min.css" rel="stylesheet" type="text/css"/>
+        <link href="<?= base_url(); ?>/assets/plugins/lightbox/css/lightbox.min.css<?= '?' . date('YmdHis'); ?>" rel="stylesheet" type="text/css"/>
         <!-- Theme style -->
         <link href="<?= base_url('assets'); ?>/dist/css/AdminLTE.BZ.min.css<?= '?' . date('YmdHis'); ?>" rel="stylesheet" type="text/css"/>
         <!-- AdminLTE Skins. We have chosen the skin-blue for this starter
@@ -59,7 +61,7 @@
         -->
         <link href="<?= base_url('assets'); ?>/dist/css/skins/_all-skins.min.css<?= '?' . date('YmdHis'); ?>" rel="stylesheet" type="text/css"/>
         <!--bootstrap-wysihtml5-->
-        <link href="<?= base_url('assets'); ?>/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css" rel="stylesheet" type="text/css"/>
+        <link href="<?= base_url('assets'); ?>/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css<?= '?' . date('YmdHis'); ?>" rel="stylesheet" type="text/css"/>
         <!-- BOOT BUZA -->
         <link href="<?= base_url('assets'); ?>/css/boot-buza.css<?= '?' . date('YmdHis'); ?>" rel="stylesheet" type="text/css" />
         <!-- CSS DEFAULT MASTER PAGE IFRAME -->
@@ -72,8 +74,8 @@
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
         <!--[if lt IE 9]>
-        <script src="<?= base_url('assets'); ?>/dist/js/html5shiv.min.js"></script>
-        <script src="<?= base_url('assets'); ?>/dist/js/respond.min.js"></script>
+        <script src="<?= base_url('assets'); ?>/dist/js/html5shiv.min.js<?= '?v=' . date('YmdHis'); ?>"></script>
+        <script src="<?= base_url('assets'); ?>/dist/js/respond.min.js<?= '?v=' . date('YmdHis'); ?>"></script>
         <![endif]-->
 
 
@@ -83,64 +85,66 @@
         <!-- REQUIRED JS SCRIPTS -->
 
         <!-- jQuery 2.1.4 -->
-        <script src="<?= base_url('assets'); ?>/plugins/jQuery/jQuery-2.1.4.min.js"></script>
+        <script src="<?= base_url('assets'); ?>/plugins/jQuery/jQuery-2.1.4.min.js<?= '?v=' . date('YmdHis'); ?>"></script>
         <!-- jQuery-UI 1.12.1 -->
-        <script src="<?= base_url('assets'); ?>/plugins/jQueryUI/jquery-ui-1.12.1/jquery-ui.min.js" type="text/javascript"></script>
+        <script src="<?= base_url('assets'); ?>/plugins/jQueryUI/jquery-ui-1.12.1/jquery-ui.min.js<?= '?v=' . date('YmdHis'); ?>" type="text/javascript"></script>
         <!-- Bootstrap 3.3.2 JS -->
-        <script src="<?= base_url('assets'); ?>/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+        <script src="<?= base_url('assets'); ?>/bootstrap/js/bootstrap.min.js<?= '?v=' . date('YmdHis'); ?>" type="text/javascript"></script>
         <!-- Bootstrap Button Toggle -->
         <!--bootstrap-wysihtml5-->
-        <script src="<?= base_url('assets'); ?>/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js" type="text/javascript"></script>
-        <script src="<?= base_url('assets'); ?>/plugins/button-toggle/bootstrap-toggle.min.js" type="text/javascript"></script>
+        <script src="<?= base_url('assets'); ?>/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js<?= '?v=' . date('YmdHis'); ?>" type="text/javascript"></script>
+        <script src="<?= base_url('assets'); ?>/plugins/button-toggle/bootstrap-toggle.min.js<?= '?v=' . date('YmdHis'); ?>" type="text/javascript"></script>
         <!-- slimScroll -->
-        <script src="<?= base_url('assets'); ?>/plugins/slimScroll/jquery.slimscroll.min.js" type="text/javascript"></script>
+        <script src="<?= base_url('assets'); ?>/plugins/slimScroll/jquery.slimscroll.min.js<?= '?v=' . date('YmdHis'); ?>" type="text/javascript"></script>
         <!-- iCheck 1.0.1 -->
-        <script src="<?= base_url('assets'); ?>/plugins/iCheck/icheck.min.js" type="text/javascript"></script>
+        <script src="<?= base_url('assets'); ?>/plugins/iCheck/icheck.min.js<?= '?v=' . date('YmdHis'); ?>" type="text/javascript"></script>
         <!-- AdminLTE App -->
-        <script src="<?= base_url('assets'); ?>/dist/js/app.min.js" type="text/javascript"></script>
+        <script src="<?= base_url('assets'); ?>/dist/js/app.min.js<?= '?v=' . date('YmdHis'); ?>" type="text/javascript"></script>
         <!-- Toaster jQuery -->
-        <script src="<?= base_url('assets'); ?>/js/jquery.toast.js" type="text/javascript"></script>
+        <script src="<?= base_url('assets'); ?>/js/jquery.toast.js<?= '?v=' . date('YmdHis'); ?>" type="text/javascript"></script>
         <!-- SweetAlert JS -->
-        <script src="<?= base_url('assets'); ?>/js/jquery.sweetalert.min.js" type="text/javascript"></script>
+        <script src="<?= base_url('assets'); ?>/js/jquery.sweetalert.min.js<?= '?v=' . date('YmdHis'); ?>" type="text/javascript"></script>
         <!-- Stick de Mensagens - NOTIFIT -->
-        <script src="<?= base_url('assets'); ?>/js/notifIt.js" type="text/javascript"></script>
+        <script src="<?= base_url('assets'); ?>/js/notifIt.js<?= '?v=' . date('YmdHis'); ?>" type="text/javascript"></script>
         <!-- NOTIFIT MENSAGENS-->
-        <script src="<?= base_url('assets'); ?>/js/notifit-mensagens.js" type="text/javascript"></script>
+        <script src="<?= base_url('assets'); ?>/js/notifit-mensagens.js<?= '?v=' . date('YmdHis'); ?>" type="text/javascript"></script>
         <!-- NICE MENSAGENS-->
-        <script src="<?= base_url('assets'); ?>/js/jquery.nice.js" type="text/javascript"></script>
+        <script src="<?= base_url('assets'); ?>/js/jquery.nice.js<?= '?v=' . date('YmdHis'); ?>" type="text/javascript"></script>
+        <!-- Stick de Mensagens trigger notify -->
+        <script src="<?= base_url('assets'); ?>/js/Jquery.trigger_notify.js<?= '?v=' . date('YmdHis'); ?>" type="text/javascript"></script>
         <!-- MD5 -->
-        <script src="<?= base_url('assets'); ?>/js/jquery.md5.js" type="text/javascript"></script>
+        <script src="<?= base_url('assets'); ?>/js/jquery.md5.js<?= '?v=' . date('YmdHis'); ?>" type="text/javascript"></script>
         <!-- BASE64 https://github.com/carlo/jquery-base64 -->
-        <script src="<?= base_url('assets'); ?>/js/jquery.base64.min.js" type="text/javascript"></script>
+        <script src="<?= base_url('assets'); ?>/js/jquery.base64.min.js<?= '?v=' . date('YmdHis'); ?>" type="text/javascript"></script>
         <!-- Select2 -->
-        <script src="<?= base_url('assets'); ?>/plugins/select2/select2.full.min.js" type="text/javascript"></script>
-        <script src="<?= base_url('assets'); ?>/plugins/select2/select2_lang_pt-br.js" type="text/javascript"></script>
+        <script src="<?= base_url('assets'); ?>/plugins/select2/select2.full.min.js<?= '?v=' . date('YmdHis'); ?>" type="text/javascript"></script>
+        <script src="<?= base_url('assets'); ?>/plugins/select2/select2_lang_pt-br.js<?= '?v=' . date('YmdHis'); ?>" type="text/javascript"></script>
         <!--Bootstrap DateTimePicker-->
-        <script src="<?= base_url('assets'); ?>/plugins/datepicker/bootstrap-datepicker.js" type="text/javascript"></script>
-        <script src="<?= base_url('assets'); ?>/plugins/datepicker/locales/bootstrap-datepicker.pt-BR.js" type="text/javascript"></script>
-        <script src="<?= base_url('assets'); ?>/plugins/datetimepicker/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
-        <script src="<?= base_url('assets'); ?>/plugins/datetimepicker/bootstrap-datetimepicker.pt-BR.js" type="text/javascript"></script>
-        <script src="<?= base_url('assets'); ?>/plugins/timepicker/bootstrap-timepicker.js" type="text/javascript"></script>
-        <script src="<?= base_url('assets'); ?>/plugins/daterangepicker/daterangepicker.js" type="text/javascript"></script>
-        <script src="<?= base_url('assets'); ?>/plugins/daterangepicker/moment.min.js" type="text/javascript"></script>
+        <script src="<?= base_url('assets'); ?>/plugins/datepicker/bootstrap-datepicker.js<?= '?v=' . date('YmdHis'); ?>" type="text/javascript"></script>
+        <script src="<?= base_url('assets'); ?>/plugins/datepicker/locales/bootstrap-datepicker.pt-BR.js<?= '?v=' . date('YmdHis'); ?>" type="text/javascript"></script>
+        <script src="<?= base_url('assets'); ?>/plugins/datetimepicker/bootstrap-datetimepicker.min.js<?= '?v=' . date('YmdHis'); ?>" type="text/javascript"></script>
+        <script src="<?= base_url('assets'); ?>/plugins/datetimepicker/bootstrap-datetimepicker.pt-BR.js<?= '?v=' . date('YmdHis'); ?>" type="text/javascript"></script>
+        <script src="<?= base_url('assets'); ?>/plugins/timepicker/bootstrap-timepicker.js<?= '?v=' . date('YmdHis'); ?>" type="text/javascript"></script>
+        <script src="<?= base_url('assets'); ?>/plugins/daterangepicker/daterangepicker.js<?= '?v=' . date('YmdHis'); ?>" type="text/javascript"></script>
+        <script src="<?= base_url('assets'); ?>/plugins/daterangepicker/moment.min.js<?= '?v=' . date('YmdHis'); ?>" type="text/javascript"></script>
         <!--jQueryMask-->
-        <script src="<?= base_url('assets'); ?>/plugins/jQueryMask/jquery.mask.min.js" type="text/javascript"></script>
+        <script src="<?= base_url('assets'); ?>/plugins/jQueryMask/jquery.mask.min.js<?= '?v=' . date('YmdHis'); ?>" type="text/javascript"></script>
         <!--Numbered Line TextArea-->
-        <script src="<?= base_url('assets'); ?>/plugins/linedtextarea/jquery-linedtextarea.js" type="text/javascript"></script>
+        <script src="<?= base_url('assets'); ?>/plugins/linedtextarea/jquery-linedtextarea.js<?= '?v=' . date('YmdHis'); ?>" type="text/javascript"></script>
         <!--Code Editor Textarea-->
-        <script src="<?= base_url('assets'); ?>/plugins/editareafull/edit_area_full.js" type="text/javascript"></script>
+        <script src="<?= base_url('assets'); ?>/plugins/editareafull/edit_area_full.js<?= '?v=' . date('YmdHis'); ?>" type="text/javascript"></script>
         <!--Lightbox Popup-->
         <!--https://lokeshdhakar.com/projects/lightbox2/#examples-->
-        <script src="<?= base_url(); ?>/assets/plugins/lightbox/js/lightbox.min.js" type="text/javascript"></script>
+        <script src="<?= base_url(); ?>/assets/plugins/lightbox/js/lightbox.min.js<?= '?v=' . date('YmdHis'); ?>" type="text/javascript"></script>
         <!--COPY TO CLIPBOARD - https://www.jqueryscript.net/text/jQuery-Plugin-To-Copy-Any-Text-Into-Your-Clipboard-Copy-to-Clipboard.html-->
-        <script src="<?= base_url(); ?>/assets/js/jquery.copy-to-clipboard.js" type="text/javascript"></script>
+        <script src="<?= base_url(); ?>/assets/js/jquery.copy-to-clipboard.js<?= '?v=' . date('YmdHis'); ?>" type="text/javascript"></script>
         <!--CKEDITOR-->
-        <script src="<?= base_url(); ?>/assets/plugins/ckeditorFull/ckeditor.js" type="text/javascript"></script>
-        <script src="<?= base_url(); ?>/assets/plugins/ckeditorFull/config.js" type="text/javascript"></script>
+        <script src="<?= base_url(); ?>/assets/plugins/ckeditorFull/ckeditor.js<?= '?v=' . date('YmdHis'); ?>" type="text/javascript"></script>
+        <script src="<?= base_url(); ?>/assets/plugins/ckeditorFull/config.js<?= '?v=' . date('YmdHis'); ?>" type="text/javascript"></script>
 
 
         <!--COMMON JS-->
-        <script src="<?= base_url('assets'); ?>/js/common-js.js" type="text/javascript"></script>
+        <script src="<?= base_url('assets'); ?>/js/common-js.js<?= '?v=' . date('YmdHis'); ?>" type="text/javascript"></script>
         <!-- ROTINAS JQUERY/JAVASCRIPT -->
         <?php $this->load->view('js/common-js-MasterPageIframe'); ?>
         <!-- END ROTINAS JQUERY/JAVASCRIPT -->

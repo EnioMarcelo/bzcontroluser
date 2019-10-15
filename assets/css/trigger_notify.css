@@ -1,0 +1,66 @@
+/* 
+    Created on : 15/10/2019, 08:56:38
+    Author     : eniomarcelobuzaneli
+*/
+
+.trigger_notify_box{
+    margin: 0 !important;
+    padding: 0 !important;
+    box-sizing: border-box !important;
+    font-family: 'Open-Sans', sans-serif !important;
+    font-size: 1.3em;
+    margin-top:-10px !important;
+    position: fixed !important;
+    bottom: 0 !important;
+    right: 0 !important;
+    width: 320px !important;
+    max-width: 90% !important;
+    padding-bottom: 20px !important;
+    padding-right: 5px !important;
+    z-index: 1100!important;
+    vertical-align: bottom;
+}
+
+.trigger_notify_timer{
+    position: absolute !important;
+    left: 0 !important;
+    bottom: 0 !important;
+    height: 4% !important;
+    background: rgba(0,0,0,0.5) !important;
+}
+
+.trigger_notify{
+    font-family: 'Open-Sans', sans-serif !important;
+    position: relative !important;
+    padding: 15px !important;
+    -webkit-border-radius: 4px !important;
+    -moz-border-radius: 4px !important;
+    border-radius: 4px !important;
+    cursor: pointer !important;
+    font-size: 0.8em !important;
+    overflow: hidden !important;
+    margin-bottom: 5px !important;
+}
+
+.trigger_notify_info {
+    background-color: #008EC0 !important;
+    color: #FFF !important;
+}
+
+.trigger_notify_success {
+    background-color: forestgreen !important;
+    color: #FFF !important;
+}
+
+.trigger_notify_warning {
+    background-color: orange !important;
+    color: #FFF !important;
+}
+
+.trigger_notify_error {
+    background-color: red !important;
+    color: #FFF !important;
+}
+
+
+

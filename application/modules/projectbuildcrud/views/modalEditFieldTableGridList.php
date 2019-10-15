@@ -868,9 +868,24 @@
                             }
                         });/*END MARCA REGISTRO OFF PARA MOSTRAR NA VIEW*/
 
-                        notfit_msg_success('SETUP do Campo <b>' + _label_field_name + '</b> Atualizado com Sucesso.');
+//                        notfit_msg_success('SETUP do Campo <b>' + _label_field_name + '</b> Atualizado com Sucesso.');
+
+                        var param = [];
+                        param['title'] = 'SETUP do Campo <b>' + _label_field_name + '</b> Atualizado com Sucesso.';
+                        param['color'] = "success";
+                        param['timer'] = 3000;
+                        triggerNotify(param);
+
+
+
                     } else {
-                        notfit_msg_error('Ocorreu um ERRO Inesperado, Contacte o Administrador do Sistema.');
+//                        notfit_msg_error('Ocorreu um ERRO Inesperado, Contacte o Administrador do Sistema.');
+
+                        var param = [];
+                        param['title'] = 'Ocorreu um ERRO Inesperado, Contacte o Administrador do Sistema. ' + result.return;
+                        param['color'] = "error";
+                        param['timer'] = 3000;
+                        triggerNotify(param);
                     }
 
 
@@ -882,7 +897,15 @@
 
                 }, //END complete
                 error: function () {
-                    notfit_msg_error('Ocorreu um ERRO Inesperado ao Atualizar Registro, Contacte o Administrador do Sistema.');
+//                    notfit_msg_error('Ocorreu um ERRO Inesperado ao Atualizar Registro, Contacte o Administrador do Sistema.');
+
+                    var param = [];
+                    param['title'] = 'Ocorreu um ERRO Inesperado ao Atualizar Registro, Contacte o Administrador do Sistema.';
+                    param['color'] = "success";
+                    param['timer'] = 3000;
+                    triggerNotify(param);
+
+
                 }//END error
             });//END AJAX
         });//END $(".j_btn_save_form_GridList").click()

@@ -180,7 +180,7 @@ class Usuarios extends MY_Controller {
 
 
                     //set_mensagem_toastr('<i class="fa fa-fw fa-thumbs-o-up" style="font-size: 1.5em"></i>', _MSG_ADD_REGISTRO_, 'success', 'top-center');
-                    //set_mensagem_notfit(_MSG_ADD_REGISTRO_, 'success');
+                    //set_mensagem_trigger_notifi(_MSG_ADD_REGISTRO_, 'success');
                     //set_mensagem_toastr('<i class="fa fa-fw fa-thumbs-o-up" style="font-size: 1.5em"></i>', _MSG_ADD_REGISTRO_, 'success', 'top-center');
                     set_mensagem_sweetalert('SUCESSO', 'Usuário Cadastrado com Sucesso\n\nLogin: ' . $_dados['email'] . ' - Senha: ' . $_senha, 'success');
 
@@ -348,7 +348,7 @@ class Usuarios extends MY_Controller {
                          */
 
 
-                        set_mensagem_notfit(___MSG_UPDATE_REGISTRO___, 'success');
+                        set_mensagem_trigger_notifi(___MSG_UPDATE_REGISTRO___, 'success');
 
                     else:
                         //GRAVA AUDITORIA
@@ -359,7 +359,7 @@ class Usuarios extends MY_Controller {
                         add_auditoria($dados_auditoria);
 
                         //set_mensagem_toastr('<i class="fa fa-fw fa-thumbs-o-down" style="font-size: 1.5em"></i>', _MSG_ERROR_UPDATE_REGISTRO_, 'error', 'top-center');
-                        set_mensagem_notfit(___MSG_ERROR_UPDATE_REGISTRO___, 'error');
+                        set_mensagem_trigger_notifi(___MSG_ERROR_UPDATE_REGISTRO___, 'error');
 
 
                     endif;
@@ -397,7 +397,7 @@ class Usuarios extends MY_Controller {
                 $this->dados['_grupos']['_relat'] = $_r;
             else:
                 //set_mensagem_toastr('<i class="fa fa-fw fa-thumbs-o-down" style="font-size: 1.5em"></i>', _MSG_ERROR_SELECT_UPDATE_REGISTRO_, 'error', 'top-center');
-                set_mensagem_notfit(___MSG_ERROR_SELECT_UPDATE_REGISTRO___, 'error');
+                set_mensagem_trigger_notifi(___MSG_ERROR_SELECT_UPDATE_REGISTRO___, 'error');
                 redirect($this->_redirect_parametros_url);
             endif;
 
@@ -441,7 +441,7 @@ class Usuarios extends MY_Controller {
              */
             foreach ($_dados as $_vId):
                 if ($this->current_super_admin($_vId) == FALSE):
-                    set_mensagem_notfit('Este USUÁRIO [ ID:' . $_vId . ' ] não pode ser DELETADO.', 'warning');
+                    set_mensagem_trigger_notifi('Este USUÁRIO [ ID:' . $_vId . ' ] não pode ser DELETADO.', 'warning');
                     return false;
                 endif;
             endforeach;
@@ -461,11 +461,11 @@ class Usuarios extends MY_Controller {
             if ($this->db->affected_rows()):
                 if (count($_dados) > 1):
                     //set_mensagem_toastr('<i class="fa fa-fw fa-thumbs-o-up" style="font-size: 1.5em"></i>', str_replace('Registro Deletado', 'Registros Deletados', _MSG_DEL_REGISTRO_), 'success', 'top-center');
-                    set_mensagem_notfit(str_replace('Registro Deletado', 'Registros Deletados', ___MSG_DEL_REGISTRO___), 'success');
+                    set_mensagem_trigger_notifi(str_replace('Registro Deletado', 'Registros Deletados', ___MSG_DEL_REGISTRO___), 'success');
                     $dados_auditoria['description'] = str_replace('Registro Deletado', 'Registros Deletados', ___MSG_AUDITORIA_DEL_SUCCESS___);
                 else:
                     //set_mensagem_toastr('<i class="fa fa-fw fa-thumbs-o-up" style="font-size: 1.5em"></i>', _MSG_DEL_REGISTRO_, 'success', 'top-center');
-                    set_mensagem_notfit(___MSG_DEL_REGISTRO___, 'success');
+                    set_mensagem_trigger_notifi(___MSG_DEL_REGISTRO___, 'success');
                     $dados_auditoria['description'] = ___MSG_AUDITORIA_DEL_SUCCESS___;
                 endif;
 
@@ -477,12 +477,12 @@ class Usuarios extends MY_Controller {
 
             else:
                 //set_mensagem_toastr('<i class="fa fa-fw fa-thumbs-o-down" style="font-size: 1.5em"></i>', _MSG_ERROR_DEL_REGISTRO_, 'error', 'top-center');
-                set_mensagem_notfit(___MSG_ERROR_DEL_REGISTRO___, 'error');
+                set_mensagem_trigger_notifi(___MSG_ERROR_DEL_REGISTRO___, 'error');
             endif;
 
         else:
             //set_mensagem_toastr('<i class="fa fa-fw fa-thumbs-o-down" style="font-size: 1.5em"></i>', _MSG_ERROR_DE_VALIDACAO_, 'error', 'top-center');
-            set_mensagem_notfit(___MSG_ERROR_DE_VALIDACAO___, 'error');
+            set_mensagem_trigger_notifi(___MSG_ERROR_DE_VALIDACAO___, 'error');
         endif;
 
         exit;
@@ -506,7 +506,7 @@ class Usuarios extends MY_Controller {
              * SE O USUÁRIO FOR O USUÁRIO CORRENTE/LOGADO DO SISTEMA, ELE NÃO PODERÁ SER DESATIVADO
              */
             if ($this->current_super_admin($_id) == FALSE):
-                set_mensagem_notfit('Este USUÁRIO [ ID:' . $_id . ' ] não pode ser DESATIVADO.', 'warning');
+                set_mensagem_trigger_notifi('Este USUÁRIO [ ID:' . $_id . ' ] não pode ser DESATIVADO.', 'warning');
 
                 /*
                  * CARREGA OS REGISTROS COM PAGINAÇÃO
@@ -546,7 +546,7 @@ class Usuarios extends MY_Controller {
                     add_auditoria($dados_auditoria);
 
                     //set_mensagem_toastr('<i class="fa fa-fw fa-thumbs-o-up" style="font-size: 1.5em"></i>', _MSG_STATUS_REGISTRO_, 'success', 'top-center');
-                    set_mensagem_nice('',___MSG_STATUS_REGISTRO___, 'success');
+                    set_mensagem_trigger_notifi(___MSG_STATUS_REGISTRO___, 'success');
 
                 else:
                     //GRAVA AUDITORIA
@@ -557,7 +557,7 @@ class Usuarios extends MY_Controller {
                     add_auditoria($dados_auditoria);
 
                     //set_mensagem_toastr('<i class="fa fa-fw fa-thumbs-o-down" style="font-size: 1.5em"></i>', _MSG_ERROR_STATUS_REGISTRO_, 'error', 'top-center');
-                    set_mensagem_notfit(___MSG_ERROR_STATUS_REGISTRO___, 'error');
+                    set_mensagem_trigger_notifi(___MSG_ERROR_STATUS_REGISTRO___, 'error');
 
                 endif;
             else:
@@ -569,7 +569,7 @@ class Usuarios extends MY_Controller {
                 add_auditoria($dados_auditoria);
 
                 //set_mensagem_toastr('ATENÇÃO', _MSG_NOT_FIND_REGISTRO_, 'warning', 'top-center');
-                set_mensagem_notfit(___MSG_NOT_FIND_REGISTRO___, 'warning');
+                set_mensagem_trigger_notifi(___MSG_NOT_FIND_REGISTRO___, 'warning');
 
             endif;
 

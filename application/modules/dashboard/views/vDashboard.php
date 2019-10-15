@@ -9,8 +9,6 @@
 
 
 -->
-
-
 <section class="content-header header-dashboard">
     <h1>
         <i class="fa fa-dashboard"></i>
@@ -24,11 +22,21 @@
 
     </h1>
     <ol class="breadcrumb">
-        <li><a href="<?= site_url('dashboard'); ?>" class="active"><i class="fa fa-dashboard"></i>Dashboard</a></li>
+        <li class=""><a href="<?= site_url('dashboard'); ?>" class="active"><i class="fa fa-dashboard"></i>Dashboard</a></li>
     </ol>
 </section>
 
 <?php
+//set_mensagem_trigger_notifi('Teste de Mensagem INFO', 'info');
+//echo get_mensagem();
+//set_mensagem_trigger_notifi('Teste de Mensagem SUCCESS', 'success');
+//echo get_mensagem();
+//set_mensagem_trigger_notifi('Teste de Mensagem WARNING', 'warning');
+//echo get_mensagem();
+//set_mensagem_trigger_notifi('Teste de Mensagem ERROR', 'error');
+//echo get_mensagem();
+
+
 //$_posistion = 'br';
 ////
 //set_mensagem_nice('', ___MSG_UPDATE_REGISTRO___, 'info', $_posistion);

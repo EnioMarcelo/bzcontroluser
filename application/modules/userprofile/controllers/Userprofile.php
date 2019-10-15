@@ -30,7 +30,7 @@ class Userprofile extends MY_Controller {
 
         if ($this->input->post()) {
 
-            
+
             if ($this->input->post('task') == 'update_user') {
 
                 /*
@@ -42,7 +42,8 @@ class Userprofile extends MY_Controller {
                 if ($this->form_validation->run() == TRUE):
 
                     $this->save_user();
-
+                else:
+                    set_mensagem_trigger_notifi(___MSG_ERROR_DE_VALIDACAO___, 'error');
                 endif;
             }elseif ($this->input->post('task') == 'user_change_pass') {
 
@@ -78,16 +79,22 @@ class Userprofile extends MY_Controller {
                     if ($this->change_pass_user()):
                         //set_mensagem('Sucesso', 'Sua Senha foi Alterada com Sucesso.', 'fa-thumbs-o-up', 'success');
                         //set_mensagem_toastr('Sucesso', 'Senha Alterada com Sucesso.', 'success', 'top-center');
-                        set_mensagem_sweetalert('Sucesso', 'Senha Alterada com Sucesso.', 'success');
+                        //set_mensagem_sweetalert('Sucesso', 'Senha Alterada com Sucesso.', 'success');
+                        set_mensagem_trigger_notifi('Senha Alterada com Sucesso.', 'success');
+
                     else:
-                    //set_mensagem('Erro', 'Erro ao Alterar sua Senha.', 'fa-thumbs-o-down', 'danger');
-                    //set_mensagem_toastr('Erro', 'Erro ao Alterar sua Senha.', 'error');
+                        //set_mensagem('Erro', 'Erro ao Alterar sua Senha.', 'fa-thumbs-o-down', 'danger');
+                        //set_mensagem_toastr('Erro', 'Erro ao Alterar sua Senha.', 'error');
+                        set_mensagem_trigger_notifi('Erro ao Alterar sua Senha.', 'error');
                     endif;
 
                 else:
-                //set_mensagem('Erro', 'Erro ao Alterar sua Senha.', 'fa-thumbs-o-down', 'danger');
-                //set_mensagem_toastr('Erro', 'Erro ao Alterar sua Senha.', 'error');
+                    //set_mensagem('Erro', 'Erro ao Alterar sua Senha.', 'fa-thumbs-o-down', 'danger');
+                    //set_mensagem_toastr('Erro', 'Erro ao Alterar sua Senha.', 'error');
+                    set_mensagem_trigger_notifi(___MSG_ERROR_DE_VALIDACAO___, 'error');
                 endif;
+            }else {
+                set_mensagem_trigger_notifi(___MSG_ERROR_DE_VALIDACAO___, 'error');
             }
         }
     }
@@ -147,7 +154,8 @@ class Userprofile extends MY_Controller {
 
             //set_mensagem('Sucesso', 'Dados Atualizados com Sucesso.', 'fa-thumbs-o-up', 'success');
             //set_mensagem_toastr('Sucesso', 'Dados Atualizados com Sucesso.', 'success', 'top-center');
-            set_mensagem_sweetalert('Sucesso', 'Dados Atualizados com Sucesso.', 'success');
+            //set_mensagem_sweetalert('Sucesso', 'Dados Atualizados com Sucesso.', 'success');
+            set_mensagem_trigger_notifi(___MSG_UPDATE_REGISTRO___, 'success');
         }
     }
 

@@ -494,7 +494,7 @@ class ProjectbuildCrud extends MY_Controller {
                         $_response['msg'] = 'Campo da Grid List Gravado com Sucesso.';
                         $_response['type'] = 'success';
 
-                        set_mensagem_notfit($_response['msg'], $_response['type']);
+                        set_mensagem_trigger_notifi($_response['msg'], $_response['type']);
 
                         echo json_encode($_response);
 
@@ -524,13 +524,13 @@ class ProjectbuildCrud extends MY_Controller {
                     $_response['msg'] = 'Campo da Grid List Deletado com Sucesso.';
                     $_response['type'] = 'success';
 
-                    set_mensagem_notfit($_response['msg'], $_response['type']);
+                    set_mensagem_trigger_notifi($_response['msg'], $_response['type']);
                 else:
                     $_response['title'] = 'ERRO !!!';
                     $_response['msg'] = ___MSG_GENERIC_UNEXPECTED_ERROR___;
                     $_response['type'] = 'error';
 
-                    set_mensagem_notfit($_response['msg'], $_response['type']);
+                    set_mensagem_trigger_notifi($_response['msg'], $_response['type']);
                 endif;
 
 
@@ -624,7 +624,7 @@ class ProjectbuildCrud extends MY_Controller {
                     $dados_auditoria['last_query'] = str_replace('VALUES (', 'VALUES ("' . $result['last_id_add'] . '", ', $dados_auditoria['last_query']);
 
                     add_auditoria($dados_auditoria);
-                    set_mensagem_notfit(___MSG_ADD_REGISTRO___, 'success');
+                    set_mensagem_trigger_notifi(___MSG_ADD_REGISTRO___, 'success');
 
 
 
@@ -736,7 +736,7 @@ class ProjectbuildCrud extends MY_Controller {
                         $dados_auditoria['last_query'] = $this->db->last_query();
                         add_auditoria($dados_auditoria);
 
-                        set_mensagem_notfit(___MSG_UPDATE_REGISTRO___, 'success');
+                        set_mensagem_trigger_notifi(___MSG_UPDATE_REGISTRO___, 'success');
 
 
                         if ($this->input->post('type_project') == 'crud') {
@@ -766,7 +766,7 @@ class ProjectbuildCrud extends MY_Controller {
                         $dados_auditoria['last_query'] = $this->db->last_query();
                         add_auditoria($dados_auditoria);
 
-                        set_mensagem_notfit(___MSG_ERROR_UPDATE_REGISTRO___, 'error');
+                        set_mensagem_trigger_notifi(___MSG_ERROR_UPDATE_REGISTRO___, 'error');
 
 
                     endif;
@@ -876,7 +876,7 @@ class ProjectbuildCrud extends MY_Controller {
 
             else:
 
-                set_mensagem_notfit(___MSG_ERROR_SELECT_UPDATE_REGISTRO___, 'error');
+                set_mensagem_trigger_notifi(___MSG_ERROR_SELECT_UPDATE_REGISTRO___, 'error');
                 redirect($this->_redirect_parametros_url);
             endif;
 
@@ -941,10 +941,10 @@ class ProjectbuildCrud extends MY_Controller {
 
                 if ($this->db->affected_rows()):
                     if (count($_dados) > 1):
-                        set_mensagem_notfit(str_replace('Registro Deletado', 'Registros Deletados', ___MSG_DEL_REGISTRO___), 'success');
+                        set_mensagem_trigger_notifi(str_replace('Registro Deletado', 'Registros Deletados', ___MSG_DEL_REGISTRO___), 'success');
                         $dados_auditoria['description'] = str_replace('Registro Deletado', 'Registros Deletados', ___MSG_AUDITORIA_DEL_SUCCESS___);
                     else:
-                        set_mensagem_notfit(___MSG_DEL_REGISTRO___, 'success');
+                        set_mensagem_trigger_notifi(___MSG_DEL_REGISTRO___, 'success');
                         $dados_auditoria['description'] = ___MSG_AUDITORIA_DEL_SUCCESS___;
                     endif;
 
@@ -973,14 +973,14 @@ class ProjectbuildCrud extends MY_Controller {
 
                 else:
 //set_mensagem_toastr('<i class="fa fa-fw fa-thumbs-o-down" style="font-size: 1.5em"></i>', _MSG_ERROR_DEL_REGISTRO_, 'error', 'top-center');
-                    set_mensagem_notfit(___MSG_ERROR_DEL_REGISTRO___, 'error');
+                    set_mensagem_trigger_notifi(___MSG_ERROR_DEL_REGISTRO___, 'error');
                 endif;
 
             endforeach;
 
         else:
 //set_mensagem_toastr('<i class="fa fa-fw fa-thumbs-o-down" style="font-size: 1.5em"></i>', _MSG_ERROR_DE_VALIDACAO_, 'error', 'top-center');
-            set_mensagem_notfit(___MSG_ERROR_DE_VALIDACAO___, 'error');
+            set_mensagem_trigger_notifi(___MSG_ERROR_DE_VALIDACAO___, 'error');
         endif;
 
         exit;
@@ -1438,21 +1438,21 @@ class ProjectbuildCrud extends MY_Controller {
         else:
 
             if (empty($_idProjeto) || empty($_code_screen) || empty($_code_type)):
-                set_mensagem_notfit('Nenhum parâmetro foi passado ou inconsistentes para Editor de Códigos.', 'warning');
+                set_mensagem_trigger_notifi('Nenhum parâmetro foi passado ou inconsistentes para Editor de Códigos.', 'warning');
                 redirect(site_url('projectbuildcrud'));
                 exit;
             endif;
 
             if ($_code_screen == 'gridlist' || $_code_screen == 'formadd' || $_code_screen == 'formedit'):
             else:
-                set_mensagem_notfit('Foram passados parâmetros inconsistentes para o Editor de Códigos do Projeto.', 'warning');
+                set_mensagem_trigger_notifi('Foram passados parâmetros inconsistentes para o Editor de Códigos do Projeto.', 'warning');
                 redirect(site_url('projectbuildcrud'));
                 exit;
             endif;
 
             if ($_code_type == 'css' || $_code_type == 'jquery'):
             else:
-                set_mensagem_notfit('Foram passados parâmetros inconsistentes para o Editor de Códigos do Projeto.', 'warning');
+                set_mensagem_trigger_notifi('Foram passados parâmetros inconsistentes para o Editor de Códigos do Projeto.', 'warning');
                 redirect(site_url('projectbuildcrud'));
                 exit;
             endif;
@@ -1497,7 +1497,7 @@ class ProjectbuildCrud extends MY_Controller {
                     );
                     $this->db->update('proj_build_codeeditor', $_data_code_editor, $_where);
 
-                    set_mensagem_notfit(strtoupper(str_replace('-', ' ', $this->input->post('code_type'))) . ' Atualizado com Sucesso.', 'success');
+                    set_mensagem_trigger_notifi(strtoupper(str_replace('-', ' ', $this->input->post('code_type'))) . ' Atualizado com Sucesso.', 'success');
 
                 else :
                     /*
@@ -1514,7 +1514,7 @@ class ProjectbuildCrud extends MY_Controller {
                     );
                     $this->db->insert('proj_build_codeeditor', $_data_code_editor);
 
-                    set_mensagem_notfit(strtoupper(str_replace('-', ' ', $this->input->post('code_type'))) . ' Adicionado com Sucesso.', 'success');
+                    set_mensagem_trigger_notifi(strtoupper(str_replace('-', ' ', $this->input->post('code_type'))) . ' Adicionado com Sucesso.', 'success');
 
                 endif;
 
@@ -1530,7 +1530,7 @@ class ProjectbuildCrud extends MY_Controller {
                 $_r_del_code_editor = $this->db->delete('proj_build_codeeditor');
 
                 if ($_r_del_code_editor):
-                    set_mensagem_notfit(strtoupper(str_replace('-', ' ', $_dados_del_code['code_type'])) . ': ' . $_dados_del_code['code_screen'] . '() Deletado com Sucesso.', 'success');
+                    set_mensagem_trigger_notifi(strtoupper(str_replace('-', ' ', $_dados_del_code['code_type'])) . ': ' . $_dados_del_code['code_screen'] . '() Deletado com Sucesso.', 'success');
                     redirect('projectbuildcrud/edit/' . $_dados_del_code['proj_build_id'] . '?tab=gridlist');
                 else:
 
@@ -1603,7 +1603,7 @@ class ProjectbuildCrud extends MY_Controller {
 
         else:
 
-            set_mensagem_notfit('O parâmetro passado para Editor de Códigos do Projeto não confere.', 'warning');
+            set_mensagem_trigger_notifi('O parâmetro passado para Editor de Códigos do Projeto não confere.', 'warning');
             redirect(site_url('projectbuildcrud?search=' . $this->_app_nome));
             exit;
 
@@ -2135,7 +2135,7 @@ class ProjectbuildCrud extends MY_Controller {
 
                 else:
 
-                    set_mensagem_notfit('APP Não foi Gerado.', 'warning');
+                    set_mensagem_trigger_notifi('APP Não foi Gerado.', 'warning');
                     redirect(site_url('projectbuildcrud?search=' . $this->_app_nome));
                     exit;
 
@@ -2143,7 +2143,7 @@ class ProjectbuildCrud extends MY_Controller {
 
 
             else:
-                set_mensagem_notfit('Um ERRO Inesperável Ocorreu ao gerar GRID LIST.', 'error');
+                set_mensagem_trigger_notifi('Um ERRO Inesperável Ocorreu ao gerar GRID LIST.', 'error');
                 redirect(site_url('projectbuildcrud'));
                 exit;
             endif;
@@ -3558,14 +3558,14 @@ class ProjectbuildCrud extends MY_Controller {
 
                 else:
 
-                    set_mensagem_notfit('APP Não foi Gerado.', 'warning');
+                    set_mensagem_trigger_notifi('APP Não foi Gerado.', 'warning');
                     redirect(site_url('projectbuildcrud?search=' . $this->_app_nome));
                     exit;
 
                 endif;
 
             else:
-                set_mensagem_notfit('Um ERRO Inesperável Ocorreu ao gerar FORM ADD/EDIT.', 'error');
+                set_mensagem_trigger_notifi('Um ERRO Inesperável Ocorreu ao gerar FORM ADD/EDIT.', 'error');
                 redirect(site_url('projectbuildcrud'));
                 exit;
             endif;

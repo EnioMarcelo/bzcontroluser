@@ -118,7 +118,8 @@ class Dashboard extends MY_Controller {
                     $dados_auditoria['last_query'] = $this->db->last_query();
                     add_auditoria($dados_auditoria);
                 endforeach;
-                set_mensagem_sweetalert('SUCESSO !!!', 'Configurações Gerais Alterado com Sucesso.', 'success');
+//                set_mensagem_sweetalert('SUCESSO !!!', 'Configurações Gerais Alterado com Sucesso.', 'success');
+                set_mensagem_trigger_notifi('Configurações Gerais Alterado com Sucesso.', 'success');
                 echo 'OK';
                 exit;
 

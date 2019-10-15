@@ -73,6 +73,39 @@ function check_system_is_manutencao() {
 //END check_system_is_manutencao()
 
 /**
+ * SETA OS ALERTAS DO SISTEMA EM TRIGGER NOTIFITI
+ * Type : info, error, warning, success
+ *
+ * @param type $mensagem
+ * @param type $tipo
+ * @param type $icon
+ * @param type $duration
+ * @return string
+ */
+function set_mensagem_trigger_notifi($mensagem = 'Sua mensagem aqui.', $tipo = 'info', $duration = 3200) {
+    $CI = & get_instance();
+
+    $result = "<script>" . PHP_EOL
+            . "     $(window).on('pageshow',function(){ " . PHP_EOL
+            . "         var param_" . $tipo . " = [];" . PHP_EOL
+            . "         param_" . $tipo . "['title'] = '" . $mensagem . "';" . PHP_EOL
+            . "         param_" . $tipo . "['icon'] = '';" . PHP_EOL
+            . "         param_" . $tipo . "['color'] = '" . $tipo . "';" . PHP_EOL
+            . "         param_" . $tipo . "['timer'] = " . $duration . ";" . PHP_EOL
+            . ""
+            . "         triggerNotify(param_" . $tipo . ");" . PHP_EOL
+            . ""
+            . "     });" . PHP_EOL
+            . "</script>" . PHP_EOL;
+
+
+
+    $CI->session->set_flashdata('mensagem_sistema', $result);
+
+    return;
+}
+
+/**
  * SETA OS ALERTAS DO SISTEMA EM NOTFIT MESSENGER
  * Type : info, error, warning, success
  * Position: tr=Top Right, tr=Top Left, tc=Top Center

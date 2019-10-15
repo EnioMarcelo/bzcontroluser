@@ -129,7 +129,7 @@
                         $this->db->trans_complete();
 
                         //set_mensagem_toastr('<i class="fa fa-fw fa-thumbs-o-up" style="font-size: 1.5em"></i>', _MSG_ADD_REGISTRO_, 'success', 'top-center');
-                        set_mensagem_notfit(___MSG_ADD_REGISTRO___, 'success');
+                        set_mensagem_trigger_notifi(___MSG_ADD_REGISTRO___, 'success');
 
                     else:
                         echo 'Erro ao inserir Dados... SQL: ' . $this->db->set($dados)->get_compiled_insert($this->table_name);
@@ -239,7 +239,7 @@
                             $this->db->trans_complete();
 
                             //set_mensagem_toastr('<i class="fa fa-fw fa-thumbs-o-up" style="font-size: 1.5em"></i>', _MSG_UPDATE_REGISTRO_, 'success', 'top-center');
-                            set_mensagem_notfit(___MSG_UPDATE_REGISTRO___, 'success');
+                            set_mensagem_trigger_notifi(___MSG_UPDATE_REGISTRO___, 'success');
 
                         else:
                             //GRAVA AUDITORIA
@@ -250,7 +250,7 @@
                             add_auditoria($dados_auditoria);
 
                             //set_mensagem_toastr('<i class="fa fa-fw fa-thumbs-o-down" style="font-size: 1.5em"></i>', _MSG_ERROR_UPDATE_REGISTRO_, 'error', 'top-center');
-                            set_mensagem_notfit(___MSG_ERROR_UPDATE_REGISTRO___, 'error');
+                            set_mensagem_trigger_notifi(___MSG_ERROR_UPDATE_REGISTRO___, 'error');
 
 
                         endif;
@@ -289,7 +289,7 @@
 
                 else:
                     //set_mensagem_toastr('<i class="fa fa-fw fa-thumbs-o-down" style="font-size: 1.5em"></i>', _MSG_ERROR_SELECT_UPDATE_REGISTRO_, 'error', 'top-center');
-                    set_mensagem_notfit(___MSG_ERROR_SELECT_UPDATE_REGISTRO___, 'error');
+                    set_mensagem_trigger_notifi(___MSG_ERROR_SELECT_UPDATE_REGISTRO___, 'error');
                     redirect($this->_redirect_parametros_url);
                 endif;
 
@@ -359,11 +359,11 @@
                 if ($this->db->affected_rows()):
                     if (count($_dados) > 1):
                         //set_mensagem_toastr('<i class="fa fa-fw fa-thumbs-o-up" style="font-size: 1.5em"></i>', str_replace('Registro Deletado', 'Registros Deletados', _MSG_DEL_REGISTRO_), 'success', 'top-center');
-                        set_mensagem_notfit(str_replace('Registro Deletado', 'Registros Deletados', ___MSG_DEL_REGISTRO___), 'success');
+                        set_mensagem_trigger_notifi(str_replace('Registro Deletado', 'Registros Deletados', ___MSG_DEL_REGISTRO___), 'success');
                         $dados_auditoria['description'] = str_replace('Registro Deletado', 'Registros Deletados', ___MSG_AUDITORIA_DEL_SUCCESS___);
                     else:
                         //set_mensagem_toastr('<i class="fa fa-fw fa-thumbs-o-up" style="font-size: 1.5em"></i>', _MSG_DEL_REGISTRO_, 'success', 'top-center');
-                        set_mensagem_notfit(___MSG_DEL_REGISTRO___, 'success');
+                        set_mensagem_trigger_notifi(___MSG_DEL_REGISTRO___, 'success');
                         $dados_auditoria['description'] = ___MSG_AUDITORIA_DEL_SUCCESS___;
                     endif;
 
@@ -375,12 +375,12 @@
 
                 else:
                     //set_mensagem_toastr('<i class="fa fa-fw fa-thumbs-o-down" style="font-size: 1.5em"></i>', _MSG_ERROR_DEL_REGISTRO_, 'error', 'top-center');
-                    set_mensagem_notfit(___MSG_ERROR_DEL_REGISTRO___, 'error');
+                    set_mensagem_trigger_notifi(___MSG_ERROR_DEL_REGISTRO___, 'error');
                 endif;
 
             else:
                 //set_mensagem_toastr('<i class="fa fa-fw fa-thumbs-o-down" style="font-size: 1.5em"></i>', _MSG_ERROR_DE_VALIDACAO_, 'error', 'top-center');
-                set_mensagem_notfit(___MSG_ERROR_DE_VALIDACAO___, 'error');
+                set_mensagem_trigger_notifi(___MSG_ERROR_DE_VALIDACAO___, 'error');
             endif;
 
             exit;
@@ -424,7 +424,7 @@
                         add_auditoria($dados_auditoria);
 
                         //set_mensagem_toastr('<i class="fa fa-fw fa-thumbs-o-up" style="font-size: 1.5em"></i>', _MSG_STATUS_REGISTRO_, 'success', 'top-center');
-                        set_mensagem_nice('',___MSG_STATUS_REGISTRO___, 'success');
+                        set_mensagem_trigger_notifi(___MSG_STATUS_REGISTRO___, 'success');
 
                     else:
                         //GRAVA AUDITORIA
@@ -435,7 +435,7 @@
                         add_auditoria($dados_auditoria);
 
                         //set_mensagem_toastr('<i class="fa fa-fw fa-thumbs-o-down" style="font-size: 1.5em"></i>', _MSG_ERROR_STATUS_REGISTRO_, 'error', 'top-center');
-                        set_mensagem_notfit(___MSG_ERROR_STATUS_REGISTRO___, 'error');
+                        set_mensagem_trigger_notifi(___MSG_ERROR_STATUS_REGISTRO___, 'error');
 
                     endif;
                 else:
@@ -447,7 +447,7 @@
                     add_auditoria($dados_auditoria);
 
                     //set_mensagem_toastr('ATENÇÃO', _MSG_NOT_FIND_REGISTRO_, 'warning', 'top-center');
-                    set_mensagem_notfit(___MSG_NOT_FIND_REGISTRO___, 'warning');
+                    set_mensagem_trigger_notifi(___MSG_NOT_FIND_REGISTRO___, 'warning');
 
                 endif;
 

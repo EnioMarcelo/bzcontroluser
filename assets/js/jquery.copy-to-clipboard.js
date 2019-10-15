@@ -32,13 +32,20 @@ function CopyToClipboard(val, _msg) {
 //    });
 
 
-    $.HP({
-        message: 'Copiado com sucesso.',
-        title: '',
-        location: 'br',
-        duration: '3200'
-    });
+//    $.HP({
+//        message: 'Copiado com sucesso.',
+//        title: '',
+//        location: 'br',
+//        duration: '3200'
+//    });
 
+
+    var param = [];
+    param['title'] = "Copaido com sucesso!";
+    param['color'] = "success";
+    param['timer'] = 3000;
+
+    triggerNotify(param);
 
 
 
