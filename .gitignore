@@ -5,6 +5,7 @@ application/cache/*
 
 application/logs/*
 !application/logs/index.html
+!application/logs/.htaccess
 
 !application/*/.htaccess
 
@@ -19,6 +20,7 @@ user_guide_src/cilexer/pycilexer.egg-info/*
 
 captcha/*
 !captcha/index.html
+
 /DER/
 /storage/
 
