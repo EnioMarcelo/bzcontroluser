@@ -14,9 +14,7 @@
     /* function  __construct() */
   	public function __construct() {
         parent::__construct();
-
-        echo 'ok.';
-
+        
       /* LOAD MODEL */
       $this->load->model('Appblank005_model', 'm', TRUE);
 
