@@ -21,13 +21,18 @@ user_guide_src/cilexer/pycilexer.egg-info/*
 captcha/*
 !captcha/index.html
 
-/DER/
-/storage/
+
+DER
+storage
+phpinfo.php
+
+
 
 # IDE Files
 #-------------------------
 /nbproject/
 .idea/*
+
 
 ## Sublime Text cache files
 *.tmlanguage.cache
