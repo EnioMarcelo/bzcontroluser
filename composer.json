@@ -13,6 +13,9 @@
     "config": {
         "vendor-dir": "application/vendor"
     },
+    "require": {
+		"php": ">=5.3.7"
+	},
     "license": [
         "LGPL-2.1-only",
         "GPL-3.0-or-later"
