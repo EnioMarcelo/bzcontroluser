@@ -22,7 +22,7 @@ class MY_Controller extends MX_Controller {
     protected $_redirect_parametros_url = '';
     private $saveAuditoria = false;
 
-    public function __construct( $_security = true ) {
+    public function __construct($_security = true) {
 
         parent::__construct();
 
@@ -70,7 +70,7 @@ class MY_Controller extends MX_Controller {
         $_notCheckLoginApp = [
             'login',
             'changepass',
-            ''
+            'manutencao'
         ];
 
         if (!in_array($this->router->fetch_class(), $_notCheckLoginApp)):
@@ -86,7 +86,12 @@ class MY_Controller extends MX_Controller {
 
                 //set_mensagem('Erro de Acesso', 'Acesso não Permitido.', 'fa-thumbs-o-down', 'danger');
                 //set_mensagem_toastr('Erro de Acesso', 'Acesso não Permitido.', 'error', 'top-center');
-                set_mensagem_sweetalert('Erro de Acesso', 'Acesso não Permitido.', 'error');
+
+                if (check_system_is_manutencao()) {
+                    set_mensagem_sweetalert('Atenção', 'Sistema em Manutenção.', 'warning');
+                } else {
+                    set_mensagem_sweetalert('Erro de Acesso', 'Acesso não Permitido.', 'error');
+                }
                 echo '<script>window.open("' . site_url() . '", "_top");</script>';
                 exit;
             endif;

@@ -1,7 +1,7 @@
 <?php
 
 /*
-  Created on : 07/10/2019, 11:35AM
+  Created on : 09/10/2019, 15:06PM
   Author     : Enio Marcelo Buzaneli - eniomarcelo@gmail.com
  */
 
@@ -70,12 +70,7 @@ $this->_exportReport = true;
 
 
         /* VALIDAÇÃO DOS DADOS */
-        $this->form_validation->set_rules('id', '<b>id</b>', 'trim');
-$this->form_validation->set_rules('genero', '<b>genero</b>', 'trim');
-$this->form_validation->set_rules('created', '<b>created</b>', 'trim');
-$this->form_validation->set_rules('user_created', '<b>user_created</b>', 'trim');
-$this->form_validation->set_rules('updated', '<b>updated</b>', 'trim');
-$this->form_validation->set_rules('user_updated', '<b>user_updated</b>', 'trim');
+        $this->form_validation->set_rules('genero', '<b>Gênero</b>', 'trim|strtoupper');
 
         /* END VALIDAÇÃO DOS DADOS */
 
@@ -87,12 +82,7 @@ $this->form_validation->set_rules('user_updated', '<b>user_updated</b>', 'trim')
 
           unset($_dados['btn-salvar']);
           
-          /* CONVERTE DADOS PARA GRAVAR NA TABELA */
-$_dados["created"] = bz_formatdata($_dados["created"],"Y-m-d H:i:s");
-$_dados["updated"] = bz_formatdata($_dados["updated"],"Y-m-d H:i:s");
-
-/* CONVERTE DADOS PARA GRAVAR NA TABELA */
-
+          
 
           /* GRAVA REGISTRO */
 
@@ -156,12 +146,7 @@ $_dados["updated"] = bz_formatdata($_dados["updated"],"Y-m-d H:i:s");
     if ($this->input->post() && $this->input->post('btn-editar') == 'btn-editar'):
 
       /* VALIDAÇÃO DOS DADOS */
-      $this->form_validation->set_rules('id', '<b>id</b>', 'trim');
-$this->form_validation->set_rules('genero', '<b>genero</b>', 'trim');
-$this->form_validation->set_rules('created', '<b>created</b>', 'trim');
-$this->form_validation->set_rules('user_created', '<b>user_created</b>', 'trim');
-$this->form_validation->set_rules('updated', '<b>updated</b>', 'trim');
-$this->form_validation->set_rules('user_updated', '<b>user_updated</b>', 'trim');
+      $this->form_validation->set_rules('genero', '<b>Gênero</b>', 'trim|strtoupper');
 
       /* END VALIDAÇÃO DOS DADOS */
 
@@ -173,14 +158,8 @@ $this->form_validation->set_rules('user_updated', '<b>user_updated</b>', 'trim')
 
          unset($_dados['btn-editar']);
          
-         unset($_dados['id']);
-
-         /* CONVERTE DADOS PARA GRAVAR NA TABELA */
-$_dados["created"] = bz_formatdata($_dados["created"],"Y-m-d H:i:s");
-$_dados["updated"] = bz_formatdata($_dados["updated"],"Y-m-d H:i:s");
-
-/* CONVERTE DADOS PARA GRAVAR NA TABELA */
-
+         
+         
 
          /* UPDATE REGISTRO */
 
@@ -384,8 +363,7 @@ exit;
 	$this->export['_loadHtml'] .= "     <thead class='bg-black'" . PHP_EOL;
 	$this->export['_loadHtml'] .= "         <tr id='IdTableGridListTheadTr'>" . PHP_EOL;
 	$this->export['_loadHtml'] .= "             <th class='text-center' style='width:3%;'>#</th>" . PHP_EOL;
-	$this->export['_loadHtml'] .= '             <th class="thClId" class="text-left" style="text-align:left; text-align:left">id</th>
-<th class="thClGenero" class="text-left" style="text-align:left; text-align:left">genero</th>
+	$this->export['_loadHtml'] .= '             <th class="thClGenero" class="text-left" style="text-align:left; text-align:left">Gênero</th>
 ' . PHP_EOL;
 	$this->export['_loadHtml'] .= "			</tr>" . PHP_EOL;
 	$this->export['_loadHtml'] .= "		</thead>" . PHP_EOL;
@@ -410,8 +388,7 @@ exit;
             $this->export['_loadHtml'] .= "    <td class='text-center'  >".$_c."</td>" . PHP_EOL;
 
             $this->export['_loadHtml'] .= "    <!-- CAMPOS DA TABLE -->" . PHP_EOL;
-            $this->export['_loadHtml'] .= '     <td class="tdClId" class="text-left" style="text-align:left; text-align:left">'.$_row["id"].'</td>
-<td class="tdClGenero" class="text-left" style="text-align:left; text-align:left">'.$_row["genero"].'</td>
+            $this->export['_loadHtml'] .= '     <td class="tdClGenero" class="text-left" style="text-align:left; text-align:left">'.$_row["genero"].'</td>
 ' . PHP_EOL;
             $this->export['_loadHtml'] .= "    <!-- CAMPOS DA TABLE -->" . PHP_EOL;
 
@@ -496,7 +473,7 @@ private function get_paginacao() {
   $_dados_pag['table'] = $this->table_gridlist_name;
 
   if ($this->input->get('search', TRUE)):
-                            $_dados_pag['search'] = array('_concat_fields' => 'id,genero', '_string' => $this->input->get('search', TRUE));
+                            $_dados_pag['search'] = array('_concat_fields' => 'genero', '_string' => $this->input->get('search', TRUE));
                         endif;
 
   $_dados_pag['filter'] = $_filter;

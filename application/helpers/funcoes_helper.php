@@ -1584,7 +1584,7 @@ function mc_extensive_value($valor = 0, $bolExibirMoeda = true, $bolPalavraFemin
 function bz_modal($_p = []) {
 
     if (empty($_p['modalTitle'])) {
-        $_p['modalTitle'] = 'ATENÇÃO...';
+        $_p['modalTitle'] = '<p></p>';
     }
     if (empty($_p['modalText'])) {
         $_p['modalText'] = 'SEU TEXTO AQUI.';

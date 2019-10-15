@@ -93,16 +93,16 @@ define('___CONF_EMAIL_FROM_EMAIL___', 'no-reply@eniomarcelo.com.br');
  * ========================================================================================================================================================================
  */
 //MENSAGENS DO FORM ADD/UPDATE/DEL/CHANGE STATUS
-define('___MSG_ADD_REGISTRO___', 'Registro Cadastrado com Sucesso.');
-define('___MSG_UPDATE_REGISTRO___', 'Registro Atualizado com Sucesso.');
-define('___MSG_ERROR_UPDATE_REGISTRO___', 'Erro ao Atualizar Registro.');
+define('___MSG_ADD_REGISTRO___', 'Cadastrado com Sucesso.');
+define('___MSG_UPDATE_REGISTRO___', 'Atualizado com Sucesso.');
+define('___MSG_ERROR_UPDATE_REGISTRO___', 'Erro ao Atualizar.');
 define('___MSG_ERROR_SELECT_UPDATE_REGISTRO___', 'Nenhum Registro Selecionado para Editar.');
-define('___MSG_DEL_REGISTRO___', 'Registro Deletado com Sucesso.');
-define('___MSG_ERROR_DEL_REGISTRO___', 'Erro ao Deletar Registro(s).');
+define('___MSG_DEL_REGISTRO___', 'Deletado com Sucesso.');
+define('___MSG_ERROR_DEL_REGISTRO___', 'Erro ao Deletar.');
 define('___MSG_ERROR_DE_VALIDACAO___', 'Erro de Validação de Dados.');
 define('___MSG_ERROR_CAMPOS_OBRIGATORIOS___', 'Erro de Validação dos Campos.');
-define('___MSG_STATUS_REGISTRO___', 'Status do Registro Atualizado com Sucesso.');
-define('___MSG_ERROR_STATUS_REGISTRO___', 'Erro ao Atualizar Status do Registro.');
+define('___MSG_STATUS_REGISTRO___', 'Status Atualizado com Sucesso.');
+define('___MSG_ERROR_STATUS_REGISTRO___', 'Erro ao Atualizar Status.');
 define('___MSG_NOT_FIND_REGISTRO___', 'Nenhum Registro Encontrado.');
 define('___MSG_NOT_DELETE_RELAT_REGISTRO___', 'Registro não pode ser deletado.');
 define('___MSG_GENERIC_UNEXPECTED_ERROR___', 'Ocorreu um ERRO Inesperado, Contacte o Administrador do Sistema.');

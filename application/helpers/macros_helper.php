@@ -23,7 +23,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @return type
  */
 function mc_image_url($_image_name) {
-    return base_url(___CONF_UPLOAD_DIR___ . '/' . ___CONF_UPLOAD_IMAGE_DIR___ . '/') . $_image_name;
+    return base_url(___CONF_UPLOAD_DIR___ . ___CONF_UPLOAD_IMAGE_DIR___) . $_image_name;
 }
 
 /**
@@ -39,7 +39,7 @@ function mc_image_link_modal($_image_name, $_type = 'single') {
 
     if ($_type == 'single') {
 
-        $_url_imagem = base_url(___CONF_UPLOAD_DIR___ . '/' . ___CONF_UPLOAD_IMAGE_DIR___ . '/') . $_image_name;
+        $_url_imagem = base_url(___CONF_UPLOAD_DIR___ . ___CONF_UPLOAD_IMAGE_DIR___) . $_image_name;
 
         $_imagem = '<div class="btn-copy-to-clipboard btn-image-link-lightbox" ><a href="' . $_url_imagem . '" data-lightbox="' . $_image_name . '" data-title="" ><i class="fa fa-fw fa-camera"></i> </a></div>';
 
@@ -68,7 +68,7 @@ function mc_file_link_download($_file_name, $_type = 'single') {
 
     if ($_type == 'single') {
 
-        $_url_file = base_url(___CONF_UPLOAD_DIR___ . '/' . ___CONF_UPLOAD_FILE_DIR___ . '/') . $_file_name;
+        $_url_file = base_url(___CONF_UPLOAD_DIR___ . ___CONF_UPLOAD_FILE_DIR___) . $_file_name;
 
         $_file = '<div class="btn-copy-to-clipboard btn-file-link-lightbox" ><i class="fa fa-fw fa-camera"></i> </a></div>';
 

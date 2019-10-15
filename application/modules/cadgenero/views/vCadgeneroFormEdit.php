@@ -1,6 +1,6 @@
 <?php
 /*
-  Created on : 07/10/2019, 11:35AM
+  Created on : 09/10/2019, 15:06PM
   Author     : Enio Marcelo Buzaneli - eniomarcelo@gmail.com
  */
 
@@ -88,50 +88,10 @@
           <!-- FORM FIELDS -->
 
           
-                                            <?php $_error = form_error("id", "<small class='text-danger col-xs-12 bz-input-error'>", "</small>"); ?>
-                                            <div id="id" class="form-group has-feedback col-sm-12">
-                                                <label for="id">id</label>
-                                                <input type="number" name="id" class="form-control" placeholder="" value="<?=set_value("id",isset($dados->id) ? $dados->id : set_value("id"));?>" pattern="[0-9]" onkeypress="return (event.charCode >= 48 && event.charCode <= 57) ||  event.charCode == 0 " autofocus  />
-                                                <?= $_error; ?>
-                                            </div>
-                                            
-
                                             <?php $_error = form_error("genero", "<small class='text-danger col-xs-12 bz-input-error'>", "</small>"); ?>
                                             <div id="genero" class="form-group has-feedback col-sm-12">
-                                                <label for="genero">genero</label>
-                                                <input type="text" name="genero" class="form-control   " placeholder=""  value="<?=set_value("genero",!empty($dados->genero) ? $dados->genero : set_value("genero"));?>" />
-                                                <?= $_error; ?>
-                                            </div>
-                                            
-
-                                            <?php $_error = form_error("created", "<small class='text-danger col-xs-12 bz-input-error'>", "</small>"); ?>
-                                            <div id="created" class="form-group has-feedback col-sm-12">
-                                                <label for="created">created</label>
-                                                <input type="text" name="created" class="form-control datetimepicker j-mask-datahora-ptbr j-mask-created" placeholder="" value="<?=set_value("created",isset($dados->created) ? bz_formatdata($dados->created,"d/m/Y H:i:s") : set_value("created"));?>"  />
-                                                <?= $_error; ?>
-                                            </div>
-                                            
-
-                                            <?php $_error = form_error("user_created", "<small class='text-danger col-xs-12 bz-input-error'>", "</small>"); ?>
-                                            <div id="user_created" class="form-group has-feedback col-sm-12">
-                                                <label for="user_created">user_created</label>
-                                                <input type="text" name="user_created" class="form-control   " placeholder=""  value="<?=set_value("user_created",!empty($dados->user_created) ? $dados->user_created : set_value("user_created"));?>" />
-                                                <?= $_error; ?>
-                                            </div>
-                                            
-
-                                            <?php $_error = form_error("updated", "<small class='text-danger col-xs-12 bz-input-error'>", "</small>"); ?>
-                                            <div id="updated" class="form-group has-feedback col-sm-12">
-                                                <label for="updated">updated</label>
-                                                <input type="text" name="updated" class="form-control datetimepicker j-mask-datahora-ptbr j-mask-updated" placeholder="" value="<?=set_value("updated",isset($dados->updated) ? bz_formatdata($dados->updated,"d/m/Y H:i:s") : set_value("updated"));?>"  />
-                                                <?= $_error; ?>
-                                            </div>
-                                            
-
-                                            <?php $_error = form_error("user_updated", "<small class='text-danger col-xs-12 bz-input-error'>", "</small>"); ?>
-                                            <div id="user_updated" class="form-group has-feedback col-sm-12">
-                                                <label for="user_updated">user_updated</label>
-                                                <input type="text" name="user_updated" class="form-control   " placeholder=""  value="<?=set_value("user_updated",!empty($dados->user_updated) ? $dados->user_updated : set_value("user_updated"));?>" />
+                                                <label for="genero">Gênero</label>
+                                                <input type="text" name="genero" class="form-control uppercase  " placeholder="" autofocus  value="<?=set_value("genero",!empty($dados->genero) ? $dados->genero : set_value("genero"));?>" />
                                                 <?= $_error; ?>
                                             </div>
                                             
@@ -182,24 +142,6 @@ if( !empty($modalFormEdit) ){
 
 
 
-
-
-<!--
- * JQUERY MASK
--->
-<script>
-
-$(function(){
-
-$(".j-mask-created").mask("00/00/0000 00:00", {placeholder: "__/__/____ __:__"});
-$(".j-mask-updated").mask("00/00/0000 00:00", {placeholder: "__/__/____ __:__"});
-
-});
-
-</script>
-<!--
- * END JQUERY MASK
--->
 
 
 

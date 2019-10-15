@@ -75,7 +75,7 @@
      */
 
     $(function () {
-    
+
         function _sizeContainer(_iframe_modulo) {
             var _container_fluid_width = $('.content-wrapper').width();
             var _container_fluid_height = $('.sidebar').height() - 20;
@@ -151,6 +151,15 @@
      * AJAX FORM SETTINGS
      */
     $(function () {
+
+        var csrfName = '<?php echo $this->security->get_csrf_token_name(); ?>';
+        var csrfHash = '';
+
+        if (csrfHash === '') {
+            csrfHash = '<?php echo $this->security->get_csrf_hash(); ?>';
+        }
+
+
         $('.btn-salvar-formsettings').click(function () {
 
             $('#modal-aguarde').modal({
@@ -162,7 +171,11 @@
             var _site_url = '<?= site_url('dashboard'); ?>';
 
             var add_url = _site_url + '/formSettings?acao=add-form-settings';
-            var dados = $('form[name="form-settings"] ').serialize();
+            var dados = $('form[name="form-settings"] ').serialize() + "&" + [csrfName] + '=' + csrfHash;
+
+
+            console.log('LOG DADOS:');
+            console.log(dados);
 
             $.ajax({
                 'type': 'POST',
@@ -176,13 +189,17 @@
                 },
                 'success': function (retorno) {
 
+                    if (retorno.csrf_token) {
+                        csrfHash = retorno.csrf_token;
+                    }
+
                     if ($.trim(retorno) == 'OK') {
                         //msg_toastr('SUCESSO', 'Configurações Gerais Alterado com Sucesso.', 'top-center', 'success');
                         location.reload(true);
 
                         //swal('SUCESSO', 'Configurações Gerais Alterado com Sucesso.', 'success')
                         //    .then((value) => {
-                        //        //window.location.href = "<? ////= site_url();                                                                                                                                ?>////";
+                        //        //window.location.href = "<? ////= site_url();                                                                                                                                         ?>////";
                         //        location.reload(true);
                         //    });
 

@@ -1,7 +1,7 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 <!--
 /*
-  Created on : 07/10/2019, 11:35AM
+  Created on : 09/10/2019, 15:06PM
   Author     : Enio Marcelo Buzaneli - eniomarcelo@gmail.com
  */
 -->
@@ -146,8 +146,7 @@
                         <th class='text-center' style='width:3%;'><input class='checkbox-all flat-red' type='checkbox'></th>
                         <th class='text-center' style='width:3%;'>#</th>
 
-                        <th class="thClId" class="text-left" style="text-align:left">id</th>
-<th class="thClGenero" class="text-left" style="text-align:left">genero</th>
+                        <th class="thClGenero" class="text-left" style="text-align:left">Gênero</th>
 
 
                         <th class='col-md-1 text-center'>Ação</th>
@@ -180,8 +179,7 @@
                             <td class='text-center'  ><?= $_c; ?></td>
 
                             <!-- CAMPOS DA TABLE -->
-                            <td class="tdClId" class="text-left" style="text-align:left"><?= number_format($_row["id"], 0, "", ""); ?></td>
-<td class="tdClGenero" class="text-left" style="text-align:left"><?= $_row["genero"]; ?></td>
+                            <td class="tdClGenero" class="text-left" style="text-align:left"><?= $_row["genero"]; ?></td>
 
                             <!-- CAMPOS DA TABLE -->
 
