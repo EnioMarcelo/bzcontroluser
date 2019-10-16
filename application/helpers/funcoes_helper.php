@@ -894,6 +894,7 @@ function bz_delete_file_for_expired_lifetime($_source_dir, $_minutes = 1) {
     return;
 }
 
+
 /**
  * FUNÇÃO QUE DELETA ARQUIVOS QUE ESTÃO SEM CADASTRO EM UMA TABELA, ÓRFÃOS.
  *
