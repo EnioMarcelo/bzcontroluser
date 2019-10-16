@@ -13,6 +13,12 @@ class Login extends MY_Controller {
     function __construct() {
         parent::__construct();
 
+        /**
+         * DELATA OS ARQUIVOS DE IMAGEM CAPTCHA DO MÚDLO DE RECUPERAR SENHA changepass 
+         */
+        bz_delete_file_for_expired_lifetime('captcha');
+
+
         /*
          * SE SISTEMA ESTIVER EM MANUTENÇÃO, SERÁ REDIRCIONADO PARA TELA DE AVISO
          */

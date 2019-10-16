@@ -12,7 +12,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * CHECK SE USUÁRIO É SUPER ADMIN
  */
 function get_tables_system() {
-    
+
     $CI = & get_instance();
 
     $_tabelas = $CI->db->list_tables();
@@ -853,6 +853,46 @@ function bz_paginacao($param = array()) {
 }
 
 //END bz_paginacao()
+
+/**
+ * DELETA ARQUIVOS COM TEMPO DE VIDA MAIOR X MINUTOS
+ *
+ * Ex: bz_delete_file_for_expired_lifetime('folder-name',5);
+ * Este exemplo irá apagar todos os arquivos que tem seu tempo de criação maior ou igual a 5 minutos.
+ * Se não informar o último parâmetro o padrão será 1 minuto.
+ * 
+ * @param type $_source_dir
+ * @param type $_minutes
+ * @return type
+ */
+function bz_delete_file_for_expired_lifetime($_source_dir, $_minutes = 1) {
+
+    $CI = & get_instance();
+    $CI->load->helper('directory');
+
+    $_diretoryMap = directory_map(FCPATH . $_source_dir, 1);
+
+    foreach ($_diretoryMap as $key => $file):
+        if ($file == 'index.html') {
+            unset($_diretoryMap[$key]);
+        }
+    endforeach;
+
+    foreach ($_diretoryMap as $file):
+
+        $_fileTTL = filemtime(FCPATH . $_source_dir . '/' . $file) + (60 * $_minutes);
+        $_fileDel = FCPATH . $_source_dir . '/' . $file;
+
+        if (time() > $_fileTTL) {
+            if (file_exists($_fileDel)) {
+                unlink($_fileDel);
+            }
+        }
+
+    endforeach;
+
+    return;
+}
 
 /**
  * FUNÇÃO QUE DELETA ARQUIVOS QUE ESTÃO SEM CADASTRO EM UMA TABELA, ÓRFÃOS.
