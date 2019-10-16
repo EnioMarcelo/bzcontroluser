@@ -1,7 +1,7 @@
 <?php
 
 /*
-  Created on : 15/10/2019, 13:38PM
+  Created on : 16/10/2019, 09:05AM
   Author     : Enio Marcelo Buzaneli - eniomarcelo@gmail.com
  */
 
@@ -13,12 +13,8 @@ class Cadcliente_model extends MY_Model {
     public function __construct() {
         parent::__construct();
     }
-    //END function __construct()
 
-    
-    
-    
-   
+    //END function __construct()
 }
 
 //END model

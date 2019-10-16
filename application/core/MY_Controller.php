@@ -65,7 +65,7 @@ class MY_Controller extends MX_Controller {
         endif;
 
         /**
-         * ARRAY DE APPs QUE NÃO PRECISAM CHEGAR SE FEZ LOGIN OU SE TEM PERMISSÃO DE ACESSO.
+         * ARRAY DE APPs QUE NÃO PRECISAM CHECAR SE FEZ LOGIN OU SE TEM PERMISSÃO DE ACESSO.
          */
         $_notCheckLoginApp = [
             'login',

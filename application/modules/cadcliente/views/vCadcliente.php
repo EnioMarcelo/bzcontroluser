@@ -1,7 +1,7 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 <!--
 /*
-  Created on : 15/10/2019, 13:38PM
+  Created on : 16/10/2019, 09:05AM
   Author     : Enio Marcelo Buzaneli - eniomarcelo@gmail.com
  */
 -->
@@ -77,8 +77,8 @@
                     <!-- BOTÕES AVULSOS -->
 
                     <!-- INPUT SEARCH -->
-                            <input type='text' name='search' value='<?= $this->input->get('search'); ?>' class='form-control input-sm pull-right' style ='width: 150px;' placeholder='Pesquisar' autofocus>
-                            <!-- INPUT SEARCH -->
+                    <input type='text' name='search' value='<?= $this->input->get('search'); ?>' class='form-control input-sm pull-right' style ='width: 150px;' placeholder='Pesquisar' autofocus>
+                    <!-- INPUT SEARCH -->
 
                     <!-- BOTÕES AVULSOS -->
                     <a id="buttons-loose-after-inputsearch" class="pull-right"></a>
@@ -94,12 +94,12 @@
 
 
                         <!-- BTN SEARCH -->
-                            <button class='btn btn-sm btn-primary btn-show-modal-aguarde j-tooltip' data-placement='bottom' data-toggle='tooltip' data-original-title='Pesquisa'><i class='fa fa-search'></i></button>
-                            <!-- BTN SEARCH -->
+                        <button class='btn btn-sm btn-primary btn-show-modal-aguarde j-tooltip' data-placement='bottom' data-toggle='tooltip' data-original-title='Pesquisa'><i class='fa fa-search'></i></button>
+                        <!-- BTN SEARCH -->
 
                         <!-- BTN LIMPAR -->
-                            <a href='<?= site_url($this->router->fetch_class()); ?>' class='btn btn-sm btn-default btn-show-modal-aguarde j-tooltip' data-placement='bottom' data-toggle='tooltip' data-original-title='Limpar'><i class='glyphicon glyphicon-minus'></i></a>
-                            <!-- BTN LIMPAR -->
+                        <a href='<?= site_url($this->router->fetch_class()); ?>' class='btn btn-sm btn-default btn-show-modal-aguarde j-tooltip' data-placement='bottom' data-toggle='tooltip' data-original-title='Limpar'><i class='glyphicon glyphicon-minus'></i></a>
+                        <!-- BTN LIMPAR -->
 
 
 
@@ -147,7 +147,7 @@
                         <th class='text-center' style='width:3%;'>#</th>
 
                         <th class="thClNome" class="text-left" style="text-align:left">Nome</th>
-<th class="thClArquivo_nome" class="text-center" style="width:10%; text-align:center">Arquivo</th>
+                        <th class="thClArquivo_nome" class="text-center" style="width:10%; text-align:center">Arquivo</th>
 
 
                         <th class='col-md-1 text-center'>Ação</th>
@@ -169,7 +169,6 @@
                         <?php $_c++; ?>
 
                         <?php
-                            
                         ?>
 
                         <tr id="<?= $_row['id']; ?>" style="<?= $_style_tr; ?>" class="ClTableGridListTbodyTr <?= $_class_tr; ?>">
@@ -181,14 +180,14 @@
 
                             <!-- CAMPOS DA TABLE -->
                             <td class="tdClNome" class="text-left" style="text-align:left"><?= $_row["nome"]; ?></td>
-<td class="tdClArquivo_nome" class="text-center" style="width:10%; text-align:center"><?= mc_file_link_download($_row["arquivo_nome"]); ?></td>
+                            <td class="tdClArquivo_nome" class="text-center" style="width:10%; text-align:center"><?= mc_file_link_download($_row["arquivo_nome"]); ?></td>
 
                             <!-- CAMPOS DA TABLE -->
 
                             <!-- BTN ACTION'S -->
                             <td class="tdBtnAction">
                                 <!-- BTN EDITA REGISTRO -->
-    <?php $_edit = site_url($this->router->fetch_class() . '/edit/' . $_row['id'] . '?' . bz_app_parametros_url()); ?>
+                                <?php $_edit = site_url($this->router->fetch_class() . '/edit/' . $_row['id'] . '?' . bz_app_parametros_url()); ?>
                                 <a href="<?= $_edit; ?>" class="btn btn-xs btn-primary btn-show-modal-aguarde ">
                                     <span class="glyphicon glyphicon-edit j-tooltip" data-placement="bottom" data-toggle="tooltip" data-original-title="Editar"></span>
                                 </a>
@@ -206,7 +205,7 @@
 
                         </tr>
 
-<?php endforeach; ?>
+                    <?php endforeach; ?>
 
 
                 </tbody>
@@ -221,11 +220,11 @@
             <!-- PAGINAÇÃO -->
             <div class="box-footer clearfix">
                 <div class="text-center paginacao-links pagination pagination-sm no-margin pull-right">
-<?= $_result['links_paginacao']; ?>
+                    <?= $_result['links_paginacao']; ?>
                 </div>
                 <div class="text-left paginacao-links pagination pagination-sm no-margin text-primary">
                     <div class="padding-top-5">
-<?= $_result['dados_paginacao']; ?>
+                        <?= $_result['dados_paginacao']; ?>
                     </div>
                 </div>
             </div>

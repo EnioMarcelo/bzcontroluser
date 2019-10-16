@@ -12,7 +12,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * CHECK SE USUÁRIO É SUPER ADMIN
  */
 function get_tables_system() {
-
+    
     $CI = & get_instance();
 
     $_tabelas = $CI->db->list_tables();

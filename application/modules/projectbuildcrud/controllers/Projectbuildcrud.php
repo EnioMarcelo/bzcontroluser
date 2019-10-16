@@ -1,23 +1,20 @@
 <?php
 
 /*
-  Created on : 20/06/2018, 10:16:00
-  Author     : Enio Marcelo Buzaneli - eniomarcelo@gmail.com
+Created on : 20/06/2018, 10:16:00
+Author     : Enio Marcelo Buzaneli - eniomarcelo@gmail.com
  */
 
+defined('BASEPATH') or exit('No direct script access allowed');
 
-defined('BASEPATH') OR exit('No direct script access allowed');
-
-class ProjectbuildCrud extends MY_Controller {
+class ProjectbuildCrud extends MY_Controller
+{
     /*
      * VARIÁVEIS DO APP BLANK
      */
 
 // CONTROLLER
     protected $_blankCode = '';
-
-
-
 
     /*
      * VARIÁVEIS DO APP
@@ -102,7 +99,8 @@ class ProjectbuildCrud extends MY_Controller {
     protected $_formEditCodeEditorCSS = '';
     protected $_formEditCodeEditorJS = '';
 
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct();
 
         /*
@@ -118,7 +116,6 @@ class ProjectbuildCrud extends MY_Controller {
         $this->dados['_view_app_add'] = 'vProjectbuildCrudFormAdd';
         $this->dados['_view_app_edit'] = 'vProjectbuildCrudFormEdit';
 
-
         /*
          * TABELA QUE SERÁ USADO PELO MÓDULO DO SISTEMA
          */
@@ -127,7 +124,8 @@ class ProjectbuildCrud extends MY_Controller {
 
     /* END function __construct() */
 
-    public function index() {
+    public function index()
+    {
 
         /*
          * CARREGA OS REGISTROS COM PAGINAÇÃO
@@ -143,38 +141,31 @@ class ProjectbuildCrud extends MY_Controller {
 
     /* END function index() */
 
-
-
-
     /*
      * FUNÇÃO EDIT FIELDS GRID LIST
      */
 
-    public function setup_gridlist() {
+    public function setup_gridlist()
+    {
 
         /*
          * CERTIFICA SE O ACESSO A ESTA FUNCTION REALMENTE ESTÁ SENDO FEITO POR AJAX.
          */
         bz_check_is_ajax_request();
 
-
         if ($this->input->post()):
 
             $_dados = $_POST;
             $_screen_type = $this->input->post('screen_type');
-
 
             unset($_dados['task']);
             unset($_dados['projeto_id']);
             unset($_dados['field_name']);
             unset($_dados['screen_type']);
 
-
             if ($this->input->post('task') == 'save'):
 
-
                 $_dados['grid_list_field_value_select'] = base64_encode($_dados['grid_list_field_value_select']);
-
 
                 $_where = 'WHERE proj_build_id = ' . $this->input->post('projeto_id') . ' AND field_name = "' . $this->input->post('field_name') . '" AND screen_type = "' . $_screen_type . '"';
                 if ($this->update->ExecUpdate('proj_build_fields', array('param_gridlist' => json_encode($_dados, JSON_UNESCAPED_UNICODE)), $_where)):
@@ -203,35 +194,29 @@ class ProjectbuildCrud extends MY_Controller {
                 echo json_encode($_r);
                 exit;
 
-
             endif;
-
 
         endif; //END $_POST
     }
 
     /* END function gridlist_save() */
 
-
-
-
     /*
      * FUNÇÃO EDIT FIELDS FORM ADD/EDIT
      */
 
-    public function setup_formaddedit() {
+    public function setup_formaddedit()
+    {
 
         /*
          * CERTIFICA SE O ACESSO A ESTA FUNCTION REALMENTE ESTÁ SENDO FEITO POR AJAX.
          */
         bz_check_is_ajax_request();
 
-
         if ($this->input->post()):
 
             $_dados = $_POST;
             $_screen_type = $this->input->post('screen_type');
-
 
             unset($_dados['task']);
             unset($_dados['modal_projeto_id']);
@@ -246,7 +231,6 @@ class ProjectbuildCrud extends MY_Controller {
                 $_dados['form_add_edit_field_value_select_multiple_dinamic'] = base64_encode($_dados['form_add_edit_field_value_select_multiple_dinamic']);
                 $_dados['form_add_edit_field_value_checkbox_multiple_dinamic'] = base64_encode($_dados['form_add_edit_field_value_checkbox_multiple_dinamic']);
                 $_dados['form_add_edit_field_mask_complement'] = base64_encode($_dados['form_add_edit_field_mask_complement']);
-
 
                 /*
                  * REGRAS DE VALIDAÇÃO DO BOTÃO "OCULTO/HIDDEN" DO FORM ADD/EDIT DAS CONFIGURAÇÕES DOS INPUTS DO FORM.
@@ -301,7 +285,6 @@ class ProjectbuildCrud extends MY_Controller {
                 endif;
                 /* END REGRAS DE VALIDAÇÃO DO BOTÃO "OCULTO/HIDDEN" DO FORM ADD/EDIT DAS CONFIGURAÇÕES DOS INPUTS DO FORM */
 
-
                 /*
                  * REGRAS DE VALIDAÇÃO DO BOTÃO "SOMENTE LEITURA/READ ONLY" DO FORM ADD/EDIT DAS CONFIGURAÇÕES DOS INPUTS DO FORM
                  */
@@ -345,11 +328,9 @@ class ProjectbuildCrud extends MY_Controller {
 
                         endif;
 
-
                     endif;
                 endif;
                 /* END REGRAS DE VALIDAÇÃO DO BOTÃO "SOMENTE LEITURA/READ ONLY" DO FORM ADD/EDIT DAS CONFIGURAÇÕES DOS INPUTS DO FORM */
-
 
                 /*
                  * REGRAS DE VALIDAÇÃO DO BOTÃO "OBRIGATÓRIO/REQUIRED" DO FORM ADD/EDIT DAS CONFIGURAÇÕES DOS INPUTS DO FORM
@@ -371,7 +352,7 @@ class ProjectbuildCrud extends MY_Controller {
                                 endif;
                             endif;
 
-                        /*
+                            /*
                          * SE O BOTÃO OCULTO ESTIVER NA OPÇÃO SOMENTE FORM EDIT E O BOTÃO OBRIGATÓRIO ESTIVER NA OPÇÃO SOMENTE FORM EDIT,
                          * ENTÃO DELIGUE O BOTÃO OBRIGATÓRIO.
                          */
@@ -386,21 +367,18 @@ class ProjectbuildCrud extends MY_Controller {
                             endif;
                         endif;
 
-
                     endif;
                 endif;
 
-
                 /* END REGRAS DE VALIDAÇÃO DO BOTÃO "OBRIGATÓRIO/REQUIRED" DO FORM ADD/EDIT DAS CONFIGURAÇÕES DOS INPUTS DO FORM */
 
-
                 /* if (empty($_dados['form_add_edit_field_hidden'])):
-                  $_dados['form_add_edit_field_hidden_in_form'] = '';
-                  endif;
+                $_dados['form_add_edit_field_hidden_in_form'] = '';
+                endif;
 
-                  if (empty($_dados['form_add_edit_field_read_only']) || !empty($_dados['form_add_edit_field_hidden'])):
-                  $_dados['form_add_edit_field_read_only_in_form'] = '';
-                  endif; */
+                if (empty($_dados['form_add_edit_field_read_only']) || !empty($_dados['form_add_edit_field_hidden'])):
+                $_dados['form_add_edit_field_read_only_in_form'] = '';
+                endif; */
 
                 $_where = 'WHERE proj_build_id = ' . $this->input->post('modal_projeto_id') . ' AND field_name = "' . $this->input->post('field_name') . '" AND screen_type = "' . $_screen_type . '"';
                 if ($this->update->ExecUpdate('proj_build_fields', array('param_formaddedit' => json_encode($_dados, JSON_UNESCAPED_UNICODE)), $_where)):
@@ -445,10 +423,7 @@ class ProjectbuildCrud extends MY_Controller {
                 echo json_encode($_r);
                 exit;
 
-
-
             endif;
-
 
         endif; //END $_POST
     }
@@ -458,7 +433,8 @@ class ProjectbuildCrud extends MY_Controller {
     /**
      * FUNÇÃO CADASTRO DE CAMPO DA GRIDLIST
      */
-    public function addFieldGridList() {
+    public function addFieldGridList()
+    {
 
         /*
          * CERTIFICA SE O ACESSO A ESTA FUNCTION REALMENTE ESTÁ SENDO FEITO POR AJAX.
@@ -468,7 +444,7 @@ class ProjectbuildCrud extends MY_Controller {
         $_response = [];
         $_response['csrf_token'] = $this->security->get_csrf_hash();
 
-        if ($this->input->post()) :
+        if ($this->input->post()):
 
             $_post = $this->input->post();
 
@@ -477,7 +453,7 @@ class ProjectbuildCrud extends MY_Controller {
                 $this->form_validation->set_rules('proj_build_id', '<b>PROJETO ID</b>', 'trim|required');
                 $this->form_validation->set_rules('field_name', '<b>NOME DO CAMPO</b>', 'trim|required');
 
-                if ($this->form_validation->run() == TRUE):
+                if ($this->form_validation->run() == true):
 
                     unset($_post['task']);
 
@@ -513,7 +489,6 @@ class ProjectbuildCrud extends MY_Controller {
 
                 endif;
 
-
             elseif ($_post['task'] == 'delete-field-gridlist'):
 
                 $termosDB = "WHERE proj_build_id = '{$_post['proj_build_id']}' AND field_name = '{$_post['field_name']}'";
@@ -533,14 +508,10 @@ class ProjectbuildCrud extends MY_Controller {
                     set_mensagem_trigger_notifi($_response['msg'], $_response['type']);
                 endif;
 
-
                 echo json_encode($_response);
                 exit;
 
-
             endif;
-
-
 
         endif;
     }
@@ -551,12 +522,13 @@ class ProjectbuildCrud extends MY_Controller {
      * FUNÇÃO CADASTRO
      */
 
-    public function add() {
+    public function add()
+    {
 
         /*
          * ADD OS DADOS DO APLICATIVO
          */
-        if ($this->input->post()) :
+        if ($this->input->post()):
 
             if ($this->input->post('type_project') == 'crud') {
                 $this->form_validation->set_rules('tabela', '<b>TABELA</b>', 'trim|required|max_length[250]');
@@ -566,7 +538,7 @@ class ProjectbuildCrud extends MY_Controller {
             $this->form_validation->set_rules('app_nome', '<b>NOME DO APLICATIVO</b>', 'trim|required|max_length[250]|callback_check_name_app_exist');
             $this->form_validation->set_rules('app_titulo', '<b>TÍTULO DO APLICATIVO</b>', 'trim|required|max_length[250]');
 
-            if ($this->form_validation->run() == TRUE):
+            if ($this->form_validation->run() == true):
 
                 $_dados = $this->input->post();
 
@@ -578,7 +550,6 @@ class ProjectbuildCrud extends MY_Controller {
                 unset($_dados['task']);
                 unset($_dados['apps']);
                 unset($_dados['primary_key']);
-
 
                 /**
                  * Grava registro
@@ -602,65 +573,61 @@ class ProjectbuildCrud extends MY_Controller {
                         /**/
                     } elseif ($_dados['type_project'] == 'blank') {
 
-                        /**
-                         * GRAVA O CODE EDITOR NA TABELA proj_build_codeeditor DO APP BLANK
-                         */
-                        $_dadosCodeEditor = array(
-                            'proj_build_id' => $result['last_id_add'],
-                            'code_type' => 'blank',
-                            'code_screen' => 'blank'
-                        );
-                        $this->create->ExecCreate('proj_build_codeeditor', $_dadosCodeEditor);
+                    /**
+                     * GRAVA O CODE EDITOR NA TABELA proj_build_codeeditor DO APP BLANK
+                     */
+                    $_dadosCodeEditor = array(
+                        'proj_build_id' => $result['last_id_add'],
+                        'code_type' => 'blank',
+                        'code_screen' => 'blank',
+                    );
+                    $this->create->ExecCreate('proj_build_codeeditor', $_dadosCodeEditor);
 
-                        /**/
-                    }
+                    /**/
+                }
+
+                /* GRAVA AUDITORIA */
+                $dados_auditoria['creator'] = 'user';
+                $dados_auditoria['action'] = 'add';
+                $dados_auditoria['description'] = ___MSG_AUDITORIA_ADD_SUCCESS___;
+                $dados_auditoria['last_query'] = $this->db->last_query();
+                $dados_auditoria['last_query'] = str_replace($this->table_name . ' (', $this->table_name . ' (id, ', $dados_auditoria['last_query']);
+                $dados_auditoria['last_query'] = str_replace('VALUES (', 'VALUES ("' . $result['last_id_add'] . '", ', $dados_auditoria['last_query']);
+
+                add_auditoria($dados_auditoria);
+                set_mensagem_trigger_notifi(___MSG_ADD_REGISTRO___, 'success');
+
+                /**
+                 * GRAVA O APP NA TABELA sec_aplicativos
+                 */
+                $_dados_sec_aplicativos['app_name'] = $_dados['app_nome'];
+                $_dados_sec_aplicativos['app_descricao'] = $_dados['app_titulo'];
+                $result_create_sec_aplicativos = $this->create->ExecCreate('sec_aplicativos', $_dados_sec_aplicativos);
+
+                if ($result_create_sec_aplicativos):
 
                     /* GRAVA AUDITORIA */
                     $dados_auditoria['creator'] = 'user';
                     $dados_auditoria['action'] = 'add';
                     $dados_auditoria['description'] = ___MSG_AUDITORIA_ADD_SUCCESS___;
                     $dados_auditoria['last_query'] = $this->db->last_query();
-                    $dados_auditoria['last_query'] = str_replace($this->table_name . ' (', $this->table_name . ' (id, ', $dados_auditoria['last_query']);
-                    $dados_auditoria['last_query'] = str_replace('VALUES (', 'VALUES ("' . $result['last_id_add'] . '", ', $dados_auditoria['last_query']);
-
                     add_auditoria($dados_auditoria);
-                    set_mensagem_trigger_notifi(___MSG_ADD_REGISTRO___, 'success');
-
-
-
-                    /**
-                     * GRAVA O APP NA TABELA sec_aplicativos
-                     */
-                    $_dados_sec_aplicativos['app_name'] = $_dados['app_nome'];
-                    $_dados_sec_aplicativos['app_descricao'] = $_dados['app_titulo'];
-                    $result_create_sec_aplicativos = $this->create->ExecCreate('sec_aplicativos', $_dados_sec_aplicativos);
-
-                    if ($result_create_sec_aplicativos):
-
-                        /* GRAVA AUDITORIA */
-                        $dados_auditoria['creator'] = 'user';
-                        $dados_auditoria['action'] = 'add';
-                        $dados_auditoria['description'] = ___MSG_AUDITORIA_ADD_SUCCESS___;
-                        $dados_auditoria['last_query'] = $this->db->last_query();
-                        add_auditoria($dados_auditoria);
-
-                    else:
-                        echo 'Erro ao inserir Dados... SQL: ' . $this->db->set($dados)->get_compiled_insert($this->table_name);
-                        exit;
-                    endif;
-
 
                 else:
                     echo 'Erro ao inserir Dados... SQL: ' . $this->db->set($dados)->get_compiled_insert($this->table_name);
                     exit;
                 endif;
 
-                redirect($this->_redirect . '/edit/' . $result['last_id_add']);
-
+            else:
+                echo 'Erro ao inserir Dados... SQL: ' . $this->db->set($dados)->get_compiled_insert($this->table_name);
+                exit;
             endif;
+
+            redirect($this->_redirect . '/edit/' . $result['last_id_add']);
 
         endif;
 
+        endif;
 
         $this->dados['_tabelas'] = get_tables_system();
 
@@ -673,14 +640,12 @@ class ProjectbuildCrud extends MY_Controller {
 
     /* END public function add() */
 
-
-
-
     /*
      * FUNÇÃO EDIÇÃO
      */
 
-    public function edit($_id) {
+    public function edit($_id)
+    {
 
         /* GRAVA OS DADOS DA EDIÇÃO DO REGISTRO */
         if ($this->input->post()):
@@ -693,7 +658,7 @@ class ProjectbuildCrud extends MY_Controller {
                     $this->form_validation->set_rules('primary_key', '<b>CHAVE PRIMÁRIA</b>', 'trim|required|max_length[50]');
                 }
 
-                if ($this->form_validation->run() == TRUE):
+                if ($this->form_validation->run() == true):
 
                     $_dados = $this->input->post();
                     $_dados['code_script'] = $this->input->post('code_script', false);
@@ -711,7 +676,6 @@ class ProjectbuildCrud extends MY_Controller {
                     unset($_dados['code_script']);
                     unset($_dados['id']);
 
-
                     $_where = 'WHERE id = "' . $this->input->post('id') . '"';
 
                     if ($this->update->ExecUpdate($this->table_name, $_dados, $_where)):
@@ -728,7 +692,6 @@ class ProjectbuildCrud extends MY_Controller {
                         }
                         /* END GRAVA CODEEDITOR APP BLANK */
 
-
                         /* GRAVA AUDITORIA */
                         $dados_auditoria['creator'] = 'user';
                         $dados_auditoria['action'] = 'edit';
@@ -737,7 +700,6 @@ class ProjectbuildCrud extends MY_Controller {
                         add_auditoria($dados_auditoria);
 
                         set_mensagem_trigger_notifi(___MSG_UPDATE_REGISTRO___, 'success');
-
 
                         if ($this->input->post('type_project') == 'crud') {
                             $this->db->where('proj_build_id', $this->input->post('id'));
@@ -757,7 +719,6 @@ class ProjectbuildCrud extends MY_Controller {
                         $dados_auditoria['last_query'] = $this->db->last_query();
                         add_auditoria($dados_auditoria);
 
-
                     else:
                         /* GRAVA AUDITORIA */
                         $dados_auditoria['creator'] = 'system';
@@ -767,7 +728,6 @@ class ProjectbuildCrud extends MY_Controller {
                         add_auditoria($dados_auditoria);
 
                         set_mensagem_trigger_notifi(___MSG_ERROR_UPDATE_REGISTRO___, 'error');
-
 
                     endif;
 
@@ -807,8 +767,7 @@ class ProjectbuildCrud extends MY_Controller {
                 }
                 /* END GET DADOS CODE EDITOR APP BLANK */
 
-
-                if ($this->dados['dados']->type_project == 'crud') :
+                if ($this->dados['dados']->type_project == 'crud'):
                     /*
                      * GRAVA CAMPOS DA GRID LIST
                      */
@@ -818,7 +777,6 @@ class ProjectbuildCrud extends MY_Controller {
                      * GRAVA CAMPOS DO FORM ADD/EDIT
                      */
                     $this->save_fields_project(str_replace('vw_', '', $this->dados['dados']->tabela), $this->dados['dados']->id, 'formaddedit');
-
 
                     /*
                      * CARREGA OS CAMPOS DA GRID LIST
@@ -893,14 +851,12 @@ class ProjectbuildCrud extends MY_Controller {
 
 //END public function edit()
 
-
-
-
     /*
      * FUNÇÃO DELETAR
      */
 
-    public function del() {
+    public function del()
+    {
 
         /*
          * CERTIFICA SE O ACESSO A ESTA FUNCTION REALMENTE ESTÁ SENDO FEITO POR AJAX.
@@ -910,15 +866,12 @@ class ProjectbuildCrud extends MY_Controller {
         $this->form_validation->set_rules('btndel', '<b>BTN Del</b>', 'trim|required');
         $this->form_validation->set_rules('dadosdel', '<b>REGISTROS DEL</b>', 'trim|required');
 
+        if ($this->form_validation->run() == true):
 
-        if ($this->form_validation->run() == TRUE):
-
-            $_dados = $this->input->post('dadosdel', TRUE);
+            $_dados = $this->input->post('dadosdel', true);
             $_dados = explode(',', $_dados);
 
-
             foreach ($_dados as $_rowdel):
-
 
                 /*
                  * GET NOME DO APP
@@ -931,7 +884,6 @@ class ProjectbuildCrud extends MY_Controller {
                  * RENAME FOLDER APP PARA DELETAR
                  */
                 bz_renamedir($this->_directory, strtolower($this->_app_nome));
-
 
                 /*
                  * DELETA OS REGISTROS
@@ -954,7 +906,6 @@ class ProjectbuildCrud extends MY_Controller {
                     $dados_auditoria['last_query'] = $this->db->last_query();
                     add_auditoria($dados_auditoria);
 
-
                     /**
                      * DELETA O APP DA TABELA sec_aplicativos
                      */
@@ -968,8 +919,6 @@ class ProjectbuildCrud extends MY_Controller {
                         $dados_auditoria['last_query'] = $this->db->last_query();
                         add_auditoria($dados_auditoria);
                     endif;
-
-
 
                 else:
 //set_mensagem_toastr('<i class="fa fa-fw fa-thumbs-o-down" style="font-size: 1.5em"></i>', _MSG_ERROR_DEL_REGISTRO_, 'error', 'top-center');
@@ -988,13 +937,11 @@ class ProjectbuildCrud extends MY_Controller {
 
 //END public function del()
 
-
-
-
     /*
      * REORDER LINE TABLE GRID LIST
      */
-    public function reorder_linegridlist() {
+    public function reorder_linegridlist()
+    {
 
         /*
          * CERTIFICA SE O ACESSO A ESTA FUNCTION REALMENTE ESTÁ SENDO FEITO POR AJAX.
@@ -1004,7 +951,6 @@ class ProjectbuildCrud extends MY_Controller {
         $_response['csrf_token'] = $this->security->get_csrf_hash();
 
         if ($this->input->post()):
-
 
             if ($this->input->post('task') == 'SAVE-REORDER-GRID-LIST'):
 
@@ -1016,13 +962,12 @@ class ProjectbuildCrud extends MY_Controller {
 
                 $_where = 'WHERE proj_build_id = "' . $_dados['projeto_id'] . '" AND field_name = "' . $_dados['field_name'] . '" AND screen_type = "' . $_screen_type . '"';
                 if ($this->update->ExecUpdate('proj_build_fields', array('order_field_gridlist' => $_dados['order_field_gridlist']), $_where)):
-                /**/
+                    /**/
                 endif;
 
                 $_response['message'] = 'SAVE-REORDER-FIELDS-GRIDLIST-OK';
                 echo json_encode($_response);
                 exit;
-
 
             elseif ($this->input->post('task') == 'SAVE-REORDER-GRID-LIST-FORM-ADD-EDIT'):
 
@@ -1034,7 +979,7 @@ class ProjectbuildCrud extends MY_Controller {
 
                 $_where = 'WHERE proj_build_id = "' . $_dados['projeto_id'] . '" AND field_name = "' . $_dados['field_name'] . '" AND screen_type = "' . $_screen_type . '"';
                 if ($this->update->ExecUpdate('proj_build_fields', array('order_field_form' => $_dados['order_field_form']), $_where)):
-                /**/
+                    /**/
                 endif;
 
                 $_response['message'] = 'SAVE-REORDER-FIELDS-GRIDLIST-OK';
@@ -1057,19 +1002,16 @@ class ProjectbuildCrud extends MY_Controller {
 
         endif;
 
-
-
         exit;
     }
 
 //END public function reorder_linegridlist()
 
-
-
     /*
      * MARCA O FIELD PARA PESQUISA NA GRID LIST
      */
-    public function switch_search_field_on_off() {
+    public function switch_search_field_on_off()
+    {
         /*
          * CERTIFICA SE O ACESSO A ESTA FUNCTION REALMENTE ESTÁ SENDO FEITO POR AJAX.
          */
@@ -1097,10 +1039,10 @@ class ProjectbuildCrud extends MY_Controller {
                     $_dados = json_encode($_dados, JSON_UNESCAPED_UNICODE);
 
                     /* if ($_grid_list_show == 'off') {
-                      $_response['message'] = 'SAVE-SWITCH-OK';
-                      echo json_encode($_response);
-                      exit;
-                      } */
+                    $_response['message'] = 'SAVE-SWITCH-OK';
+                    echo json_encode($_response);
+                    exit;
+                    } */
 
                     $this->db->set('param_gridlist', $_dados);
                     $this->db->where('proj_build_id', $this->input->post('project_id'));
@@ -1123,12 +1065,11 @@ class ProjectbuildCrud extends MY_Controller {
 
 //END public function switch_search_field_on_off()
 
-
-
     /*
      * MARCA O FIELD PARA EXPORTAR
      */
-    public function switch_export_field_on_off() {
+    public function switch_export_field_on_off()
+    {
         /*
          * CERTIFICA SE O ACESSO A ESTA FUNCTION REALMENTE ESTÁ SENDO FEITO POR AJAX.
          */
@@ -1156,10 +1097,10 @@ class ProjectbuildCrud extends MY_Controller {
                     $_dados = json_encode($_dados, JSON_UNESCAPED_UNICODE);
 
                     /* if ($_grid_list_show == 'off') {
-                      $_response['message'] = 'SAVE-SWITCH-OK';
-                      echo json_encode($_response);
-                      exit;
-                      } */
+                    $_response['message'] = 'SAVE-SWITCH-OK';
+                    echo json_encode($_response);
+                    exit;
+                    } */
 
                     $this->db->set('param_gridlist', $_dados);
                     $this->db->where('proj_build_id', $this->input->post('project_id'));
@@ -1182,13 +1123,11 @@ class ProjectbuildCrud extends MY_Controller {
 
 //END public function switch_export_field_on_off()
 
-
-
-
     /*
      * MARCA O FIELD PARA MOSTRAR OU NÃO NA GRID LIST E/OU FORM ADD/EDIT
      */
-    public function switch_show_field_on_off() {
+    public function switch_show_field_on_off()
+    {
 
         /*
          * CERTIFICA SE O ACESSO A ESTA FUNCTION REALMENTE ESTÁ SENDO FEITO POR AJAX.
@@ -1233,23 +1172,23 @@ class ProjectbuildCrud extends MY_Controller {
                     exit;
                 } elseif ($this->input->post('screen_type') == 'formaddedit') {
 
-                    $_dados = json_decode($_r_param_formaddedit, true);
-                    $_dados['form_add_edit_field_show'] = $this->input->post('grid_list_show');
-                    $_dados = json_encode($_dados, JSON_UNESCAPED_UNICODE);
+                $_dados = json_decode($_r_param_formaddedit, true);
+                $_dados['form_add_edit_field_show'] = $this->input->post('grid_list_show');
+                $_dados = json_encode($_dados, JSON_UNESCAPED_UNICODE);
 
-                    $this->db->set('param_formaddedit', $_dados);
-                    $this->db->where('proj_build_id', $this->input->post('project_id'));
-                    $this->db->where('field_name', $this->input->post('field_name'));
-                    $this->db->where('screen_type', $this->input->post('screen_type'));
-                    $_response['update'] = $this->db->update('proj_build_fields');
+                $this->db->set('param_formaddedit', $_dados);
+                $this->db->where('proj_build_id', $this->input->post('project_id'));
+                $this->db->where('field_name', $this->input->post('field_name'));
+                $this->db->where('screen_type', $this->input->post('screen_type'));
+                $_response['update'] = $this->db->update('proj_build_fields');
 
-                    $_response['message'] = 'SAVE-SWITCH-OK';
+                $_response['message'] = 'SAVE-SWITCH-OK';
 
-                    echo json_encode($_response);
-                    exit;
-                }
+                echo json_encode($_response);
+                exit;
+            }
 
-            endif;
+        endif;
 
         endif;
 
@@ -1258,14 +1197,12 @@ class ProjectbuildCrud extends MY_Controller {
 
 //END public function switch_show_field_on_off()
 
-
-
-
     /*
      * CARREGA REGISTROS COM PAGINAÇÃO
      */
 
-    private function get_paginacao() {
+    private function get_paginacao()
+    {
 
         $_filter = $this->input->get();
         unset($_filter['pg']);
@@ -1275,8 +1212,8 @@ class ProjectbuildCrud extends MY_Controller {
          * DADOS PARA PAGINAÇÃO
          */
         $_dados_pag['table'] = $this->table_name;
-        if ($this->input->get('search', TRUE)):
-            $_dados_pag['search'] = array('_concat_fields' => 'tabela, app_nome, app_titulo', '_string' => $this->input->get('search', TRUE));
+        if ($this->input->get('search', true)):
+            $_dados_pag['search'] = array('_concat_fields' => 'tabela, app_nome, app_titulo', '_string' => $this->input->get('search', true));
         endif;
 
         $_dados_pag['filter'] = $_filter;
@@ -1291,14 +1228,12 @@ class ProjectbuildCrud extends MY_Controller {
 
 //END private function get_paginacao()
 
-
-
-
     /*
      * ICONES
      */
 
-    public function icons() {
+    public function icons()
+    {
         /*
          * TEMPLATE QUE SERÁ USADO PELO MÓDULO DO SISTEMA
          */
@@ -1308,14 +1243,12 @@ class ProjectbuildCrud extends MY_Controller {
 
 //END public function icons()
 
-
-
-
     /*
      * GRAVA CAMPOS DA TABELA DO PROJETO
      */
 
-    private function save_fields_project($_tabela, $_proj_build_id, $_screen_type) {
+    private function save_fields_project($_tabela, $_proj_build_id, $_screen_type)
+    {
 
         $_fields = $this->db->field_data($_tabela);
 
@@ -1347,47 +1280,41 @@ class ProjectbuildCrud extends MY_Controller {
                 if ($_dadosTable['field_type'] == "int") {
                     $_input_type = 'number';
                 } elseif ($_dadosTable['field_type'] == "longtext") {
-                    $_input_type = 'text-long';
-                } elseif ($_dadosTable['field_type'] == "date") {
-                    $_input_type = 'date';
-                } elseif ($_dadosTable['field_type'] == "time") {
-                    $_input_type = 'time';
-                } elseif ($_dadosTable['field_type'] == "datetime") {
-                    $_input_type = 'datetime';
-                }
-                /* END TIPOS DE CAMPOS DA GRIDLIST E DO FORM */
+                $_input_type = 'text-long';
+            } elseif ($_dadosTable['field_type'] == "date") {
+            $_input_type = 'date';
+        } elseif ($_dadosTable['field_type'] == "time") {
+            $_input_type = 'time';
+        } elseif ($_dadosTable['field_type'] == "datetime") {
+            $_input_type = 'datetime';
+        }
+        /* END TIPOS DE CAMPOS DA GRIDLIST E DO FORM */
 
+        /*
+         * PARÂMETROS DO CAMPO
+         */
+        if ($_screen_type == 'gridlist'):
+            $_dadosTable['param_gridlist'] = '{"grid_list_show":"on","grid_list_search":"on","grid_list_export":"on","grid_list_field_input_type":"' . $_input_type . '","grid_list_label":"' . $_dadosTable['field_name'] . '","grid_list_aligne_label":"text-left","grid_list_field_length":"","grid_list_field_aligne":"text-left"}';
+        elseif ($_screen_type == 'formaddedit'):
+            $_dadosTable['param_formaddedit'] = '{"form_add_edit_field_show":"on","form_add_edit_field_type":"' . $_input_type . '","form_add_edit_field_label":"' . $_dadosTable['field_name'] . '","form_add_edit_field_placeholder":"","form_add_edit_field_max_length":"' . (($_dadosTable['field_length'] > 0) ? $_dadosTable['field_length'] : '') . '"}';
+        endif;
+        /* END PARÂMETROS DO CAMPO */
 
+        $this->create->ExecCreate('proj_build_fields', $_dadosTable);
 
-
-
-                /*
-                 * PARÂMETROS DO CAMPO
-                 */
-                if ($_screen_type == 'gridlist'):
-                    $_dadosTable['param_gridlist'] = '{"grid_list_show":"on","grid_list_search":"on","grid_list_export":"on","grid_list_field_input_type":"' . $_input_type . '","grid_list_label":"' . $_dadosTable['field_name'] . '","grid_list_aligne_label":"text-left","grid_list_field_length":"","grid_list_field_aligne":"text-left"}';
-                elseif ($_screen_type == 'formaddedit'):
-                    $_dadosTable['param_formaddedit'] = '{"form_add_edit_field_show":"on","form_add_edit_field_type":"' . $_input_type . '","form_add_edit_field_label":"' . $_dadosTable['field_name'] . '","form_add_edit_field_placeholder":"","form_add_edit_field_max_length":"' . (($_dadosTable['field_length'] > 0) ? $_dadosTable['field_length'] : '') . '"}';
-                endif;
-                /* END PARÂMETROS DO CAMPO */
-
-                $this->create->ExecCreate('proj_build_fields', $_dadosTable);
-
-            endif;
+        endif;
 
         endforeach;
     }
 
 //END private function save_fields_project()
 
-
-
-
     /*
      * GRAVA OS DADOS DO FORM DE CONFIGURAÇÃO POUP DA GRID LIST
      */
 
-    public function ajax_get_fields_table() {
+    public function ajax_get_fields_table()
+    {
 
         /*
          * CERTIFICA SE O ACESSO A ESTA FUNCTION REALMENTE ESTÁ SENDO FEITO POR AJAX.
@@ -1419,14 +1346,12 @@ class ProjectbuildCrud extends MY_Controller {
 
 //END public function ajax_get_fields_table()
 
-
-
-
     /*
      * EDITOR DECÓDIGOS DO PROJETO
      */
 
-    public function codeeditor($_idProjeto = null, $_code_screen = null, $_code_type = null) {
+    public function codeeditor($_idProjeto = null, $_code_screen = null, $_code_type = null)
+    {
 
         /*
          * CHECK SE EXISTE
@@ -1459,10 +1384,6 @@ class ProjectbuildCrud extends MY_Controller {
 
         endif;
 
-
-
-
-
         /*
          * CHECK POST SAVE
          */
@@ -1476,30 +1397,26 @@ class ProjectbuildCrud extends MY_Controller {
                 /*
                  * CHECK SE EXISTE O REGISTRO GRAVADO
                  */
-                $_where = array(
-                    'proj_build_id' => $this->input->post('proj_build_id'),
-                    'code_screen' => $this->input->post('code_screen'),
-                    'code_type' => $this->input->post('code_type')
-                );
+                $_where = 'WHERE proj_build_id = "' . $this->input->post('proj_build_id') . '" AND ' .
+                'code_screen = "' . $this->input->post('code_screen') . '" AND ' .
+                'code_type = "' . $this->input->post('code_type') . '"';
 
-
-                $_query = $this->db->get_where('proj_build_codeeditor', $_where);
+                $_query = $this->read->ExecRead('proj_build_codeeditor', $_where);
 
                 if ($_query->result_array()):
                     /*
                      * SE EXISTIR FAZ O UPDATE
                      */
-
                     $_data_code_editor = array(
                         'code_access_ajax_only' => ($this->input->post('code_access_ajax_only') == 'on' ? 1 : 0),
                         'code_type_method' => ($this->input->post('code_access_ajax_only') == 'on' ? 'public' : $this->input->post('code_type_method')),
-                        'code_script' => base64_encode($this->input->post('code_script', false))
+                        'code_script' => base64_encode($this->input->post('code_script', false)),
                     );
-                    $this->db->update('proj_build_codeeditor', $_data_code_editor, $_where);
+                    $this->update->ExecUpdate('proj_build_codeeditor', $_data_code_editor, $_where);
 
                     set_mensagem_trigger_notifi(strtoupper(str_replace('-', ' ', $this->input->post('code_type'))) . ' Atualizado com Sucesso.', 'success');
 
-                else :
+                else:
                     /*
                      * SE NÃO EXISTIR CRIA O REGISTRO
                      */
@@ -1510,9 +1427,9 @@ class ProjectbuildCrud extends MY_Controller {
                         'code_type' => $this->input->post('code_type'),
                         'code_access_ajax_only' => ($this->input->post('code_access_ajax_only') == 'on' ? 1 : 0),
                         'code_type_method' => ($this->input->post('code_access_ajax_only') == 'on' ? 'public' : $this->input->post('code_type_method')),
-                        'code_script' => base64_encode($this->input->post('code_script', false))
+                        'code_script' => base64_encode($this->input->post('code_script', false)),
                     );
-                    $this->db->insert('proj_build_codeeditor', $_data_code_editor);
+                    $this->create->ExecCreate('proj_build_codeeditor', $_data_code_editor);
 
                     set_mensagem_trigger_notifi(strtoupper(str_replace('-', ' ', $this->input->post('code_type'))) . ' Adicionado com Sucesso.', 'success');
 
@@ -1536,11 +1453,9 @@ class ProjectbuildCrud extends MY_Controller {
 
                 endif;
 
-
             endif;
 
         endif;
-
 
         /*
          * PARÂMETROS
@@ -1561,7 +1476,6 @@ class ProjectbuildCrud extends MY_Controller {
         $this->dados['_parametros']['code_access_ajax_only'] = '';
         $this->dados['_parametros']['code_type_method'] = 'public';
 
-
         /*
          * GET DADOS DO PROJETO
          */
@@ -1576,30 +1490,26 @@ class ProjectbuildCrud extends MY_Controller {
             if ($this->dados['_dados_projeto']->type_project == 'blank') {
                 $this->dados['_titulo_app'] .= ' BLANK';
             } elseif ($this->dados['_dados_projeto']->type_project == 'crud') {
-                $this->dados['_titulo_app'] .= ' CRUD';
-            }
+            $this->dados['_titulo_app'] .= ' CRUD';
+        }
 
-            /*
-             * GET CODE SCRIPT
-             */
-            $_where = array(
-                'proj_build_id' => $_idProjeto,
-                'code_screen' => $_code_screen,
-                'code_type' => $_code_type
-            );
+        /*
+         * GET CODE SCRIPT
+         */
+        $_where = array(
+            'proj_build_id' => $_idProjeto,
+            'code_screen' => $_code_screen,
+            'code_type' => $_code_type,
+        );
 
+        $_r_CodeEditor = $this->db->get_where('proj_build_codeeditor', $_where)->row_array();
 
-            $_r_CodeEditor = $this->db->get_where('proj_build_codeeditor', $_where)->row_array();
-
-
-            if ($_r_CodeEditor):
-                $this->dados['_parametros']['code_access_ajax_only'] = ($_r_CodeEditor['code_access_ajax_only'] == '1' ? 'checked' : '');
-                $this->dados['_parametros']['code_type_method'] = $_r_CodeEditor['code_type_method'];
-                $this->dados['_parametros']['code_script'] = $_r_CodeEditor['code_script'];
-                $this->dados['_parametros']['type_project'] = $this->dados['_dados_projeto']->type_project;
-            endif;
-
-
+        if ($_r_CodeEditor):
+            $this->dados['_parametros']['code_access_ajax_only'] = ($_r_CodeEditor['code_access_ajax_only'] == '1' ? 'checked' : '');
+            $this->dados['_parametros']['code_type_method'] = $_r_CodeEditor['code_type_method'];
+            $this->dados['_parametros']['code_script'] = $_r_CodeEditor['code_script'];
+            $this->dados['_parametros']['type_project'] = $this->dados['_dados_projeto']->type_project;
+        endif;
 
         else:
 
@@ -1607,9 +1517,7 @@ class ProjectbuildCrud extends MY_Controller {
             redirect(site_url('projectbuildcrud?search=' . $this->_app_nome));
             exit;
 
-
         endif;
-
 
         /*
          * TEMPLATE QUE SERÁ USADO PELO MÓDULO DO SISTEMA
@@ -1620,14 +1528,12 @@ class ProjectbuildCrud extends MY_Controller {
 
 //END public function codeeditor()
 
-
-
-
     /*
      * CHECK SE O NOME DO APP EXISTE NA TABELA
      */
 
-    public function check_name_app_exist() {
+    public function check_name_app_exist()
+    {
 
         $this->load->helper('file');
 
@@ -1640,9 +1546,7 @@ class ProjectbuildCrud extends MY_Controller {
         $this->_appTitulo = $this->input->post('app_titulo');
         $this->_appTableName = $this->input->post('tabela');
 
-
         $this->_directory = FCPATH . 'application/modules/' . strtolower($this->_app_nome);
-
 
         /*
          * CHECK SE O DIRETORIO MODULES TEM PREMISSÃO PARA SER GRAVADO
@@ -1665,7 +1569,6 @@ class ProjectbuildCrud extends MY_Controller {
          */
         $_where = 'WHERE app_nome = "' . $_app_nome . '" AND type_project = "crud" LIMIT 1';
         $_result = $this->read->ExecRead($this->table_name, $_where);
-
 
         if ($_result->result()):
             $this->form_validation->set_message('check_name_app_exist', 'Este Aplicativo <b>' . $_app_nome . '</b> já existe.');
@@ -1691,11 +1594,8 @@ class ProjectbuildCrud extends MY_Controller {
                 write_file($this->_directory . '/views/index.html', $_dados_index_html);
                 write_file($this->_directory . '/views/ajax/index.html', $_dados_index_html);
 
-
 //                write_file($this->_directory . '/views/v' . $this->_app_nome . 'FormAdd.php', $this->_dadosAdd);
-//                    write_file($this->_directory . '/views/v' . $this->_app_nome . 'FormEdit.php', $this->_dadosEdit);
-
-
+                //                    write_file($this->_directory . '/views/v' . $this->_app_nome . 'FormEdit.php', $this->_dadosEdit);
 
             endif;
 
@@ -1706,14 +1606,12 @@ class ProjectbuildCrud extends MY_Controller {
 
 //END public function check_name_app_exist()
 
-
-
-
     /*
      * GERA O APP
      */
 
-    public function build_app($_projectID) {
+    public function build_app($_projectID)
+    {
 
         /*
          * CARREGA OS HELPERS
@@ -1725,12 +1623,10 @@ class ProjectbuildCrud extends MY_Controller {
          */
         $this->_project_id = $_projectID;
 
-
         /*
          * GET TYPE PROJECT
          */
         $_appProject = $this->db->get_where('proj_build', array('id' => $this->_project_id))->row();
-
 
         if ($_appProject->type_project == 'blank'):
 
@@ -1752,28 +1648,27 @@ class ProjectbuildCrud extends MY_Controller {
              * GERA O CONTROLLER DO APP BLANK
              */
             echo '<div class="callout callout-success">
-                Gerando Controller do App Blank...
-                </div>';
+			                Gerando Controller do App Blank...
+			                </div>';
             $this->ger_controllerBlank();
 
             /*
              * GERA O MODEL DO APP BLANK
              */
             echo '<div class="callout callout-success">
-                Gerando Model do App Blank...
-                </div>';
+			                Gerando Model do App Blank...
+			                </div>';
             $this->ger_modelsBlank();
 
             /*
              * GERA O VIEW DO APP BLANK
              */
             echo '<div class="callout callout-success">
-                Gerando View do App Blank...
-                </div>';
+			                Gerando View do App Blank...
+			                </div>';
             $this->ger_viewBlank();
 
         else:
-
 
             /**
              * CARREGA DADOS DO PROJETO PARA GRID LIST VIEW
@@ -1785,7 +1680,6 @@ class ProjectbuildCrud extends MY_Controller {
             $this->db->where('b.screen_type', 'gridlist');
             $this->db->order_by('order_field_gridlist');
             $_r_projetc = $this->db->get();
-
 
             if ($_r_projetc->num_rows() != 0):
 
@@ -1813,7 +1707,6 @@ class ProjectbuildCrud extends MY_Controller {
                     $_r = '';
                     $_c = 0;
 
-
                     foreach ($this->_appArrayDados as $_row):
 
                         $_c++;
@@ -1833,12 +1726,10 @@ class ProjectbuildCrud extends MY_Controller {
                         endif;
                         /* END CAMPOS PARA FILTRAGEM DOS DADOS */
 
-
                         /*
                          * CAMPOS QUE SERÃO MOSTRADOS NA GRID LIST
                          */
                         if ($_param_gridListField['grid_list_show'] == 'on'):
-
 
                             /* CAMPOS VIRTUAIS */
                             if (!empty($_param_gridListField['grid_list_field_type'])):
@@ -1847,7 +1738,6 @@ class ProjectbuildCrud extends MY_Controller {
                                 endif;
                             endif;
                             /* END CAMPOS VIRTUAIS */
-
 
                             if (strtolower($_row['field_name']) == 'ativo'):
                                 $this->_gridListStatusDados = 'Y';
@@ -1877,10 +1767,8 @@ class ProjectbuildCrud extends MY_Controller {
                                     endif;
                                 endif;
 
-
                                 $this->_gridListFields .= $_row['field_name'] . ',';
                                 $this->_gridListHeaderTable .= '<th class="thCl' . ucfirst($_row['field_name']) . '" class="' . $_class . '" style="' . $_width_field . '">' . $_param_gridListField['grid_list_label'] . '</th>' . PHP_EOL;
-
 
                                 /**
                                  * FORMATAÇÃO DOS CAMPOS DA GRIDLIST $_ROW[] CONFORME SELEÇÃO DO CAMPO SELECT grid_list_field_input_type
@@ -1905,1737 +1793,1613 @@ class ProjectbuildCrud extends MY_Controller {
                                         /* CAMPO SELECT MODAL ARQUIVO grid_list_field_type_modal_arquivo  */
                                     } elseif ($_param_gridListField['grid_list_field_input_type'] == 'upload-arquivo') {
 
+                                    $this->_gridListFieldsTable .= '<td class="tdCl' . ucfirst($_row['field_name']) . '" class="' . $_class . '" style="' . $_width_field . '"><?= mc_file_link_download($_row["' . $_row['field_name'] . '"]); ?></td>' . PHP_EOL;
 
-
-                                        $this->_gridListFieldsTable .= '<td class="tdCl' . ucfirst($_row['field_name']) . '" class="' . $_class . '" style="' . $_width_field . '"><?= mc_file_link_download($_row["' . $_row['field_name'] . '"]); ?></td>' . PHP_EOL;
-
-
-                                        /* END CAMPO SELECT MODAL ARQUIVO grid_list_field_type_modal_arquivo  */
-                                        /**/
-                                        /* CAMPO INPUT NUMBER DECIMAL grid_list_field_input_type  */
-                                    } elseif ($_param_gridListField['grid_list_field_input_type'] == 'number-decimal') {
-
-
-                                        $this->_gridListFieldsTable .= '<td class="tdCl' . ucfirst($_row['field_name']) . '" class="' . $_class . '" style="' . $_width_field . '"><?= bz_converteMoedaBrasil($_row["' . $_row['field_name'] . '"]); ?></td>' . PHP_EOL;
-
-                                        /* END CAMPO INPUT NUMBER DECIMAL grid_list_field_input_type */
-                                        /**/
-                                        /* CAMPO INPUT MOEDA grid_list_field_input_type  */
-                                    } elseif ($_param_gridListField['grid_list_field_input_type'] == 'moeda') {
-
-
-                                        $this->_gridListFieldsTable .= '<td class="tdCl' . ucfirst($_row['field_name']) . '" class="' . $_class . '" style="' . $_width_field . '">R$ <?= bz_converteMoedaBrasil($_row["' . $_row['field_name'] . '"]); ?></td>' . PHP_EOL;
-
-                                        /* END CAMPO INPUT MOEDA grid_list_field_input_type */
-                                        /**/
-                                        /* CAMPO INPUT NUMBER INTENGER grid_list_field_input_type  */
-                                    } elseif ($_param_gridListField['grid_list_field_input_type'] == 'number') {
-
-
-                                        $this->_gridListFieldsTable .= '<td class="tdCl' . ucfirst($_row['field_name']) . '" class="' . $_class . '" style="' . $_width_field . '"><?= number_format($_row["' . $_row['field_name'] . '"], 0, "", ""); ?></td>' . PHP_EOL;
-
-                                        /* END CAMPO INPUT NUMBER INTENGER grid_list_field_input_type */
-                                        /**/
-                                        /* CAMPO INPUT DATE grid_list_field_input_type  */
-                                    } elseif ($_param_gridListField['grid_list_field_input_type'] == 'date') {
-
-
-                                        $this->_gridListFieldsTable .= '<td class="tdCl' . ucfirst($_row['field_name']) . '" class="' . $_class . '" style="' . $_width_field . '"><?= bz_formatdata($_row["' . $_row['field_name'] . '"]); ?></td>' . PHP_EOL;
-
-                                        /* END CAMPO INPUT DATE grid_list_field_input_type */
-                                        /**/
-                                        /* CAMPO INPUT TIME grid_list_field_input_type  */
-                                    } elseif ($_param_gridListField['grid_list_field_input_type'] == 'time') {
-
-
-                                        $this->_gridListFieldsTable .= '<td class="tdCl' . ucfirst($_row['field_name']) . '" class="' . $_class . '" style="' . $_width_field . '"><?= bz_formatdata($_row["' . $_row['field_name'] . '"], "H:i:s"); ?></td>' . PHP_EOL;
-
-                                        /* END CAMPO INPUT TIME grid_list_field_input_type */
-                                        /**/
-                                        /* CAMPO INPUT DATETIME grid_list_field_input_type  */
-                                    } elseif ($_param_gridListField['grid_list_field_input_type'] == 'datetime') {
-
-
-                                        $this->_gridListFieldsTable .= '<td class="tdCl' . ucfirst($_row['field_name']) . '" class="' . $_class . '" style="' . $_width_field . '"><?= bz_formatdata($_row["' . $_row['field_name'] . '"], "d/m/Y H:i:s"); ?></td>' . PHP_EOL;
-
-                                        /* END CAMPO INPUT DATETIME grid_list_field_input_type */
-                                        /**/
-                                        /* CAMPO INPUT SELECT grid_list_field_input_type  */
-                                    } elseif ($_param_gridListField['grid_list_field_input_type'] == 'select') {
-
-                                        $_pkSelect = strtolower(base64_decode($_param_gridListField['grid_list_field_value_select']));
-                                        $_pkSelect = substr($_pkSelect, 7, (strpos($_pkSelect, ',') - 7));
-
-                                        $this->_gridListFieldsTable .= '<td class="tdCl' . ucfirst($_row['field_name']) . '" class="' . $_class . '" style="' . $_width_field . '"><?=$this->db->query("' . base64_decode($_param_gridListField['grid_list_field_value_select']) . ' WHERE ' . $_pkSelect . ' = \"$_row[' . $_row['field_name'] . ']\"")->row()->' . $_row['field_name'] . ';?></td>' . PHP_EOL;
-
-                                        /* END CAMPO INPUT SELECT grid_list_field_input_type */
-                                        /**/
-                                    } else {
-                                        /**/
-                                        $this->_gridListFieldsTable .= '<td class="tdCl' . ucfirst($_row['field_name']) . '" class="' . $_class . '" style="' . $_width_field . '"><?= $_row["' . $_row['field_name'] . '"]; ?></td>' . PHP_EOL;
-                                        /**/
-                                    }
-
+                                    /* END CAMPO SELECT MODAL ARQUIVO grid_list_field_type_modal_arquivo  */
                                     /**/
-                                } else {
+                                    /* CAMPO INPUT NUMBER DECIMAL grid_list_field_input_type  */
+                                } elseif ($_param_gridListField['grid_list_field_input_type'] == 'number-decimal') {
 
+                                $this->_gridListFieldsTable .= '<td class="tdCl' . ucfirst($_row['field_name']) . '" class="' . $_class . '" style="' . $_width_field . '"><?= bz_converteMoedaBrasil($_row["' . $_row['field_name'] . '"]); ?></td>' . PHP_EOL;
 
-                                    $this->_gridListFieldsTable .= '<td class="tdCl' . ucfirst($_row['field_name']) . '" class="' . $_class . '" style="' . $_width_field . '"><?= $_row["' . $_row['field_name'] . '"]; ?></td>' . PHP_EOL;
+                                /* END CAMPO INPUT NUMBER DECIMAL grid_list_field_input_type */
+                                /**/
+                                /* CAMPO INPUT MOEDA grid_list_field_input_type  */
+                            } elseif ($_param_gridListField['grid_list_field_input_type'] == 'moeda') {
 
-                                    /**/
-                                }
-                            /* END FORMATAÇÃO DOS CAMPOS DA GRIDLIST $_ROW[] CONFORME SELEÇÃO DO CAMPO SELECT grid_list_field_input_type */
+                            $this->_gridListFieldsTable .= '<td class="tdCl' . ucfirst($_row['field_name']) . '" class="' . $_class . '" style="' . $_width_field . '">R$ <?= bz_converteMoedaBrasil($_row["' . $_row['field_name'] . '"]); ?></td>' . PHP_EOL;
 
-
-
-
-
-
-
-
-
+                            /* END CAMPO INPUT MOEDA grid_list_field_input_type */
                             /**/
-                            endif;
+                            /* CAMPO INPUT NUMBER INTENGER grid_list_field_input_type  */
+                        } elseif ($_param_gridListField['grid_list_field_input_type'] == 'number') {
 
+                        $this->_gridListFieldsTable .= '<td class="tdCl' . ucfirst($_row['field_name']) . '" class="' . $_class . '" style="' . $_width_field . '"><?= number_format($_row["' . $_row['field_name'] . '"], 0, "", ""); ?></td>' . PHP_EOL;
 
-                        endif;
+                        /* END CAMPO INPUT NUMBER INTENGER grid_list_field_input_type */
+                        /**/
+                        /* CAMPO INPUT DATE grid_list_field_input_type  */
+                    } elseif ($_param_gridListField['grid_list_field_input_type'] == 'date') {
+
+                    $this->_gridListFieldsTable .= '<td class="tdCl' . ucfirst($_row['field_name']) . '" class="' . $_class . '" style="' . $_width_field . '"><?= bz_formatdata($_row["' . $_row['field_name'] . '"]); ?></td>' . PHP_EOL;
+
+                    /* END CAMPO INPUT DATE grid_list_field_input_type */
+                    /**/
+                    /* CAMPO INPUT TIME grid_list_field_input_type  */
+                } elseif ($_param_gridListField['grid_list_field_input_type'] == 'time') {
+
+                $this->_gridListFieldsTable .= '<td class="tdCl' . ucfirst($_row['field_name']) . '" class="' . $_class . '" style="' . $_width_field . '"><?= bz_formatdata($_row["' . $_row['field_name'] . '"], "H:i:s"); ?></td>' . PHP_EOL;
+
+                /* END CAMPO INPUT TIME grid_list_field_input_type */
+                /**/
+                /* CAMPO INPUT DATETIME grid_list_field_input_type  */
+            } elseif ($_param_gridListField['grid_list_field_input_type'] == 'datetime') {
+
+                $this->_gridListFieldsTable .= '<td class="tdCl' . ucfirst($_row['field_name']) . '" class="' . $_class . '" style="' . $_width_field . '"><?= bz_formatdata($_row["' . $_row['field_name'] . '"], "d/m/Y H:i:s"); ?></td>' . PHP_EOL;
+
+                /* END CAMPO INPUT DATETIME grid_list_field_input_type */
+                /**/
+                /* CAMPO INPUT SELECT grid_list_field_input_type  */
+            } elseif ($_param_gridListField['grid_list_field_input_type'] == 'select') {
+
+                $_pkSelect = strtolower(base64_decode($_param_gridListField['grid_list_field_value_select']));
+                $_pkSelect = substr($_pkSelect, 7, (strpos($_pkSelect, ',') - 7));
+
+                $this->_gridListFieldsTable .= '<td class="tdCl' . ucfirst($_row['field_name']) . '" class="' . $_class . '" style="' . $_width_field . '"><?=$this->db->query("' . base64_decode($_param_gridListField['grid_list_field_value_select']) . ' WHERE ' . $_pkSelect . ' = \"$_row[' . $_row['field_name'] . ']\"")->row()->' . $_row['field_name'] . ';?></td>' . PHP_EOL;
+
+                /* END CAMPO INPUT SELECT grid_list_field_input_type */
+                /**/
+            } else {
+                /**/
+                $this->_gridListFieldsTable .= '<td class="tdCl' . ucfirst($_row['field_name']) . '" class="' . $_class . '" style="' . $_width_field . '"><?= $_row["' . $_row['field_name'] . '"]; ?></td>' . PHP_EOL;
+                /**/
+            }
+
+            /**/
+        } else {
+
+            $this->_gridListFieldsTable .= '<td class="tdCl' . ucfirst($_row['field_name']) . '" class="' . $_class . '" style="' . $_width_field . '"><?= $_row["' . $_row['field_name'] . '"]; ?></td>' . PHP_EOL;
+
+            /**/
+        }
+        /* END FORMATAÇÃO DOS CAMPOS DA GRIDLIST $_ROW[] CONFORME SELEÇÃO DO CAMPO SELECT grid_list_field_input_type */
+
+        /**/
+        endif;
+
+        endif;
 // END CAMPOS QUE SERÃO MOSTRADOS NA GRID LIST
-//                    echo '<br>--> ' . $_row['field_name'] . ' - ' . !empty($_param_gridListField['grid_list_aligne_label']) . ' - ' . $this->_primary_key_field;
+        //                    echo '<br>--> ' . $_row['field_name'] . ' - ' . !empty($_param_gridListField['grid_list_aligne_label']) . ' - ' . $this->_primary_key_field;
 
-                        /*
-                         * CAMPOS QUE SERÃO MOSTRADOS NA EXPORT
-                         */
-                        if ($_param_gridListField['grid_list_export'] == 'on'):
+        /*
+         * CAMPOS QUE SERÃO MOSTRADOS NA EXPORT
+         */
+        if ($_param_gridListField['grid_list_export'] == 'on'):
 
 //CAMPOS VIRTUAIS
-                            if (!empty($_param_gridListField['grid_list_field_type'])):
-                                if ($_param_gridListField['grid_list_field_type'] == 'virtual'):
-                                    $this->_gridListVirtualFieldsTable[] = $_row['field_name'];
-                                endif;
-                            endif;
+            if (!empty($_param_gridListField['grid_list_field_type'])):
+                if ($_param_gridListField['grid_list_field_type'] == 'virtual'):
+                    $this->_gridListVirtualFieldsTable[] = $_row['field_name'];
+                endif;
+            endif;
 //END CAMPOS VIRTUAIS
 
+            if (strtolower($_row['field_name']) == 'ativo'):
+                $this->_gridListStatusDados = 'Y';
+            else:
+                $_class = (!empty($_param_gridListField['grid_list_aligne_label'])) ? $_param_gridListField['grid_list_aligne_label'] : 'text-left';
+                $_width_field .= (!empty($_param_gridListField['grid_list_field_length'])) ? 'width:' . $_param_gridListField['grid_list_field_length'] : '';
 
-                            if (strtolower($_row['field_name']) == 'ativo'):
-                                $this->_gridListStatusDados = 'Y';
-                            else:
-                                $_class = (!empty($_param_gridListField['grid_list_aligne_label'])) ? $_param_gridListField['grid_list_aligne_label'] : 'text-left';
-                                $_width_field .= (!empty($_param_gridListField['grid_list_field_length'])) ? 'width:' . $_param_gridListField['grid_list_field_length'] : '';
-
-                                if (!empty($_param_gridListField['grid_list_aligne_label'])):
-                                    if ($_param_gridListField['grid_list_aligne_label'] == 'text-left'):
-                                        if (!empty($_width_field)):
-                                            $_width_field .= '; text-align:left';
-                                        else:
-                                            $_width_field .= 'text-align:left';
-                                        endif;
-                                    elseif ($_param_gridListField['grid_list_aligne_label'] == 'text-center'):
-                                        if (!empty($_width_field)):
-                                            $_width_field .= '; text-align:center';
-                                        else:
-                                            $_width_field .= 'text-align:center';
-                                        endif;
-                                    elseif ($_param_gridListField['grid_list_aligne_label'] == 'text-right'):
-                                        if (!empty($_width_field)):
-                                            $_width_field .= '; text-align:right';
-                                        else:
-                                            $_width_field .= 'text-align:right';
-                                        endif;
-                                    endif;
-                                endif;
-
-                                $this->_gridListHeaderTableExport .= '<th class="thCl' . ucfirst($_row['field_name']) . '" class="' . $_class . '" style="' . $_width_field . '">' . $_param_gridListField['grid_list_label'] . '</th>' . PHP_EOL;
-                                $this->_gridListFieldsTableExport .= '<td class="tdCl' . ucfirst($_row['field_name']) . '" class="' . $_class . '" style="' . $_width_field . '"><?= $_row["' . $_row['field_name'] . '"]; ?></td>' . PHP_EOL;
-                            endif;
-
-
-
+                if (!empty($_param_gridListField['grid_list_aligne_label'])):
+                    if ($_param_gridListField['grid_list_aligne_label'] == 'text-left'):
+                        if (!empty($_width_field)):
+                            $_width_field .= '; text-align:left';
+                        else:
+                            $_width_field .= 'text-align:left';
                         endif;
+                    elseif ($_param_gridListField['grid_list_aligne_label'] == 'text-center'):
+                        if (!empty($_width_field)):
+                            $_width_field .= '; text-align:center';
+                        else:
+                            $_width_field .= 'text-align:center';
+                        endif;
+                    elseif ($_param_gridListField['grid_list_aligne_label'] == 'text-right'):
+                        if (!empty($_width_field)):
+                            $_width_field .= '; text-align:right';
+                        else:
+                            $_width_field .= 'text-align:right';
+                        endif;
+                    endif;
+                endif;
 
+                $this->_gridListHeaderTableExport .= '<th class="thCl' . ucfirst($_row['field_name']) . '" class="' . $_class . '" style="' . $_width_field . '">' . $_param_gridListField['grid_list_label'] . '</th>' . PHP_EOL;
+                $this->_gridListFieldsTableExport .= '<td class="tdCl' . ucfirst($_row['field_name']) . '" class="' . $_class . '" style="' . $_width_field . '"><?= $_row["' . $_row['field_name'] . '"]; ?></td>' . PHP_EOL;
+            endif;
 
-                    endforeach;
+        endif;
 
-                    /**
-                     * FIELDS SEARCH PARA FILTRAGEM
-                     */
-                    $this->_gridListSearchFields = substr($this->_gridListSearchFields, 0, -1);
-                    if ($this->_gridListSearchFields) {
-                        $this->_gridListSearchFields = "if (\$this->input->get('search', TRUE)):
+        endforeach;
+
+        /**
+         * FIELDS SEARCH PARA FILTRAGEM
+         */
+        $this->_gridListSearchFields = substr($this->_gridListSearchFields, 0, -1);
+        if ($this->_gridListSearchFields) {
+            $this->_gridListSearchFields = "if (\$this->input->get('search', TRUE)):
                             \$_dados_pag['search'] = array('_concat_fields' => '" . $this->_gridListSearchFields . "', '_string' => \$this->input->get('search', TRUE));
                         endif;";
 
-                        $this->_gridListSearchInput = "<!-- INPUT SEARCH -->
+            $this->_gridListSearchInput = "<!-- INPUT SEARCH -->
                             <input type='text' name='search' value='<?= \$this->input->get('search'); ?>' class='form-control input-sm pull-right' style ='width: 150px;' placeholder='Pesquisar' autofocus>
                             <!-- INPUT SEARCH -->";
 
-                        $this->_gridListSearchButton = "<!-- BTN SEARCH -->
+            $this->_gridListSearchButton = "<!-- BTN SEARCH -->
                             <button class='btn btn-sm btn-primary btn-show-modal-aguarde j-tooltip' data-placement='bottom' data-toggle='tooltip' data-original-title='Pesquisa'><i class='fa fa-search'></i></button>
                             <!-- BTN SEARCH -->";
 
-                        $this->_gridListClearhButton = "<!-- BTN LIMPAR -->
+            $this->_gridListClearhButton = "<!-- BTN LIMPAR -->
                             <a href='<?= site_url(\$this->router->fetch_class()); ?>' class='btn btn-sm btn-default btn-show-modal-aguarde j-tooltip' data-placement='bottom' data-toggle='tooltip' data-original-title='Limpar'><i class='glyphicon glyphicon-minus'></i></a>
                             <!-- BTN LIMPAR -->";
-                    } else {
-                        $this->_gridListDivButtons = 'pull-right margin-right-25';
-                    }
+        } else {
+            $this->_gridListDivButtons = 'pull-right margin-right-25';
+        }
 
+        $this->_gridListFields = substr($this->_gridListFields, 0, -1);
 
+        /*
+         * GET CODE EDITOR GRID LIST
+         */
+        $_where_getCode_GridList = array(
+            'proj_build_id' => $this->_project_id,
+            'code_screen' => 'gridlist',
+        );
 
-                    $this->_gridListFields = substr($this->_gridListFields, 0, -1);
+        $_query_getCode_GridList = $this->db->get_where('proj_build_codeeditor', $_where_getCode_GridList)->result();
 
+        foreach ($_query_getCode_GridList as $_row_getCode_GridList):
 
-                    /*
-                     * GET CODE EDITOR GRID LIST
-                     */
-                    $_where_getCode_GridList = array(
-                        'proj_build_id' => $this->_project_id,
-                        'code_screen' => 'gridlist',
-                    );
+            if ($_row_getCode_GridList->code_type == 'css' && !empty(trim($_row_getCode_GridList->code_script))):
 
-                    $_query_getCode_GridList = $this->db->get_where('proj_build_codeeditor', $_where_getCode_GridList)->result();
+                $this->_gridListCodeEditorCSS .= "<!--" . PHP_EOL;
+                $this->_gridListCodeEditorCSS .= " * CSS SCRIPT" . PHP_EOL;
+                $this->_gridListCodeEditorCSS .= "-->" . PHP_EOL;
+                $this->_gridListCodeEditorCSS .= "<style>" . PHP_EOL . PHP_EOL;
+                $this->_gridListCodeEditorCSS .= html_entity_decode(base64_decode($_row_getCode_GridList->code_script, ENT_QUOTES)) . PHP_EOL . PHP_EOL;
+                $this->_gridListCodeEditorCSS .= "</style>" . PHP_EOL;
+                $this->_gridListCodeEditorCSS .= "<!--" . PHP_EOL;
+                $this->_gridListCodeEditorCSS .= " * END CSS SCRIPT" . PHP_EOL;
+                $this->_gridListCodeEditorCSS .= "-->" . PHP_EOL . PHP_EOL . PHP_EOL;
 
-
-                    foreach ($_query_getCode_GridList as $_row_getCode_GridList):
-
-                        if ($_row_getCode_GridList->code_type == 'css' && !empty(trim($_row_getCode_GridList->code_script))):
-
-                            $this->_gridListCodeEditorCSS .= "<!--" . PHP_EOL;
-                            $this->_gridListCodeEditorCSS .= " * CSS SCRIPT" . PHP_EOL;
-                            $this->_gridListCodeEditorCSS .= "-->" . PHP_EOL;
-                            $this->_gridListCodeEditorCSS .= "<style>" . PHP_EOL . PHP_EOL;
-                            $this->_gridListCodeEditorCSS .= html_entity_decode(base64_decode($_row_getCode_GridList->code_script, ENT_QUOTES)) . PHP_EOL . PHP_EOL;
-                            $this->_gridListCodeEditorCSS .= "</style>" . PHP_EOL;
-                            $this->_gridListCodeEditorCSS .= "<!--" . PHP_EOL;
-                            $this->_gridListCodeEditorCSS .= " * END CSS SCRIPT" . PHP_EOL;
-                            $this->_gridListCodeEditorCSS .= "-->" . PHP_EOL . PHP_EOL . PHP_EOL;
-
-                        endif;
-
-                        if ($_row_getCode_GridList->code_type == 'jquery' && !empty(trim($_row_getCode_GridList->code_script))):
-
-                            $this->_gridListCodeEditorJS .= "<!--" . PHP_EOL;
-                            $this->_gridListCodeEditorJS .= " * JQUERY SCRIPT" . PHP_EOL;
-                            $this->_gridListCodeEditorJS .= "-->" . PHP_EOL;
-                            $this->_gridListCodeEditorJS .= "<script>" . PHP_EOL . PHP_EOL;
-                            $this->_gridListCodeEditorJS .= "$(function(){" . PHP_EOL . PHP_EOL;
-                            $this->_gridListCodeEditorJS .= html_entity_decode(base64_decode($_row_getCode_GridList->code_script), ENT_QUOTES) . PHP_EOL . PHP_EOL;
-                            $this->_gridListCodeEditorJS .= "});" . PHP_EOL . PHP_EOL;
-                            $this->_gridListCodeEditorJS .= "</script>" . PHP_EOL;
-                            $this->_gridListCodeEditorJS .= "<!--" . PHP_EOL;
-                            $this->_gridListCodeEditorJS .= " * END JQUERY SCRIPT" . PHP_EOL;
-                            $this->_gridListCodeEditorJS .= "-->" . PHP_EOL . PHP_EOL . PHP_EOL;
-
-                        endif;
-
-                    endforeach;
-
-                /*
-                 * END GET CODE EDITOR GRID LIST
-                 */
-
-                else:
-
-                    set_mensagem_trigger_notifi('APP Não foi Gerado.', 'warning');
-                    redirect(site_url('projectbuildcrud?search=' . $this->_app_nome));
-                    exit;
-
-                endif;
-
-
-            else:
-                set_mensagem_trigger_notifi('Um ERRO Inesperável Ocorreu ao gerar GRID LIST.', 'error');
-                redirect(site_url('projectbuildcrud'));
-                exit;
             endif;
 
-            /* END CARREGA DADOS DO PROJETO PARA GRID LIST VIEW */
+            if ($_row_getCode_GridList->code_type == 'jquery' && !empty(trim($_row_getCode_GridList->code_script))):
 
+                $this->_gridListCodeEditorJS .= "<!--" . PHP_EOL;
+                $this->_gridListCodeEditorJS .= " * JQUERY SCRIPT" . PHP_EOL;
+                $this->_gridListCodeEditorJS .= "-->" . PHP_EOL;
+                $this->_gridListCodeEditorJS .= "<script>" . PHP_EOL . PHP_EOL;
+                $this->_gridListCodeEditorJS .= "$(function(){" . PHP_EOL . PHP_EOL;
+                $this->_gridListCodeEditorJS .= html_entity_decode(base64_decode($_row_getCode_GridList->code_script), ENT_QUOTES) . PHP_EOL . PHP_EOL;
+                $this->_gridListCodeEditorJS .= "});" . PHP_EOL . PHP_EOL;
+                $this->_gridListCodeEditorJS .= "</script>" . PHP_EOL;
+                $this->_gridListCodeEditorJS .= "<!--" . PHP_EOL;
+                $this->_gridListCodeEditorJS .= " * END JQUERY SCRIPT" . PHP_EOL;
+                $this->_gridListCodeEditorJS .= "-->" . PHP_EOL . PHP_EOL . PHP_EOL;
 
+            endif;
 
+        endforeach;
 
-            /**
-             * CARREGA DADOS DO PROJETO PARA FORM ADD/EDIT
+        /*
+         * END GET CODE EDITOR GRID LIST
+         */
+
+        else:
+
+            set_mensagem_trigger_notifi('APP Não foi Gerado.', 'warning');
+            redirect(site_url('projectbuildcrud?search=' . $this->_app_nome));
+            exit;
+
+        endif;
+
+        else:
+            set_mensagem_trigger_notifi('Um ERRO Inesperável Ocorreu ao gerar GRID LIST.', 'error');
+            redirect(site_url('projectbuildcrud'));
+            exit;
+        endif;
+
+        /* END CARREGA DADOS DO PROJETO PARA GRID LIST VIEW */
+
+        /**
+         * CARREGA DADOS DO PROJETO PARA FORM ADD/EDIT
+         */
+        $this->db->select('*');
+        $this->db->from('proj_build a');
+        $this->db->join('proj_build_fields b', 'b.proj_build_id=a.id', 'left');
+        $this->db->where('a.id', $this->_project_id);
+        $this->db->where('b.screen_type', 'formaddedit');
+        $this->db->order_by('order_field_form');
+        $_r_projetcFormAddEdit = $this->db->get();
+
+        if ($_r_projetcFormAddEdit->num_rows() != 0):
+
+            /*
+             * VARIÁVEIS
              */
-            $this->db->select('*');
-            $this->db->from('proj_build a');
-            $this->db->join('proj_build_fields b', 'b.proj_build_id=a.id', 'left');
-            $this->db->where('a.id', $this->_project_id);
-            $this->db->where('b.screen_type', 'formaddedit');
-            $this->db->order_by('order_field_form');
-            $_r_projetcFormAddEdit = $this->db->get();
+            $this->_appArrayDados = $_r_projetcFormAddEdit->result_array();
 
-            if ($_r_projetcFormAddEdit->num_rows() != 0):
+            /*
+             * CHECK SE O DIRETÓRIO DO APP JÁ EXISTE
+             */
+            if (is_dir($this->_directory)):
 
                 /*
-                 * VARIÁVEIS
+                 * CARREGA AS VARIÁVEIS COM OS DADOS DOS FIELDS DO PROJETO
                  */
-                $this->_appArrayDados = $_r_projetcFormAddEdit->result_array();
+                $_r = '';
+                $_c = 0;
+                $_autofocus = 'false';
 
-                /*
-                 * CHECK SE O DIRETÓRIO DO APP JÁ EXISTE
-                 */
-                if (is_dir($this->_directory)):
+                foreach ($this->_appArrayDados as $_row):
 
+                    $_c++;
+
+                    $_param_formAddEditField = json_decode($_row['param_formaddedit'], true);
 
                     /*
-                     * CARREGA AS VARIÁVEIS COM OS DADOS DOS FIELDS DO PROJETO
+                     * CAMPOS QUE SERÃO MOSTRADOS NO FORM ADD/EDIT
                      */
-                    $_r = '';
-                    $_c = 0;
-                    $_autofocus = 'false';
-
-                    foreach ($this->_appArrayDados as $_row):
-
-                        $_c++;
-
-                        $_param_formAddEditField = json_decode($_row['param_formaddedit'], true);
+                    if ($_param_formAddEditField['form_add_edit_field_show'] == 'on'):
 
                         /*
-                         * CAMPOS QUE SERÃO MOSTRADOS NO FORM ADD/EDIT
+                         * VARIÁVEIS
                          */
-                        if ($_param_formAddEditField['form_add_edit_field_show'] == 'on'):
+                        $this->_formAddEditConfigInput = '';
+                        $this->_formAddEditConfigInputClassCSS = '';
+                        $this->_formAddEditConfigInputAtributos = '';
+                        $_classDisabledReadOnlyAsterisk = '';
 
-                            /*
-                             * VARIÁVEIS
-                             */
-                            $this->_formAddEditConfigInput = '';
-                            $this->_formAddEditConfigInputClassCSS = '';
-                            $this->_formAddEditConfigInputAtributos = '';
-                            $_classDisabledReadOnlyAsterisk = '';
-
-                            $this->_formAddEditConfigInputValidationAtributos = 'trim';
-                            $this->_formAddConfigInputValidationAtributos = 'trim';
-                            $this->_formEditConfigInputValidationAtributos = 'trim';
-
+                        $this->_formAddEditConfigInputValidationAtributos = 'trim';
+                        $this->_formAddConfigInputValidationAtributos = 'trim';
+                        $this->_formEditConfigInputValidationAtributos = 'trim';
 
 //                        if (!empty($_param_formAddEditField['form_add_edit_field_read_only'])):
-//                            if ($_param_formAddEditField['form_add_edit_field_read_only'] == 'on'):
-//                                if ($_param_formAddEditField['form_add_edit_field_read_only_in_form'] == 'todos'):
-//                                    echo $_row['field_name'] . ' - READ ONLY TODOS...';
-//
-//                                elseif ($_param_formAddEditField['form_add_edit_field_read_only_in_form'] == 'formadd'):
-//                                    echo $_row['field_name'] . ' - READ ONLY SOMENTE FORM ADD...';
-//
-//                                endif;
-//                            endif;
-//                        endif;
-//
-//
-//
-//                        if (!empty($_param_formAddEditField['form_add_edit_field_hidden'])):
-//                            if ($_param_formAddEditField['form_add_edit_field_hidden'] == 'on'):
-//                                if ($_param_formAddEditField['form_add_edit_field_hidden_in_form'] == 'todos'):
-//                                /**/
-//                                elseif ($_param_formAddEditField['form_add_edit_field_hidden_in_form'] == 'formadd'):
-//
-//                                    if (!empty($_param_formAddEditField['form_add_edit_field_read_only'])):
-//                                        if ($_param_formAddEditField['form_add_edit_field_read_only'] == 'on'):
-//                                            if ($_param_formAddEditField['form_add_edit_field_read_only_in_form'] == 'formedit'):
-//                                                echo $_row['field_name'] . ' - SOMENTE LEITURA -> ' . $_param_formAddEditField['form_add_edit_field_read_only_in_form'] . '<br/><br/>';
-//                                            endif;
-//                                        endif;
-//
-//                                    endif;
-//
-//                                elseif ($_param_formAddEditField['form_add_edit_field_hidden_in_form'] == 'formedit'):
-//
-//                                    if (!empty($_param_formAddEditField['form_add_edit_field_read_only'])):
-//                                        if ($_param_formAddEditField['form_add_edit_field_read_only'] == 'on'):
-//                                            if ($_param_formAddEditField['form_add_edit_field_read_only_in_form'] == 'formadd'):
-//                                                echo $_row['field_name'] . ' - SOMENTE LEITURA -> ' . $_param_formAddEditField['form_add_edit_field_read_only_in_form'] . '<br/><br/>';
-//                                            endif;
-//                                        endif;
-//
-//                                    endif;
-//
-//                                endif;
-//
-//                            endif;
-//                        endif;
+                        //                            if ($_param_formAddEditField['form_add_edit_field_read_only'] == 'on'):
+                        //                                if ($_param_formAddEditField['form_add_edit_field_read_only_in_form'] == 'todos'):
+                        //                                    echo $_row['field_name'] . ' - READ ONLY TODOS...';
+                        //
+                        //                                elseif ($_param_formAddEditField['form_add_edit_field_read_only_in_form'] == 'formadd'):
+                        //                                    echo $_row['field_name'] . ' - READ ONLY SOMENTE FORM ADD...';
+                        //
+                        //                                endif;
+                        //                            endif;
+                        //                        endif;
+                        //
+                        //
+                        //
+                        //                        if (!empty($_param_formAddEditField['form_add_edit_field_hidden'])):
+                        //                            if ($_param_formAddEditField['form_add_edit_field_hidden'] == 'on'):
+                        //                                if ($_param_formAddEditField['form_add_edit_field_hidden_in_form'] == 'todos'):
+                        //                                /**/
+                        //                                elseif ($_param_formAddEditField['form_add_edit_field_hidden_in_form'] == 'formadd'):
+                        //
+                        //                                    if (!empty($_param_formAddEditField['form_add_edit_field_read_only'])):
+                        //                                        if ($_param_formAddEditField['form_add_edit_field_read_only'] == 'on'):
+                        //                                            if ($_param_formAddEditField['form_add_edit_field_read_only_in_form'] == 'formedit'):
+                        //                                                echo $_row['field_name'] . ' - SOMENTE LEITURA -> ' . $_param_formAddEditField['form_add_edit_field_read_only_in_form'] . '<br/><br/>';
+                        //                                            endif;
+                        //                                        endif;
+                        //
+                        //                                    endif;
+                        //
+                        //                                elseif ($_param_formAddEditField['form_add_edit_field_hidden_in_form'] == 'formedit'):
+                        //
+                        //                                    if (!empty($_param_formAddEditField['form_add_edit_field_read_only'])):
+                        //                                        if ($_param_formAddEditField['form_add_edit_field_read_only'] == 'on'):
+                        //                                            if ($_param_formAddEditField['form_add_edit_field_read_only_in_form'] == 'formadd'):
+                        //                                                echo $_row['field_name'] . ' - SOMENTE LEITURA -> ' . $_param_formAddEditField['form_add_edit_field_read_only_in_form'] . '<br/><br/>';
+                        //                                            endif;
+                        //                                        endif;
+                        //
+                        //                                    endif;
+                        //
+                        //                                endif;
+                        //
+                        //                            endif;
+                        //                        endif;
 
+                        /**
+                         * UNSET NO FIELD PRIMARY KEY NO EDIT
+                         */
+                        if ($_row['primary_key'] == 1):
+                            $this->_formEditUnsetPrimaryKey .= "unset(\$_dados['" . $this->_primary_key_field . "']);" . PHP_EOL;
+                        endif;
+                        /* END UNSET NO FIELD PRIMARY KEY NO EDIT */
 
-                            /**
-                             * UNSET NO FIELD PRIMARY KEY NO EDIT
-                             */
-                            if ($_row['primary_key'] == 1):
-                                $this->_formEditUnsetPrimaryKey .= "unset(\$_dados['" . $this->_primary_key_field . "']);" . PHP_EOL;
-                            endif;
-                            /* END UNSET NO FIELD PRIMARY KEY NO EDIT */
+                        /*
+                         * VALIDAÇÕES DOS INPUTS
+                         */
+                        /* AUTO FOCUS */
+                        if ($_autofocus == 'false' && empty($_param_formAddEditField['form_add_edit_field_read_only'])):
+                            $_autofocus = 'true';
+                            $this->_formAddEditConfigInputAtributos .= 'autofocus ';
+                        endif;
 
+                        /* READ ONLY */
+                        if (!empty($_param_formAddEditField['form_add_edit_field_read_only'])):
+                            if ($_param_formAddEditField['form_add_edit_field_read_only'] == 'on'):
 
-                            /*
-                             * VALIDAÇÕES DOS INPUTS
-                             */
-                            /* AUTO FOCUS */
-                            if ($_autofocus == 'false' && empty($_param_formAddEditField['form_add_edit_field_read_only'])):
-                                $_autofocus = 'true';
-                                $this->_formAddEditConfigInputAtributos .= 'autofocus ';
-                            endif;
-
-
-                            /* READ ONLY */
-                            if (!empty($_param_formAddEditField['form_add_edit_field_read_only'])):
-                                if ($_param_formAddEditField['form_add_edit_field_read_only'] == 'on'):
-
-                                    if ($_param_formAddEditField['form_add_edit_field_read_only_in_form'] == 'formadd'):
-                                        $this->_formAddEditConfigInputAtributos .= 'disabled-formadd ';
-                                    elseif ($_param_formAddEditField['form_add_edit_field_read_only_in_form'] == 'formedit'):
-                                        $this->_formAddEditConfigInputAtributos .= 'disabled-formedit ';
-                                    else:
-                                        $this->_formAddEditConfigInputAtributos .= 'disabled ';
-                                    endif;
-
-                                endif;
-                            endif;
-
-
-                            /* QUANTIDADE DE COLUNA DO INPUT FIELD */
-                            if (!empty($_param_formAddEditField['form_add_edit_field_column'])):
-                                if (strlen($this->_formAddEditConfigInputClassCSS) > 0):
-                                    $this->_formAddEditConfigInputClassCSS .= ' col-sm-' . (($_param_formAddEditField['form_add_edit_field_column'] > 0) ? $_param_formAddEditField['form_add_edit_field_column'] : '12');
+                                if ($_param_formAddEditField['form_add_edit_field_read_only_in_form'] == 'formadd'):
+                                    $this->_formAddEditConfigInputAtributos .= 'disabled-formadd ';
+                                elseif ($_param_formAddEditField['form_add_edit_field_read_only_in_form'] == 'formedit'):
+                                    $this->_formAddEditConfigInputAtributos .= 'disabled-formedit ';
                                 else:
-                                    $this->_formAddEditConfigInputClassCSS = 'col-sm-' . (($_param_formAddEditField['form_add_edit_field_column'] > 0) ? $_param_formAddEditField['form_add_edit_field_column'] : '12');
+                                    $this->_formAddEditConfigInputAtributos .= 'disabled ';
                                 endif;
+
+                            endif;
+                        endif;
+
+                        /* QUANTIDADE DE COLUNA DO INPUT FIELD */
+                        if (!empty($_param_formAddEditField['form_add_edit_field_column'])):
+                            if (strlen($this->_formAddEditConfigInputClassCSS) > 0):
+                                $this->_formAddEditConfigInputClassCSS .= ' col-sm-' . (($_param_formAddEditField['form_add_edit_field_column'] > 0) ? $_param_formAddEditField['form_add_edit_field_column'] : '12');
                             else:
-                                if (strlen($this->_formAddEditConfigInputClassCSS) > 0):
-                                    $this->_formAddEditConfigInputClassCSS .= ' col-sm-12';
-                                else:
-                                    $this->_formAddEditConfigInputClassCSS = 'col-sm-12';
+                                $this->_formAddEditConfigInputClassCSS = 'col-sm-' . (($_param_formAddEditField['form_add_edit_field_column'] > 0) ? $_param_formAddEditField['form_add_edit_field_column'] : '12');
+                            endif;
+                        else:
+                            if (strlen($this->_formAddEditConfigInputClassCSS) > 0):
+                                $this->_formAddEditConfigInputClassCSS .= ' col-sm-12';
+                            else:
+                                $this->_formAddEditConfigInputClassCSS = 'col-sm-12';
+                            endif;
+                        endif;
+
+                        /*
+                         * GERA OS TIPOS DOS CAMPOS
+                         */
+
+                        if ($_param_formAddEditField['form_add_edit_field_type'] == 'text'):
+
+                            $this->_formAddEditConfigInput = '<input type="text" name="' . $_row['field_name'] . '" class="form-control ' . (!empty($_param_formAddEditField['form_add_edit_field_convert_letter_into']) ? $_param_formAddEditField['form_add_edit_field_convert_letter_into'] : null) . ' ' . ((!empty($_param_formAddEditField['form_add_edit_field_mask'])) ? 'j-mask-' . $_row['field_name'] : '') . ' " placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" ' . $this->_formAddEditConfigInputAtributos . ' value="<?=set_value("' . $_row['field_name'] . '",!empty($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : set_value("' . $_row['field_name'] . '"));?>" />';
+
+                            if ($_row['field_type'] == 'int'):
+                                $this->_formAddConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = preg_replace("/[^0-9]/", "", $_dados["' . $_row['field_name'] . '"]);' . PHP_EOL;
+                                if ($_row['primary_key'] == 0):
+                                    $this->_formEditConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = preg_replace("/[^0-9]/", "", $_dados["' . $_row['field_name'] . '"]);' . PHP_EOL;
                                 endif;
                             endif;
 
+                        elseif ($_param_formAddEditField['form_add_edit_field_type'] == 'text-long'):
 
+                            $this->_formAddEditConfigInput = '<textarea rows="5" name="' . $_row['field_name'] . '" class="form-control" placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" ' . $this->_formAddEditConfigInputAtributos . '/><?=set_value("' . $_row['field_name'] . '",isset($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : set_value("' . $_row['field_name'] . '"));?></textarea>';
 
-                            /*
-                             * GERA OS TIPOS DOS CAMPOS
-                             */
+                        elseif ($_param_formAddEditField['form_add_edit_field_type'] == 'text-ckeditor'):
 
-                            if ($_param_formAddEditField['form_add_edit_field_type'] == 'text'):
+                            $this->_formAddEditConfigInput = '<textarea id="ckeditor-' . $_row['field_name'] . '" rows="5" name="' . $_row['field_name'] . '" class="form-control" placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" ' . $this->_formAddEditConfigInputAtributos . '/><?=set_value("' . $_row['field_name'] . '",isset($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : set_value("' . $_row['field_name'] . '"));?></textarea>';
 
-                                $this->_formAddEditConfigInput = '<input type="text" name="' . $_row['field_name'] . '" class="form-control ' . (!empty($_param_formAddEditField['form_add_edit_field_convert_letter_into']) ? $_param_formAddEditField['form_add_edit_field_convert_letter_into'] : null ) . ' ' . ((!empty($_param_formAddEditField['form_add_edit_field_mask'])) ? 'j-mask-' . $_row['field_name'] : '') . ' " placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" ' . $this->_formAddEditConfigInputAtributos . ' value="<?=set_value("' . $_row['field_name'] . '",!empty($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : set_value("' . $_row['field_name'] . '"));?>" />';
+                            $this->_formAddConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = $this->input->post("' . $_row['field_name'] . '",FALSE);';
+                            $this->_formEditConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = $this->input->post("' . $_row['field_name'] . '",FALSE);';
 
-                                if ($_row['field_type'] == 'int'):
-                                    $this->_formAddConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = preg_replace("/[^0-9]/", "", $_dados["' . $_row['field_name'] . '"]);' . PHP_EOL;
-                                    if ($_row['primary_key'] == 0):
-                                        $this->_formEditConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = preg_replace("/[^0-9]/", "", $_dados["' . $_row['field_name'] . '"]);' . PHP_EOL;
-                                    endif;
-                                endif;
+                            /* FORM ADD */
+                            $this->_formAddCodeEditorJS .= "<!--" . PHP_EOL;
+                            $this->_formAddCodeEditorJS .= " * JQUERY SCRIPT - EDITOR DE TEXTO HTML - CKEDITOR" . PHP_EOL;
+                            $this->_formAddCodeEditorJS .= "-->" . PHP_EOL;
+                            $this->_formAddCodeEditorJS .= "<script>" . PHP_EOL;
+                            $this->_formAddCodeEditorJS .= "    $(function(){" . PHP_EOL;
+                            $this->_formAddCodeEditorJS .= "        CKEDITOR.replace('ckeditor-" . $_row['field_name'] . "', {" . PHP_EOL;
+                            $this->_formAddCodeEditorJS .= "            height: ['" . $_param_formAddEditField['form_add_edit_field_editorhtml_ckeditor_line_height'] . "']" . PHP_EOL;
+                            $this->_formAddCodeEditorJS .= "        });" . PHP_EOL;
+                            $this->_formAddCodeEditorJS .= "    });" . PHP_EOL;
+                            $this->_formAddCodeEditorJS .= "</script>" . PHP_EOL;
+                            $this->_formAddCodeEditorJS .= "<!--" . PHP_EOL;
+                            $this->_formAddCodeEditorJS .= " * END JQUERY SCRIPT - EDITOR DE TEXTO HTML - CKEDITOR" . PHP_EOL;
+                            $this->_formAddCodeEditorJS .= "-->" . PHP_EOL . PHP_EOL . PHP_EOL;
 
-                            elseif ($_param_formAddEditField['form_add_edit_field_type'] == 'text-long'):
+                            /* FORM EDIT */
+                            $this->_formEditCodeEditorJS .= "<!--" . PHP_EOL;
+                            $this->_formEditCodeEditorJS .= " * JQUERY SCRIPT - EDITOR DE TEXTO HTML - CKEDITOR" . PHP_EOL;
+                            $this->_formEditCodeEditorJS .= "-->" . PHP_EOL;
+                            $this->_formEditCodeEditorJS .= "<script>" . PHP_EOL;
+                            $this->_formEditCodeEditorJS .= "   $(function(){" . PHP_EOL;
+                            $this->_formEditCodeEditorJS .= "       CKEDITOR.replace('ckeditor-" . $_row['field_name'] . "', {" . PHP_EOL;
+                            $this->_formEditCodeEditorJS .= "           height: ['" . $_param_formAddEditField['form_add_edit_field_editorhtml_ckeditor_line_height'] . "']" . PHP_EOL;
+                            $this->_formEditCodeEditorJS .= "       });" . PHP_EOL;
+                            $this->_formEditCodeEditorJS .= "   });" . PHP_EOL;
+                            $this->_formEditCodeEditorJS .= "</script>" . PHP_EOL;
+                            $this->_formEditCodeEditorJS .= "<!--" . PHP_EOL;
+                            $this->_formEditCodeEditorJS .= " * END JQUERY SCRIPT - EDITOR DE TEXTO HTML - CKEDITOR" . PHP_EOL;
+                            $this->_formEditCodeEditorJS .= "-->" . PHP_EOL . PHP_EOL . PHP_EOL;
 
-                                $this->_formAddEditConfigInput = '<textarea rows="5" name="' . $_row['field_name'] . '" class="form-control" placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" ' . $this->_formAddEditConfigInputAtributos . '/><?=set_value("' . $_row['field_name'] . '",isset($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : set_value("' . $_row['field_name'] . '"));?></textarea>';
+                        elseif ($_param_formAddEditField['form_add_edit_field_type'] == 'date'):
 
-                            elseif ($_param_formAddEditField['form_add_edit_field_type'] == 'text-ckeditor'):
+                            $this->_formAddEditConfigInput = '<input type="text" name="' . $_row['field_name'] . '" class="form-control datepicker j-mask-data-ptbr j-mask-' . $_row['field_name'] . '" placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" value="<?=set_value("' . $_row['field_name'] . '",isset($dados->' . $_row['field_name'] . ') ? bz_formatdata($dados->' . $_row['field_name'] . ',"d/m/Y") : set_value("' . $_row['field_name'] . '"));?>" ' . $this->_formAddEditConfigInputAtributos . ' />';
+                            $this->_formAddEditConfigInputMask .= '$(".j-mask-' . $_row['field_name'] . '").mask("00/00/0000", {placeholder: "__/__/____"});' . PHP_EOL;
+                            $this->_formAddConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = bz_formatdata($_dados["' . $_row['field_name'] . '"],"Y-m-d");' . PHP_EOL;
+                            if ($_row['primary_key'] == 0):
+                                $this->_formEditConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = bz_formatdata($_dados["' . $_row['field_name'] . '"],"Y-m-d");' . PHP_EOL;
+                            endif;
 
-                                $this->_formAddEditConfigInput = '<textarea id="ckeditor-' . $_row['field_name'] . '" rows="5" name="' . $_row['field_name'] . '" class="form-control" placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" ' . $this->_formAddEditConfigInputAtributos . '/><?=set_value("' . $_row['field_name'] . '",isset($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : set_value("' . $_row['field_name'] . '"));?></textarea>';
+                        elseif ($_param_formAddEditField['form_add_edit_field_type'] == 'datetime'):
 
-                                $this->_formAddConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = $this->input->post("' . $_row['field_name'] . '",FALSE);';
-                                $this->_formEditConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = $this->input->post("' . $_row['field_name'] . '",FALSE);';
+                            $this->_formAddEditConfigInput = '<input type="text" name="' . $_row['field_name'] . '" class="form-control datetimepicker j-mask-datahora-ptbr j-mask-' . $_row['field_name'] . '" placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" value="<?=set_value("' . $_row['field_name'] . '",isset($dados->' . $_row['field_name'] . ') ? bz_formatdata($dados->' . $_row['field_name'] . ',"d/m/Y H:i:s") : set_value("' . $_row['field_name'] . '"));?>" ' . $this->_formAddEditConfigInputAtributos . ' />';
+                            $this->_formAddEditConfigInputMask .= '$(".j-mask-' . $_row['field_name'] . '").mask("00/00/0000 00:00", {placeholder: "__/__/____ __:__"});' . PHP_EOL;
+                            $this->_formAddConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = bz_formatdata($_dados["' . $_row['field_name'] . '"],"Y-m-d H:i:s");' . PHP_EOL;
+                            if ($_row['primary_key'] == 0):
+                                $this->_formEditConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = bz_formatdata($_dados["' . $_row['field_name'] . '"],"Y-m-d H:i:s");' . PHP_EOL;
+                            endif;
 
+                        elseif ($_param_formAddEditField['form_add_edit_field_type'] == 'time'):
 
-                                /* FORM ADD */
-                                $this->_formAddCodeEditorJS .= "<!--" . PHP_EOL;
-                                $this->_formAddCodeEditorJS .= " * JQUERY SCRIPT - EDITOR DE TEXTO HTML - CKEDITOR" . PHP_EOL;
-                                $this->_formAddCodeEditorJS .= "-->" . PHP_EOL;
-                                $this->_formAddCodeEditorJS .= "<script>" . PHP_EOL;
-                                $this->_formAddCodeEditorJS .= "    $(function(){" . PHP_EOL;
-                                $this->_formAddCodeEditorJS .= "        CKEDITOR.replace('ckeditor-" . $_row['field_name'] . "', {" . PHP_EOL;
-                                $this->_formAddCodeEditorJS .= "            height: ['" . $_param_formAddEditField['form_add_edit_field_editorhtml_ckeditor_line_height'] . "']" . PHP_EOL;
-                                $this->_formAddCodeEditorJS .= "        });" . PHP_EOL;
-                                $this->_formAddCodeEditorJS .= "    });" . PHP_EOL;
-                                $this->_formAddCodeEditorJS .= "</script>" . PHP_EOL;
-                                $this->_formAddCodeEditorJS .= "<!--" . PHP_EOL;
-                                $this->_formAddCodeEditorJS .= " * END JQUERY SCRIPT - EDITOR DE TEXTO HTML - CKEDITOR" . PHP_EOL;
-                                $this->_formAddCodeEditorJS .= "-->" . PHP_EOL . PHP_EOL . PHP_EOL;
+                            $this->_formAddEditConfigInput = '<input type="text" name="' . $_row['field_name'] . '" class="form-control timepicker j-mask-hora-ptbr j-mask-' . $_row['field_name'] . '" placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" value="<?=set_value("' . $_row['field_name'] . '",isset($dados->' . $_row['field_name'] . ') ? bz_formatdata($dados->' . $_row['field_name'] . ',"H:i:s") : set_value("' . $_row['field_name'] . '"));?>" ' . $this->_formAddEditConfigInputAtributos . ' />';
+                            $this->_formAddEditConfigInputMask .= '$(".j-mask-' . $_row['field_name'] . '").mask("00:00", {placeholder: "__:__"});' . PHP_EOL;
 
-                                /* FORM EDIT */
-                                $this->_formEditCodeEditorJS .= "<!--" . PHP_EOL;
-                                $this->_formEditCodeEditorJS .= " * JQUERY SCRIPT - EDITOR DE TEXTO HTML - CKEDITOR" . PHP_EOL;
-                                $this->_formEditCodeEditorJS .= "-->" . PHP_EOL;
-                                $this->_formEditCodeEditorJS .= "<script>" . PHP_EOL;
-                                $this->_formEditCodeEditorJS .= "   $(function(){" . PHP_EOL;
-                                $this->_formEditCodeEditorJS .= "       CKEDITOR.replace('ckeditor-" . $_row['field_name'] . "', {" . PHP_EOL;
-                                $this->_formEditCodeEditorJS .= "           height: ['" . $_param_formAddEditField['form_add_edit_field_editorhtml_ckeditor_line_height'] . "']" . PHP_EOL;
-                                $this->_formEditCodeEditorJS .= "       });" . PHP_EOL;
-                                $this->_formEditCodeEditorJS .= "   });" . PHP_EOL;
-                                $this->_formEditCodeEditorJS .= "</script>" . PHP_EOL;
-                                $this->_formEditCodeEditorJS .= "<!--" . PHP_EOL;
-                                $this->_formEditCodeEditorJS .= " * END JQUERY SCRIPT - EDITOR DE TEXTO HTML - CKEDITOR" . PHP_EOL;
-                                $this->_formEditCodeEditorJS .= "-->" . PHP_EOL . PHP_EOL . PHP_EOL;
+                        elseif ($_param_formAddEditField['form_add_edit_field_type'] == 'number'):
 
-                            elseif ($_param_formAddEditField['form_add_edit_field_type'] == 'date'):
+                            $this->_formAddEditConfigInput = '<input type="number" name="' . $_row['field_name'] . '" class="form-control" placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" value="<?=set_value("' . $_row['field_name'] . '",isset($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : set_value("' . $_row['field_name'] . '"));?>" pattern="[0-9]" onkeypress="return (event.charCode >= 48 && event.charCode <= 57) ||  event.charCode == 0 " ' . $this->_formAddEditConfigInputAtributos . ' />';
 
-                                $this->_formAddEditConfigInput = '<input type="text" name="' . $_row['field_name'] . '" class="form-control datepicker j-mask-data-ptbr j-mask-' . $_row['field_name'] . '" placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" value="<?=set_value("' . $_row['field_name'] . '",isset($dados->' . $_row['field_name'] . ') ? bz_formatdata($dados->' . $_row['field_name'] . ',"d/m/Y") : set_value("' . $_row['field_name'] . '"));?>" ' . $this->_formAddEditConfigInputAtributos . ' />';
-                                $this->_formAddEditConfigInputMask .= '$(".j-mask-' . $_row['field_name'] . '").mask("00/00/0000", {placeholder: "__/__/____"});' . PHP_EOL;
-                                $this->_formAddConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = bz_formatdata($_dados["' . $_row['field_name'] . '"],"Y-m-d");' . PHP_EOL;
-                                if ($_row['primary_key'] == 0):
-                                    $this->_formEditConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = bz_formatdata($_dados["' . $_row['field_name'] . '"],"Y-m-d");' . PHP_EOL;
-                                endif;
+                        elseif ($_param_formAddEditField['form_add_edit_field_type'] == 'number-decimal'):
 
-                            elseif ($_param_formAddEditField['form_add_edit_field_type'] == 'datetime'):
+                            $this->_formAddEditConfigInput = '<input type="text" name="' . $_row['field_name'] . '" class="form-control ' . ((!empty($_param_formAddEditField['form_add_edit_field_mask'])) ? 'j-mask-' . $_row['field_name'] : '') . '" placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" value="<?=set_value("' . $_row['field_name'] . '",isset($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : set_value("' . $_row['field_name'] . '"));?>" onkeypress="return (event.charCode >= 48 && event.charCode <= 57) ||  event.charCode == 44 || event.charCode == 0 " ' . $this->_formAddEditConfigInputAtributos . ' />';
+                            $this->_formAddConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = str_replace(",",".",str_replace(".","",$_dados["' . $_row['field_name'] . '"]));';
+                            if ($_row['primary_key'] == 0):
+                                $this->_formEditConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = str_replace(",",".",str_replace(".","",$_dados["' . $_row['field_name'] . '"]));';
+                            endif;
 
-                                $this->_formAddEditConfigInput = '<input type="text" name="' . $_row['field_name'] . '" class="form-control datetimepicker j-mask-datahora-ptbr j-mask-' . $_row['field_name'] . '" placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" value="<?=set_value("' . $_row['field_name'] . '",isset($dados->' . $_row['field_name'] . ') ? bz_formatdata($dados->' . $_row['field_name'] . ',"d/m/Y H:i:s") : set_value("' . $_row['field_name'] . '"));?>" ' . $this->_formAddEditConfigInputAtributos . ' />';
-                                $this->_formAddEditConfigInputMask .= '$(".j-mask-' . $_row['field_name'] . '").mask("00/00/0000 00:00", {placeholder: "__/__/____ __:__"});' . PHP_EOL;
-                                $this->_formAddConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = bz_formatdata($_dados["' . $_row['field_name'] . '"],"Y-m-d H:i:s");' . PHP_EOL;
-                                if ($_row['primary_key'] == 0):
-                                    $this->_formEditConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = bz_formatdata($_dados["' . $_row['field_name'] . '"],"Y-m-d H:i:s");' . PHP_EOL;
-                                endif;
+                        elseif ($_param_formAddEditField['form_add_edit_field_type'] == 'moeda'):
 
-                            elseif ($_param_formAddEditField['form_add_edit_field_type'] == 'time'):
+                            $this->_formAddEditConfigInput = '<input type="text" name="' . $_row['field_name'] . '" class="form-control j-mask-moeda-ptbr" placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" value="<?=set_value("' . $_row['field_name'] . '",isset($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : set_value("' . $_row['field_name'] . '"));?>" onkeypress="return (event.charCode >= 48 && event.charCode <= 57) ||  event.charCode == 44 || event.charCode == 0 " ' . $this->_formAddEditConfigInputAtributos . ' />';
+                            $this->_formAddConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = str_replace(",",".",str_replace(".","",$_dados["' . $_row['field_name'] . '"]));';
+                            if ($_row['primary_key'] == 0):
+                                $this->_formEditConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = str_replace(",",".",str_replace(".","",$_dados["' . $_row['field_name'] . '"]));';
+                            endif;
 
-                                $this->_formAddEditConfigInput = '<input type="text" name="' . $_row['field_name'] . '" class="form-control timepicker j-mask-hora-ptbr j-mask-' . $_row['field_name'] . '" placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" value="<?=set_value("' . $_row['field_name'] . '",isset($dados->' . $_row['field_name'] . ') ? bz_formatdata($dados->' . $_row['field_name'] . ',"H:i:s") : set_value("' . $_row['field_name'] . '"));?>" ' . $this->_formAddEditConfigInputAtributos . ' />';
-                                $this->_formAddEditConfigInputMask .= '$(".j-mask-' . $_row['field_name'] . '").mask("00:00", {placeholder: "__:__"});' . PHP_EOL;
+                        elseif ($_param_formAddEditField['form_add_edit_field_type'] == 'email'):
 
-                            elseif ($_param_formAddEditField['form_add_edit_field_type'] == 'number'):
+                            $this->_formAddEditConfigInput = '<input type="text" name="' . $_row['field_name'] . '" class="form-control" placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" value="<?=set_value("' . $_row['field_name'] . '",isset($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : set_value("' . $_row['field_name'] . '"));?>" ' . $this->_formAddEditConfigInputAtributos . ' />';
 
-                                $this->_formAddEditConfigInput = '<input type="number" name="' . $_row['field_name'] . '" class="form-control" placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" value="<?=set_value("' . $_row['field_name'] . '",isset($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : set_value("' . $_row['field_name'] . '"));?>" pattern="[0-9]" onkeypress="return (event.charCode >= 48 && event.charCode <= 57) ||  event.charCode == 0 " ' . $this->_formAddEditConfigInputAtributos . ' />';
+                        elseif ($_param_formAddEditField['form_add_edit_field_type'] == 'senha'):
 
-                            elseif ($_param_formAddEditField['form_add_edit_field_type'] == 'number-decimal'):
+                            $this->_formAddEditConfigInput = '<input type="password" name="' . $_row['field_name'] . '" class="form-control" placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" value="<?=set_value("' . $_row['field_name'] . '",isset($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : set_value("' . $_row['field_name'] . '"));?>" ' . $this->_formAddEditConfigInputAtributos . ' />';
 
-                                $this->_formAddEditConfigInput = '<input type="text" name="' . $_row['field_name'] . '" class="form-control ' . ((!empty($_param_formAddEditField['form_add_edit_field_mask'])) ? 'j-mask-' . $_row['field_name'] : '') . '" placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" value="<?=set_value("' . $_row['field_name'] . '",isset($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : set_value("' . $_row['field_name'] . '"));?>" onkeypress="return (event.charCode >= 48 && event.charCode <= 57) ||  event.charCode == 44 || event.charCode == 0 " ' . $this->_formAddEditConfigInputAtributos . ' />';
-                                $this->_formAddConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = str_replace(",",".",str_replace(".","",$_dados["' . $_row['field_name'] . '"]));';
-                                if ($_row['primary_key'] == 0):
-                                    $this->_formEditConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = str_replace(",",".",str_replace(".","",$_dados["' . $_row['field_name'] . '"]));';
-                                endif;
+                        elseif ($_param_formAddEditField['form_add_edit_field_type'] == 'upload-imagem'):
 
-                            elseif ($_param_formAddEditField['form_add_edit_field_type'] == 'moeda'):
+                            $this->_formAddEditConfigInput = '<input type="file" name="arquivo_nome" class="form-control-file margin-bottom-10" placeholder="" value="<?= set_value("arquivo_nome", isset($dados->arquivo_nome) ? $dados->arquivo_nome : set_value("arquivo_nome")); ?>"  />';
 
-                                $this->_formAddEditConfigInput = '<input type="text" name="' . $_row['field_name'] . '" class="form-control j-mask-moeda-ptbr" placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" value="<?=set_value("' . $_row['field_name'] . '",isset($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : set_value("' . $_row['field_name'] . '"));?>" onkeypress="return (event.charCode >= 48 && event.charCode <= 57) ||  event.charCode == 44 || event.charCode == 0 " ' . $this->_formAddEditConfigInputAtributos . ' />';
-                                $this->_formAddConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = str_replace(",",".",str_replace(".","",$_dados["' . $_row['field_name'] . '"]));';
-                                if ($_row['primary_key'] == 0):
-                                    $this->_formEditConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = str_replace(",",".",str_replace(".","",$_dados["' . $_row['field_name'] . '"]));';
-                                endif;
+                            $this->_formAddEditConfigInput = '<input type="file" name="arquivo_nome" class="form-control-file margin-bottom-10" placeholder="" value="<?= set_value("arquivo_nome", isset($dados->arquivo_nome) ? $dados->arquivo_nome : set_value("arquivo_nome")); ?>"  />' . PHP_EOL
+                                . '<?php if ($this->uri->segment(2) == "edit"): ?>' . PHP_EOL
+                                . '     <div class="col-xs-12 col-sm-12 col-md-3 col-lg-2"><?= mc_image_thumb_modal($dados->arquivo_nome); ?></div>' . PHP_EOL
+                                . '     <div class="btn-ver-imagem margin-top-5 margin-bottom-5" style="font-size: 0.8em"><i class="fa fa-fw fa-camera"></i> <?= anchor(___CONF_UPLOAD_DIR___ . "/" . ___CONF_UPLOAD_IMAGE_DIR___ . "/" . set_value("imagem_nome", isset($dados->arquivo_nome) ? $dados->arquivo_nome : set_value("arquivo_nome")), "Ver Imagem", "data-lightbox=\'arquivo_nome\'"); ?></div>' . PHP_EOL
+                                . '     <input type="hidden" name="' . $_row['field_name'] . '" value="<?= $dados->' . $_row['field_name'] . ';?>">' . PHP_EOL
+                                . '     ' . PHP_EOL
+                                . '<?php else: ?>' . PHP_EOL
+                                . '     ' . PHP_EOL
+                                . '     ' . PHP_EOL
+                                . '     ' . PHP_EOL
+                                . '<?php endif; ?>' . PHP_EOL;
 
-                            elseif ($_param_formAddEditField['form_add_edit_field_type'] == 'email'):
+                            $this->_formAddConvertDadosToDatabase .= "if( !empty(\$this->task['result_upload']['file_name']) ):" . PHP_EOL
+                                . "     \$_dados['" . $_row['field_name'] . "'] = \$this->task['result_upload']['file_name'];" . PHP_EOL
+                                . "endif;";
 
-                                $this->_formAddEditConfigInput = '<input type="text" name="' . $_row['field_name'] . '" class="form-control" placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" value="<?=set_value("' . $_row['field_name'] . '",isset($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : set_value("' . $_row['field_name'] . '"));?>" ' . $this->_formAddEditConfigInputAtributos . ' />';
+                            $this->_formEditConvertDadosToDatabase .= $this->_formAddConvertDadosToDatabase;
 
-                            elseif ($_param_formAddEditField['form_add_edit_field_type'] == 'senha'):
+                            $this->_controller_DeleteFileFunction = "/**" . PHP_EOL
+                                . " * DELETA IMAGEM" . PHP_EOL
+                                . " */" . PHP_EOL
+                                . "foreach (\$_dados as \$_value):" . PHP_EOL
+                                . "     \$_file_name = mc_findByIdDataDB(\$this->table_formaddedit_name, \$_value)->row()->" . $_row['field_name'] . ";" . PHP_EOL
+                                . "     bz_delete_file(\$_file_name, bz_absolute_path() . ___CONF_UPLOAD_DIR___ . ___CONF_UPLOAD_IMAGE_DIR___);" . PHP_EOL
+                                . "endforeach;" . PHP_EOL
+                                . "/* END DELETA IMAGEM */";
 
-                                $this->_formAddEditConfigInput = '<input type="password" name="' . $_row['field_name'] . '" class="form-control" placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" value="<?=set_value("' . $_row['field_name'] . '",isset($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : set_value("' . $_row['field_name'] . '"));?>" ' . $this->_formAddEditConfigInputAtributos . ' />';
+                            $this->_form_edit_unset_fields .= "/**" . PHP_EOL . PHP_EOL
+                                . " * DELETA IMAGEM" . PHP_EOL
+                                . " */" . PHP_EOL
+                                . "if (isset(\$this->task['uploaded_image']) && \$this->task['uploaded_image']) {" . PHP_EOL
+                                . "     \$_file_name = mc_findByIdDataDB(\$this->table_formaddedit_name, \$_id)->row()->" . $_row['field_name'] . ";" . PHP_EOL
+                                . "     bz_delete_file(\$_file_name, bz_absolute_path() . ___CONF_UPLOAD_DIR___ . ___CONF_UPLOAD_IMAGE_DIR___);" . PHP_EOL
+                                . "}" . PHP_EOL
+                                . "/* END DELETA IMAGEM */";
 
-                            elseif ($_param_formAddEditField['form_add_edit_field_type'] == 'upload-imagem'):
+                        elseif ($_param_formAddEditField['form_add_edit_field_type'] == 'upload-arquivo'):
 
-                                $this->_formAddEditConfigInput = '<input type="file" name="arquivo_nome" class="form-control-file margin-bottom-10" placeholder="" value="<?= set_value("arquivo_nome", isset($dados->arquivo_nome) ? $dados->arquivo_nome : set_value("arquivo_nome")); ?>"  />';
+                            $this->_formAddEditConfigInput = '<input type="file" name="' . $_row['field_name'] . '" class="form-control-file margin-bottom-10" placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" value="<?=set_value("' . $_row['field_name'] . '",isset($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : set_value("' . $_row['field_name'] . '"));?>" ' . $this->_formAddEditConfigInputAtributos . ' />' . PHP_EOL
+                                . '<?php if ($this->uri->segment(2) == "edit"): ?>' . PHP_EOL
+                                . '     <input type="hidden" name="' . $_row['field_name'] . '" value="<?= $dados->' . $_row['field_name'] . ';?>">' . PHP_EOL
+                                . '     <div id="" class=""><?= mc_file_link_download($dados->' . $_row['field_name'] . '); ?></div>' . PHP_EOL
+                                . '<?php else: ?>' . PHP_EOL
+                                . '     ' . PHP_EOL
+                                . '     ' . PHP_EOL
+                                . '     ' . PHP_EOL
+                                . '<?php endif; ?>' . PHP_EOL;
 
-                                $this->_formAddEditConfigInput = '<input type="file" name="arquivo_nome" class="form-control-file margin-bottom-10" placeholder="" value="<?= set_value("arquivo_nome", isset($dados->arquivo_nome) ? $dados->arquivo_nome : set_value("arquivo_nome")); ?>"  />' . PHP_EOL
-                                        . '<?php if ($this->uri->segment(2) == "edit"): ?>' . PHP_EOL
-                                        . '     <div class="col-xs-12 col-sm-12 col-md-3 col-lg-2"><?= mc_image_thumb_modal($dados->arquivo_nome); ?></div>' . PHP_EOL
-                                        . '     <div class="btn-ver-imagem margin-top-5 margin-bottom-5" style="font-size: 0.8em"><i class="fa fa-fw fa-camera"></i> <?= anchor(___CONF_UPLOAD_DIR___ . "/" . ___CONF_UPLOAD_IMAGE_DIR___ . "/" . set_value("imagem_nome", isset($dados->arquivo_nome) ? $dados->arquivo_nome : set_value("arquivo_nome")), "Ver Imagem", "data-lightbox=\'arquivo_nome\'"); ?></div>' . PHP_EOL
-                                        . '     <input type="hidden" name="' . $_row['field_name'] . '" value="<?= $dados->' . $_row['field_name'] . ';?>">' . PHP_EOL
-                                        . '     ' . PHP_EOL
-                                        . '<?php else: ?>' . PHP_EOL
-                                        . '     ' . PHP_EOL
-                                        . '     ' . PHP_EOL
-                                        . '     ' . PHP_EOL
-                                        . '<?php endif; ?>' . PHP_EOL;
+                            $this->_formAddConvertDadosToDatabase .= "if( !empty(\$this->task['result_upload']['file_name']) ):" . PHP_EOL
+                                . "     \$_dados['" . $_row['field_name'] . "'] = \$this->task['result_upload']['file_name'];" . PHP_EOL
+                                . "endif;";
 
+                            $this->_formEditConvertDadosToDatabase .= $this->_formAddConvertDadosToDatabase;
 
+                            $this->_controller_DeleteFileFunction = "/**" . PHP_EOL
+                                . " * DELETA ARQUIVO" . PHP_EOL
+                                . " */" . PHP_EOL
+                                . "foreach (\$_dados as \$_value):" . PHP_EOL
+                                . "     \$_file_name = mc_findByIdDataDB(\$this->table_formaddedit_name, \$_value)->row()->" . $_row['field_name'] . ";" . PHP_EOL
+                                . "     bz_delete_file(\$_file_name, bz_absolute_path() . ___CONF_UPLOAD_DIR___ . ___CONF_UPLOAD_FILE_DIR___);" . PHP_EOL
+                                . "endforeach;" . PHP_EOL
+                                . "/* END DELETA ARQUIVO */";
 
+                            $this->_form_edit_unset_fields .= "/**" . PHP_EOL . PHP_EOL
+                                . " * DELETA ARQUIVO" . PHP_EOL
+                                . " */" . PHP_EOL
+                                . "if (isset(\$this->task['uploaded_file']) && \$this->task['uploaded_file']) {" . PHP_EOL
+                                . "     \$_file_name = mc_findByIdDataDB(\$this->table_formaddedit_name, \$_id)->row()->" . $_row['field_name'] . ";" . PHP_EOL
+                                . "     bz_delete_file(\$_file_name, bz_absolute_path() . ___CONF_UPLOAD_DIR___ . ___CONF_UPLOAD_FILE_DIR___);" . PHP_EOL
+                                . "}" . PHP_EOL
+                                . "/* END DELETA ARQUIVO */";
 
+                        elseif ($_param_formAddEditField['form_add_edit_field_type'] == 'select-manual'):
 
-                                $this->_formAddConvertDadosToDatabase .= "if( !empty(\$this->task['result_upload']['file_name']) ):" . PHP_EOL
-                                        . "     \$_dados['" . $_row['field_name'] . "'] = \$this->task['result_upload']['file_name'];" . PHP_EOL
-                                        . "endif;";
+                            $_selectValue = explode(',', $_param_formAddEditField['form_add_edit_field_value_select_manual']);
+                            $_s = '';
 
-                                $this->_formEditConvertDadosToDatabase .= $this->_formAddConvertDadosToDatabase;
+                            foreach ($_selectValue as $_selectValue_value):
+                                $_s = explode('|', $_selectValue_value);
+                                $this->_formAddEditConfigInput .= '<option value="' . $_s[0] . '" <?= (set_value("' . $_row['field_name'] . '",!empty($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : set_value("' . $_row['field_name'] . '"))=="' . $_s[0] . '") ? "selected" : null ;?> />' . $_s[1] . '</option>' . PHP_EOL;
+                            endforeach;
 
-                                $this->_controller_DeleteFileFunction = "/**" . PHP_EOL
-                                        . " * DELETA IMAGEM" . PHP_EOL
-                                        . " */" . PHP_EOL
-                                        . "foreach (\$_dados as \$_value):" . PHP_EOL
-                                        . "     \$_file_name = mc_findByIdDataDB(\$this->table_formaddedit_name, \$_value)->row()->" . $_row['field_name'] . ";" . PHP_EOL
-                                        . "     bz_delete_file(\$_file_name, bz_absolute_path() . ___CONF_UPLOAD_DIR___ . ___CONF_UPLOAD_IMAGE_DIR___);" . PHP_EOL
-                                        . "endforeach;" . PHP_EOL
-                                        . "/* END DELETA IMAGEM */";
+                            $_s = '<p class="margin-bottom-0">' . PHP_EOL;
+                            $_s .= '<select name="' . $_row['field_name'] . '" class="form-control select2" data-placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" ' . $this->_formAddEditConfigInputAtributos . ' style="width:100%;"/>' . PHP_EOL;
+                            $_s .= '<option value=""/></option>' . PHP_EOL;
+                            $_s .= $this->_formAddEditConfigInput;
+                            $_s .= '</select>' . PHP_EOL;
+                            $_s .= '</p>' . PHP_EOL;
 
-                                $this->_form_edit_unset_fields .= "/**" . PHP_EOL . PHP_EOL
-                                        . " * DELETA IMAGEM" . PHP_EOL
-                                        . " */" . PHP_EOL
-                                        . "if (isset(\$this->task['uploaded_image']) && \$this->task['uploaded_image']) {" . PHP_EOL
-                                        . "     \$_file_name = mc_findByIdDataDB(\$this->table_formaddedit_name, \$_id)->row()->" . $_row['field_name'] . ";" . PHP_EOL
-                                        . "     bz_delete_file(\$_file_name, bz_absolute_path() . ___CONF_UPLOAD_DIR___ . ___CONF_UPLOAD_IMAGE_DIR___);" . PHP_EOL
-                                        . "}" . PHP_EOL
-                                        . "/* END DELETA IMAGEM */";
+                            $this->_formAddEditConfigInput = $_s;
 
+                        elseif ($_param_formAddEditField['form_add_edit_field_type'] == 'select-dinamic'):
 
-                            elseif ($_param_formAddEditField['form_add_edit_field_type'] == 'upload-arquivo'):
+                            if (!empty($_param_formAddEditField['form_add_edit_field_value_select_dinamic'])):
 
-                                $this->_formAddEditConfigInput = '<input type="file" name="' . $_row['field_name'] . '" class="form-control-file margin-bottom-10" placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" value="<?=set_value("' . $_row['field_name'] . '",isset($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : set_value("' . $_row['field_name'] . '"));?>" ' . $this->_formAddEditConfigInputAtributos . ' />' . PHP_EOL
-                                        . '<?php if ($this->uri->segment(2) == "edit"): ?>' . PHP_EOL
-                                        . '     <input type="hidden" name="' . $_row['field_name'] . '" value="<?= $dados->' . $_row['field_name'] . ';?>">' . PHP_EOL
-                                        . '     <div id="" class=""><?= mc_file_link_download($dados->' . $_row['field_name'] . '); ?></div>' . PHP_EOL
-                                        . '<?php else: ?>' . PHP_EOL
-                                        . '     ' . PHP_EOL
-                                        . '     ' . PHP_EOL
-                                        . '     ' . PHP_EOL
-                                        . '<?php endif; ?>' . PHP_EOL;
+                                $_param_formAddEditField["form_add_edit_field_value_select_dinamic"] = str_replace('"', "'", base64_decode($_param_formAddEditField["form_add_edit_field_value_select_dinamic"]));
+                                $_query = $this->db->query($_param_formAddEditField["form_add_edit_field_value_select_dinamic"])->result_array();
+                                $_r = '';
 
-                                $this->_formAddConvertDadosToDatabase .= "if( !empty(\$this->task['result_upload']['file_name']) ):" . PHP_EOL
-                                        . "     \$_dados['" . $_row['field_name'] . "'] = \$this->task['result_upload']['file_name'];" . PHP_EOL
-                                        . "endif;";
+                                if ($_query):
 
-                                $this->_formEditConvertDadosToDatabase .= $this->_formAddConvertDadosToDatabase;
-
-                                $this->_controller_DeleteFileFunction = "/**" . PHP_EOL
-                                        . " * DELETA ARQUIVO" . PHP_EOL
-                                        . " */" . PHP_EOL
-                                        . "foreach (\$_dados as \$_value):" . PHP_EOL
-                                        . "     \$_file_name = mc_findByIdDataDB(\$this->table_formaddedit_name, \$_value)->row()->" . $_row['field_name'] . ";" . PHP_EOL
-                                        . "     bz_delete_file(\$_file_name, bz_absolute_path() . ___CONF_UPLOAD_DIR___ . ___CONF_UPLOAD_FILE_DIR___);" . PHP_EOL
-                                        . "endforeach;" . PHP_EOL
-                                        . "/* END DELETA ARQUIVO */";
-
-                                $this->_form_edit_unset_fields .= "/**" . PHP_EOL . PHP_EOL
-                                        . " * DELETA ARQUIVO" . PHP_EOL
-                                        . " */" . PHP_EOL
-                                        . "if (isset(\$this->task['uploaded_file']) && \$this->task['uploaded_file']) {" . PHP_EOL
-                                        . "     \$_file_name = mc_findByIdDataDB(\$this->table_formaddedit_name, \$_id)->row()->" . $_row['field_name'] . ";" . PHP_EOL
-                                        . "     bz_delete_file(\$_file_name, bz_absolute_path() . ___CONF_UPLOAD_DIR___ . ___CONF_UPLOAD_FILE_DIR___);" . PHP_EOL
-                                        . "}" . PHP_EOL
-                                        . "/* END DELETA ARQUIVO */";
-
-
-                            elseif ($_param_formAddEditField['form_add_edit_field_type'] == 'select-manual'):
-
-                                $_selectValue = explode(',', $_param_formAddEditField['form_add_edit_field_value_select_manual']);
-                                $_s = '';
-
-                                foreach ($_selectValue as $_selectValue_value):
-                                    $_s = explode('|', $_selectValue_value);
-                                    $this->_formAddEditConfigInput .= '<option value="' . $_s[0] . '" <?= (set_value("' . $_row['field_name'] . '",!empty($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : set_value("' . $_row['field_name'] . '"))=="' . $_s[0] . '") ? "selected" : null ;?> />' . $_s[1] . '</option>' . PHP_EOL;
-                                endforeach;
-
-                                $_s = '<p class="margin-bottom-0">' . PHP_EOL;
-                                $_s .= '<select name="' . $_row['field_name'] . '" class="form-control select2" data-placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" ' . $this->_formAddEditConfigInputAtributos . ' style="width:100%;"/>' . PHP_EOL;
-                                $_s .= '<option value=""/></option>' . PHP_EOL;
-                                $_s .= $this->_formAddEditConfigInput;
-                                $_s .= '</select>' . PHP_EOL;
-                                $_s .= '</p>' . PHP_EOL;
-
-                                $this->_formAddEditConfigInput = $_s;
-
-                            elseif ($_param_formAddEditField['form_add_edit_field_type'] == 'select-dinamic'):
-
-                                if (!empty($_param_formAddEditField['form_add_edit_field_value_select_dinamic'])):
-
-                                    $_param_formAddEditField["form_add_edit_field_value_select_dinamic"] = str_replace('"', "'", base64_decode($_param_formAddEditField["form_add_edit_field_value_select_dinamic"]));
-                                    $_query = $this->db->query($_param_formAddEditField["form_add_edit_field_value_select_dinamic"])->result_array();
-                                    $_r = '';
-
-                                    if ($_query):
-
-                                        $_r .= '<p style="margin-bottom: 0">' . PHP_EOL;
-                                        $_r .= "<?php" . PHP_EOL;
-                                        $_r .= "\$_results_" . $_row['field_name'] . " = \$this->db->query(\"" . $_param_formAddEditField['form_add_edit_field_value_select_dinamic'] . "\");" . PHP_EOL;
-                                        $_r .= "\$_last_query_" . $_row['field_name'] . " = strtolower(\$this->db->last_query());" . PHP_EOL;
-                                        $_r .= "\$_options_" . $_row['field_name'] . " = \$_results_" . $_row['field_name'] . "->result_array();" . PHP_EOL;
-                                        $_r .= "\$_options_" . $_row['field_name'] . " = \$_options_" . $_row['field_name'] . "[0];" . PHP_EOL;
-                                        $_r .= "\$_keyOptions_" . $_row['field_name'] . " = array();" . PHP_EOL;
-                                        $_r .= "\$_list_" . $_row['field_name'] . "[0] = '" . $_param_formAddEditField['form_add_edit_field_placeholder'] . "' ;" . PHP_EOL;
-                                        $_r .= "foreach (\$_options_" . $_row['field_name'] . " as \$key => \$value_" . $_row['field_name'] . "):" . PHP_EOL;
-                                        $_r .= "\$_keyOptions_" . $_row['field_name'] . "[] = \$key;" . PHP_EOL;
-                                        $_r .= "endforeach;" . PHP_EOL;
-                                        $_r .= "foreach (\$_results_" . $_row['field_name'] . "->result_array() as \$_r_" . $_row['field_name'] . "):" . PHP_EOL;
-                                        $_r .= "\$_list_" . $_row['field_name'] . "[ \$_r_" . $_row['field_name'] . "[ \$_keyOptions_" . $_row['field_name'] . "[0] ] ] = \$_r_" . $_row['field_name'] . "[ \$_keyOptions_" . $_row['field_name'] . "[1] ];" . PHP_EOL;
-                                        $_r .= "endforeach;" . PHP_EOL;
-                                        $_r .= "echo form_dropdown('" . $_row['field_name'] . "', \$_list_" . $_row['field_name'] . ", set_value('" . $_row['field_name'] . "',isset(\$dados->" . $_row['field_name'] . ") ? \$dados->" . $_row['field_name'] . " : set_value('" . $_row['field_name'] . "')), 'class=\"form-control select2\" " . $this->_formAddEditConfigInputAtributos . " style=\"width:100%;\"');" . PHP_EOL;
-                                        $_r .= "?>" . PHP_EOL;
-                                        $_r .= "</p>" . PHP_EOL;
-
-                                    endif;
-
-                                    $this->_formAddEditConfigInput = $_r;
+                                    $_r .= '<p style="margin-bottom: 0">' . PHP_EOL;
+                                    $_r .= "<?php" . PHP_EOL;
+                                    $_r .= "\$_results_" . $_row['field_name'] . " = \$this->db->query(\"" . $_param_formAddEditField['form_add_edit_field_value_select_dinamic'] . "\");" . PHP_EOL;
+                                    $_r .= "\$_last_query_" . $_row['field_name'] . " = strtolower(\$this->db->last_query());" . PHP_EOL;
+                                    $_r .= "\$_options_" . $_row['field_name'] . " = \$_results_" . $_row['field_name'] . "->result_array();" . PHP_EOL;
+                                    $_r .= "\$_options_" . $_row['field_name'] . " = \$_options_" . $_row['field_name'] . "[0];" . PHP_EOL;
+                                    $_r .= "\$_keyOptions_" . $_row['field_name'] . " = array();" . PHP_EOL;
+                                    $_r .= "\$_list_" . $_row['field_name'] . "[0] = '" . $_param_formAddEditField['form_add_edit_field_placeholder'] . "' ;" . PHP_EOL;
+                                    $_r .= "foreach (\$_options_" . $_row['field_name'] . " as \$key => \$value_" . $_row['field_name'] . "):" . PHP_EOL;
+                                    $_r .= "\$_keyOptions_" . $_row['field_name'] . "[] = \$key;" . PHP_EOL;
+                                    $_r .= "endforeach;" . PHP_EOL;
+                                    $_r .= "foreach (\$_results_" . $_row['field_name'] . "->result_array() as \$_r_" . $_row['field_name'] . "):" . PHP_EOL;
+                                    $_r .= "\$_list_" . $_row['field_name'] . "[ \$_r_" . $_row['field_name'] . "[ \$_keyOptions_" . $_row['field_name'] . "[0] ] ] = \$_r_" . $_row['field_name'] . "[ \$_keyOptions_" . $_row['field_name'] . "[1] ];" . PHP_EOL;
+                                    $_r .= "endforeach;" . PHP_EOL;
+                                    $_r .= "echo form_dropdown('" . $_row['field_name'] . "', \$_list_" . $_row['field_name'] . ", set_value('" . $_row['field_name'] . "',isset(\$dados->" . $_row['field_name'] . ") ? \$dados->" . $_row['field_name'] . " : set_value('" . $_row['field_name'] . "')), 'class=\"form-control select2\" " . $this->_formAddEditConfigInputAtributos . " style=\"width:100%;\"');" . PHP_EOL;
+                                    $_r .= "?>" . PHP_EOL;
+                                    $_r .= "</p>" . PHP_EOL;
 
                                 endif;
-
-                            elseif ($_param_formAddEditField['form_add_edit_field_type'] == 'select-multiple-manual'):
-
-                                $_selectMultipleValue = explode(',', $_param_formAddEditField['form_add_edit_field_value_select_multiple_manual']);
-                                $_s = '';
-
-                                foreach ($_selectMultipleValue as $_selectMultipleValue_value):
-                                    $_s = explode('|', $_selectMultipleValue_value);
-                                    $this->_formAddEditConfigInput .= '<option value="' . $_s[0] . '" <?=(!empty($_select_multiple_manual_' . $_row['field_name'] . ')) ? ((in_array("' . $_s[0] . '",$_select_multiple_manual_' . $_row['field_name'] . ')) ? "selected" : "null") : "";?> />' . $_s[1] . '</option>' . PHP_EOL;
-                                endforeach;
-
-                                $_s = '<p class="margin-bottom-0">' . PHP_EOL;
-                                $_s .= '<?php' . PHP_EOL;
-                                $_s .= '$_select_multiple_manual_' . $_row['field_name'] . ' = "";' . PHP_EOL;
-                                $_s .= 'if( !empty($this->input->post("' . $_row['field_name'] . '")) ):' . PHP_EOL;
-                                $_s .= '$_select_multiple_manual_' . $_row['field_name'] . ' = $this->input->post("' . $_row['field_name'] . '") ;' . PHP_EOL;
-                                $_s .= 'elseif( !empty($dados->' . $_row['field_name'] . ') ):' . PHP_EOL;
-                                $_s .= '$_select_multiple_manual_' . $_row['field_name'] . ' = json_decode($dados->' . $_row['field_name'] . ');' . PHP_EOL;
-                                $_s .= 'endif;' . PHP_EOL;
-                                $_s .= '?>' . PHP_EOL;
-                                $_s .= '<select name="' . $_row['field_name'] . '[]" style="width:100%" class="form-control select2-multiple-selection" multiple="true" data-placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" ' . $this->_formAddEditConfigInputAtributos . ' />' . PHP_EOL;
-                                $_s .= $this->_formAddEditConfigInput;
-                                $_s .= '</select>' . PHP_EOL;
-                                $_s .= '</p>' . PHP_EOL;
-
-                                $this->_formAddEditConfigInput = $_s;
-                                $this->_formAddConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = json_encode($_dados["' . $_row['field_name'] . '"]);';
-                                if ($_row['primary_key'] == 0):
-                                    $this->_formEditConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = json_encode($_dados["' . $_row['field_name'] . '"]);';
-                                endif;
-
-                            elseif ($_param_formAddEditField['form_add_edit_field_type'] == 'select-multiple-dinamic'):
-
-                                if (!empty($_param_formAddEditField['form_add_edit_field_value_select_multiple_dinamic'])):
-
-                                    $_param_formAddEditField["form_add_edit_field_value_select_multiple_dinamic"] = str_replace('"', "'", base64_decode($_param_formAddEditField["form_add_edit_field_value_select_multiple_dinamic"]));
-                                    $_query = $this->db->query($_param_formAddEditField["form_add_edit_field_value_select_multiple_dinamic"])->result_array();
-                                    $_r = '';
-
-                                    if ($_query):
-
-                                        $_r .= '<p class="margin-bottom-0">' . PHP_EOL;
-                                        $_r .= "<?php" . PHP_EOL;
-                                        $_r .= "\$_results_" . $_row['field_name'] . " = \$this->db->query(\"" . $_param_formAddEditField['form_add_edit_field_value_select_multiple_dinamic'] . "\");" . PHP_EOL;
-                                        $_r .= "\$_last_query_" . $_row['field_name'] . " = strtolower(\$this->db->last_query());" . PHP_EOL;
-                                        $_r .= "\$_options_" . $_row['field_name'] . " = \$_results_" . $_row['field_name'] . "->result_array();" . PHP_EOL;
-                                        $_r .= "\$_options_" . $_row['field_name'] . " = \$_options_" . $_row['field_name'] . "[0];" . PHP_EOL;
-                                        $_r .= "\$_keyOptions_" . $_row['field_name'] . " = array();" . PHP_EOL;
-                                        $_r .= "foreach (\$_options_" . $_row['field_name'] . " as \$key => \$value_" . $_row['field_name'] . "):" . PHP_EOL;
-                                        $_r .= "\$_keyOptions_" . $_row['field_name'] . "[] = \$key;" . PHP_EOL;
-                                        $_r .= "endforeach;" . PHP_EOL . PHP_EOL;
-
-                                        $_r .= "\$_select_multiple_dinamic_" . $_row['field_name'] . " = '';" . PHP_EOL;
-                                        $_r .= "if( !empty(\$this->input->post('" . $_row['field_name'] . "')) ):" . PHP_EOL;
-                                        $_r .= "\$_select_multiple_dinamic_" . $_row['field_name'] . " = \$this->input->post('" . $_row['field_name'] . "');" . PHP_EOL;
-                                        $_r .= "elseif( !empty(\$dados->" . $_row['field_name'] . ") ):" . PHP_EOL;
-                                        $_r .= "\$_select_multiple_dinamic_" . $_row['field_name'] . " = json_decode(\$dados->" . $_row['field_name'] . ");" . PHP_EOL;
-                                        $_r .= "endif;" . PHP_EOL . PHP_EOL;
-
-                                        $_r .= "echo '<select name=\"" . $_row['field_name'] . "[]\" style=\"width:100%\" class=\"form-control select2-multiple-selection\" multiple=\"true\" data-placeholder=\"" . $_param_formAddEditField['form_add_edit_field_placeholder'] . "\" />' . PHP_EOL;" . PHP_EOL . PHP_EOL;
-
-                                        $_r .= "foreach (\$_results_" . $_row['field_name'] . "->result_array() as \$_r_" . $_row['field_name'] . "):" . PHP_EOL;
-                                        $_r .= "\$_list_" . $_row['field_name'] . "[ \$_r_" . $_row['field_name'] . "[ \$_keyOptions_" . $_row['field_name'] . "[0] ] ] = \$_r_" . $_row['field_name'] . "[ \$_keyOptions_" . $_row['field_name'] . "[1] ];" . PHP_EOL;
-                                        $_r .= "?>" . PHP_EOL;
-                                        $_r .= '<option value="<?=$_r_' . $_row['field_name'] . '[ $_keyOptions_' . $_row['field_name'] . '[0] ];?>" <?=(!empty($_select_multiple_dinamic_' . $_row['field_name'] . ')) ? ((in_array($_r_' . $_row['field_name'] . '[ $_keyOptions_' . $_row['field_name'] . '[0] ],$_select_multiple_dinamic_' . $_row['field_name'] . ')) ? "selected" : "null") : "";?>/> <?=$_r_' . $_row['field_name'] . '[ $_keyOptions_' . $_row['field_name'] . '[1] ];?> </option><?=PHP_EOL;?>' . PHP_EOL;
-                                        $_r .= "<?php" . PHP_EOL;
-                                        $_r .= "endforeach;" . PHP_EOL;
-                                        $_r .= "echo '</select>'. PHP_EOL;" . PHP_EOL;
-                                        $_r .= "?>" . PHP_EOL;
-                                        $_r .= "</p>" . PHP_EOL;
-
-                                        $this->_formAddConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = json_encode($_dados["' . $_row['field_name'] . '"]);';
-                                        if ($_row['primary_key'] == 0):
-                                            $this->_formEditConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = json_encode($_dados["' . $_row['field_name'] . '"]);';
-                                        endif;
-
-                                    endif;
-
-                                    $this->_formAddEditConfigInput = $_r;
-
-                                endif;
-
-                            elseif ($_param_formAddEditField['form_add_edit_field_type'] == 'radio-manual'):
-
-                                $_radioValue = explode(',', $_param_formAddEditField['form_add_edit_field_value_radiobutton_manual']);
-                                $_r = "";
-
-                                foreach ($_radioValue as $_radioValue_value):
-                                    $_r = explode('|', $_radioValue_value);
-                                    $this->_formAddEditConfigInput .= '<input class="flat-green" type="radio" name="' . $_row['field_name'] . '" value="' . $_r[0] . '" <?= ($_radiobutton_manual_' . $_row['field_name'] . '=="' . $_r[0] . '") ? "checked" : null ;?> ' . $this->_formAddEditConfigInputAtributos . '/> ' . $_r[1] . '<i class="margin-right-10"></i>' . PHP_EOL;
-                                endforeach;
-
-                                $_r = "" . PHP_EOL;
-                                $_r .= "<?php" . PHP_EOL;
-                                $_r .= "\$_radiobutton_manual_" . $_row['field_name'] . " = '';" . PHP_EOL;
-                                $_r .= "if( !empty(\$this->input->post('" . $_row['field_name'] . "')) ):" . PHP_EOL;
-                                $_r .= "\$_radiobutton_manual_" . $_row['field_name'] . " = \$this->input->post('" . $_row['field_name'] . "');" . PHP_EOL;
-                                $_r .= "elseif( !empty(\$dados->" . $_row['field_name'] . ") ):" . PHP_EOL;
-                                $_r .= "\$_radiobutton_manual_" . $_row['field_name'] . " = \$dados->" . $_row['field_name'] . ";" . PHP_EOL;
-                                $_r .= "endif;" . PHP_EOL;
-                                $_r .= "?>" . PHP_EOL . PHP_EOL;
-
-                                $_r .= '<p class="margin-bottom-5">' . PHP_EOL . $this->_formAddEditConfigInput . PHP_EOL . '</p>';
 
                                 $this->_formAddEditConfigInput = $_r;
 
-                            elseif ($_param_formAddEditField['form_add_edit_field_type'] == 'radio-dinamic'):
+                            endif;
 
-                                if (!empty($_param_formAddEditField['form_add_edit_field_value_radiobutton_dinamic'])):
+                        elseif ($_param_formAddEditField['form_add_edit_field_type'] == 'select-multiple-manual'):
 
-                                    $_param_formAddEditField["form_add_edit_field_value_radiobutton_dinamic"] = str_replace('"', "'", base64_decode($_param_formAddEditField["form_add_edit_field_value_radiobutton_dinamic"]));
-                                    $_query = $this->db->query($_param_formAddEditField["form_add_edit_field_value_radiobutton_dinamic"])->result_array();
-                                    $_r = '';
+                            $_selectMultipleValue = explode(',', $_param_formAddEditField['form_add_edit_field_value_select_multiple_manual']);
+                            $_s = '';
 
-                                    if ($_query):
+                            foreach ($_selectMultipleValue as $_selectMultipleValue_value):
+                                $_s = explode('|', $_selectMultipleValue_value);
+                                $this->_formAddEditConfigInput .= '<option value="' . $_s[0] . '" <?=(!empty($_select_multiple_manual_' . $_row['field_name'] . ')) ? ((in_array("' . $_s[0] . '",$_select_multiple_manual_' . $_row['field_name'] . ')) ? "selected" : "null") : "";?> />' . $_s[1] . '</option>' . PHP_EOL;
+                            endforeach;
 
-                                        $_r .= '<p class="margin-bottom-5">' . PHP_EOL;
-                                        $_r .= "<?php" . PHP_EOL;
-                                        $_r .= "\$_results_" . $_row['field_name'] . " = \$this->db->query(\"" . $_param_formAddEditField['form_add_edit_field_value_radiobutton_dinamic'] . "\");" . PHP_EOL;
-                                        $_r .= "\$_last_query_" . $_row['field_name'] . " = strtolower(\$this->db->last_query());" . PHP_EOL;
-                                        $_r .= "\$_options_" . $_row['field_name'] . " = \$_results_" . $_row['field_name'] . "->result_array();" . PHP_EOL;
-                                        $_r .= "\$_options_" . $_row['field_name'] . " = \$_options_" . $_row['field_name'] . "[0];" . PHP_EOL;
-                                        $_r .= "\$_keyOptions_" . $_row['field_name'] . " = array();" . PHP_EOL;
-                                        $_r .= "\$_list_" . $_row['field_name'] . "[0] = '" . $_param_formAddEditField['form_add_edit_field_placeholder'] . "' ;" . PHP_EOL;
-                                        $_r .= "foreach (\$_options_" . $_row['field_name'] . " as \$key => \$value_" . $_row['field_name'] . "):" . PHP_EOL;
-                                        $_r .= "\$_keyOptions_" . $_row['field_name'] . "[] = \$key;" . PHP_EOL;
-                                        $_r .= "endforeach;" . PHP_EOL . PHP_EOL;
+                            $_s = '<p class="margin-bottom-0">' . PHP_EOL;
+                            $_s .= '<?php' . PHP_EOL;
+                            $_s .= '$_select_multiple_manual_' . $_row['field_name'] . ' = "";' . PHP_EOL;
+                            $_s .= 'if( !empty($this->input->post("' . $_row['field_name'] . '")) ):' . PHP_EOL;
+                            $_s .= '$_select_multiple_manual_' . $_row['field_name'] . ' = $this->input->post("' . $_row['field_name'] . '") ;' . PHP_EOL;
+                            $_s .= 'elseif( !empty($dados->' . $_row['field_name'] . ') ):' . PHP_EOL;
+                            $_s .= '$_select_multiple_manual_' . $_row['field_name'] . ' = json_decode($dados->' . $_row['field_name'] . ');' . PHP_EOL;
+                            $_s .= 'endif;' . PHP_EOL;
+                            $_s .= '?>' . PHP_EOL;
+                            $_s .= '<select name="' . $_row['field_name'] . '[]" style="width:100%" class="form-control select2-multiple-selection" multiple="true" data-placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" ' . $this->_formAddEditConfigInputAtributos . ' />' . PHP_EOL;
+                            $_s .= $this->_formAddEditConfigInput;
+                            $_s .= '</select>' . PHP_EOL;
+                            $_s .= '</p>' . PHP_EOL;
 
-                                        $_r .= "\$_radiobutton_dinamic_" . $_row['field_name'] . " = '';" . PHP_EOL;
-                                        $_r .= "if( !empty(\$this->input->post('" . $_row['field_name'] . "')) ):" . PHP_EOL;
-                                        $_r .= "\$_radiobutton_dinamic_" . $_row['field_name'] . " = \$this->input->post('" . $_row['field_name'] . "') ;" . PHP_EOL;
-                                        $_r .= "elseif( !empty(\$dados->" . $_row['field_name'] . ") ):" . PHP_EOL;
-                                        $_r .= "\$_radiobutton_dinamic_" . $_row['field_name'] . " = \$dados->" . $_row['field_name'] . ";" . PHP_EOL;
-                                        $_r .= "endif;" . PHP_EOL . PHP_EOL;
+                            $this->_formAddEditConfigInput = $_s;
+                            $this->_formAddConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = json_encode($_dados["' . $_row['field_name'] . '"]);';
+                            if ($_row['primary_key'] == 0):
+                                $this->_formEditConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = json_encode($_dados["' . $_row['field_name'] . '"]);';
+                            endif;
 
-                                        $_r .= "foreach (\$_results_" . $_row['field_name'] . "->result_array() as \$_r_" . $_row['field_name'] . "):" . PHP_EOL;
-                                        $_r .= "\$_list_" . $_row['field_name'] . "[ \$_r_" . $_row['field_name'] . "[ \$_keyOptions_" . $_row['field_name'] . "[0] ] ] = \$_r_" . $_row['field_name'] . "[ \$_keyOptions_" . $_row['field_name'] . "[1] ];" . PHP_EOL;
-                                        $_r .= "?>" . PHP_EOL;
-                                        $_r .= '<input class="flat-green" type="radio" name="' . $_row['field_name'] . '"  value="<?=$_r_' . $_row['field_name'] . '[ $_keyOptions_' . $_row['field_name'] . '[0] ];?>" <?= ($_radiobutton_dinamic_' . $_row['field_name'] . '==$_r_' . $_row['field_name'] . '[ $_keyOptions_' . $_row['field_name'] . '[0] ]) ? "checked" : null ;?> /> <?=$_r_' . $_row['field_name'] . '[ $_keyOptions_' . $_row['field_name'] . '[1] ];?><i class="margin-right-10"></i>' . PHP_EOL;
-                                        $_r .= "<?php" . PHP_EOL;
-                                        $_r .= "endforeach;" . PHP_EOL;
-                                        $_r .= "?>" . PHP_EOL;
-                                        $_r .= "</p>" . PHP_EOL;
+                        elseif ($_param_formAddEditField['form_add_edit_field_type'] == 'select-multiple-dinamic'):
 
-                                    endif;
+                            if (!empty($_param_formAddEditField['form_add_edit_field_value_select_multiple_dinamic'])):
 
-                                    $this->_formAddEditConfigInput = $_r;
-
-                                endif;
-
-                            elseif ($_param_formAddEditField['form_add_edit_field_type'] == 'checkbox-manual'):
-
-                                $_r = "" . PHP_EOL;
-                                $_r .= "<?php" . PHP_EOL;
-                                $_r .= "\$_checkbox_manual_" . $_row['field_name'] . " = '';" . PHP_EOL;
-                                $_r .= "if( !empty(\$this->input->post('" . $_row['field_name'] . "')) ):" . PHP_EOL;
-                                $_r .= "\$_checkbox_manual_" . $_row['field_name'] . " = \$this->input->post('" . $_row['field_name'] . "') ;" . PHP_EOL;
-                                $_r .= "elseif( !empty(\$dados->" . $_row['field_name'] . ") ):" . PHP_EOL;
-                                $_r .= "\$_checkbox_manual_" . $_row['field_name'] . " = \$dados->" . $_row['field_name'] . ";" . PHP_EOL;
-                                $_r .= "endif;" . PHP_EOL;
-                                $_r .= "?>" . PHP_EOL . PHP_EOL;
-
-                                $_r .= '<p class="margin-bottom-5">' . PHP_EOL . '<input class="flat-green" type="checkbox" name="' . $_row['field_name'] . '" value="' . $_param_formAddEditField['form_add_edit_field_value_checkbox_manual_on'] . '" <?= ($_checkbox_manual_' . $_row['field_name'] . '=="' . $_param_formAddEditField['form_add_edit_field_value_checkbox_manual_on'] . '") ? "checked" : null ;?> />' . PHP_EOL . '</p>';
-
-                                $this->_formAddEditConfigInput .= $_r;
-                                $this->_formAddConvertDadosToDatabase .= '(isset($_dados["' . $_row['field_name'] . '"])) ? ($_dados["' . $_row['field_name'] . '"] == "' . $_param_formAddEditField['form_add_edit_field_value_checkbox_manual_on'] . '") ? $_dados["' . $_row['field_name'] . '"] : "' . $_param_formAddEditField['form_add_edit_field_value_checkbox_manual_off'] . '" : "' . $_param_formAddEditField['form_add_edit_field_value_checkbox_manual_off'] . '";' . PHP_EOL;
-                                if ($_row['primary_key'] == 0):
-                                    $this->_formEditConvertDadosToDatabase .= '(isset($_dados["' . $_row['field_name'] . '"])) ? ($_dados["' . $_row['field_name'] . '"] == "' . $_param_formAddEditField['form_add_edit_field_value_checkbox_manual_on'] . '") ? $_dados["' . $_row['field_name'] . '"] : "' . $_param_formAddEditField['form_add_edit_field_value_checkbox_manual_off'] . '" : "' . $_param_formAddEditField['form_add_edit_field_value_checkbox_manual_off'] . '";' . PHP_EOL;
-                                endif;
-
-                            elseif ($_param_formAddEditField['form_add_edit_field_type'] == 'checkbox-multiple-manual'):
-
-                                $_checkboxMultipleValue = explode(',', $_param_formAddEditField['form_add_edit_field_value_checkbox_multiple_manual']);
-                                $_c = '';
+                                $_param_formAddEditField["form_add_edit_field_value_select_multiple_dinamic"] = str_replace('"', "'", base64_decode($_param_formAddEditField["form_add_edit_field_value_select_multiple_dinamic"]));
+                                $_query = $this->db->query($_param_formAddEditField["form_add_edit_field_value_select_multiple_dinamic"])->result_array();
                                 $_r = '';
 
-                                foreach ($_checkboxMultipleValue as $_checkboxMultipleValue_value):
-                                    $_c = explode('|', $_checkboxMultipleValue_value);
-                                    $this->_formAddEditConfigInput .= '<input class="flat-green" type="checkbox" name="' . $_row['field_name'] . '[' . $_c[0] . ']" value="' . $_c[0] . '" <?= isset($_checkbox_multiple_manual_' . $_row['field_name'] . '["' . $_c[0] . '"]) ? (($_checkbox_multiple_manual_' . $_row['field_name'] . '["' . $_c[0] . '"]) == "' . $_c[0] . '") ? "checked" : null : null; ?> ' . $this->_formAddEditConfigInputAtributos . '/> ' . $_c[1] . '<i class="margin-right-10"></i>' . PHP_EOL;
-                                endforeach;
+                                if ($_query):
 
-                                $_r .= "" . PHP_EOL;
-                                $_r .= "<?php" . PHP_EOL;
-                                $_r .= "\$_checkbox_multiple_manual_" . $_row['field_name'] . " = '';" . PHP_EOL;
-                                $_r .= "if( !empty(\$this->input->post('" . $_row['field_name'] . "')) ):" . PHP_EOL;
-                                $_r .= "\$_checkbox_multiple_manual_" . $_row['field_name'] . " = \$this->input->post('" . $_row['field_name'] . "');" . PHP_EOL;
-                                $_r .= "elseif( !empty(\$dados->" . $_row['field_name'] . ") ):" . PHP_EOL;
-                                $_r .= "\$_checkbox_multiple_manual_" . $_row['field_name'] . " = json_decode(\$dados->" . $_row['field_name'] . ", true);" . PHP_EOL;
-                                $_r .= "endif;" . PHP_EOL;
-                                $_r .= "?>" . PHP_EOL . PHP_EOL;
+                                    $_r .= '<p class="margin-bottom-0">' . PHP_EOL;
+                                    $_r .= "<?php" . PHP_EOL;
+                                    $_r .= "\$_results_" . $_row['field_name'] . " = \$this->db->query(\"" . $_param_formAddEditField['form_add_edit_field_value_select_multiple_dinamic'] . "\");" . PHP_EOL;
+                                    $_r .= "\$_last_query_" . $_row['field_name'] . " = strtolower(\$this->db->last_query());" . PHP_EOL;
+                                    $_r .= "\$_options_" . $_row['field_name'] . " = \$_results_" . $_row['field_name'] . "->result_array();" . PHP_EOL;
+                                    $_r .= "\$_options_" . $_row['field_name'] . " = \$_options_" . $_row['field_name'] . "[0];" . PHP_EOL;
+                                    $_r .= "\$_keyOptions_" . $_row['field_name'] . " = array();" . PHP_EOL;
+                                    $_r .= "foreach (\$_options_" . $_row['field_name'] . " as \$key => \$value_" . $_row['field_name'] . "):" . PHP_EOL;
+                                    $_r .= "\$_keyOptions_" . $_row['field_name'] . "[] = \$key;" . PHP_EOL;
+                                    $_r .= "endforeach;" . PHP_EOL . PHP_EOL;
 
-                                $_r .= '<p class="margin-bottom-5">' . PHP_EOL . $this->_formAddEditConfigInput . PHP_EOL . '</p>' . PHP_EOL;
+                                    $_r .= "\$_select_multiple_dinamic_" . $_row['field_name'] . " = '';" . PHP_EOL;
+                                    $_r .= "if( !empty(\$this->input->post('" . $_row['field_name'] . "')) ):" . PHP_EOL;
+                                    $_r .= "\$_select_multiple_dinamic_" . $_row['field_name'] . " = \$this->input->post('" . $_row['field_name'] . "');" . PHP_EOL;
+                                    $_r .= "elseif( !empty(\$dados->" . $_row['field_name'] . ") ):" . PHP_EOL;
+                                    $_r .= "\$_select_multiple_dinamic_" . $_row['field_name'] . " = json_decode(\$dados->" . $_row['field_name'] . ");" . PHP_EOL;
+                                    $_r .= "endif;" . PHP_EOL . PHP_EOL;
 
-                                $this->_formAddEditConfigInput = $_r . PHP_EOL;
+                                    $_r .= "echo '<select name=\"" . $_row['field_name'] . "[]\" style=\"width:100%\" class=\"form-control select2-multiple-selection\" multiple=\"true\" data-placeholder=\"" . $_param_formAddEditField['form_add_edit_field_placeholder'] . "\" />' . PHP_EOL;" . PHP_EOL . PHP_EOL;
+
+                                    $_r .= "foreach (\$_results_" . $_row['field_name'] . "->result_array() as \$_r_" . $_row['field_name'] . "):" . PHP_EOL;
+                                    $_r .= "\$_list_" . $_row['field_name'] . "[ \$_r_" . $_row['field_name'] . "[ \$_keyOptions_" . $_row['field_name'] . "[0] ] ] = \$_r_" . $_row['field_name'] . "[ \$_keyOptions_" . $_row['field_name'] . "[1] ];" . PHP_EOL;
+                                    $_r .= "?>" . PHP_EOL;
+                                    $_r .= '<option value="<?=$_r_' . $_row['field_name'] . '[ $_keyOptions_' . $_row['field_name'] . '[0] ];?>" <?=(!empty($_select_multiple_dinamic_' . $_row['field_name'] . ')) ? ((in_array($_r_' . $_row['field_name'] . '[ $_keyOptions_' . $_row['field_name'] . '[0] ],$_select_multiple_dinamic_' . $_row['field_name'] . ')) ? "selected" : "null") : "";?>/> <?=$_r_' . $_row['field_name'] . '[ $_keyOptions_' . $_row['field_name'] . '[1] ];?> </option><?=PHP_EOL;?>' . PHP_EOL;
+                                    $_r .= "<?php" . PHP_EOL;
+                                    $_r .= "endforeach;" . PHP_EOL;
+                                    $_r .= "echo '</select>'. PHP_EOL;" . PHP_EOL;
+                                    $_r .= "?>" . PHP_EOL;
+                                    $_r .= "</p>" . PHP_EOL;
+
+                                    $this->_formAddConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = json_encode($_dados["' . $_row['field_name'] . '"]);';
+                                    if ($_row['primary_key'] == 0):
+                                        $this->_formEditConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = json_encode($_dados["' . $_row['field_name'] . '"]);';
+                                    endif;
+
+                                endif;
+
+                                $this->_formAddEditConfigInput = $_r;
+
+                            endif;
+
+                        elseif ($_param_formAddEditField['form_add_edit_field_type'] == 'radio-manual'):
+
+                            $_radioValue = explode(',', $_param_formAddEditField['form_add_edit_field_value_radiobutton_manual']);
+                            $_r = "";
+
+                            foreach ($_radioValue as $_radioValue_value):
+                                $_r = explode('|', $_radioValue_value);
+                                $this->_formAddEditConfigInput .= '<input class="flat-green" type="radio" name="' . $_row['field_name'] . '" value="' . $_r[0] . '" <?= ($_radiobutton_manual_' . $_row['field_name'] . '=="' . $_r[0] . '") ? "checked" : null ;?> ' . $this->_formAddEditConfigInputAtributos . '/> ' . $_r[1] . '<i class="margin-right-10"></i>' . PHP_EOL;
+                            endforeach;
+
+                            $_r = "" . PHP_EOL;
+                            $_r .= "<?php" . PHP_EOL;
+                            $_r .= "\$_radiobutton_manual_" . $_row['field_name'] . " = '';" . PHP_EOL;
+                            $_r .= "if( !empty(\$this->input->post('" . $_row['field_name'] . "')) ):" . PHP_EOL;
+                            $_r .= "\$_radiobutton_manual_" . $_row['field_name'] . " = \$this->input->post('" . $_row['field_name'] . "');" . PHP_EOL;
+                            $_r .= "elseif( !empty(\$dados->" . $_row['field_name'] . ") ):" . PHP_EOL;
+                            $_r .= "\$_radiobutton_manual_" . $_row['field_name'] . " = \$dados->" . $_row['field_name'] . ";" . PHP_EOL;
+                            $_r .= "endif;" . PHP_EOL;
+                            $_r .= "?>" . PHP_EOL . PHP_EOL;
+
+                            $_r .= '<p class="margin-bottom-5">' . PHP_EOL . $this->_formAddEditConfigInput . PHP_EOL . '</p>';
+
+                            $this->_formAddEditConfigInput = $_r;
+
+                        elseif ($_param_formAddEditField['form_add_edit_field_type'] == 'radio-dinamic'):
+
+                            if (!empty($_param_formAddEditField['form_add_edit_field_value_radiobutton_dinamic'])):
+
+                                $_param_formAddEditField["form_add_edit_field_value_radiobutton_dinamic"] = str_replace('"', "'", base64_decode($_param_formAddEditField["form_add_edit_field_value_radiobutton_dinamic"]));
+                                $_query = $this->db->query($_param_formAddEditField["form_add_edit_field_value_radiobutton_dinamic"])->result_array();
+                                $_r = '';
+
+                                if ($_query):
+
+                                    $_r .= '<p class="margin-bottom-5">' . PHP_EOL;
+                                    $_r .= "<?php" . PHP_EOL;
+                                    $_r .= "\$_results_" . $_row['field_name'] . " = \$this->db->query(\"" . $_param_formAddEditField['form_add_edit_field_value_radiobutton_dinamic'] . "\");" . PHP_EOL;
+                                    $_r .= "\$_last_query_" . $_row['field_name'] . " = strtolower(\$this->db->last_query());" . PHP_EOL;
+                                    $_r .= "\$_options_" . $_row['field_name'] . " = \$_results_" . $_row['field_name'] . "->result_array();" . PHP_EOL;
+                                    $_r .= "\$_options_" . $_row['field_name'] . " = \$_options_" . $_row['field_name'] . "[0];" . PHP_EOL;
+                                    $_r .= "\$_keyOptions_" . $_row['field_name'] . " = array();" . PHP_EOL;
+                                    $_r .= "\$_list_" . $_row['field_name'] . "[0] = '" . $_param_formAddEditField['form_add_edit_field_placeholder'] . "' ;" . PHP_EOL;
+                                    $_r .= "foreach (\$_options_" . $_row['field_name'] . " as \$key => \$value_" . $_row['field_name'] . "):" . PHP_EOL;
+                                    $_r .= "\$_keyOptions_" . $_row['field_name'] . "[] = \$key;" . PHP_EOL;
+                                    $_r .= "endforeach;" . PHP_EOL . PHP_EOL;
+
+                                    $_r .= "\$_radiobutton_dinamic_" . $_row['field_name'] . " = '';" . PHP_EOL;
+                                    $_r .= "if( !empty(\$this->input->post('" . $_row['field_name'] . "')) ):" . PHP_EOL;
+                                    $_r .= "\$_radiobutton_dinamic_" . $_row['field_name'] . " = \$this->input->post('" . $_row['field_name'] . "') ;" . PHP_EOL;
+                                    $_r .= "elseif( !empty(\$dados->" . $_row['field_name'] . ") ):" . PHP_EOL;
+                                    $_r .= "\$_radiobutton_dinamic_" . $_row['field_name'] . " = \$dados->" . $_row['field_name'] . ";" . PHP_EOL;
+                                    $_r .= "endif;" . PHP_EOL . PHP_EOL;
+
+                                    $_r .= "foreach (\$_results_" . $_row['field_name'] . "->result_array() as \$_r_" . $_row['field_name'] . "):" . PHP_EOL;
+                                    $_r .= "\$_list_" . $_row['field_name'] . "[ \$_r_" . $_row['field_name'] . "[ \$_keyOptions_" . $_row['field_name'] . "[0] ] ] = \$_r_" . $_row['field_name'] . "[ \$_keyOptions_" . $_row['field_name'] . "[1] ];" . PHP_EOL;
+                                    $_r .= "?>" . PHP_EOL;
+                                    $_r .= '<input class="flat-green" type="radio" name="' . $_row['field_name'] . '"  value="<?=$_r_' . $_row['field_name'] . '[ $_keyOptions_' . $_row['field_name'] . '[0] ];?>" <?= ($_radiobutton_dinamic_' . $_row['field_name'] . '==$_r_' . $_row['field_name'] . '[ $_keyOptions_' . $_row['field_name'] . '[0] ]) ? "checked" : null ;?> /> <?=$_r_' . $_row['field_name'] . '[ $_keyOptions_' . $_row['field_name'] . '[1] ];?><i class="margin-right-10"></i>' . PHP_EOL;
+                                    $_r .= "<?php" . PHP_EOL;
+                                    $_r .= "endforeach;" . PHP_EOL;
+                                    $_r .= "?>" . PHP_EOL;
+                                    $_r .= "</p>" . PHP_EOL;
+
+                                endif;
+
+                                $this->_formAddEditConfigInput = $_r;
+
+                            endif;
+
+                        elseif ($_param_formAddEditField['form_add_edit_field_type'] == 'checkbox-manual'):
+
+                            $_r = "" . PHP_EOL;
+                            $_r .= "<?php" . PHP_EOL;
+                            $_r .= "\$_checkbox_manual_" . $_row['field_name'] . " = '';" . PHP_EOL;
+                            $_r .= "if( !empty(\$this->input->post('" . $_row['field_name'] . "')) ):" . PHP_EOL;
+                            $_r .= "\$_checkbox_manual_" . $_row['field_name'] . " = \$this->input->post('" . $_row['field_name'] . "') ;" . PHP_EOL;
+                            $_r .= "elseif( !empty(\$dados->" . $_row['field_name'] . ") ):" . PHP_EOL;
+                            $_r .= "\$_checkbox_manual_" . $_row['field_name'] . " = \$dados->" . $_row['field_name'] . ";" . PHP_EOL;
+                            $_r .= "endif;" . PHP_EOL;
+                            $_r .= "?>" . PHP_EOL . PHP_EOL;
+
+                            $_r .= '<p class="margin-bottom-5">' . PHP_EOL . '<input class="flat-green" type="checkbox" name="' . $_row['field_name'] . '" value="' . $_param_formAddEditField['form_add_edit_field_value_checkbox_manual_on'] . '" <?= ($_checkbox_manual_' . $_row['field_name'] . '=="' . $_param_formAddEditField['form_add_edit_field_value_checkbox_manual_on'] . '") ? "checked" : null ;?> />' . PHP_EOL . '</p>';
+
+                            $this->_formAddEditConfigInput .= $_r;
+                            $this->_formAddConvertDadosToDatabase .= '(isset($_dados["' . $_row['field_name'] . '"])) ? ($_dados["' . $_row['field_name'] . '"] == "' . $_param_formAddEditField['form_add_edit_field_value_checkbox_manual_on'] . '") ? $_dados["' . $_row['field_name'] . '"] : "' . $_param_formAddEditField['form_add_edit_field_value_checkbox_manual_off'] . '" : "' . $_param_formAddEditField['form_add_edit_field_value_checkbox_manual_off'] . '";' . PHP_EOL;
+                            if ($_row['primary_key'] == 0):
+                                $this->_formEditConvertDadosToDatabase .= '(isset($_dados["' . $_row['field_name'] . '"])) ? ($_dados["' . $_row['field_name'] . '"] == "' . $_param_formAddEditField['form_add_edit_field_value_checkbox_manual_on'] . '") ? $_dados["' . $_row['field_name'] . '"] : "' . $_param_formAddEditField['form_add_edit_field_value_checkbox_manual_off'] . '" : "' . $_param_formAddEditField['form_add_edit_field_value_checkbox_manual_off'] . '";' . PHP_EOL;
+                            endif;
+
+                        elseif ($_param_formAddEditField['form_add_edit_field_type'] == 'checkbox-multiple-manual'):
+
+                            $_checkboxMultipleValue = explode(',', $_param_formAddEditField['form_add_edit_field_value_checkbox_multiple_manual']);
+                            $_c = '';
+                            $_r = '';
+
+                            foreach ($_checkboxMultipleValue as $_checkboxMultipleValue_value):
+                                $_c = explode('|', $_checkboxMultipleValue_value);
+                                $this->_formAddEditConfigInput .= '<input class="flat-green" type="checkbox" name="' . $_row['field_name'] . '[' . $_c[0] . ']" value="' . $_c[0] . '" <?= isset($_checkbox_multiple_manual_' . $_row['field_name'] . '["' . $_c[0] . '"]) ? (($_checkbox_multiple_manual_' . $_row['field_name'] . '["' . $_c[0] . '"]) == "' . $_c[0] . '") ? "checked" : null : null; ?> ' . $this->_formAddEditConfigInputAtributos . '/> ' . $_c[1] . '<i class="margin-right-10"></i>' . PHP_EOL;
+                            endforeach;
+
+                            $_r .= "" . PHP_EOL;
+                            $_r .= "<?php" . PHP_EOL;
+                            $_r .= "\$_checkbox_multiple_manual_" . $_row['field_name'] . " = '';" . PHP_EOL;
+                            $_r .= "if( !empty(\$this->input->post('" . $_row['field_name'] . "')) ):" . PHP_EOL;
+                            $_r .= "\$_checkbox_multiple_manual_" . $_row['field_name'] . " = \$this->input->post('" . $_row['field_name'] . "');" . PHP_EOL;
+                            $_r .= "elseif( !empty(\$dados->" . $_row['field_name'] . ") ):" . PHP_EOL;
+                            $_r .= "\$_checkbox_multiple_manual_" . $_row['field_name'] . " = json_decode(\$dados->" . $_row['field_name'] . ", true);" . PHP_EOL;
+                            $_r .= "endif;" . PHP_EOL;
+                            $_r .= "?>" . PHP_EOL . PHP_EOL;
+
+                            $_r .= '<p class="margin-bottom-5">' . PHP_EOL . $this->_formAddEditConfigInput . PHP_EOL . '</p>' . PHP_EOL;
+
+                            $this->_formAddEditConfigInput = $_r . PHP_EOL;
+                            $this->_formAddConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = json_encode($_dados["' . $_row['field_name'] . '"]);' . PHP_EOL;
+                            if ($_row['primary_key'] == 0):
+                                $this->_formEditConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = json_encode($_dados["' . $_row['field_name'] . '"]);' . PHP_EOL;
+                            endif;
+
+                        elseif ($_param_formAddEditField['form_add_edit_field_type'] == 'checkbox-multiple-dinamic'):
+
+                            if (!empty($_param_formAddEditField['form_add_edit_field_value_checkbox_multiple_dinamic'])):
+
+                                $_param_formAddEditField["form_add_edit_field_value_checkbox_multiple_dinamic"] = str_replace('"', "'", base64_decode($_param_formAddEditField["form_add_edit_field_value_checkbox_multiple_dinamic"]));
+                                $_query = $this->db->query($_param_formAddEditField["form_add_edit_field_value_checkbox_multiple_dinamic"])->result_array();
+                                $_r = '';
+
+                                if ($_query):
+
+                                    $_r .= '<p class="margin-bottom-5">' . PHP_EOL;
+                                    $_r .= "<?php" . PHP_EOL;
+                                    $_r .= "\$_results_" . $_row['field_name'] . " = \$this->db->query(\"" . $_param_formAddEditField['form_add_edit_field_value_checkbox_multiple_dinamic'] . "\");" . PHP_EOL;
+                                    $_r .= "\$_last_query_" . $_row['field_name'] . " = strtolower(\$this->db->last_query());" . PHP_EOL;
+                                    $_r .= "\$_options_" . $_row['field_name'] . " = \$_results_" . $_row['field_name'] . "->result_array();" . PHP_EOL;
+                                    $_r .= "\$_options_" . $_row['field_name'] . " = \$_options_" . $_row['field_name'] . "[0];" . PHP_EOL;
+                                    $_r .= "\$_keyOptions_" . $_row['field_name'] . " = array();" . PHP_EOL;
+                                    $_r .= "\$_list_" . $_row['field_name'] . "[0] = '" . $_param_formAddEditField['form_add_edit_field_placeholder'] . "' ;" . PHP_EOL;
+                                    $_r .= "foreach (\$_options_" . $_row['field_name'] . " as \$key => \$value_" . $_row['field_name'] . "):" . PHP_EOL;
+                                    $_r .= "\$_keyOptions_" . $_row['field_name'] . "[] = \$key;" . PHP_EOL;
+                                    $_r .= "endforeach;" . PHP_EOL . PHP_EOL;
+
+                                    $_r .= "\$_checkbox_multiple_dinamic_" . $_row['field_name'] . " = '';" . PHP_EOL;
+                                    $_r .= "if( !empty(\$this->input->post('" . $_row['field_name'] . "')) ):" . PHP_EOL;
+                                    $_r .= "\$_checkbox_multiple_dinamic_" . $_row['field_name'] . " = \$this->input->post('" . $_row['field_name'] . "');" . PHP_EOL;
+                                    $_r .= "elseif( !empty(\$dados->" . $_row['field_name'] . ") ):" . PHP_EOL;
+                                    $_r .= "\$_checkbox_multiple_dinamic_" . $_row['field_name'] . " = json_decode(\$dados->" . $_row['field_name'] . ", true);" . PHP_EOL;
+                                    $_r .= "endif;" . PHP_EOL . PHP_EOL;
+
+                                    $_r .= "foreach (\$_results_" . $_row['field_name'] . "->result_array() as \$_r_" . $_row['field_name'] . "):" . PHP_EOL;
+                                    $_r .= "\$_checked = '';" . PHP_EOL;
+                                    $_r .= "\$_lst_" . $_row['field_name'] . "[ \$_r_" . $_row['field_name'] . "[ \$_keyOptions_" . $_row['field_name'] . "[0] ] ] = \$_r_" . $_row['field_name'] . "[ \$_keyOptions_" . $_row['field_name'] . "[1] ];" . PHP_EOL;
+                                    $_r .= "if( \$_checkbox_multiple_dinamic_" . $_row['field_name'] . " ):" . PHP_EOL;
+                                    $_r .= "if (in_array(\$_r_" . $_row['field_name'] . "[ \$_keyOptions_" . $_row['field_name'] . "[0] ], \$_checkbox_multiple_dinamic_" . $_row['field_name'] . ")):" . PHP_EOL;
+                                    $_r .= "\$_checked = 'checked';" . PHP_EOL;
+                                    $_r .= "endif;" . PHP_EOL;
+                                    $_r .= "endif;" . PHP_EOL;
+                                    $_r .= "?>" . PHP_EOL;
+
+                                    $_r .= '<input class="flat-green" type="checkbox" name="' . $_row['field_name'] . '[<?=$_r_' . $_row['field_name'] . '[ $_keyOptions_' . $_row['field_name'] . '[1] ];?>]" value="<?=$_r_' . $_row['field_name'] . '[ $_keyOptions_' . $_row['field_name'] . '[0] ];?>" <?= $_checked; ?> /> <?=$_r_' . $_row['field_name'] . '[ $_keyOptions_' . $_row['field_name'] . '[1] ];?><i class="margin-right-10"></i>' . PHP_EOL;
+
+                                    $_r .= "<?php" . PHP_EOL;
+                                    $_r .= "endforeach;" . PHP_EOL;
+                                    $_r .= "?>" . PHP_EOL;
+                                    $_r .= "</p>" . PHP_EOL;
+
+                                endif;
+
+                                $this->_formAddEditConfigInput = $_r;
                                 $this->_formAddConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = json_encode($_dados["' . $_row['field_name'] . '"]);' . PHP_EOL;
                                 if ($_row['primary_key'] == 0):
                                     $this->_formEditConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = json_encode($_dados["' . $_row['field_name'] . '"]);' . PHP_EOL;
                                 endif;
 
-                            elseif ($_param_formAddEditField['form_add_edit_field_type'] == 'checkbox-multiple-dinamic'):
-
-                                if (!empty($_param_formAddEditField['form_add_edit_field_value_checkbox_multiple_dinamic'])):
-
-                                    $_param_formAddEditField["form_add_edit_field_value_checkbox_multiple_dinamic"] = str_replace('"', "'", base64_decode($_param_formAddEditField["form_add_edit_field_value_checkbox_multiple_dinamic"]));
-                                    $_query = $this->db->query($_param_formAddEditField["form_add_edit_field_value_checkbox_multiple_dinamic"])->result_array();
-                                    $_r = '';
-
-                                    if ($_query):
-
-                                        $_r .= '<p class="margin-bottom-5">' . PHP_EOL;
-                                        $_r .= "<?php" . PHP_EOL;
-                                        $_r .= "\$_results_" . $_row['field_name'] . " = \$this->db->query(\"" . $_param_formAddEditField['form_add_edit_field_value_checkbox_multiple_dinamic'] . "\");" . PHP_EOL;
-                                        $_r .= "\$_last_query_" . $_row['field_name'] . " = strtolower(\$this->db->last_query());" . PHP_EOL;
-                                        $_r .= "\$_options_" . $_row['field_name'] . " = \$_results_" . $_row['field_name'] . "->result_array();" . PHP_EOL;
-                                        $_r .= "\$_options_" . $_row['field_name'] . " = \$_options_" . $_row['field_name'] . "[0];" . PHP_EOL;
-                                        $_r .= "\$_keyOptions_" . $_row['field_name'] . " = array();" . PHP_EOL;
-                                        $_r .= "\$_list_" . $_row['field_name'] . "[0] = '" . $_param_formAddEditField['form_add_edit_field_placeholder'] . "' ;" . PHP_EOL;
-                                        $_r .= "foreach (\$_options_" . $_row['field_name'] . " as \$key => \$value_" . $_row['field_name'] . "):" . PHP_EOL;
-                                        $_r .= "\$_keyOptions_" . $_row['field_name'] . "[] = \$key;" . PHP_EOL;
-                                        $_r .= "endforeach;" . PHP_EOL . PHP_EOL;
-
-                                        $_r .= "\$_checkbox_multiple_dinamic_" . $_row['field_name'] . " = '';" . PHP_EOL;
-                                        $_r .= "if( !empty(\$this->input->post('" . $_row['field_name'] . "')) ):" . PHP_EOL;
-                                        $_r .= "\$_checkbox_multiple_dinamic_" . $_row['field_name'] . " = \$this->input->post('" . $_row['field_name'] . "');" . PHP_EOL;
-                                        $_r .= "elseif( !empty(\$dados->" . $_row['field_name'] . ") ):" . PHP_EOL;
-                                        $_r .= "\$_checkbox_multiple_dinamic_" . $_row['field_name'] . " = json_decode(\$dados->" . $_row['field_name'] . ", true);" . PHP_EOL;
-                                        $_r .= "endif;" . PHP_EOL . PHP_EOL;
-
-                                        $_r .= "foreach (\$_results_" . $_row['field_name'] . "->result_array() as \$_r_" . $_row['field_name'] . "):" . PHP_EOL;
-                                        $_r .= "\$_checked = '';" . PHP_EOL;
-                                        $_r .= "\$_lst_" . $_row['field_name'] . "[ \$_r_" . $_row['field_name'] . "[ \$_keyOptions_" . $_row['field_name'] . "[0] ] ] = \$_r_" . $_row['field_name'] . "[ \$_keyOptions_" . $_row['field_name'] . "[1] ];" . PHP_EOL;
-                                        $_r .= "if( \$_checkbox_multiple_dinamic_" . $_row['field_name'] . " ):" . PHP_EOL;
-                                        $_r .= "if (in_array(\$_r_" . $_row['field_name'] . "[ \$_keyOptions_" . $_row['field_name'] . "[0] ], \$_checkbox_multiple_dinamic_" . $_row['field_name'] . ")):" . PHP_EOL;
-                                        $_r .= "\$_checked = 'checked';" . PHP_EOL;
-                                        $_r .= "endif;" . PHP_EOL;
-                                        $_r .= "endif;" . PHP_EOL;
-                                        $_r .= "?>" . PHP_EOL;
-
-                                        $_r .= '<input class="flat-green" type="checkbox" name="' . $_row['field_name'] . '[<?=$_r_' . $_row['field_name'] . '[ $_keyOptions_' . $_row['field_name'] . '[1] ];?>]" value="<?=$_r_' . $_row['field_name'] . '[ $_keyOptions_' . $_row['field_name'] . '[0] ];?>" <?= $_checked; ?> /> <?=$_r_' . $_row['field_name'] . '[ $_keyOptions_' . $_row['field_name'] . '[1] ];?><i class="margin-right-10"></i>' . PHP_EOL;
-
-                                        $_r .= "<?php" . PHP_EOL;
-                                        $_r .= "endforeach;" . PHP_EOL;
-                                        $_r .= "?>" . PHP_EOL;
-                                        $_r .= "</p>" . PHP_EOL;
-
-                                    endif;
-
-                                    $this->_formAddEditConfigInput = $_r;
-                                    $this->_formAddConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = json_encode($_dados["' . $_row['field_name'] . '"]);' . PHP_EOL;
-                                    if ($_row['primary_key'] == 0):
-                                        $this->_formEditConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = json_encode($_dados["' . $_row['field_name'] . '"]);' . PHP_EOL;
-                                    endif;
-
-                                endif;
-
-
                             endif;
 
+                        endif;
 
+                        if (!empty($this->_formAddEditConfigInput)):
 
+                            /*
+                             * MONTA O CAMPO GERADO COM AS LABELS E ATTRIBUTOS
+                             */
 
-                            if (!empty($this->_formAddEditConfigInput)):
+                            if (!empty($_param_formAddEditField['form_add_edit_field_hidden'])):
+                                if ($_param_formAddEditField['form_add_edit_field_hidden'] == 'on'):
 
-                                /*
-                                 * MONTA O CAMPO GERADO COM AS LABELS E ATTRIBUTOS
-                                 */
-
-                                if (!empty($_param_formAddEditField['form_add_edit_field_hidden'])):
-                                    if ($_param_formAddEditField['form_add_edit_field_hidden'] == 'on'):
-
-                                        if ($_param_formAddEditField['form_add_edit_field_hidden_in_form'] == 'formadd'):
+                                    if ($_param_formAddEditField['form_add_edit_field_hidden_in_form'] == 'formadd'):
 //echo '- > ' . $_row['field_name'] . ' - Hidden ONLY Form ADD';
-                                            $this->_formAddEditConfigInputClassCSS .= ' hidden-formadd ';
-                                        elseif ($_param_formAddEditField['form_add_edit_field_hidden_in_form'] == 'formedit'):
+                                        $this->_formAddEditConfigInputClassCSS .= ' hidden-formadd ';
+                                    elseif ($_param_formAddEditField['form_add_edit_field_hidden_in_form'] == 'formedit'):
 //echo '- > ' . $_row['field_name'] . ' - Hidden ONLY Form EDIT';
-                                            $this->_formAddEditConfigInputClassCSS .= ' hidden-formedit ';
-                                        else:
+                                        $this->_formAddEditConfigInputClassCSS .= ' hidden-formedit ';
+                                    else:
 //echo '- > ' . $_row['field_name'] . ' - Hidden Todos';
-                                            $this->_formAddEditConfigInputClassCSS .= ' hidden ';
-                                        endif;
+                                        $this->_formAddEditConfigInputClassCSS .= ' hidden ';
+                                    endif;
 
                                     /* $this->_formAddEditConfigInput = '';
-                                      $this->_formAddEditFields .= '<input type="hidden" name="' . $_row['field_name'] . '" value="<?=set_value("' . $_row['field_name'] . '",!empty($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : set_value("' . $_row['field_name'] . '"));?>" />' . PHP_EOL; */
-                                    endif;
+                                $this->_formAddEditFields .= '<input type="hidden" name="' . $_row['field_name'] . '" value="<?=set_value("' . $_row['field_name'] . '",!empty($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : set_value("' . $_row['field_name'] . '"));?>" />' . PHP_EOL; */
                                 endif;
+                            endif;
 
 //JQUERY MASK
-                                if (isset($_param_formAddEditField['form_add_edit_field_mask'])):
-                                    if (!empty($_param_formAddEditField['form_add_edit_field_mask'])):
-                                        $this->_formAddEditConfigInputMask .= '$(".j-mask-' . $_row['field_name'] . '").mask("' . $_param_formAddEditField['form_add_edit_field_mask'] . '", ' . html_entity_decode(base64_decode($_param_formAddEditField['form_add_edit_field_mask_complement']), ENT_QUOTES) . ');' . PHP_EOL;
-                                    endif;
+                            if (isset($_param_formAddEditField['form_add_edit_field_mask'])):
+                                if (!empty($_param_formAddEditField['form_add_edit_field_mask'])):
+                                    $this->_formAddEditConfigInputMask .= '$(".j-mask-' . $_row['field_name'] . '").mask("' . $_param_formAddEditField['form_add_edit_field_mask'] . '", ' . html_entity_decode(base64_decode($_param_formAddEditField['form_add_edit_field_mask_complement']), ENT_QUOTES) . ');' . PHP_EOL;
                                 endif;
-
+                            endif;
 
 //VALDATION ATRIBUTO EMAIL
-                                if ($_param_formAddEditField['form_add_edit_field_type'] == 'email'):
-                                    if (empty($this->_formAddEditConfigInputValidationAtributos)):
-                                        $this->_formAddEditConfigInputValidationAtributos .= 'valid_email|strtolower';
-                                    else:
-                                        $this->_formAddEditConfigInputValidationAtributos .= '|valid_email|strtolower';
-                                    endif;
+                            if ($_param_formAddEditField['form_add_edit_field_type'] == 'email'):
+                                if (empty($this->_formAddEditConfigInputValidationAtributos)):
+                                    $this->_formAddEditConfigInputValidationAtributos .= 'valid_email|strtolower';
+                                else:
+                                    $this->_formAddEditConfigInputValidationAtributos .= '|valid_email|strtolower';
                                 endif;
-
+                            endif;
 
 //VALDATION ATRIBUTO NÚMERO INTEIRO
-                                if ($_param_formAddEditField['form_add_edit_field_type'] == 'number'):
-                                    if (empty($this->_formAddEditConfigInputValidationAtributos)):
-                                        $this->_formAddEditConfigInputValidationAtributos .= 'numeric|integer';
-                                    else:
-                                        $this->_formAddEditConfigInputValidationAtributos .= '|numeric|integer';
-                                    endif;
+                            if ($_param_formAddEditField['form_add_edit_field_type'] == 'number'):
+                                if (empty($this->_formAddEditConfigInputValidationAtributos)):
+                                    $this->_formAddEditConfigInputValidationAtributos .= 'numeric|integer';
+                                else:
+                                    $this->_formAddEditConfigInputValidationAtributos .= '|numeric|integer';
                                 endif;
-
+                            endif;
 
 //VALDATION ATRIBUTO UPEPRCASE / LOWERCASE
-                                if (isset($_param_formAddEditField['form_add_edit_field_convert_letter_into'])):
-                                    if ($_param_formAddEditField['form_add_edit_field_convert_letter_into'] == 'uppercase'):
-                                        if (empty($this->_formAddEditConfigInputValidationAtributos)):
-                                            $this->_formAddEditConfigInputValidationAtributos .= 'strtoupper';
-                                        else:
-                                            $this->_formAddEditConfigInputValidationAtributos .= '|strtoupper';
-                                        endif;
-                                    elseif ($_param_formAddEditField['form_add_edit_field_convert_letter_into'] == 'lowercase'):
-                                        if (empty($this->_formAddEditConfigInputValidationAtributos)):
-                                            $this->_formAddEditConfigInputValidationAtributos .= 'strtolower';
-                                        else:
-                                            $this->_formAddEditConfigInputValidationAtributos .= '|strtolower';
-                                        endif;
-
+                            if (isset($_param_formAddEditField['form_add_edit_field_convert_letter_into'])):
+                                if ($_param_formAddEditField['form_add_edit_field_convert_letter_into'] == 'uppercase'):
+                                    if (empty($this->_formAddEditConfigInputValidationAtributos)):
+                                        $this->_formAddEditConfigInputValidationAtributos .= 'strtoupper';
+                                    else:
+                                        $this->_formAddEditConfigInputValidationAtributos .= '|strtoupper';
                                     endif;
-                                endif;
+                                elseif ($_param_formAddEditField['form_add_edit_field_convert_letter_into'] == 'lowercase'):
+                                    if (empty($this->_formAddEditConfigInputValidationAtributos)):
+                                        $this->_formAddEditConfigInputValidationAtributos .= 'strtolower';
+                                    else:
+                                        $this->_formAddEditConfigInputValidationAtributos .= '|strtolower';
+                                    endif;
 
+                                endif;
+                            endif;
 
 //VALDATION ONLY NUMBERS, ONLY CHARACTERS OR ALL CHARACTERS
-                                if (isset($_param_formAddEditField['form_add_edit_field_type_characters'])):
-                                    if ($_param_formAddEditField['form_add_edit_field_type_characters'] == 'only_numbers'):
-                                        if (empty($this->_formAddEditConfigInputValidationAtributos)):
-                                            $this->_formAddEditConfigInputValidationAtributos .= 'numeric';
-                                        else:
-                                            $this->_formAddEditConfigInputValidationAtributos .= '|numeric';
-                                        endif;
-                                    elseif ($_param_formAddEditField['form_add_edit_field_type_characters'] == 'only_letters'):
-                                        if (empty($this->_formAddEditConfigInputValidationAtributos)):
-                                            $this->_formAddEditConfigInputValidationAtributos .= 'alpha';
-                                        else:
-                                            $this->_formAddEditConfigInputValidationAtributos .= '|alpha';
-                                        endif;
-                                    elseif ($_param_formAddEditField['form_add_edit_field_type_characters'] == 'letters_and_numbers'):
-                                        if (empty($this->_formAddEditConfigInputValidationAtributos)):
-                                            $this->_formAddEditConfigInputValidationAtributos .= 'alpha_numeric';
-                                        else:
-                                            $this->_formAddEditConfigInputValidationAtributos .= '|alpha_numeric';
-                                        endif;
+                            if (isset($_param_formAddEditField['form_add_edit_field_type_characters'])):
+                                if ($_param_formAddEditField['form_add_edit_field_type_characters'] == 'only_numbers'):
+                                    if (empty($this->_formAddEditConfigInputValidationAtributos)):
+                                        $this->_formAddEditConfigInputValidationAtributos .= 'numeric';
+                                    else:
+                                        $this->_formAddEditConfigInputValidationAtributos .= '|numeric';
+                                    endif;
+                                elseif ($_param_formAddEditField['form_add_edit_field_type_characters'] == 'only_letters'):
+                                    if (empty($this->_formAddEditConfigInputValidationAtributos)):
+                                        $this->_formAddEditConfigInputValidationAtributos .= 'alpha';
+                                    else:
+                                        $this->_formAddEditConfigInputValidationAtributos .= '|alpha';
+                                    endif;
+                                elseif ($_param_formAddEditField['form_add_edit_field_type_characters'] == 'letters_and_numbers'):
+                                    if (empty($this->_formAddEditConfigInputValidationAtributos)):
+                                        $this->_formAddEditConfigInputValidationAtributos .= 'alpha_numeric';
+                                    else:
+                                        $this->_formAddEditConfigInputValidationAtributos .= '|alpha_numeric';
                                     endif;
                                 endif;
-
+                            endif;
 
 //VALDATION ATRIBUTO FIELD MIN LENGHT
-                                if (isset($_param_formAddEditField['form_add_edit_field_min_length'])):
-                                    if ($_param_formAddEditField['form_add_edit_field_min_length'] > 0):
-                                        if (empty($this->_formAddEditConfigInputValidationAtributos)):
-                                            $this->_formAddEditConfigInputValidationAtributos .= 'min_length[' . $_param_formAddEditField['form_add_edit_field_min_length'] . ']';
-                                        else:
-                                            $this->_formAddEditConfigInputValidationAtributos .= '|min_length[' . $_param_formAddEditField['form_add_edit_field_min_length'] . ']';
-                                        endif;
+                            if (isset($_param_formAddEditField['form_add_edit_field_min_length'])):
+                                if ($_param_formAddEditField['form_add_edit_field_min_length'] > 0):
+                                    if (empty($this->_formAddEditConfigInputValidationAtributos)):
+                                        $this->_formAddEditConfigInputValidationAtributos .= 'min_length[' . $_param_formAddEditField['form_add_edit_field_min_length'] . ']';
+                                    else:
+                                        $this->_formAddEditConfigInputValidationAtributos .= '|min_length[' . $_param_formAddEditField['form_add_edit_field_min_length'] . ']';
                                     endif;
                                 endif;
-
+                            endif;
 
 //VALDATION ATRIBUTO FIELD MAX LENGHT
-                                if (isset($_param_formAddEditField['form_add_edit_field_max_length'])):
-                                    if ($_param_formAddEditField['form_add_edit_field_max_length'] > 0):
-                                        if (empty($this->_formAddEditConfigInputValidationAtributos)):
-                                            $this->_formAddEditConfigInputValidationAtributos .= 'max_length[' . $_param_formAddEditField['form_add_edit_field_max_length'] . ']';
-                                        else:
-                                            $this->_formAddEditConfigInputValidationAtributos .= '|max_length[' . $_param_formAddEditField['form_add_edit_field_max_length'] . ']';
-                                        endif;
+                            if (isset($_param_formAddEditField['form_add_edit_field_max_length'])):
+                                if ($_param_formAddEditField['form_add_edit_field_max_length'] > 0):
+                                    if (empty($this->_formAddEditConfigInputValidationAtributos)):
+                                        $this->_formAddEditConfigInputValidationAtributos .= 'max_length[' . $_param_formAddEditField['form_add_edit_field_max_length'] . ']';
+                                    else:
+                                        $this->_formAddEditConfigInputValidationAtributos .= '|max_length[' . $_param_formAddEditField['form_add_edit_field_max_length'] . ']';
                                     endif;
                                 endif;
-
+                            endif;
 
 //VALDATION DATE
-                                if (isset($_param_formAddEditField['form_add_edit_field_type'])):
-                                    if ($_param_formAddEditField['form_add_edit_field_type'] == "date"):
-                                        if (empty($this->_formAddEditConfigInputValidationAtributos)):
-                                            $this->_formAddEditConfigInputValidationAtributos .= 'date';
-                                        else:
-                                            $this->_formAddEditConfigInputValidationAtributos .= '|date';
-                                        endif;
+                            if (isset($_param_formAddEditField['form_add_edit_field_type'])):
+                                if ($_param_formAddEditField['form_add_edit_field_type'] == "date"):
+                                    if (empty($this->_formAddEditConfigInputValidationAtributos)):
+                                        $this->_formAddEditConfigInputValidationAtributos .= 'date';
+                                    else:
+                                        $this->_formAddEditConfigInputValidationAtributos .= '|date';
                                     endif;
                                 endif;
+                            endif;
 
+                            if (!empty($_param_formAddEditField['form_add_edit_field_required'])):
 
+                                /* INPUT REQUIRED */
+                                if ($_param_formAddEditField['form_add_edit_field_required'] == 'on'):
 
+                                    if (!empty($_param_formAddEditField['form_add_edit_field_read_only'])):
+                                        if ($_param_formAddEditField['form_add_edit_field_read_only'] == 'on'):
 
+                                            if ($_param_formAddEditField['form_add_edit_field_read_only_in_form'] == 'todos'):
+                                                echo '<br>todos' . '<br>';
 
-                                if (!empty($_param_formAddEditField['form_add_edit_field_required'])):
+                                                $_classDisabledReadOnlyAsterisk = 'hide-all-form';
+                                                $this->_form_add_unset_fields .= 'unset($_dados["' . $_row['field_name'] . '"]);' . PHP_EOL;
+                                                $this->_form_edit_unset_fields .= 'unset($_dados["' . $_row['field_name'] . '"]);' . PHP_EOL;
 
-                                    /* INPUT REQUIRED */
-                                    if ($_param_formAddEditField['form_add_edit_field_required'] == 'on'):
+                                            elseif ($_param_formAddEditField['form_add_edit_field_read_only_in_form'] == 'formadd'):
 
-                                        if (!empty($_param_formAddEditField['form_add_edit_field_read_only'])):
-                                            if ($_param_formAddEditField['form_add_edit_field_read_only'] == 'on'):
+                                                echo '<br>ADD' . '<br>';
+                                                $_classDisabledReadOnlyAsterisk = 'hide-formadd';
+                                                $this->_form_add_unset_fields .= 'unset($_dados["' . $_row['field_name'] . '"]);' . PHP_EOL;
 
-                                                if ($_param_formAddEditField['form_add_edit_field_read_only_in_form'] == 'todos'):
-                                                    echo '<br>todos' . '<br>';
+                                            elseif ($_param_formAddEditField['form_add_edit_field_read_only_in_form'] == 'formedit'):
 
-                                                    $_classDisabledReadOnlyAsterisk = 'hide-all-form';
-                                                    $this->_form_add_unset_fields .= 'unset($_dados["' . $_row['field_name'] . '"]);' . PHP_EOL;
-                                                    $this->_form_edit_unset_fields .= 'unset($_dados["' . $_row['field_name'] . '"]);' . PHP_EOL;
-
-                                                elseif ($_param_formAddEditField['form_add_edit_field_read_only_in_form'] == 'formadd'):
-
-                                                    echo '<br>ADD' . '<br>';
-                                                    $_classDisabledReadOnlyAsterisk = 'hide-formadd';
-                                                    $this->_form_add_unset_fields .= 'unset($_dados["' . $_row['field_name'] . '"]);' . PHP_EOL;
-
-                                                elseif ($_param_formAddEditField['form_add_edit_field_read_only_in_form'] == 'formedit'):
-
-                                                    echo '<br>EDIT' . '<br>';
-                                                    $_classDisabledReadOnlyAsterisk = 'hide-formedit';
-                                                    $this->_form_edit_unset_fields .= 'unset($_dados["' . $_row['field_name'] . '"]);' . PHP_EOL;
-
-                                                endif;
+                                                echo '<br>EDIT' . '<br>';
+                                                $_classDisabledReadOnlyAsterisk = 'hide-formedit';
+                                                $this->_form_edit_unset_fields .= 'unset($_dados["' . $_row['field_name'] . '"]);' . PHP_EOL;
 
                                             endif;
+
                                         endif;
+                                    endif;
 
 //echo '-- > ' . $_classDisabledReadOnlyAsterisk;
 
+                                    $this->_formAddEditFields .= '
+																					                                                <?php $_error = form_error("' . $_row['field_name'] . '", "<small class=\'text-danger col-xs-12 bz-input-error\'>", "</small>"); ?>
+																					                                                <div id="' . $_row['field_name'] . '" class="form-group has-feedback ' . $this->_formAddEditConfigInputClassCSS . '">
+																					                                                    <label for="' . $_row['field_name'] . '"><i class="fa fa-asterisk margin-right-5 text-error ' . $_classDisabledReadOnlyAsterisk . '" style="font-size: 0.7em;"></i>' . $_param_formAddEditField['form_add_edit_field_label'] . '</label>
+																					                                                    ' . $this->_formAddEditConfigInput . '
+																					                                                    <?= $_error; ?>
+																					                                                </div>
+																					                                                ' . PHP_EOL;
 
-                                        $this->_formAddEditFields .= '
-                                                <?php $_error = form_error("' . $_row['field_name'] . '", "<small class=\'text-danger col-xs-12 bz-input-error\'>", "</small>"); ?>
-                                                <div id="' . $_row['field_name'] . '" class="form-group has-feedback ' . $this->_formAddEditConfigInputClassCSS . '">
-                                                    <label for="' . $_row['field_name'] . '"><i class="fa fa-asterisk margin-right-5 text-error ' . $_classDisabledReadOnlyAsterisk . '" style="font-size: 0.7em;"></i>' . $_param_formAddEditField['form_add_edit_field_label'] . '</label>
-                                                    ' . $this->_formAddEditConfigInput . '
-                                                    <?= $_error; ?>
-                                                </div>
-                                                ' . PHP_EOL;
+                                    /* VALDATION ATRIBUTO REQUIRED */
+                                    if ($_param_formAddEditField['form_add_edit_field_type'] == 'checkbox-multiple-manual' || $_param_formAddEditField['form_add_edit_field_type'] == 'checkbox-multiple-dinamic' || $_param_formAddEditField['form_add_edit_field_type'] == 'select-multiple-manual' || $_param_formAddEditField['form_add_edit_field_type'] == 'select-dinamic' || $_param_formAddEditField['form_add_edit_field_type'] == 'select-multiple-dinamic' || $_param_formAddEditField['form_add_edit_field_type'] == 'radio-dinamic'):
 
-
-
-                                        /* VALDATION ATRIBUTO REQUIRED */
-                                        if ($_param_formAddEditField['form_add_edit_field_type'] == 'checkbox-multiple-manual' || $_param_formAddEditField['form_add_edit_field_type'] == 'checkbox-multiple-dinamic' || $_param_formAddEditField['form_add_edit_field_type'] == 'select-multiple-manual' || $_param_formAddEditField['form_add_edit_field_type'] == 'select-dinamic' || $_param_formAddEditField['form_add_edit_field_type'] == 'select-multiple-dinamic' || $_param_formAddEditField['form_add_edit_field_type'] == 'radio-dinamic'):
-
-                                            if (empty($this->_formAddEditConfigInputValidationAtributos)):
-                                                $this->_formAddEditConfigInputValidationAtributos .= 'callback_validation_required_' . $_row["field_name"];
-                                            else:
-                                                $this->_formAddEditConfigInputValidationAtributos .= '|callback_validation_required_' . $_row["field_name"];
-                                            endif;
-
-
-                                            $this->_formAddEditConfigInputValidationCallback .= "
-                                                 /* VALIDAÇÃO POR CALLBACK DO CAMPO " . $_row["field_name"] . ". */
-                                                  public function validation_required_" . $_row["field_name"] . "() {
-                                                      if (\$this->input->post('" . $_row["field_name"] . "')) return true;
-                                                      \$this->form_validation->set_message('validation_required_" . $_row["field_name"] . "', 'O campo <b>" . $_param_formAddEditField['form_add_edit_field_label'] . "</b> é obrigatório.');
-                                                      return false;
-                                                  }
-                                                  /* END VALIDAÇÃO POR CALLBACK DO CAMPO " . $_row["field_name"] . ". */" . PHP_EOL . PHP_EOL . PHP_EOL;
-
+                                        if (empty($this->_formAddEditConfigInputValidationAtributos)):
+                                            $this->_formAddEditConfigInputValidationAtributos .= 'callback_validation_required_' . $_row["field_name"];
                                         else:
-
-                                            /**
-                                             * VALIDAÇÃO PARA CAMPOS OBRIGATÓRIO
-                                             */
-                                            if ($_param_formAddEditField['form_add_edit_field_type'] != 'upload-imagem' && $_param_formAddEditField['form_add_edit_field_type'] != 'upload-arquivo'):
-
-                                                if (empty($this->_formAddEditConfigInputValidationAtributos)):
-                                                    $this->_formAddEditConfigInputValidationAtributos .= 'required';
-                                                else:
-                                                    $this->_formAddEditConfigInputValidationAtributos .= '|required';
-                                                endif;
-
-                                            endif;
-
-
-
-                                            /**
-                                             * CALLBACK UPLOAD IMAGES - VALIDATION REQUIRED
-                                             */
-                                            if ($_param_formAddEditField['form_add_edit_field_type'] == 'upload-imagem'):
-
-                                                $this->_formAddEditConfigFormOpen = 'form_open_multipart';
-
-                                                if ($_param_formAddEditField['form_add_edit_field_type'] == 'upload-imagem') :
-                                                    if (empty($this->_formAddEditConfigInputValidationAtributos)):
-                                                        $this->_formAddEditConfigInputValidationAtributos .= 'callback_validation_upload_images_' . $_row["field_name"];
-                                                    else:
-                                                        $this->_formAddEditConfigInputValidationAtributos .= '|callback_validation_upload_images_' . $_row["field_name"];
-                                                    endif;
-                                                endif;
-
-
-                                                $this->_formAddEditConfigInputValidationCallback .= "
-                                                 /* VALIDAÇÃO POR CALLBACK UPLOAD DE IMAGENS " . $_row["field_name"] . ". */
-                                                  public function validation_upload_images_" . $_row["field_name"] . "() {
-                                                      
-                                                        if (empty(\$_FILES['" . $_row["field_name"] . "']['name']) && !empty(\$this->input->post('" . $_row["field_name"] . "')) ) {
-                                                            return true;
-                                                        }
-
-                                                        if (empty(\$_FILES['" . $_row["field_name"] . "']['name'])) {
-                                                            \$this->form_validation->set_message('validation_upload_images_" . $_row["field_name"] . "', 'Nenhuma imagem selecionada para ser enviada.');
-                                                            return false;
-                                                        }
-                                                        
-                                                        if (strpos(\$_FILES['" . $_row["field_name"] . "']['type'], 'image/') !== 0) {
-                                                            \$this->form_validation->set_message('validation_upload_images_" . $_row["field_name"] . "', 'Este arquivo não é um arquivo de imagem.');
-                                                            return false;
-                                                        }
-
-                                                        \$this->task['result_upload'] = bz_upload_file('" . $_row["field_name"] . "', ___CONF_UPLOAD_IMAGE_DIR___, '" . $_param_formAddEditField['form_add_edit_field_upload_imagem_extensao_permitida'] . "', '" . $_param_formAddEditField['form_add_edit_field_upload_imagem_tamanho_maximo'] . "', '" . $_param_formAddEditField['form_add_edit_field_upload_imagem_max_width'] . "', '" . $_param_formAddEditField['form_add_edit_field_upload_imagem_max_height'] . "');
-
-                                                        if (isset(\$this->task['result_upload']['error'])) {
-                                                            \$this->form_validation->set_message('validation_upload_images_" . $_row["field_name"] . "', \$this->task['result_upload']['error']['message']);
-                                                            return false;
-                                                        }
-                                                        
-                                                        \$this->task['uploaded_image'] = true;
-                                                  }
-                                                  /* END VALIDAÇÃO POR CALLBACK UPLOAD DE IMAGENS " . $_row["field_name"] . ". */" . PHP_EOL . PHP_EOL . PHP_EOL;
-                                            endif;
-
-
-
-                                            /**
-                                             * CALLBACK UPLOAD FILES - VALIDATION REQUIRED
-                                             */
-                                            if ($_param_formAddEditField['form_add_edit_field_type'] == 'upload-arquivo'):
-
-                                                $this->_formAddEditConfigFormOpen = 'form_open_multipart';
-
-                                                if ($_param_formAddEditField['form_add_edit_field_type'] == 'upload-arquivo') :
-                                                    if (empty($this->_formAddEditConfigInputValidationAtributos)):
-                                                        $this->_formAddEditConfigInputValidationAtributos .= 'callback_validation_upload_files_' . $_row["field_name"];
-                                                    else:
-                                                        $this->_formAddEditConfigInputValidationAtributos .= '|callback_validation_upload_files_' . $_row["field_name"];
-                                                    endif;
-                                                endif;
-
-
-                                                $this->_formAddEditConfigInputValidationCallback .= "
-                                                 /* VALIDAÇÃO POR CALLBACK UPLOAD DE ARQUIVOS " . $_row["field_name"] . ". */
-                                                  public function validation_upload_files_" . $_row["field_name"] . "() {
-                                                  
-                                                        if (empty(\$_FILES['" . $_row["field_name"] . "']['name']) && !empty(\$this->input->post('" . $_row["field_name"] . "')) ) {
-                                                            return true;
-                                                        }
-
-                                                        if (empty(\$_FILES['" . $_row["field_name"] . "']['name'])) {
-                                                            \$this->form_validation->set_message('validation_upload_files_" . $_row["field_name"] . "', 'Nenhuma arquivo selecionado para ser enviado.');
-                                                            return false;
-                                                        }
-
-                                                        \$this->task['result_upload'] = bz_upload_file('" . $_row["field_name"] . "', ___CONF_UPLOAD_FILE_DIR___, '" . $_param_formAddEditField['form_add_edit_field_upload_arquivo_extensao_permitida'] . "', '" . $_param_formAddEditField['form_add_edit_field_upload_arquivo_tamanho_maximo'] . "', '', '');
-
-                                                        if (isset(\$this->task['result_upload']['error'])) {
-                                                            \$this->form_validation->set_message('validation_upload_files_" . $_row["field_name"] . "', \$this->task['result_upload']['error']['message']);
-                                                            return false;
-                                                        }
-                                                        
-                                                        \$this->task['uploaded_file'] = true;
-                                                  }
-                                                  /* END VALIDAÇÃO POR CALLBACK UPLOAD DE ARQUIVOS " . $_row["field_name"] . ". */" . PHP_EOL . PHP_EOL . PHP_EOL;
-                                            endif;
-
-
+                                            $this->_formAddEditConfigInputValidationAtributos .= '|callback_validation_required_' . $_row["field_name"];
                                         endif;
 
+                                        $this->_formAddEditConfigInputValidationCallback .= "
+																								                                                 /* VALIDAÇÃO POR CALLBACK DO CAMPO " . $_row["field_name"] . ". */
+																								                                                  public function validation_required_" . $_row["field_name"] . "() {
+																								                                                      if (\$this->input->post('" . $_row["field_name"] . "')) return true;
+																								                                                      \$this->form_validation->set_message('validation_required_" . $_row["field_name"] . "', 'O campo <b>" . $_param_formAddEditField['form_add_edit_field_label'] . "</b> é obrigatório.');
+																								                                                      return false;
+																								                                                  }
+																								                                                  /* END VALIDAÇÃO POR CALLBACK DO CAMPO " . $_row["field_name"] . ". */" . PHP_EOL . PHP_EOL . PHP_EOL;
 
                                     else:
 
-                                        /* INPUT NOT REQUIRED */
-                                        $this->_formAddEditFields .= '
-                                                <?php $_error = form_error("' . $_row['field_name'] . '", "<small class=\'text-danger col-xs-12 bz-input-error\'>", "</small>"); ?>
-                                                <div id="' . $_row['field_name'] . '" class="form-group has-feedback ' . $this->_formAddEditConfigInputClassCSS . '">
-                                                    <label for="' . $_row['field_name'] . '">' . $_param_formAddEditField['form_add_edit_field_label'] . '</label>
-                                                    ' . $this->_formAddEditConfigInput . '
-                                                    <?= $_error; ?>
-                                                </div>
-                                                ' . PHP_EOL;
+                                        /**
+                                         * VALIDAÇÃO PARA CAMPOS OBRIGATÓRIO
+                                         */
+                                        if ($_param_formAddEditField['form_add_edit_field_type'] != 'upload-imagem' && $_param_formAddEditField['form_add_edit_field_type'] != 'upload-arquivo'):
+
+                                            if (empty($this->_formAddEditConfigInputValidationAtributos)):
+                                                $this->_formAddEditConfigInputValidationAtributos .= 'required';
+                                            else:
+                                                $this->_formAddEditConfigInputValidationAtributos .= '|required';
+                                            endif;
+
+                                        endif;
+
+                                        /**
+                                         * CALLBACK UPLOAD IMAGES - VALIDATION REQUIRED
+                                         */
+                                        if ($_param_formAddEditField['form_add_edit_field_type'] == 'upload-imagem'):
+
+                                            $this->_formAddEditConfigFormOpen = 'form_open_multipart';
+
+                                            if ($_param_formAddEditField['form_add_edit_field_type'] == 'upload-imagem'):
+                                                if (empty($this->_formAddEditConfigInputValidationAtributos)):
+                                                    $this->_formAddEditConfigInputValidationAtributos .= 'callback_validation_upload_images_' . $_row["field_name"];
+                                                else:
+                                                    $this->_formAddEditConfigInputValidationAtributos .= '|callback_validation_upload_images_' . $_row["field_name"];
+                                                endif;
+                                            endif;
+
+                                            $this->_formAddEditConfigInputValidationCallback .= "
+																											                                                 /* VALIDAÇÃO POR CALLBACK UPLOAD DE IMAGENS " . $_row["field_name"] . ". */
+																											                                                  public function validation_upload_images_" . $_row["field_name"] . "() {
+
+																											                                                        if (empty(\$_FILES['" . $_row["field_name"] . "']['name']) && !empty(\$this->input->post('" . $_row["field_name"] . "')) ) {
+																											                                                            return true;
+																											                                                        }
+
+																											                                                        if (empty(\$_FILES['" . $_row["field_name"] . "']['name'])) {
+																											                                                            \$this->form_validation->set_message('validation_upload_images_" . $_row["field_name"] . "', 'Nenhuma imagem selecionada para ser enviada.');
+																											                                                            return false;
+																											                                                        }
+
+																											                                                        if (strpos(\$_FILES['" . $_row["field_name"] . "']['type'], 'image/') !== 0) {
+																											                                                            \$this->form_validation->set_message('validation_upload_images_" . $_row["field_name"] . "', 'Este arquivo não é um arquivo de imagem.');
+																											                                                            return false;
+																											                                                        }
+
+																											                                                        \$this->task['result_upload'] = bz_upload_file('" . $_row["field_name"] . "', ___CONF_UPLOAD_IMAGE_DIR___, '" . $_param_formAddEditField['form_add_edit_field_upload_imagem_extensao_permitida'] . "', '" . $_param_formAddEditField['form_add_edit_field_upload_imagem_tamanho_maximo'] . "', '" . $_param_formAddEditField['form_add_edit_field_upload_imagem_max_width'] . "', '" . $_param_formAddEditField['form_add_edit_field_upload_imagem_max_height'] . "');
+
+																											                                                        if (isset(\$this->task['result_upload']['error'])) {
+																											                                                            \$this->form_validation->set_message('validation_upload_images_" . $_row["field_name"] . "', \$this->task['result_upload']['error']['message']);
+																											                                                            return false;
+																											                                                        }
+
+																											                                                        \$this->task['uploaded_image'] = true;
+																											                                                  }
+																											                                                  /* END VALIDAÇÃO POR CALLBACK UPLOAD DE IMAGENS " . $_row["field_name"] . ". */" . PHP_EOL . PHP_EOL . PHP_EOL;
+                                        endif;
+
+                                        /**
+                                         * CALLBACK UPLOAD FILES - VALIDATION REQUIRED
+                                         */
+                                        if ($_param_formAddEditField['form_add_edit_field_type'] == 'upload-arquivo'):
+
+                                            $this->_formAddEditConfigFormOpen = 'form_open_multipart';
+
+                                            if ($_param_formAddEditField['form_add_edit_field_type'] == 'upload-arquivo'):
+                                                if (empty($this->_formAddEditConfigInputValidationAtributos)):
+                                                    $this->_formAddEditConfigInputValidationAtributos .= 'callback_validation_upload_files_' . $_row["field_name"];
+                                                else:
+                                                    $this->_formAddEditConfigInputValidationAtributos .= '|callback_validation_upload_files_' . $_row["field_name"];
+                                                endif;
+                                            endif;
+
+                                            $this->_formAddEditConfigInputValidationCallback .= "
+																											                                                 /* VALIDAÇÃO POR CALLBACK UPLOAD DE ARQUIVOS " . $_row["field_name"] . ". */
+																											                                                  public function validation_upload_files_" . $_row["field_name"] . "() {
+
+																											                                                        if (empty(\$_FILES['" . $_row["field_name"] . "']['name']) && !empty(\$this->input->post('" . $_row["field_name"] . "')) ) {
+																											                                                            return true;
+																											                                                        }
+
+																											                                                        if (empty(\$_FILES['" . $_row["field_name"] . "']['name'])) {
+																											                                                            \$this->form_validation->set_message('validation_upload_files_" . $_row["field_name"] . "', 'Nenhuma arquivo selecionado para ser enviado.');
+																											                                                            return false;
+																											                                                        }
+
+																											                                                        \$this->task['result_upload'] = bz_upload_file('" . $_row["field_name"] . "', ___CONF_UPLOAD_FILE_DIR___, '" . $_param_formAddEditField['form_add_edit_field_upload_arquivo_extensao_permitida'] . "', '" . $_param_formAddEditField['form_add_edit_field_upload_arquivo_tamanho_maximo'] . "', '', '');
+
+																											                                                        if (isset(\$this->task['result_upload']['error'])) {
+																											                                                            \$this->form_validation->set_message('validation_upload_files_" . $_row["field_name"] . "', \$this->task['result_upload']['error']['message']);
+																											                                                            return false;
+																											                                                        }
+
+																											                                                        \$this->task['uploaded_file'] = true;
+																											                                                  }
+																											                                                  /* END VALIDAÇÃO POR CALLBACK UPLOAD DE ARQUIVOS " . $_row["field_name"] . ". */" . PHP_EOL . PHP_EOL . PHP_EOL;
+                                        endif;
 
                                     endif;
-
 
                                 else:
 
-                                    /**
-                                     * CALLBACK UPLOAD IMAGES - NOT REQUIRED
-                                     */
-                                    if ($_param_formAddEditField['form_add_edit_field_type'] == 'upload-imagem'):
-
-                                        $this->_formAddEditConfigFormOpen = 'form_open_multipart';
-
-                                        if ($_param_formAddEditField['form_add_edit_field_type'] == 'upload-imagem') :
-                                            if (empty($this->_formAddEditConfigInputValidationAtributos)):
-                                                $this->_formAddEditConfigInputValidationAtributos .= 'callback_validation_upload_images_' . $_row["field_name"];
-                                            else:
-                                                $this->_formAddEditConfigInputValidationAtributos .= '|callback_validation_upload_images_' . $_row["field_name"];
-                                            endif;
-                                        endif;
-
-
-
-                                        $this->_formAddEditConfigInputValidationCallback .= "
-                                                 /* VALIDAÇÃO POR CALLBACK UPLOAD DE IMAGENS " . $_row["field_name"] . ". */
-                                                  public function validation_upload_images_" . $_row["field_name"] . "() {
-                                                      if (!empty(\$_FILES['" . $_row["field_name"] . "']['name'])) {
-                                                            \$this->task['result_upload'] = bz_upload_file('" . $_row["field_name"] . "', '" . ___CONF_UPLOAD_IMAGE_DIR___ . "', '" . $_param_formAddEditField['form_add_edit_field_upload_imagem_extensao_permitida'] . "', '" . $_param_formAddEditField['form_add_edit_field_upload_imagem_tamanho_maximo'] . "', '" . $_param_formAddEditField['form_add_edit_field_upload_imagem_max_width'] . "', '" . $_param_formAddEditField['form_add_edit_field_upload_imagem_max_height'] . "');
-                                                                
-                                                            if (strpos(\$_FILES['" . $_row["field_name"] . "']['type'], 'image/') !== 0) {
-                                                                \$this->form_validation->set_message('validation_upload_images_imagem_nome', 'Este arquivo não é um arquivo de imagem.');
-                                                                return false;
-                                                            }
-
-
-                                                            if (isset(\$this->task['result_upload']['error'])) {
-                                                                \$this->form_validation->set_message('validation_upload_images_" . $_row["field_name"] . "', \$this->task['result_upload']['error']['message']);
-                                                                return false;
-                                                            }
-                                                        
-                                                            \$this->task['uploaded_image'] = true;
-                                                      }
-                                                  }
-                                                  /* END VALIDAÇÃO POR CALLBACK UPLOAD DE IMAGENS " . $_row["field_name"] . ". */" . PHP_EOL . PHP_EOL . PHP_EOL;
-                                    endif;
-
-
-                                    /**
-                                     * CALLBACK UPLOAD FILES - NOT REQUIRED
-                                     */
-                                    if ($_param_formAddEditField['form_add_edit_field_type'] == 'upload-arquivo'):
-
-                                        $this->_formAddEditConfigFormOpen = 'form_open_multipart';
-
-                                        if ($_param_formAddEditField['form_add_edit_field_type'] == 'upload-arquivo') :
-                                            if (empty($this->_formAddEditConfigInputValidationAtributos)):
-                                                $this->_formAddEditConfigInputValidationAtributos .= 'callback_validation_upload_files_' . $_row["field_name"];
-                                            else:
-                                                $this->_formAddEditConfigInputValidationAtributos .= '|callback_validation_upload_files_' . $_row["field_name"];
-                                            endif;
-                                        endif;
-
-
-
-                                        $this->_formAddEditConfigInputValidationCallback .= "
-                                                 /* VALIDAÇÃO POR CALLBACK UPLOAD DE ARQUIVOS " . $_row["field_name"] . ". */
-                                                  public function validation_upload_files_" . $_row["field_name"] . "() {
-                                                      if (!empty(\$_FILES['" . $_row["field_name"] . "']['name'])) {
-                                                            \$this->task['result_upload'] = bz_upload_file('" . $_row["field_name"] . "', '" . ___CONF_UPLOAD_FILE_DIR___ . "', '" . $_param_formAddEditField['form_add_edit_field_upload_arquivo_extensao_permitida'] . "', '" . $_param_formAddEditField['form_add_edit_field_upload_arquivo_tamanho_maximo'] . "', '', '');
-
-                                                            if (isset(\$this->task['result_upload']['error'])) {
-                                                                \$this->form_validation->set_message('validation_upload_files_" . $_row["field_name"] . "', \$this->task['result_upload']['error']['message']);
-                                                                return false;
-                                                            }
-                                                        
-                                                            \$this->task['uploaded_file'] = true;
-                                                      }
-                                                  }
-                                                  /* END VALIDAÇÃO POR CALLBACK UPLOAD DE ARQUIVOS " . $_row["field_name"] . ". */" . PHP_EOL . PHP_EOL . PHP_EOL;
-                                    endif;
-
                                     /* INPUT NOT REQUIRED */
                                     $this->_formAddEditFields .= '
-                                            <?php $_error = form_error("' . $_row['field_name'] . '", "<small class=\'text-danger col-xs-12 bz-input-error\'>", "</small>"); ?>
-                                            <div id="' . $_row['field_name'] . '" class="form-group has-feedback ' . $this->_formAddEditConfigInputClassCSS . '">
-                                                <label for="' . $_row['field_name'] . '">' . $_param_formAddEditField['form_add_edit_field_label'] . '</label>
-                                                ' . $this->_formAddEditConfigInput . '
-                                                <?= $_error; ?>
-                                            </div>
-                                            ' . PHP_EOL;
+																					                                                <?php $_error = form_error("' . $_row['field_name'] . '", "<small class=\'text-danger col-xs-12 bz-input-error\'>", "</small>"); ?>
+																					                                                <div id="' . $_row['field_name'] . '" class="form-group has-feedback ' . $this->_formAddEditConfigInputClassCSS . '">
+																					                                                    <label for="' . $_row['field_name'] . '">' . $_param_formAddEditField['form_add_edit_field_label'] . '</label>
+																					                                                    ' . $this->_formAddEditConfigInput . '
+																					                                                    <?= $_error; ?>
+																					                                                </div>
+																					                                                ' . PHP_EOL;
 
                                 endif;
 
+                            else:
 
-                                /*
-                                 * MONTA AS VALIDAÇÕES DOS CAMPOS
+                                /**
+                                 * CALLBACK UPLOAD IMAGES - NOT REQUIRED
                                  */
-//echo 'AAA-> ' . $_row['field_name'] . ' - Required : ' . (isset($_param_formAddEditField['form_add_edit_field_required']) ? $_param_formAddEditField['form_add_edit_field_required'] : 'OFF') . ' - XX: ' . $_param_formAddEditField['form_add_edit_field_required_in_form'];
+                                if ($_param_formAddEditField['form_add_edit_field_type'] == 'upload-imagem'):
 
-                                if (!empty($_param_formAddEditField['form_add_edit_field_required_in_form'])):
+                                    $this->_formAddEditConfigFormOpen = 'form_open_multipart';
 
-                                    if ($_param_formAddEditField['form_add_edit_field_required_in_form'] == 'formadd'):
-
-                                        $this->_formAddConfigInputValidationAtributos = $this->_formAddEditConfigInputValidationAtributos;
-
-//echo 'FORM ADD<br><br>';
-                                    else:
-//$this->_formAddConfigInputValidationAtributos = str_replace('required', 'add-required', $this->_formAddConfigInputValidationAtributos);
+                                    if ($_param_formAddEditField['form_add_edit_field_type'] == 'upload-imagem'):
+                                        if (empty($this->_formAddEditConfigInputValidationAtributos)):
+                                            $this->_formAddEditConfigInputValidationAtributos .= 'callback_validation_upload_images_' . $_row["field_name"];
+                                        else:
+                                            $this->_formAddEditConfigInputValidationAtributos .= '|callback_validation_upload_images_' . $_row["field_name"];
+                                        endif;
                                     endif;
+
+                                    $this->_formAddEditConfigInputValidationCallback .= "
+																					                                                 /* VALIDAÇÃO POR CALLBACK UPLOAD DE IMAGENS " . $_row["field_name"] . ". */
+																					                                                  public function validation_upload_images_" . $_row["field_name"] . "() {
+																					                                                      if (!empty(\$_FILES['" . $_row["field_name"] . "']['name'])) {
+																					                                                            \$this->task['result_upload'] = bz_upload_file('" . $_row["field_name"] . "', '" . ___CONF_UPLOAD_IMAGE_DIR___ . "', '" . $_param_formAddEditField['form_add_edit_field_upload_imagem_extensao_permitida'] . "', '" . $_param_formAddEditField['form_add_edit_field_upload_imagem_tamanho_maximo'] . "', '" . $_param_formAddEditField['form_add_edit_field_upload_imagem_max_width'] . "', '" . $_param_formAddEditField['form_add_edit_field_upload_imagem_max_height'] . "');
+
+																					                                                            if (strpos(\$_FILES['" . $_row["field_name"] . "']['type'], 'image/') !== 0) {
+																					                                                                \$this->form_validation->set_message('validation_upload_images_imagem_nome', 'Este arquivo não é um arquivo de imagem.');
+																					                                                                return false;
+																					                                                            }
+
+
+																					                                                            if (isset(\$this->task['result_upload']['error'])) {
+																					                                                                \$this->form_validation->set_message('validation_upload_images_" . $_row["field_name"] . "', \$this->task['result_upload']['error']['message']);
+																					                                                                return false;
+																					                                                            }
+
+																					                                                            \$this->task['uploaded_image'] = true;
+																					                                                      }
+																					                                                  }
+																					                                                  /* END VALIDAÇÃO POR CALLBACK UPLOAD DE IMAGENS " . $_row["field_name"] . ". */" . PHP_EOL . PHP_EOL . PHP_EOL;
                                 endif;
 
-                                if (!empty($_param_formAddEditField['form_add_edit_field_required_in_form'])):
-                                    if ($_param_formAddEditField['form_add_edit_field_required_in_form'] == 'formedit'):
+                                /**
+                                 * CALLBACK UPLOAD FILES - NOT REQUIRED
+                                 */
+                                if ($_param_formAddEditField['form_add_edit_field_type'] == 'upload-arquivo'):
 
-                                        $this->_formEditConfigInputValidationAtributos = $this->_formAddEditConfigInputValidationAtributos;
+                                    $this->_formAddEditConfigFormOpen = 'form_open_multipart';
 
-//echo 'FORM EDIT<br><br>';
-                                    else:
-//$this->_formEditConfigInputValidationAtributos = str_replace('required', 'edit-required', $this->_formEditConfigInputValidationAtributos);
+                                    if ($_param_formAddEditField['form_add_edit_field_type'] == 'upload-arquivo'):
+                                        if (empty($this->_formAddEditConfigInputValidationAtributos)):
+                                            $this->_formAddEditConfigInputValidationAtributos .= 'callback_validation_upload_files_' . $_row["field_name"];
+                                        else:
+                                            $this->_formAddEditConfigInputValidationAtributos .= '|callback_validation_upload_files_' . $_row["field_name"];
+                                        endif;
                                     endif;
+
+                                    $this->_formAddEditConfigInputValidationCallback .= "
+																					                                                 /* VALIDAÇÃO POR CALLBACK UPLOAD DE ARQUIVOS " . $_row["field_name"] . ". */
+																					                                                  public function validation_upload_files_" . $_row["field_name"] . "() {
+																					                                                      if (!empty(\$_FILES['" . $_row["field_name"] . "']['name'])) {
+																					                                                            \$this->task['result_upload'] = bz_upload_file('" . $_row["field_name"] . "', '" . ___CONF_UPLOAD_FILE_DIR___ . "', '" . $_param_formAddEditField['form_add_edit_field_upload_arquivo_extensao_permitida'] . "', '" . $_param_formAddEditField['form_add_edit_field_upload_arquivo_tamanho_maximo'] . "', '', '');
+
+																					                                                            if (isset(\$this->task['result_upload']['error'])) {
+																					                                                                \$this->form_validation->set_message('validation_upload_files_" . $_row["field_name"] . "', \$this->task['result_upload']['error']['message']);
+																					                                                                return false;
+																					                                                            }
+
+																					                                                            \$this->task['uploaded_file'] = true;
+																					                                                      }
+																					                                                  }
+																					                                                  /* END VALIDAÇÃO POR CALLBACK UPLOAD DE ARQUIVOS " . $_row["field_name"] . ". */" . PHP_EOL . PHP_EOL . PHP_EOL;
                                 endif;
 
-
-                                if (!empty($_param_formAddEditField['form_add_edit_field_required_in_form'])):
-                                    if ($_param_formAddEditField['form_add_edit_field_required_in_form'] == 'todos'):
-
-                                        $this->_formAddConfigInputValidationAtributos = $this->_formAddEditConfigInputValidationAtributos;
-                                        $this->_formEditConfigInputValidationAtributos = $this->_formAddEditConfigInputValidationAtributos;
-
-                                    endif;
-                                endif;
-
-
-
-                                if (!empty($this->_formAddConfigInputValidationAtributos)):
-                                    $this->_formAddConfigInputValidation .= "\$this->form_validation->set_rules('" . $_row['field_name'] . "', '<b>" . $_param_formAddEditField['form_add_edit_field_label'] . "</b>', '" . $this->_formAddConfigInputValidationAtributos . "');" . PHP_EOL;
-                                endif;
-
-                                if (!empty($this->_formEditConfigInputValidationAtributos)):
-                                    $this->_formEditConfigInputValidation .= "\$this->form_validation->set_rules('" . $_row['field_name'] . "', '<b>" . $_param_formAddEditField['form_add_edit_field_label'] . "</b>', '" . $this->_formEditConfigInputValidationAtributos . "');" . PHP_EOL;
-                                endif;
-
-
-
-
-
-
-//                            echo '<pre>';
-//                            var_dump($this->_formAddConfigInputValidationAtributos);
-//                            echo '</pre>';
-
-
-
+                                /* INPUT NOT REQUIRED */
+                                $this->_formAddEditFields .= '
+																		                                            <?php $_error = form_error("' . $_row['field_name'] . '", "<small class=\'text-danger col-xs-12 bz-input-error\'>", "</small>"); ?>
+																		                                            <div id="' . $_row['field_name'] . '" class="form-group has-feedback ' . $this->_formAddEditConfigInputClassCSS . '">
+																		                                                <label for="' . $_row['field_name'] . '">' . $_param_formAddEditField['form_add_edit_field_label'] . '</label>
+																		                                                ' . $this->_formAddEditConfigInput . '
+																		                                                <?= $_error; ?>
+																		                                            </div>
+																		                                            ' . PHP_EOL;
 
                             endif;
 
+                            /*
+                             * MONTA AS VALIDAÇÕES DOS CAMPOS
+                             */
+//echo 'AAA-> ' . $_row['field_name'] . ' - Required : ' . (isset($_param_formAddEditField['form_add_edit_field_required']) ? $_param_formAddEditField['form_add_edit_field_required'] : 'OFF') . ' - XX: ' . $_param_formAddEditField['form_add_edit_field_required_in_form'];
 
+                            if (!empty($_param_formAddEditField['form_add_edit_field_required_in_form'])):
 
+                                if ($_param_formAddEditField['form_add_edit_field_required_in_form'] == 'formadd'):
+
+                                    $this->_formAddConfigInputValidationAtributos = $this->_formAddEditConfigInputValidationAtributos;
+
+//echo 'FORM ADD<br><br>';
+                                else:
+//$this->_formAddConfigInputValidationAtributos = str_replace('required', 'add-required', $this->_formAddConfigInputValidationAtributos);
+                                endif;
+                            endif;
+
+                            if (!empty($_param_formAddEditField['form_add_edit_field_required_in_form'])):
+                                if ($_param_formAddEditField['form_add_edit_field_required_in_form'] == 'formedit'):
+
+                                    $this->_formEditConfigInputValidationAtributos = $this->_formAddEditConfigInputValidationAtributos;
+
+//echo 'FORM EDIT<br><br>';
+                                else:
+//$this->_formEditConfigInputValidationAtributos = str_replace('required', 'edit-required', $this->_formEditConfigInputValidationAtributos);
+                                endif;
+                            endif;
+
+                            if (!empty($_param_formAddEditField['form_add_edit_field_required_in_form'])):
+                                if ($_param_formAddEditField['form_add_edit_field_required_in_form'] == 'todos'):
+
+                                    $this->_formAddConfigInputValidationAtributos = $this->_formAddEditConfigInputValidationAtributos;
+                                    $this->_formEditConfigInputValidationAtributos = $this->_formAddEditConfigInputValidationAtributos;
+
+                                endif;
+                            endif;
+
+                            if (!empty($this->_formAddConfigInputValidationAtributos)):
+                                $this->_formAddConfigInputValidation .= "\$this->form_validation->set_rules('" . $_row['field_name'] . "', '<b>" . $_param_formAddEditField['form_add_edit_field_label'] . "</b>', '" . $this->_formAddConfigInputValidationAtributos . "');" . PHP_EOL;
+                            endif;
+
+                            if (!empty($this->_formEditConfigInputValidationAtributos)):
+                                $this->_formEditConfigInputValidation .= "\$this->form_validation->set_rules('" . $_row['field_name'] . "', '<b>" . $_param_formAddEditField['form_add_edit_field_label'] . "</b>', '" . $this->_formEditConfigInputValidationAtributos . "');" . PHP_EOL;
+                            endif;
+
+//                            echo '<pre>';
+                            //                            var_dump($this->_formAddConfigInputValidationAtributos);
+                            //                            echo '</pre>';
 
                         endif;
-                        /* END CAMPOS QUE SERÃO MOSTRADOS NO FORM ADD/EDIT */
 
+                    endif;
+                    /* END CAMPOS QUE SERÃO MOSTRADOS NO FORM ADD/EDIT */
 
-                    endforeach;
+                endforeach;
 
 //echo 'ADD -- > ' . $this->_formAddConfigInputValidation . '<br/>';
-//echo 'EDIT -- > ' . $this->_formEditConfigInputValidation . '<br/>';
+                //echo 'EDIT -- > ' . $this->_formEditConfigInputValidation . '<br/>';
 
-                    /*
-                     * DIVIDE OS formAddEditFields
-                     */
-                    $this->_formAddFields = $this->_formAddEditFields;
-                    $this->_formEditFields = $this->_formAddEditFields;
-                    /* END DIVIDE OS formAddEditFields */
+                /*
+                 * DIVIDE OS formAddEditFields
+                 */
+                $this->_formAddFields = $this->_formAddEditFields;
+                $this->_formEditFields = $this->_formAddEditFields;
+                /* END DIVIDE OS formAddEditFields */
 
+                /**
+                 * GERA CLAUSULA WHERE PARA GRAVAÇÃO DO FORM EDIT/UPDATE
+                 */
+                $this->_formEditWhereUpdateFields = "'WHERE " . $this->_primary_key_field . " = \"'.\$_id.'\"';";
+                /* END GERA CLAUSULA WHERE PARA GRAVAÇÃO DO FORM EDIT/UPDATE */
 
-                    /**
-                     * GERA CLAUSULA WHERE PARA GRAVAÇÃO DO FORM EDIT/UPDATE
-                     */
-                    $this->_formEditWhereUpdateFields = "'WHERE " . $this->_primary_key_field . " = \"'.\$_id.'\"';";
-                    /* END GERA CLAUSULA WHERE PARA GRAVAÇÃO DO FORM EDIT/UPDATE */
+                /**
+                 * JQUERY MASK
+                 */
+                if (!empty($this->_formAddEditConfigInputMask)):
+                    $_r_jquery_mask = "<!--" . PHP_EOL;
+                    $_r_jquery_mask .= " * JQUERY MASK" . PHP_EOL;
+                    $_r_jquery_mask .= "-->" . PHP_EOL;
+                    $_r_jquery_mask .= "<script>" . PHP_EOL . PHP_EOL;
+                    $_r_jquery_mask .= "$(function(){" . PHP_EOL . PHP_EOL;
+                    $_r_jquery_mask .= $this->_formAddEditConfigInputMask . PHP_EOL;
+                    $_r_jquery_mask .= "});" . PHP_EOL . PHP_EOL;
+                    $_r_jquery_mask .= "</script>" . PHP_EOL;
+                    $_r_jquery_mask .= "<!--" . PHP_EOL;
+                    $_r_jquery_mask .= " * END JQUERY MASK" . PHP_EOL;
+                    $_r_jquery_mask .= "-->" . PHP_EOL . PHP_EOL . PHP_EOL;
+                    $this->_formAddEditConfigInputMask = $_r_jquery_mask;
+                endif;
+                /* END JQUERY MASK */
 
+                /*
+                 * GET CODE EDITOR METODOS PHP CONTROLLER
+                 */
+                $_where_getCode_ControllerMetodosPHP = array(
+                    'proj_build_id' => $this->_project_id,
+                    'code_type' => 'evento-php',
+                );
+                $this->db->order_by('code_screen DESC');
+                $_query_getCode_ControllerMetodosPHP = $this->db->get_where('proj_build_codeeditor', $_where_getCode_ControllerMetodosPHP)->result();
 
-                    /**
-                     * JQUERY MASK
-                     */
-                    if (!empty($this->_formAddEditConfigInputMask)):
-                        $_r_jquery_mask = "<!--" . PHP_EOL;
-                        $_r_jquery_mask .= " * JQUERY MASK" . PHP_EOL;
-                        $_r_jquery_mask .= "-->" . PHP_EOL;
-                        $_r_jquery_mask .= "<script>" . PHP_EOL . PHP_EOL;
-                        $_r_jquery_mask .= "$(function(){" . PHP_EOL . PHP_EOL;
-                        $_r_jquery_mask .= $this->_formAddEditConfigInputMask . PHP_EOL;
-                        $_r_jquery_mask .= "});" . PHP_EOL . PHP_EOL;
-                        $_r_jquery_mask .= "</script>" . PHP_EOL;
-                        $_r_jquery_mask .= "<!--" . PHP_EOL;
-                        $_r_jquery_mask .= " * END JQUERY MASK" . PHP_EOL;
-                        $_r_jquery_mask .= "-->" . PHP_EOL . PHP_EOL . PHP_EOL;
-                        $this->_formAddEditConfigInputMask = $_r_jquery_mask;
-                    endif;
-                    /* END JQUERY MASK */
+                foreach ($_query_getCode_ControllerMetodosPHP as $_row_getCode_ControllerMetodosPHP):
+                    if (!empty(trim($_row_getCode_ControllerMetodosPHP->code_script))):
 
+                        if ($_row_getCode_ControllerMetodosPHP->code_screen == 'fcn_onScriptInit') {
+                            $this->_controller_onScriptinit = "\$this->fcn_onScriptinit();" . PHP_EOL;
+                        } elseif ($_row_getCode_ControllerMetodosPHP->code_screen == 'fcn_onBeforeInsert') {
+                        $this->_controller_onBeforeInsert = "\$this->fcn_onBeforeInsert(array('post' => \$this->input->post()));" . PHP_EOL;
+                    } elseif ($_row_getCode_ControllerMetodosPHP->code_screen == 'fcn_onAfterInsert') {
+                    $this->_controller_onAfterInsert = "\$this->fcn_onAfterInsert(array('result' => \$result, 'post' => \$this->input->post()));" . PHP_EOL;
+                } elseif ($_row_getCode_ControllerMetodosPHP->code_screen == 'fcn_onBeforeUpdate') {
+                $this->_controller_onBeforeUpdate = "\$this->fcn_onBeforeUpdate(array('id' => \$_id, 'post' => \$this->input->post()));" . PHP_EOL;
+            } elseif ($_row_getCode_ControllerMetodosPHP->code_screen == 'fcn_onAfterUpdate') {
+            $this->_controller_onAfterUpdate = "\$this->fcn_onAfterUpdate(array('result' => \$_result_update, 'post' => \$this->input->post()));" . PHP_EOL;
+        } elseif ($_row_getCode_ControllerMetodosPHP->code_screen == 'fcn_onBeforeDelete') {
+            $this->_controller_onBeforeDelete = "\$this->fcn_onBeforeDelete(array('post' => \$this->input->post()));" . PHP_EOL;
+        } elseif ($_row_getCode_ControllerMetodosPHP->code_screen == 'fcn_onAfterDelete') {
+            $this->_controller_onAfterDelete = "\$this->fcn_onAfterDelete(array('post' => \$this->input->post()));" . PHP_EOL;
+        } elseif ($_row_getCode_ControllerMetodosPHP->code_screen == 'fcn_onScriptInitExport') {
+            $this->_controller_onScriptInitExport = "\$this->fcn_onScriptInitExport();" . PHP_EOL;
+        } elseif ($_row_getCode_ControllerMetodosPHP->code_screen == 'fcn_onScriptBeforeExport') {
+            $this->_controller_onScriptBeforeExport = "\$this->fcn_onScriptBeforeExport();" . PHP_EOL;
+        } elseif ($_row_getCode_ControllerMetodosPHP->code_screen == 'fcn_onScriptAfterExport') {
+            $this->_controller_onScriptAfterExport = "\$this->fcn_onScriptAfterExport();" . PHP_EOL;
+        } elseif ($_row_getCode_ControllerMetodosPHP->code_screen == 'fcn_onScriptEndExport') {
+            $this->_controller_onScriptEndExport = "\$this->fcn_onScriptEndExport();" . PHP_EOL;
+        }
 
-                    /*
-                     * GET CODE EDITOR METODOS PHP CONTROLLER
-                     */
-                    $_where_getCode_ControllerMetodosPHP = array(
-                        'proj_build_id' => $this->_project_id,
-                        'code_type' => 'evento-php',
-                    );
-                    $this->db->order_by('code_screen DESC');
-                    $_query_getCode_ControllerMetodosPHP = $this->db->get_where('proj_build_codeeditor', $_where_getCode_ControllerMetodosPHP)->result();
+        $this->_controller_metodos_php .= "/* METODO PHP - " . $_row_getCode_ControllerMetodosPHP->code_screen . ' */' . PHP_EOL;
+        $this->_controller_metodos_php .= "private function " . $_row_getCode_ControllerMetodosPHP->code_screen . '($_p = null) {' . PHP_EOL;
+        $this->_controller_metodos_php .= html_entity_decode(base64_decode($_row_getCode_ControllerMetodosPHP->code_script), ENT_QUOTES) . PHP_EOL;
+        $this->_controller_metodos_php .= "}" . PHP_EOL;
+        $this->_controller_metodos_php .= "/* END METODO PHP - " . $_row_getCode_ControllerMetodosPHP->code_screen . ' */' . PHP_EOL . PHP_EOL;
+        endif;
+        endforeach;
+        /* END GET CODE EDITOR METODOS PHP CONTROLLER */
 
-                    foreach ($_query_getCode_ControllerMetodosPHP as $_row_getCode_ControllerMetodosPHP):
-                        if (!empty(trim($_row_getCode_ControllerMetodosPHP->code_script))):
+        /*
+         * GET CODE EDITOR METODOS PHP CONTROLLER
+         */
+        $_where_getCode_ControllerMetodosPHP = array(
+            'proj_build_id' => $this->_project_id,
+            'code_type' => 'metodo-php',
+        );
+        $_query_getCode_ControllerMetodosPHP = $this->db->get_where('proj_build_codeeditor', $_where_getCode_ControllerMetodosPHP)->result();
+        foreach ($_query_getCode_ControllerMetodosPHP as $_row_getCode_ControllerMetodosPHP):
+            if (!empty(trim($_row_getCode_ControllerMetodosPHP->code_script))):
+                $this->_controller_metodos_php .= "/* METODO PHP - " . $_row_getCode_ControllerMetodosPHP->code_screen . ' */' . PHP_EOL;
 
-                            if ($_row_getCode_ControllerMetodosPHP->code_screen == 'fcn_onScriptInit') {
-                                $this->_controller_onScriptinit = "\$this->fcn_onScriptinit();" . PHP_EOL;
-                            } elseif ($_row_getCode_ControllerMetodosPHP->code_screen == 'fcn_onBeforeInsert') {
-                                $this->_controller_onBeforeInsert = "\$this->fcn_onBeforeInsert(array('post' => \$this->input->post()));" . PHP_EOL;
-                            } elseif ($_row_getCode_ControllerMetodosPHP->code_screen == 'fcn_onAfterInsert') {
-                                $this->_controller_onAfterInsert = "\$this->fcn_onAfterInsert(array('result' => \$result, 'post' => \$this->input->post()));" . PHP_EOL;
-                            } elseif ($_row_getCode_ControllerMetodosPHP->code_screen == 'fcn_onBeforeUpdate') {
-                                $this->_controller_onBeforeUpdate = "\$this->fcn_onBeforeUpdate(array('id' => \$_id, 'post' => \$this->input->post()));" . PHP_EOL;
-                            } elseif ($_row_getCode_ControllerMetodosPHP->code_screen == 'fcn_onAfterUpdate') {
-                                $this->_controller_onAfterUpdate = "\$this->fcn_onAfterUpdate(array('result' => \$_result_update, 'post' => \$this->input->post()));" . PHP_EOL;
-                            } elseif ($_row_getCode_ControllerMetodosPHP->code_screen == 'fcn_onBeforeDelete') {
-                                $this->_controller_onBeforeDelete = "\$this->fcn_onBeforeDelete(array('post' => \$this->input->post()));" . PHP_EOL;
-                            } elseif ($_row_getCode_ControllerMetodosPHP->code_screen == 'fcn_onAfterDelete') {
-                                $this->_controller_onAfterDelete = "\$this->fcn_onAfterDelete(array('post' => \$this->input->post()));" . PHP_EOL;
-                            } elseif ($_row_getCode_ControllerMetodosPHP->code_screen == 'fcn_onScriptInitExport') {
-                                $this->_controller_onScriptInitExport = "\$this->fcn_onScriptInitExport();" . PHP_EOL;
-                            } elseif ($_row_getCode_ControllerMetodosPHP->code_screen == 'fcn_onScriptBeforeExport') {
-                                $this->_controller_onScriptBeforeExport = "\$this->fcn_onScriptBeforeExport();" . PHP_EOL;
-                            } elseif ($_row_getCode_ControllerMetodosPHP->code_screen == 'fcn_onScriptAfterExport') {
-                                $this->_controller_onScriptAfterExport = "\$this->fcn_onScriptAfterExport();" . PHP_EOL;
-                            } elseif ($_row_getCode_ControllerMetodosPHP->code_screen == 'fcn_onScriptEndExport') {
-                                $this->_controller_onScriptEndExport = "\$this->fcn_onScriptEndExport();" . PHP_EOL;
-                            }
+                if ($_row_getCode_ControllerMetodosPHP->code_access_ajax_only == 1) {
 
-                            $this->_controller_metodos_php .= "/* METODO PHP - " . $_row_getCode_ControllerMetodosPHP->code_screen . ' */' . PHP_EOL;
-                            $this->_controller_metodos_php .= "private function " . $_row_getCode_ControllerMetodosPHP->code_screen . '($_p = null) {' . PHP_EOL;
-                            $this->_controller_metodos_php .= html_entity_decode(base64_decode($_row_getCode_ControllerMetodosPHP->code_script), ENT_QUOTES) . PHP_EOL;
-                            $this->_controller_metodos_php .= "}" . PHP_EOL;
-                            $this->_controller_metodos_php .= "/* END METODO PHP - " . $_row_getCode_ControllerMetodosPHP->code_screen . ' */' . PHP_EOL . PHP_EOL;
-                        endif;
-                    endforeach;
-                    /* END GET CODE EDITOR METODOS PHP CONTROLLER */
+                    $this->_controller_metodos_php .= "public function " . $_row_getCode_ControllerMetodosPHP->code_screen . '($_p = null) {' . PHP_EOL;
 
+                    $this->_controller_metodos_php .= '/*' . PHP_EOL;
+                    $this->_controller_metodos_php .= ' * CERTIFICA SE O ACESSO A ESTA FUNCTION REALMENTE ESTÁ SENDO FEITO POR AJAX.' . PHP_EOL;
+                    $this->_controller_metodos_php .= ' */' . PHP_EOL;
+                    $this->_controller_metodos_php .= 'bz_check_is_ajax_request();' . PHP_EOL . PHP_EOL . PHP_EOL;
+                } else {
 
+                    $this->_controller_metodos_php .= $_row_getCode_ControllerMetodosPHP->code_type_method . " function " . $_row_getCode_ControllerMetodosPHP->code_screen . '($_p = null) {' . PHP_EOL;
+                }
 
-                    /*
-                     * GET CODE EDITOR METODOS PHP CONTROLLER
-                     */
-                    $_where_getCode_ControllerMetodosPHP = array(
-                        'proj_build_id' => $this->_project_id,
-                        'code_type' => 'metodo-php',
-                    );
-                    $_query_getCode_ControllerMetodosPHP = $this->db->get_where('proj_build_codeeditor', $_where_getCode_ControllerMetodosPHP)->result();
-                    foreach ($_query_getCode_ControllerMetodosPHP as $_row_getCode_ControllerMetodosPHP):
-                        if (!empty(trim($_row_getCode_ControllerMetodosPHP->code_script))):
-                            $this->_controller_metodos_php .= "/* METODO PHP - " . $_row_getCode_ControllerMetodosPHP->code_screen . ' */' . PHP_EOL;
+                $this->_controller_metodos_php .= html_entity_decode(base64_decode($_row_getCode_ControllerMetodosPHP->code_script), ENT_QUOTES) . PHP_EOL;
+                $this->_controller_metodos_php .= "}" . PHP_EOL;
+                $this->_controller_metodos_php .= "/* END METODO PHP - " . $_row_getCode_ControllerMetodosPHP->code_screen . ' */' . PHP_EOL . PHP_EOL;
+            endif;
+        endforeach;
+        /* END GET CODE EDITOR METODOS PHP CONTROLLER */
 
-                            if ($_row_getCode_ControllerMetodosPHP->code_access_ajax_only == 1) {
+        /*
+         * GET CODE EDITOR METODOS PHP MODELS
+         */
+        $_where_getCode_ModelsMetodosPHP = array(
+            'proj_build_id' => $this->_project_id,
+            'code_type' => 'model-php',
+        );
+        $_query_getCode_ModelsMetodosPHP = $this->db->get_where('proj_build_codeeditor', $_where_getCode_ModelsMetodosPHP)->result();
+        foreach ($_query_getCode_ModelsMetodosPHP as $_row_getCode_ModelsMetodosPHP):
+            if (!empty(trim($_row_getCode_ModelsMetodosPHP->code_script))):
+                $this->_models_metodos_php .= "/* MODELS PHP - " . $_row_getCode_ModelsMetodosPHP->code_screen . ' */' . PHP_EOL;
+                $this->_models_metodos_php .= "public function " . $_row_getCode_ModelsMetodosPHP->code_screen . '($_p = null) {' . PHP_EOL;
+                $this->_models_metodos_php .= html_entity_decode(base64_decode($_row_getCode_ModelsMetodosPHP->code_script), ENT_QUOTES) . PHP_EOL;
+                $this->_models_metodos_php .= "}" . PHP_EOL;
+                $this->_models_metodos_php .= "/* END MODELS PHP - " . $_row_getCode_ModelsMetodosPHP->code_screen . ' */' . PHP_EOL . PHP_EOL;
+            endif;
+        endforeach;
+        /* END GET CODE EDITOR METODOS PHP MODELS */
 
-                                $this->_controller_metodos_php .= "public function " . $_row_getCode_ControllerMetodosPHP->code_screen . '($_p = null) {' . PHP_EOL;
-
-                                $this->_controller_metodos_php .= '/*' . PHP_EOL;
-                                $this->_controller_metodos_php .= ' * CERTIFICA SE O ACESSO A ESTA FUNCTION REALMENTE ESTÁ SENDO FEITO POR AJAX.' . PHP_EOL;
-                                $this->_controller_metodos_php .= ' */' . PHP_EOL;
-                                $this->_controller_metodos_php .= 'bz_check_is_ajax_request();' . PHP_EOL . PHP_EOL . PHP_EOL;
-                            } else {
-
-                                $this->_controller_metodos_php .= $_row_getCode_ControllerMetodosPHP->code_type_method . " function " . $_row_getCode_ControllerMetodosPHP->code_screen . '($_p = null) {' . PHP_EOL;
-                            }
-
-
-                            $this->_controller_metodos_php .= html_entity_decode(base64_decode($_row_getCode_ControllerMetodosPHP->code_script), ENT_QUOTES) . PHP_EOL;
-                            $this->_controller_metodos_php .= "}" . PHP_EOL;
-                            $this->_controller_metodos_php .= "/* END METODO PHP - " . $_row_getCode_ControllerMetodosPHP->code_screen . ' */' . PHP_EOL . PHP_EOL;
-                        endif;
-                    endforeach;
-                    /* END GET CODE EDITOR METODOS PHP CONTROLLER */
-
-
-
-                    /*
-                     * GET CODE EDITOR METODOS PHP MODELS
-                     */
-                    $_where_getCode_ModelsMetodosPHP = array(
-                        'proj_build_id' => $this->_project_id,
-                        'code_type' => 'model-php',
-                    );
-                    $_query_getCode_ModelsMetodosPHP = $this->db->get_where('proj_build_codeeditor', $_where_getCode_ModelsMetodosPHP)->result();
-                    foreach ($_query_getCode_ModelsMetodosPHP as $_row_getCode_ModelsMetodosPHP):
-                        if (!empty(trim($_row_getCode_ModelsMetodosPHP->code_script))):
-                            $this->_models_metodos_php .= "/* MODELS PHP - " . $_row_getCode_ModelsMetodosPHP->code_screen . ' */' . PHP_EOL;
-                            $this->_models_metodos_php .= "public function " . $_row_getCode_ModelsMetodosPHP->code_screen . '($_p = null) {' . PHP_EOL;
-                            $this->_models_metodos_php .= html_entity_decode(base64_decode($_row_getCode_ModelsMetodosPHP->code_script), ENT_QUOTES) . PHP_EOL;
-                            $this->_models_metodos_php .= "}" . PHP_EOL;
-                            $this->_models_metodos_php .= "/* END MODELS PHP - " . $_row_getCode_ModelsMetodosPHP->code_screen . ' */' . PHP_EOL . PHP_EOL;
-                        endif;
-                    endforeach;
-                    /* END GET CODE EDITOR METODOS PHP MODELS */
-
-
-
-                    /*
-                     * GET CODE EDITOR ON RECORD
-                     */
-                    $_where_getCode_onRecord = array(
-                        'proj_build_id' => $this->_project_id,
-                        'code_type' => 'onrecord',
-                    );
-                    $_query_getCode_onRecord = $this->db->get_where('proj_build_codeeditor', $_where_getCode_onRecord)->result();
-                    foreach ($_query_getCode_onRecord as $_row_getCode_onRecord):
-                        if (!empty(trim($_row_getCode_onRecord->code_script))):
-                            $this->_gridListCodeEditorOnRecord .= "/* ON RECORD */" . PHP_EOL;
-                            $this->_gridListCodeEditorOnRecord .= html_entity_decode(base64_decode($_row_getCode_onRecord->code_script), ENT_QUOTES) . PHP_EOL;
-                            $this->_gridListCodeEditorOnRecord .= "/* END ON RECORD */" . PHP_EOL . PHP_EOL;
-                        endif;
-                    endforeach;
+        /*
+         * GET CODE EDITOR ON RECORD
+         */
+        $_where_getCode_onRecord = array(
+            'proj_build_id' => $this->_project_id,
+            'code_type' => 'onrecord',
+        );
+        $_query_getCode_onRecord = $this->db->get_where('proj_build_codeeditor', $_where_getCode_onRecord)->result();
+        foreach ($_query_getCode_onRecord as $_row_getCode_onRecord):
+            if (!empty(trim($_row_getCode_onRecord->code_script))):
+                $this->_gridListCodeEditorOnRecord .= "/* ON RECORD */" . PHP_EOL;
+                $this->_gridListCodeEditorOnRecord .= html_entity_decode(base64_decode($_row_getCode_onRecord->code_script), ENT_QUOTES) . PHP_EOL;
+                $this->_gridListCodeEditorOnRecord .= "/* END ON RECORD */" . PHP_EOL . PHP_EOL;
+            endif;
+        endforeach;
 //END GET CODE EDITOR ON RECORD
 
-
-
-                    /*
-                     * GET CODE EDITOR ON RECORD EXPORT
-                     */
-                    $_where_getCode_onRecordExport = array(
-                        'proj_build_id' => $this->_project_id,
-                        'code_type' => 'onrecordexport',
-                    );
-                    $_query_getCode_onRecordExport = $this->db->get_where('proj_build_codeeditor', $_where_getCode_onRecordExport)->result();
-                    foreach ($_query_getCode_onRecordExport as $_row_getCode_onRecordExport):
-                        if (!empty(trim($_row_getCode_onRecordExport->code_script))):
-                            $this->_exportCodeEditorOnRecord .= "/* ON RECORD EXPORT */" . PHP_EOL;
-                            $this->_exportCodeEditorOnRecord .= html_entity_decode(base64_decode($_row_getCode_onRecordExport->code_script), ENT_QUOTES) . PHP_EOL;
-                            $this->_exportCodeEditorOnRecord .= "/* END ON RECORD EXPORT */" . PHP_EOL . PHP_EOL;
-                        endif;
-                    endforeach;
+        /*
+         * GET CODE EDITOR ON RECORD EXPORT
+         */
+        $_where_getCode_onRecordExport = array(
+            'proj_build_id' => $this->_project_id,
+            'code_type' => 'onrecordexport',
+        );
+        $_query_getCode_onRecordExport = $this->db->get_where('proj_build_codeeditor', $_where_getCode_onRecordExport)->result();
+        foreach ($_query_getCode_onRecordExport as $_row_getCode_onRecordExport):
+            if (!empty(trim($_row_getCode_onRecordExport->code_script))):
+                $this->_exportCodeEditorOnRecord .= "/* ON RECORD EXPORT */" . PHP_EOL;
+                $this->_exportCodeEditorOnRecord .= html_entity_decode(base64_decode($_row_getCode_onRecordExport->code_script), ENT_QUOTES) . PHP_EOL;
+                $this->_exportCodeEditorOnRecord .= "/* END ON RECORD EXPORT */" . PHP_EOL . PHP_EOL;
+            endif;
+        endforeach;
 //END GET CODE EDITOR ON RECORD EXPORT
 
-
-
-
-                    /*
-                     * GET CODE EDITOR FORM ADD
-                     */
-                    $_where_getCode_FormAddEdit = array(
-                        'proj_build_id' => $this->_project_id,
-                        'code_screen' => 'formadd',
-                    );
-                    $_query_getCode_FormAddEdit = $this->db->get_where('proj_build_codeeditor', $_where_getCode_FormAddEdit)->result();
-                    foreach ($_query_getCode_FormAddEdit as $_row_getCode_FormAddEdit):
-                        if ($_row_getCode_FormAddEdit->code_type == 'css' && !empty(trim($_row_getCode_FormAddEdit->code_script))):
-                            $this->_formAddCodeEditorCSS .= "<!--" . PHP_EOL;
-                            $this->_formAddCodeEditorCSS .= " * CSS SCRIPT" . PHP_EOL;
-                            $this->_formAddCodeEditorCSS .= "-->" . PHP_EOL;
-                            $this->_formAddCodeEditorCSS .= "<style>" . PHP_EOL . PHP_EOL;
-                            $this->_formAddCodeEditorCSS .= html_entity_decode(base64_decode($_row_getCode_FormAddEdit->code_script), ENT_QUOTES) . PHP_EOL . PHP_EOL;
-                            $this->_formAddCodeEditorCSS .= "</style>" . PHP_EOL;
-                            $this->_formAddCodeEditorCSS .= "<!--" . PHP_EOL;
-                            $this->_formAddCodeEditorCSS .= " * END CSS SCRIPT" . PHP_EOL;
-                            $this->_formAddCodeEditorCSS .= "-->" . PHP_EOL . PHP_EOL . PHP_EOL;
-                        endif;
-                        if ($_row_getCode_FormAddEdit->code_type == 'jquery' && !empty(trim($_row_getCode_FormAddEdit->code_script))):
-
-                            $this->_formAddCodeEditorJS .= "<!--" . PHP_EOL;
-                            $this->_formAddCodeEditorJS .= " * JQUERY SCRIPT" . PHP_EOL;
-                            $this->_formAddCodeEditorJS .= "-->" . PHP_EOL;
-                            $this->_formAddCodeEditorJS .= "<script>" . PHP_EOL . PHP_EOL;
-                            $this->_formAddCodeEditorJS .= "$(function(){" . PHP_EOL . PHP_EOL;
-                            $this->_formAddCodeEditorJS .= html_entity_decode(base64_decode($_row_getCode_FormAddEdit->code_script), ENT_QUOTES) . PHP_EOL . PHP_EOL;
-                            $this->_formAddCodeEditorJS .= "});" . PHP_EOL . PHP_EOL;
-                            $this->_formAddCodeEditorJS .= "</script>" . PHP_EOL;
-                            $this->_formAddCodeEditorJS .= "<!--" . PHP_EOL;
-                            $this->_formAddCodeEditorJS .= " * END JQUERY SCRIPT" . PHP_EOL;
-                            $this->_formAddCodeEditorJS .= "-->" . PHP_EOL . PHP_EOL . PHP_EOL;
-                        endif;
-                    endforeach;
-//END GET CODE EDITOR FORM ADD
-
-
-
-
-
-                    /*
-                     * GET CODE EDITOR FORM EDIT
-                     */
-                    $_where_getCode_FormAddEdit = array(
-                        'proj_build_id' => $this->_project_id,
-                        'code_screen' => 'formedit',
-                    );
-                    $_query_getCode_FormAddEdit = $this->db->get_where('proj_build_codeeditor', $_where_getCode_FormAddEdit)->result();
-                    foreach ($_query_getCode_FormAddEdit as $_row_getCode_FormAddEdit):
-                        if ($_row_getCode_FormAddEdit->code_type == 'css' && !empty(trim($_row_getCode_FormAddEdit->code_script))):
-                            $this->_formEditCodeEditorCSS .= "<!--" . PHP_EOL;
-                            $this->_formEditCodeEditorCSS .= " * CSS SCRIPT" . PHP_EOL;
-                            $this->_formEditCodeEditorCSS .= "-->" . PHP_EOL;
-                            $this->_formEditCodeEditorCSS .= "<style>" . PHP_EOL . PHP_EOL;
-                            $this->_formEditCodeEditorCSS .= html_entity_decode(base64_decode($_row_getCode_FormAddEdit->code_script), ENT_QUOTES) . PHP_EOL . PHP_EOL;
-                            $this->_formEditCodeEditorCSS .= "</style>" . PHP_EOL;
-                            $this->_formEditCodeEditorCSS .= "<!--" . PHP_EOL;
-                            $this->_formEditCodeEditorCSS .= " * END CSS SCRIPT" . PHP_EOL;
-                            $this->_formEditCodeEditorCSS .= "-->" . PHP_EOL . PHP_EOL . PHP_EOL;
-                        endif;
-                        if ($_row_getCode_FormAddEdit->code_type == 'jquery' && !empty(trim($_row_getCode_FormAddEdit->code_script))):
-                            $this->_formEditCodeEditorJS .= "<!--" . PHP_EOL;
-                            $this->_formEditCodeEditorJS .= " * JQUERY SCRIPT" . PHP_EOL;
-                            $this->_formEditCodeEditorJS .= "-->" . PHP_EOL;
-                            $this->_formEditCodeEditorJS .= "<script>" . PHP_EOL . PHP_EOL;
-                            $this->_formEditCodeEditorJS .= "$(function(){" . PHP_EOL . PHP_EOL;
-                            $this->_formEditCodeEditorJS .= html_entity_decode(base64_decode($_row_getCode_FormAddEdit->code_script), ENT_QUOTES) . PHP_EOL . PHP_EOL;
-                            $this->_formEditCodeEditorJS .= "});" . PHP_EOL . PHP_EOL;
-                            $this->_formEditCodeEditorJS .= "</script>" . PHP_EOL;
-                            $this->_formEditCodeEditorJS .= "<!--" . PHP_EOL;
-                            $this->_formEditCodeEditorJS .= " * END JQUERY SCRIPT" . PHP_EOL;
-                            $this->_formEditCodeEditorJS .= "-->" . PHP_EOL . PHP_EOL . PHP_EOL;
-                        endif;
-                    endforeach;
-//END GET CODE EDITOR FORM ADD
-
-
-
-
-                else:
-
-                    set_mensagem_trigger_notifi('APP Não foi Gerado.', 'warning');
-                    redirect(site_url('projectbuildcrud?search=' . $this->_app_nome));
-                    exit;
-
-                endif;
-
-            else:
-                set_mensagem_trigger_notifi('Um ERRO Inesperável Ocorreu ao gerar FORM ADD/EDIT.', 'error');
-                redirect(site_url('projectbuildcrud'));
-                exit;
+        /*
+         * GET CODE EDITOR FORM ADD
+         */
+        $_where_getCode_FormAddEdit = array(
+            'proj_build_id' => $this->_project_id,
+            'code_screen' => 'formadd',
+        );
+        $_query_getCode_FormAddEdit = $this->db->get_where('proj_build_codeeditor', $_where_getCode_FormAddEdit)->result();
+        foreach ($_query_getCode_FormAddEdit as $_row_getCode_FormAddEdit):
+            if ($_row_getCode_FormAddEdit->code_type == 'css' && !empty(trim($_row_getCode_FormAddEdit->code_script))):
+                $this->_formAddCodeEditorCSS .= "<!--" . PHP_EOL;
+                $this->_formAddCodeEditorCSS .= " * CSS SCRIPT" . PHP_EOL;
+                $this->_formAddCodeEditorCSS .= "-->" . PHP_EOL;
+                $this->_formAddCodeEditorCSS .= "<style>" . PHP_EOL . PHP_EOL;
+                $this->_formAddCodeEditorCSS .= html_entity_decode(base64_decode($_row_getCode_FormAddEdit->code_script), ENT_QUOTES) . PHP_EOL . PHP_EOL;
+                $this->_formAddCodeEditorCSS .= "</style>" . PHP_EOL;
+                $this->_formAddCodeEditorCSS .= "<!--" . PHP_EOL;
+                $this->_formAddCodeEditorCSS .= " * END CSS SCRIPT" . PHP_EOL;
+                $this->_formAddCodeEditorCSS .= "-->" . PHP_EOL . PHP_EOL . PHP_EOL;
             endif;
-            /* END CARREGA DADOS DO PROJETO PARA FORM ADD/EDIT */
+            if ($_row_getCode_FormAddEdit->code_type == 'jquery' && !empty(trim($_row_getCode_FormAddEdit->code_script))):
 
+                $this->_formAddCodeEditorJS .= "<!--" . PHP_EOL;
+                $this->_formAddCodeEditorJS .= " * JQUERY SCRIPT" . PHP_EOL;
+                $this->_formAddCodeEditorJS .= "-->" . PHP_EOL;
+                $this->_formAddCodeEditorJS .= "<script>" . PHP_EOL . PHP_EOL;
+                $this->_formAddCodeEditorJS .= "$(function(){" . PHP_EOL . PHP_EOL;
+                $this->_formAddCodeEditorJS .= html_entity_decode(base64_decode($_row_getCode_FormAddEdit->code_script), ENT_QUOTES) . PHP_EOL . PHP_EOL;
+                $this->_formAddCodeEditorJS .= "});" . PHP_EOL . PHP_EOL;
+                $this->_formAddCodeEditorJS .= "</script>" . PHP_EOL;
+                $this->_formAddCodeEditorJS .= "<!--" . PHP_EOL;
+                $this->_formAddCodeEditorJS .= " * END JQUERY SCRIPT" . PHP_EOL;
+                $this->_formAddCodeEditorJS .= "-->" . PHP_EOL . PHP_EOL . PHP_EOL;
+            endif;
+        endforeach;
+//END GET CODE EDITOR FORM ADD
 
+        /*
+         * GET CODE EDITOR FORM EDIT
+         */
+        $_where_getCode_FormAddEdit = array(
+            'proj_build_id' => $this->_project_id,
+            'code_screen' => 'formedit',
+        );
+        $_query_getCode_FormAddEdit = $this->db->get_where('proj_build_codeeditor', $_where_getCode_FormAddEdit)->result();
+        foreach ($_query_getCode_FormAddEdit as $_row_getCode_FormAddEdit):
+            if ($_row_getCode_FormAddEdit->code_type == 'css' && !empty(trim($_row_getCode_FormAddEdit->code_script))):
+                $this->_formEditCodeEditorCSS .= "<!--" . PHP_EOL;
+                $this->_formEditCodeEditorCSS .= " * CSS SCRIPT" . PHP_EOL;
+                $this->_formEditCodeEditorCSS .= "-->" . PHP_EOL;
+                $this->_formEditCodeEditorCSS .= "<style>" . PHP_EOL . PHP_EOL;
+                $this->_formEditCodeEditorCSS .= html_entity_decode(base64_decode($_row_getCode_FormAddEdit->code_script), ENT_QUOTES) . PHP_EOL . PHP_EOL;
+                $this->_formEditCodeEditorCSS .= "</style>" . PHP_EOL;
+                $this->_formEditCodeEditorCSS .= "<!--" . PHP_EOL;
+                $this->_formEditCodeEditorCSS .= " * END CSS SCRIPT" . PHP_EOL;
+                $this->_formEditCodeEditorCSS .= "-->" . PHP_EOL . PHP_EOL . PHP_EOL;
+            endif;
+            if ($_row_getCode_FormAddEdit->code_type == 'jquery' && !empty(trim($_row_getCode_FormAddEdit->code_script))):
+                $this->_formEditCodeEditorJS .= "<!--" . PHP_EOL;
+                $this->_formEditCodeEditorJS .= " * JQUERY SCRIPT" . PHP_EOL;
+                $this->_formEditCodeEditorJS .= "-->" . PHP_EOL;
+                $this->_formEditCodeEditorJS .= "<script>" . PHP_EOL . PHP_EOL;
+                $this->_formEditCodeEditorJS .= "$(function(){" . PHP_EOL . PHP_EOL;
+                $this->_formEditCodeEditorJS .= html_entity_decode(base64_decode($_row_getCode_FormAddEdit->code_script), ENT_QUOTES) . PHP_EOL . PHP_EOL;
+                $this->_formEditCodeEditorJS .= "});" . PHP_EOL . PHP_EOL;
+                $this->_formEditCodeEditorJS .= "</script>" . PHP_EOL;
+                $this->_formEditCodeEditorJS .= "<!--" . PHP_EOL;
+                $this->_formEditCodeEditorJS .= " * END JQUERY SCRIPT" . PHP_EOL;
+                $this->_formEditCodeEditorJS .= "-->" . PHP_EOL . PHP_EOL . PHP_EOL;
+            endif;
+        endforeach;
+//END GET CODE EDITOR FORM ADD
 
+        else:
 
-            /**
-             * GERANDO
-             */
-            echo "<link href=\"" . base_url('assets/dist/css/AdminLTE.BZ.min.css') . "\" rel=\"stylesheet\" type=\"text/css\"/>";
+            set_mensagem_trigger_notifi('APP Não foi Gerado.', 'warning');
+            redirect(site_url('projectbuildcrud?search=' . $this->_app_nome));
+            exit;
 
+        endif;
 
-            /*
-             * GERA O CONTROLLER DO APP
-             */
-            echo '<div class="callout callout-success">
+        else:
+            set_mensagem_trigger_notifi('Um ERRO Inesperável Ocorreu ao gerar FORM ADD/EDIT.', 'error');
+            redirect(site_url('projectbuildcrud'));
+            exit;
+        endif;
+        /* END CARREGA DADOS DO PROJETO PARA FORM ADD/EDIT */
+
+        /**
+         * GERANDO
+         */
+        echo "<link href=\"" . base_url('assets/dist/css/AdminLTE.BZ.min.css') . "\" rel=\"stylesheet\" type=\"text/css\"/>";
+
+        /*
+         * GERA O CONTROLLER DO APP
+         */
+        echo '<div class="callout callout-success">
                 Gerando Controller...
                 </div>';
-            $this->ger_controller();
+        $this->ger_controller();
 
-            /*
-             * GERA O MODEL DO APP
-             */
-            echo '<div class="callout callout-success">
+        /*
+         * GERA O MODEL DO APP
+         */
+        echo '<div class="callout callout-success">
                 Gerando Model...
                 </div>';
-            $this->ger_models();
+        $this->ger_models();
 
-
-            /*
-             * GERA A VIEW LIST
-             */
-            echo '<div class="callout callout-success">
+        /*
+         * GERA A VIEW LIST
+         */
+        echo '<div class="callout callout-success">
                 Gerando Grid List...
                 </div>';
-            $this->ger_gridList();
+        $this->ger_gridList();
 
-
-            /*
-             * GERA FORM ADD
-             */
-            echo '<div class="callout callout-success">
+        /*
+         * GERA FORM ADD
+         */
+        echo '<div class="callout callout-success">
                 Gerando Form Add...
                 </div>';
 
-            $this->ger_formAdd();
+        $this->ger_formAdd();
 
-
-            /*
-             * GERA FORM EDIT
-             */
-            echo '<div class="callout callout-success">
+        /*
+         * GERA FORM EDIT
+         */
+        echo '<div class="callout callout-success">
                 Gerando Form Edit...
                 </div>';
 
-            $this->ger_formEdit();
+        $this->ger_formEdit();
 
         endif;
     }
 
     /* END public function build_app() */
 
-
     /*
      * GERA O CONTROLLER DO APP BLANK
      */
 
-    private function ger_controllerBlank() {
+    private function ger_controllerBlank()
+    {
 
         /*
          * IMPORTA O TEMPLATE DO CONTROLLER
@@ -3646,7 +3410,6 @@ class ProjectbuildCrud extends MY_Controller {
         foreach ($_template as $_row):
             $this->_dadosController .= $_row;
         endforeach;
-
 
         /*
          * FAZ AS SUBSTITUIÇÕES DOS MARCADORES PELOS CÓDIGOS GERADOS
@@ -3683,8 +3446,6 @@ class ProjectbuildCrud extends MY_Controller {
             $this->_dadosController = str_replace('{{controller-blank}}', '$this->load->view("v' . $this->_app_nome . '");', $this->_dadosController);
         }
 
-
-
         /*
          * GET CODE EDITOR METODOS PHP CONTROLLER
          */
@@ -3712,7 +3473,6 @@ class ProjectbuildCrud extends MY_Controller {
                     $this->_controller_metodos_php .= $_row_getCode_ControllerMetodosPHP->code_type_method . " function " . $_row_getCode_ControllerMetodosPHP->code_screen . '($_p = null) {' . PHP_EOL;
                 }
 
-
                 $this->_controller_metodos_php .= html_entity_decode(base64_decode($_row_getCode_ControllerMetodosPHP->code_script), ENT_QUOTES) . PHP_EOL;
                 $this->_controller_metodos_php .= "}" . PHP_EOL;
                 $this->_controller_metodos_php .= "/* END METODO PHP - " . $_row_getCode_ControllerMetodosPHP->code_screen . ' */' . PHP_EOL . PHP_EOL;
@@ -3720,10 +3480,8 @@ class ProjectbuildCrud extends MY_Controller {
         endforeach;
         /* END GET CODE EDITOR METODOS PHP CONTROLLER */
 
-
         /* MÉTODOS METODOS PHP CONTROLLER */
         $this->_dadosController = str_replace('{{controller-metodos-php}}', $this->_controller_metodos_php, $this->_dadosController);
-
 
         /* GERA O ARQUIVO controller DO APP BLANK */
         write_file($this->_directory . '/controllers/' . $this->_app_nome . '.php', $this->_dadosController);
@@ -3734,12 +3492,12 @@ class ProjectbuildCrud extends MY_Controller {
 
     /* END private function ger_controllerBlank() */
 
-
     /*
      * GERA O VIEW DO APP BLANK
      */
 
-    private function ger_viewBlank() {
+    private function ger_viewBlank()
+    {
 
         /*
          * IMPORTA O TEMPLATE DO CONTROLLER
@@ -3755,7 +3513,6 @@ class ProjectbuildCrud extends MY_Controller {
         foreach ($_template as $_row):
             $this->_dadosController .= $_row;
         endforeach;
-
 
         /*
          * FAZ AS SUBSTITUIÇÕES DOS MARCADORES PELOS CÓDIGOS GERADOS
@@ -3774,9 +3531,6 @@ class ProjectbuildCrud extends MY_Controller {
         endif;
 
         $this->_dadosController = str_replace('{{app-nome}}', $this->_app_nome, $this->_dadosController);
-
-
-
 
         /*
          * GET CODE EDITOR BLANK CODE
@@ -3797,13 +3551,8 @@ class ProjectbuildCrud extends MY_Controller {
         endforeach;
         /* END GET CODE EDITOR BLANK CODE */
 
-
         /* BLANK CODE */
         $this->_dadosController = str_replace('{{blank-code}}', $this->_blankCode, $this->_dadosController);
-
-
-
-
 
         /* GERA O ARQUIVO controller DO APP BLANK */
         write_file($this->_directory . '/views/v' . $this->_app_nome . '.php', $this->_dadosController);
@@ -3816,7 +3565,8 @@ class ProjectbuildCrud extends MY_Controller {
      * GERA O MODEL DO APP BLANK
      */
 
-    private function ger_modelsBlank() {
+    private function ger_modelsBlank()
+    {
 
         /*
          * GET CODE EDITOR METODOS PHP MODELS
@@ -3842,13 +3592,12 @@ class ProjectbuildCrud extends MY_Controller {
 
     /* END private function ger_controllerBlank() */
 
-
-
     /*
      * GERA O CONTROLLER DO APP
      */
 
-    private function ger_controller() {
+    private function ger_controller()
+    {
 
         /*
          * IMPORTA O TEMPLATE DO CONTROLLER
@@ -3860,7 +3609,6 @@ class ProjectbuildCrud extends MY_Controller {
             $this->_dadosController .= $_row;
         endforeach;
 
-
         /*
          * FAZ AS SUBSTITUIÇÕES DOS MARCADORES PELOS CÓDIGOS GERADOS
          */
@@ -3869,9 +3617,7 @@ class ProjectbuildCrud extends MY_Controller {
         $this->_dadosController = str_replace('{{author-name}}', $this->session->userdata('user_login')['user_nome'], $this->_dadosController);
         $this->_dadosController = str_replace('{{author-email}}', $this->session->userdata('user_login')['user_email'], $this->_dadosController);
 
-
         $this->_dadosController = str_replace('{{class-name}}', $this->_app_nome, $this->_dadosController);
-
 
         $this->_dadosController = str_replace('{{titulo-app}}', $this->_appTitulo, $this->_dadosController);
 
@@ -3900,21 +3646,17 @@ class ProjectbuildCrud extends MY_Controller {
         $this->_dadosController = str_replace('{{grid-list-fields-order-by}}', $this->_gridListFieldsOrderBy, $this->_dadosController);
         $this->_dadosController = str_replace('{{grid-list-search-fields}}', $this->_gridListSearchFields, $this->_dadosController);
 
-
         $this->_dadosController = str_replace('{{add-validation}}', $this->_formAddConfigInputValidation, $this->_dadosController);
         $this->_dadosController = str_replace('{{edit-validation}}', $this->_formEditConfigInputValidation, $this->_dadosController);
-
 
         $this->_dadosController = str_replace('{{form-edit-unset-primary-key}}', $this->_formEditUnsetPrimaryKey, $this->_dadosController);
 
         $this->_dadosController = str_replace('{{form-add-unset-fields}}', $this->_form_add_unset_fields, $this->_dadosController);
         $this->_dadosController = str_replace('{{form-edit-unset-fields}}', $this->_form_edit_unset_fields, $this->_dadosController);
 
-
         $this->_dadosController = str_replace('{{callback-validation}}', $this->_formAddEditConfigInputValidationCallback, $this->_dadosController);
 
         $this->_dadosController = str_replace('{{form-edit-where-update-fields}}', $this->_formEditWhereUpdateFields, $this->_dadosController);
-
 
         /* MÉTODOS */
 
@@ -3962,12 +3704,12 @@ class ProjectbuildCrud extends MY_Controller {
 
     /* END private function ger_controller() */
 
-
     /*
      * GERA O MODEL DO APP
      */
 
-    private function ger_models() {
+    private function ger_models()
+    {
         /*
          * IMPORTA O TEMPLATE DO MODEL
          */
@@ -3978,7 +3720,6 @@ class ProjectbuildCrud extends MY_Controller {
             $this->_dadosModel .= $_row;
         endforeach;
 
-
         /*
          * FAZ AS SUBSTITUIÇÕES DOS MARCADORES PELOS CÓDIGOS GERADOS
          */
@@ -3986,7 +3727,6 @@ class ProjectbuildCrud extends MY_Controller {
         $this->_dadosModel = str_replace('{{created-time}}', date('H:i') . ((date('H') > 11) ? 'PM' : 'AM'), $this->_dadosModel);
         $this->_dadosModel = str_replace('{{author-name}}', $this->session->userdata('user_login')['user_nome'], $this->_dadosModel);
         $this->_dadosModel = str_replace('{{author-email}}', $this->session->userdata('user_login')['user_email'], $this->_dadosModel);
-
 
         $this->_dadosModel = str_replace('{{model-name}}', $this->_app_nome, $this->_dadosModel);
         $this->_dadosModel = str_replace('{{models-metodos-php}}', $this->_models_metodos_php, $this->_dadosModel);
@@ -4000,13 +3740,12 @@ class ProjectbuildCrud extends MY_Controller {
 
     /* END private function ger_models() */
 
-
-
     /*
      * GERA A VIEW LIST
      */
 
-    private function ger_gridList() {
+    private function ger_gridList()
+    {
 
         /*
          * IMPORTA O TEMPLATE DO CONTROLLER
@@ -4016,7 +3755,6 @@ class ProjectbuildCrud extends MY_Controller {
         foreach ($_dados as $_row):
             $this->_dadosView .= $_row;
         endforeach;
-
 
         /*
          * FAZ AS SUBSTITUIÇÕES DOS MARCADORES PELOS CÓDIGOS GERADOS
@@ -4037,7 +3775,6 @@ class ProjectbuildCrud extends MY_Controller {
         $this->_dadosView = str_replace('{{grid-list-scripts-js}}', $this->_gridListCodeEditorJS, $this->_dadosView);
         $this->_dadosView = str_replace('{{grid-list-on-record}}', $this->_gridListCodeEditorOnRecord, $this->_dadosView);
 
-
 //INPUT SEARCH E BUTTONS DA PESQUISA
         $this->_dadosView = str_replace('{{grid-list-div-buttons}}', $this->_gridListDivButtons, $this->_dadosView);
 
@@ -4050,27 +3787,21 @@ class ProjectbuildCrud extends MY_Controller {
 //BUTTON CLEAR
         $this->_dadosView = str_replace('{{grid-list-button-clear}}', $this->_gridListClearhButton, $this->_dadosView);
 
-
-
-
         /* GERA O ARQUIVO VIEW gridlist DA APLICAÇÃO */
         write_file($this->_directory . '/views/v' . $this->_app_nome . '.php', $this->_dadosView);
         /* EDND GERA O ARQUIVO VIEW gridlist DA APLICAÇÃO */
-
 
         $this->_dadosView = '';
     }
 
     /* END private function ger_gridList() */
 
-
-
-
     /*
      * GERA O FORM ADD DO APP
      */
 
-    private function ger_formAdd() {
+    private function ger_formAdd()
+    {
         /*
          * IMPORTA O TEMPLATE DO FORM ADD
          */
@@ -4081,7 +3812,6 @@ class ProjectbuildCrud extends MY_Controller {
             $this->_dadosFormAdd .= $_row;
         endforeach;
 
-
         /*
          * FAZ AS SUBSTITUIÇÕES DOS MARCADORES PELOS CÓDIGOS GERADOS
          */
@@ -4091,8 +3821,6 @@ class ProjectbuildCrud extends MY_Controller {
 
         $this->_formAddFields = str_replace('hidden-formadd', 'hidden', $this->_formAddFields);
         $this->_formAddFields = str_replace('hidden-formedit', '', $this->_formAddFields);
-
-
 
         $this->_dadosFormAdd = str_replace('disabled-formedit', '', $this->_dadosFormAdd);
         $this->_dadosFormAdd = str_replace('disabled-formadd', 'disabled', $this->_dadosFormAdd);
@@ -4109,25 +3837,21 @@ class ProjectbuildCrud extends MY_Controller {
         $this->_dadosFormAdd = str_replace('{{form-add-scripts-css}}', $this->_formAddCodeEditorCSS, $this->_dadosFormAdd);
         $this->_dadosFormAdd = str_replace('{{form-add-scripts-js}}', $this->_formAddCodeEditorJS, $this->_dadosFormAdd);
 
-
         /* GERA O ARQUIVO VIEW formadd DA APLICAÇÃO */
         write_file($this->_directory . '/views/v' . $this->_app_nome . 'FormAdd.php', $this->_dadosFormAdd);
         /* END GERA O ARQUIVO VIEW formadd DA APLICAÇÃO */
-
 
         $this->_dadosFormAdd = '';
     }
 
     /* END private function ger_formAdd() */
 
-
-
-
     /*
      * GERA O FORM EDIT DO APP
      */
 
-    private function ger_formEdit() {
+    private function ger_formEdit()
+    {
         /*
          * IMPORTA O TEMPLATE DO FORM ADD
          */
@@ -4138,7 +3862,6 @@ class ProjectbuildCrud extends MY_Controller {
             $this->_dadosFormEdit .= $_row;
         endforeach;
 
-
         /*
          * FAZ AS SUBSTITUIÇÕES DOS MARCADORES PELOS CÓDIGOS GERADOS
          */
@@ -4148,8 +3871,6 @@ class ProjectbuildCrud extends MY_Controller {
 
         $this->_formEditFields = str_replace('hidden-formadd', '', $this->_formEditFields);
         $this->_formEditFields = str_replace('hidden-formedit', 'hidden', $this->_formEditFields);
-
-
 
         $this->_dadosFormEdit = str_replace('{{created-date}}', date('d/m/Y'), $this->_dadosFormEdit);
         $this->_dadosFormEdit = str_replace('{{created-time}}', date('H:i') . ((date('H') > 11) ? 'PM' : 'AM'), $this->_dadosFormEdit);
@@ -4165,18 +3886,14 @@ class ProjectbuildCrud extends MY_Controller {
         $this->_dadosFormEdit = str_replace('{{form-edit-scripts-js}}', $this->_formEditCodeEditorJS, $this->_dadosFormEdit);
         $this->_dadosFormEdit = str_replace('{{form-edit-scripts-js-mask}}', $this->_formAddEditConfigInputMask, $this->_dadosFormEdit);
 
-
 //        $this->_dadosFormEdit = str_replace('{{form-edit-scripts-js-mask}}', $this->_formAddEditConfigInputMask, $this->_dadosFormEdit);
-//
-//        $this->_dadosFormEdit = str_replace('{{form-edit-scripts-css}}', $this->_formAddCodeEditorCSS, $this->_dadosFormEdit);
-//        $this->_dadosFormEdit = str_replace('{{form-edit-scripts-js}}', $this->_formAddCodeEditorJS, $this->_dadosFormEdit);
-
+        //
+        //        $this->_dadosFormEdit = str_replace('{{form-edit-scripts-css}}', $this->_formAddCodeEditorCSS, $this->_dadosFormEdit);
+        //        $this->_dadosFormEdit = str_replace('{{form-edit-scripts-js}}', $this->_formAddCodeEditorJS, $this->_dadosFormEdit);
 
         /* GERA O ARQUIVO VIEW formedit DA APLICAÇÃO */
         write_file($this->_directory . '/views/v' . $this->_app_nome . 'FormEdit.php', $this->_dadosFormEdit);
         /* END GERA O ARQUIVO VIEW formedit DA APLICAÇÃO */
-
-
 
         $this->_dadosFormEdit = '';
     }
@@ -4185,6 +3902,3 @@ class ProjectbuildCrud extends MY_Controller {
 }
 
 /* END class */
-
-
-
