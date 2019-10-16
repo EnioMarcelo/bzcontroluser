@@ -232,6 +232,20 @@ function mc_modal($_configModal = []) {
 }
 
 /**
+ * SETA OS ALERTAS DO SISTEMA EM TRIGGER NOTIFITI MESSENGER
+ * Type : info, error, warning, success
+ * 
+ * @param type $mensagem
+ * @param type $tipo
+ * @param type $duration
+ * @return type
+ */
+function mc_alertTriggerNotifi($mensagem = 'Sua mensagem aqui.', $tipo = 'info', $duration = 3200) {
+    set_mensagem_trigger_notifi($mensagem, $tipo, $duration);
+    return;
+}
+
+/**
  * SETA OS ALERTAS DO SISTEMA EM NOTFIT MESSENGER
  * info, error, warning, success
  *
