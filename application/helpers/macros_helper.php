@@ -33,13 +33,13 @@ function mc_image_url($_image_name) {
  * @param string $_type         [ single ] para uma única image / [ group ] para um grupo de imagens, tipo galeria de fotos
  * @return string
  */
-function mc_image_link_modal($_image_name, $_type = 'single') {
+function mc_image_link_modal($_image_name, $_image_folder = NULL, $_type = 'single') {
 
     $_imagem = '';
 
     if ($_type == 'single') {
 
-        $_url_imagem = base_url(___CONF_UPLOAD_DIR___ . ___CONF_UPLOAD_IMAGE_DIR___) . $_image_name;
+        $_url_imagem = base_url(___CONF_UPLOAD_DIR___ . ___CONF_UPLOAD_IMAGE_DIR___ . $_image_folder) . $_image_name;
 
         $_imagem = '<div class="btn-copy-to-clipboard btn-image-link-lightbox" ><a href="' . $_url_imagem . '" data-lightbox="' . $_image_name . '" data-title="" ><i class="fa fa-fw fa-camera"></i> </a></div>';
 
@@ -62,13 +62,13 @@ function mc_image_link_modal($_image_name, $_type = 'single') {
  * @param type $_type              [ single ] para um único arquivo / [ group ] para um grupo de arquivos
  * @return string
  */
-function mc_file_link_download($_file_name, $_type = 'single') {
+function mc_file_link_download($_file_name, $_file_folder = NULL, $_type = 'single') {
 
     $_file = '';
 
     if ($_type == 'single') {
 
-        $_url_file = base_url(___CONF_UPLOAD_DIR___ . ___CONF_UPLOAD_FILE_DIR___) . $_file_name;
+        $_url_file = base_url(___CONF_UPLOAD_DIR___ . ___CONF_UPLOAD_FILE_DIR___ . $_file_folder) . $_file_name;
 
         $_file = '<div class="btn-copy-to-clipboard btn-file-link-lightbox" ><i class="fa fa-fw fa-camera"></i> </a></div>';
 
@@ -90,13 +90,13 @@ function mc_file_link_download($_file_name, $_type = 'single') {
  * @param type $_model              [ single ] para uma única image / [ group ] para um grupo de imagens, tipo galeria de fotos
  * @return string
  */
-function mc_image_thumb_modal($_image_name, $_type = 'single') {
+function mc_image_thumb_modal($_image_name, $_image_folder = NULL, $_type = 'single') {
 
     $_imagem = '';
 
     if ($_type == 'single') {
 
-        $_url_imagem = base_url(___CONF_UPLOAD_DIR___ . ___CONF_UPLOAD_IMAGE_DIR___) . $_image_name;
+        $_url_imagem = base_url(___CONF_UPLOAD_DIR___ . ___CONF_UPLOAD_IMAGE_DIR___ . $_image_folder) . $_image_name;
         $_imagem = '<a class="btn-image-thumb-lightbox" href="' . $_url_imagem . '" data-lightbox="' . $_image_name . '"><img class="img-responsive" src="' . $_url_imagem . '"></a>';
 
         $_btn_view_copy_image = '<div class="display-flex display-flex-wrap display-flex-justify-content-right">'
