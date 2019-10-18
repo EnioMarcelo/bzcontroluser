@@ -139,6 +139,7 @@ class Login extends MY_Controller {
                 'user_super_admin' => $result->row()->super_admin,
                 'user_token' => session_id(),
                 'user_ultimo_login' => $_ultimoLogin,
+                'user_gravatar' => bz_get_gravatar($result->row()->email),
             );
 
             //GERA A SESSÃO DO USUÁRIO

@@ -213,7 +213,11 @@
                     <div class="user-panel">
                         <div class="pull-left image">
                             <!--                            <img src="<?= base_url('assets'); ?>/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image" />-->
-                            <img src="<?= ($this->session->userdata('user_login')['user_sexo'] == 'M') ? base_url('assets') . '/dist/img/avatar5.png' : base_url('assets') . '/dist/img/avatar2.png'; ?>" class="img-circle" alt="User Image" />
+                            <?php if (!empty($this->session->userdata('user_login')['user_gravatar'])): ?>
+                                <img src="<?= $this->session->userdata('user_login')['user_gravatar']; ?>" class="img-circle" alt="User Image" />
+                            <?php else: ?>
+                                <img src="<?= ($this->session->userdata('user_login')['user_sexo'] == 'M') ? base_url('assets') . '/dist/img/avatar5.png' : base_url('assets') . '/dist/img/avatar2.png'; ?>" class="img-circle" alt="User Image" />
+                            <?php endif; ?>
                         </div>
                         <div class="pull-left info">
                             <p><?= $this->session->userdata('user_login')['user_nome']; ?></p>
