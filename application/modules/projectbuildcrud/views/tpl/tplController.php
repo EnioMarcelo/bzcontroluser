@@ -327,8 +327,6 @@ exit;
     $this->export['_loadHtml'] .= '      <link href="'.base_url('assets').'/css/custom-masterPageIframe.css" rel="stylesheet" type="text/css" />' . PHP_EOL;
     $this->export['_loadHtml'] .= '      <!-- Theme style -->';
     $this->export['_loadHtml'] .= '      <link href="'.base_url('assets').'/dist/css/AdminLTE.BZ.min.css" rel="stylesheet" type="text/css"/>';
-    
-    
     $this->export['_loadHtml'] .= '      <style>' . PHP_EOL;
     $this->export['_loadHtml'] .= '         table { border-collapse:unset; }' . PHP_EOL;
     $this->export['_loadHtml'] .= '         .table>thead>tr>td, .table>thead>tr>th{ font-size:14px; padding:1px; }' . PHP_EOL;
@@ -339,64 +337,98 @@ exit;
     $this->export['_loadHtml'] .= '      </style>' . PHP_EOL;
     $this->export['_loadHtml'] .= "  </head>" . PHP_EOL;
     $this->export['_loadHtml'] .= "  <body>" . PHP_EOL;
-    
-    $this->export['_loadHtml'] .= " <!-- TABLE -->" . PHP_EOL;
     $this->export['_loadHtml'] .= "<div id='exportreport' class='container'>" . PHP_EOL;
-    $this->export['_loadHtml'] .= '<h3 class="pointer btn-show-modal-aguarde" style="margin-top:5; margin-botom:15px" title="Voltar">' . PHP_EOL;
-    $this->export['_loadHtml'] .= "<i class='".$this->dados['_font_icon']."'></i>" . PHP_EOL;
-    $this->export['_loadHtml'] .= '<spam style="margin-left:10px;">'.$this->dados["_titulo_app"].'</spam>' . PHP_EOL;
-    $this->export['_loadHtml'] .= "</h3>" . PHP_EOL;
-    
-    
-//    $this->export['_loadHtml'] .= "<a class='btn btn-sm btn-primary btn-show-modal-aguarde xmargin-left-15' name='btn-export' value='btn-export'>";
-//    $this->export['_loadHtml'] .= "            <span class='glyphicon glyphicon-print'></span> Imprimir";
-//    $this->export['_loadHtml'] .= "        </a>";
-    
-    
-	$this->export['_loadHtml'] .= "	<table class='table table-striped'>" . PHP_EOL;
-	$this->export['_loadHtml'] .= "     <!-- HEADER DA TABLE -->" . PHP_EOL;
-	$this->export['_loadHtml'] .= "     <thead class='bg-black'" . PHP_EOL;
-	$this->export['_loadHtml'] .= "         <tr id='IdTableGridListTheadTr'>" . PHP_EOL;
-	$this->export['_loadHtml'] .= "             <th class='text-center' style='width:3%;'>#</th>" . PHP_EOL;
-	$this->export['_loadHtml'] .= '             {{grid-list-header-table-export}}' . PHP_EOL;
-	$this->export['_loadHtml'] .= "			</tr>" . PHP_EOL;
-	$this->export['_loadHtml'] .= "		</thead>" . PHP_EOL;
-	$this->export['_loadHtml'] .= "     <!-- END HEADER DA TABLE -->" . PHP_EOL;
-    
-    $this->export['_loadHtml'] .= "     <!-- ON RECORD EXPORT TABLE -->" . PHP_EOL;
-	$this->export['_loadHtml'] .= "     <tbody>" . PHP_EOL;
+	
         
-        /* ON RECORD EXPORT */
-        $_c = 0; 
-        $_class_tr = ''; 
+        $_c = 0;
+        $_line = 0;
+        $_page = 0;
+        $_totalPage = ceil(count($this->export['_dados']['results_paginacao_array'])/43);
+        $_class_tr = '';
         $_style_tr = '';
 
         foreach ($this->export['_dados']['results_paginacao_array'] as $_key => $_row):
 
             $_c++;
-        
+            $_line++;
+
             {{export-on-record}}
 
+            if ($_line == 1) {
+               
+                $this->export['_loadHtml'] .= "<!-- TABLE -->" . PHP_EOL;
+                $this->export['_loadHtml'] .= '<h3 class="pointer btn-show-modal-aguarde" style="margin-top:5; margin-botom:15px" title="Voltar">' . PHP_EOL;
+                $this->export['_loadHtml'] .= "<i class='".$this->dados['_font_icon']."'></i>" . PHP_EOL;
+                $this->export['_loadHtml'] .= '<spam style="margin-left:10px;">'.$this->dados["_titulo_app"].'</spam>' . PHP_EOL;
+                $this->export['_loadHtml'] .= "</h3>" . PHP_EOL;  
+                
+                $this->export['_loadHtml'] .= "	<table class='table table-striped'>" . PHP_EOL;
+                $this->export['_loadHtml'] .= "     <!-- HEADER DA TABLE -->" . PHP_EOL;
+                $this->export['_loadHtml'] .= "     <thead class='bg-black'" . PHP_EOL;
+                $this->export['_loadHtml'] .= "         <tr id='IdTableGridListTheadTr'>" . PHP_EOL;
+                $this->export['_loadHtml'] .= "             <th class='text-center' style='width:3%;'>#</th>" . PHP_EOL;
+                $this->export['_loadHtml'] .= '             {{grid-list-header-table-export}}' . PHP_EOL;
+                $this->export['_loadHtml'] .= "			</tr>" . PHP_EOL;
+                $this->export['_loadHtml'] .= "		</thead>" . PHP_EOL;
+                $this->export['_loadHtml'] .= "     <!-- END HEADER DA TABLE -->" . PHP_EOL;
+
+                $this->export['_loadHtml'] .= "     <!-- ON RECORD EXPORT TABLE -->" . PHP_EOL;
+                $this->export['_loadHtml'] .= "     <tbody>" . PHP_EOL;
+
+            }
+            
+            
             $this->export['_loadHtml'] .= "<tr class='".$_class_tr."' style='font-size:12px;line-height: 0.6em; ".$_style_tr."'>" . PHP_EOL;
             
             $this->export['_loadHtml'] .= "    <td class='text-center'  >".$_c."</td>" . PHP_EOL;
 
             $this->export['_loadHtml'] .= "    <!-- CAMPOS DA TABLE -->" . PHP_EOL;
             $this->export['_loadHtml'] .= '     {{grid-list-fields-table-export}}' . PHP_EOL;
-            $this->export['_loadHtml'] .= "    <!-- CAMPOS DA TABLE -->" . PHP_EOL;
+            $this->export['_loadHtml'] .= "    <!-- END CAMPOS DA TABLE -->" . PHP_EOL;
 
             $this->export['_loadHtml'] .= "</tr>" . PHP_EOL;
+            
+            
+            
+            if ($_line == 43) {
+                $_line = 0;
+                $_page++;
+                
+                $this->export['_loadHtml'] .= "     </tbody>" . PHP_EOL;
+                $this->export['_loadHtml'] .= "     <!-- END ON RECORD EXPORT DADOS DA TABLE -->" . PHP_EOL;
+                $this->export['_loadHtml'] .= " </table>" . PHP_EOL;
+                
+                $this->export['_loadHtml'] .= " <div style='text-align:right; width:100%; border-top:1px solid #999; font-size:0.8em; padding:10px'>Página: " . $_page . " de " . $_totalPage . "</div>";
+
+                $this->export['_loadHtml'] .= " <div style='page-break-after: always;'></div>";
+                
+                $this->export['_loadHtml'] .= " <!-- END TABLE -->" . PHP_EOL;
+            }
+            
 
         endforeach;
-        /* END ON RECORD EXPORT */
+        
+        if ($_line <= 43) {
+            $_line = 0;
+            $_page++;
+            
+            $this->export['_loadHtml'] .= "     </tbody>" . PHP_EOL;
+            $this->export['_loadHtml'] .= "     <!-- END ON RECORD EXPORT DADOS DA TABLE -->" . PHP_EOL;
+            $this->export['_loadHtml'] .= " </table>" . PHP_EOL;
+            
+            $this->export['_loadHtml'] .= " <div style='text-align:right; width:100%; border-top:1px solid #999; font-size:0.8em; padding:10px'>Página: " . $_page . " de " . $_totalPage . "</div>";
+
+            $this->export['_loadHtml'] .= " <div style='page-break-after: always;'></div>";
+
+            $this->export['_loadHtml'] .= " <!-- END TABLE -->" . PHP_EOL;
+        }
     
     
-    $this->export['_loadHtml'] .= "     </tbody>" . PHP_EOL;
-    $this->export['_loadHtml'] .= "     <!-- ON RECORD EXPORT DADOS DA TABLE -->" . PHP_EOL;
-    $this->export['_loadHtml'] .= " </table>" . PHP_EOL;
-    $this->export['_loadHtml'] .= " <!-- END TABLE -->" . PHP_EOL;
     
     $this->export['_loadHtml'] .= "</div>" . PHP_EOL;
+            
+    $this->export['_loadHtml'] .= '</body>' . PHP_EOL;
+    $this->export['_loadHtml'] .= '</html>' . PHP_EOL;
     
     $this->export['_loadHtml'] .= '<!-- MODAL AGUARDE -->';
     $this->export['_loadHtml'] .= '<div id="modal-aguarde" class="bz-aguarde-modal">';
@@ -410,9 +442,6 @@ exit;
     $this->export['_loadHtml'] .= '    </div><!-- /.bz-aguarde-modal-dialog -->';
     $this->export['_loadHtml'] .= '</div><!-- /.bz-aguarde-modal -->';
     $this->export['_loadHtml'] .= '<!-- END MODAL AGUARDE -->';
-            
-    $this->export['_loadHtml'] .= '</body>' . PHP_EOL;
-    $this->export['_loadHtml'] .= '</html>' . PHP_EOL;
     
     /* JQUERY */ 
     $this->export['_loadHtml'] .= '<!-- jQuery 2.1.4 -->' . PHP_EOL;

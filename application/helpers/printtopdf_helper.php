@@ -21,7 +21,7 @@ if (!function_exists('printToPdf')) {
      * @param type $_setPaper           Tipo do Papel - A4, letter, legal, ...
      * @param type $_pageOrientation    Orientação do papel - landscape ou portrait 
      */
-    function printToPdf($_loadHtml, $_setPaper = 'A4', $_pageOrientation = '') {
+    function printToPdf($_loadHtml, $_setPaper = 'A4', $_pageOrientation = 'portrait') {
 
         /* instantiate and use the dompdf class */
         $dompdf = new Dompdf;
@@ -29,10 +29,10 @@ if (!function_exists('printToPdf')) {
         $dompdf->set_option('defaultFont', 'Courier');
         $dompdf->set_option('isHtml5ParserEnabled', true);
 
-        $dompdf->loadHtml($_loadHtml);
-
         /* (Optional) Setup the paper size and orientation */
         $dompdf->setPaper($_setPaper, $_pageOrientation);
+
+        $dompdf->loadHtml( $_loadHtml );
 
         /* Render the HTML0| as PDF */
         $dompdf->render();
