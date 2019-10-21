@@ -30,7 +30,6 @@ class Userprofile extends MY_Controller {
 
         if ($this->input->post()) {
 
-
             if ($this->input->post('task') == 'update_user') {
 
                 /*
@@ -140,9 +139,21 @@ class Userprofile extends MY_Controller {
         unset($_POST['id']);
         unset($_POST['task']);
 
+
+        /**
+         * DADOS FILLABLE
+         */
+        $_dadosFillable = $this->input->post();
+        $_dados = [];
+
+        $_dados["nome"] = $_dadosFillable["nome"];
+        $_dados["sexo"] = $_dadosFillable["sexo"];
+
+        /* END DADOS FILLABLE */
+
         $termosDB = 'WHERE id = ' . $_id;
 
-        $result = $this->update->ExecUpdate($this->table_name, $_POST, $termosDB);
+        $result = $this->update->ExecUpdate($this->table_name, $_dados, $termosDB);
 
         if ($result) {
             //GRAVA AUDITORIA

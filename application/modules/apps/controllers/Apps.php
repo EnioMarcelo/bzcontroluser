@@ -114,6 +114,30 @@ class Apps extends MY_Controller {
 
 
                 /**
+                 * DADOS FILLABLE
+                 */
+                $_dadosFillable = $_dados;
+                $_dados = [];
+                if (!empty($_dadosFillable["app_name"])) {
+                    $_dados["app_name"] = $_dadosFillable["app_name"];
+                } else {
+                    $_dados["app_name"] = NULL;
+                }
+
+                if (!empty($_dadosFillable["app_descricao"])) {
+                    $_dados["app_descricao"] = $_dadosFillable["app_descricao"];
+                } else {
+                    $_dados["app_descricao"] = NULL;
+                }
+
+                if (!empty($_dadosFillable["app_ativo"])) {
+                    $_dados["app_ativo"] = $_dadosFillable["app_ativo"];
+                } else {
+                    $_dados["app_ativo"] = NULL;
+                }
+                /* END DADOS FILLABLE */
+
+                /**
                  * Grava registro
                  */
                 $result = $this->create->ExecCreate($this->table_name, $_dados);
@@ -182,6 +206,29 @@ class Apps extends MY_Controller {
                         $_dados['app_ativo'] = 'N';
                     endif;
 
+                    /**
+                     * DADOS FILLABLE
+                     */
+                    $_dadosFillable = $_dados;
+                    $_dados = [];
+                    if (!empty($_dadosFillable["app_name"])) {
+                        $_dados["app_name"] = $_dadosFillable["app_name"];
+                    } else {
+                        $_dados["app_name"] = NULL;
+                    }
+
+                    if (!empty($_dadosFillable["app_descricao"])) {
+                        $_dados["app_descricao"] = $_dadosFillable["app_descricao"];
+                    } else {
+                        $_dados["app_descricao"] = NULL;
+                    }
+
+                    if (!empty($_dadosFillable["app_ativo"])) {
+                        $_dados["app_ativo"] = $_dadosFillable["app_ativo"];
+                    } else {
+                        $_dados["app_ativo"] = NULL;
+                    }
+                    /* END DADOS FILLABLE */
 
                     $_where = 'WHERE app_name = "' . $this->input->post('app_name') . '"';
 

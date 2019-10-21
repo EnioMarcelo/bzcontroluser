@@ -112,6 +112,50 @@ class Usuarios extends MY_Controller {
                 $_dados['senha'] = md5($_senha);
 
                 /**
+                 * DADOS FILLABLE
+                 */
+                $_dadosFillable = $_dados;
+                $_dados = [];
+                if (!empty($_dadosFillable["nome"])) {
+                    $_dados["nome"] = $_dadosFillable["nome"];
+                } else {
+                    $_dados["nome"] = NULL;
+                }
+
+                if (!empty($_dadosFillable["email"])) {
+                    $_dados["email"] = $_dadosFillable["email"];
+                } else {
+                    $_dados["email"] = NULL;
+                }
+
+                if (!empty($_dadosFillable["sexo"])) {
+                    $_dados["sexo"] = $_dadosFillable["sexo"];
+                } else {
+                    $_dados["sexo"] = NULL;
+                }
+
+                if (!empty($_dadosFillable["super_admin"])) {
+                    $_dados["super_admin"] = $_dadosFillable["super_admin"];
+                } else {
+                    $_dados["super_admin"] = NULL;
+                }
+
+                if (!empty($_dadosFillable["ativo"])) {
+                    $_dados["ativo"] = $_dadosFillable["ativo"];
+                } else {
+                    $_dados["ativo"] = NULL;
+                }
+
+                if (!empty($_dadosFillable["senha"])) {
+                    $_dados["senha"] = $_dadosFillable["senha"];
+                } else {
+                    $_dados["senha"] = NULL;
+                }
+
+                /* END DADOS FILLABLE */
+
+
+                /**
                  * Grava registro
                  */
                 $result = $this->create->ExecCreate($this->table_name, $_dados);
@@ -274,6 +318,41 @@ class Usuarios extends MY_Controller {
                     /*
                      * END SE O USUÁRIO FOR O USUÁRIO CORRENTE/LOGADO DO SISTEMA, ELE NÃO PODERÁ PERDER O STATUS DE SUPER ADMIN NEM SER DESATIVADO DO SISTEMA
                      */
+                    
+
+                    /**
+                     * DADOS FILLABLE
+                     */
+                    $_dadosFillable = $_dados;
+                    $_dados = [];
+
+                    $_dados["id"] = $_dadosFillable["id"];
+
+                    if (!empty($_dadosFillable["nome"])) {
+                        $_dados["nome"] = $_dadosFillable["nome"];
+                    } else {
+                        $_dados["nome"] = NULL;
+                    }
+
+                    if (!empty($_dadosFillable["sexo"])) {
+                        $_dados["sexo"] = $_dadosFillable["sexo"];
+                    } else {
+                        $_dados["sexo"] = NULL;
+                    }
+
+                    if (!empty($_dadosFillable["super_admin"])) {
+                        $_dados["super_admin"] = $_dadosFillable["super_admin"];
+                    } else {
+                        $_dados["super_admin"] = NULL;
+                    }
+
+                    if (!empty($_dadosFillable["ativo"])) {
+                        $_dados["ativo"] = $_dadosFillable["ativo"];
+                    } else {
+                        $_dados["ativo"] = NULL;
+                    }
+
+                    /* END DADOS FILLABLE */
 
 
                     $_where = 'WHERE id = "' . $this->input->post('id') . '"';

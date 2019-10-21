@@ -91,6 +91,58 @@ class Menu extends MY_Controller {
 
 
                 /**
+                 * DADOS FILLABLE
+                 */
+                $_dadosFillable = $_dados;
+                $_dados = [];
+
+                if (!empty($_dadosFillable["nome_menu"])) {
+                    $_dados["nome_menu"] = $_dadosFillable["nome_menu"];
+                } else {
+                    $_dados["nome_menu"] = NULL;
+                }
+
+                if (!empty($_dadosFillable["menu_icon"])) {
+                    $_dados["menu_icon"] = $_dadosFillable["menu_icon"];
+                } else {
+                    $_dados["menu_icon"] = NULL;
+                }
+
+                if (!empty($_dadosFillable["descricao_menu"])) {
+                    $_dados["descricao_menu"] = $_dadosFillable["descricao_menu"];
+                } else {
+                    $_dados["descricao_menu"] = NULL;
+                }
+
+                if (!empty($_dadosFillable["app_name"])) {
+                    $_dados["app_name"] = $_dadosFillable["app_name"];
+                } else {
+                    $_dados["app_name"] = NULL;
+                }
+
+                if (!empty($_dadosFillable["parent_id"])) {
+                    $_dados["parent_id"] = $_dadosFillable["parent_id"];
+                } else {
+                    $_dados["parent_id"] = NULL;
+                }
+
+                if (!empty($_dadosFillable["ativo"])) {
+                    $_dados["ativo"] = $_dadosFillable["ativo"];
+                } else {
+                    $_dados["ativo"] = NULL;
+                }
+
+                if (!empty($_dadosFillable["nivel_menu"])) {
+                    $_dados["nivel_menu"] = $_dadosFillable["nivel_menu"];
+                } else {
+                    $_dados["nivel_menu"] = NULL;
+                }
+
+                /* END DADOS FILLABLE */
+
+
+
+                /**
                  * Grava registro
                  */
                 $result = $this->create->ExecCreate($this->table_name, $_dados);
@@ -179,6 +231,52 @@ class Menu extends MY_Controller {
                     else:
                         $_dados['ativo'] = 'N';
                     endif;
+
+                    /**
+                     * DADOS FILLABLE
+                     */
+                    $_dadosFillable = $_dados;
+                    $_dados = [];
+
+                    $_dados["id"] = $_dadosFillable["id"];
+
+                    if (!empty($_dadosFillable["nome_menu"])) {
+                        $_dados["nome_menu"] = $_dadosFillable["nome_menu"];
+                    } else {
+                        $_dados["nome_menu"] = NULL;
+                    }
+
+                    if (!empty($_dadosFillable["menu_icon"])) {
+                        $_dados["menu_icon"] = $_dadosFillable["menu_icon"];
+                    } else {
+                        $_dados["menu_icon"] = NULL;
+                    }
+
+                    if (!empty($_dadosFillable["descricao_menu"])) {
+                        $_dados["descricao_menu"] = $_dadosFillable["descricao_menu"];
+                    } else {
+                        $_dados["descricao_menu"] = NULL;
+                    }
+
+                    if (!empty($_dadosFillable["app_name"])) {
+                        $_dados["app_name"] = $_dadosFillable["app_name"];
+                    } else {
+                        $_dados["app_name"] = NULL;
+                    }
+
+                    if (!empty($_dadosFillable["parent_id"])) {
+                        $_dados["parent_id"] = $_dadosFillable["parent_id"];
+                    } else {
+                        $_dados["parent_id"] = NULL;
+                    }
+
+                    if (!empty($_dadosFillable["ativo"])) {
+                        $_dados["ativo"] = $_dadosFillable["ativo"];
+                    } else {
+                        $_dados["ativo"] = NULL;
+                    }
+
+                    /* END DADOS FILLABLE */
 
                     $_where = 'WHERE id = "' . $this->input->post('id') . '"';
 
