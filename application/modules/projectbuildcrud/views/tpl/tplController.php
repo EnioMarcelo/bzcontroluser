@@ -79,9 +79,13 @@
           unset($_dados['btn-salvar']);
           {{form-add-unset-fields}}
           {{form-add-convert-dados-to-database}}
+          /**
+           * DADOS FILLABLE
+           */
+          {{form-dados-fillable}}
+          /* END DADOS FILLABLE */
 
           /* GRAVA REGISTRO */
-
           $result = $this->create->ExecCreate($this->table_formaddedit_name, $_dados);
           if ($this->db->trans_status() === FALSE):
             $this->db->trans_rollback();
@@ -113,7 +117,6 @@
 
 
         redirect($this->_redirect . '/add');
-
         /* END GRAVA REGISTRO */
                 
       else:
@@ -155,6 +158,11 @@
          {{form-edit-unset-fields}}
          {{form-edit-unset-primary-key}}
          {{form-edit-convert-dados-to-database}}
+         /**
+           * DADOS FILLABLE
+           */
+          {{form-dados-fillable}}
+          /* END DADOS FILLABLE */
 
          /* UPDATE REGISTRO */
 

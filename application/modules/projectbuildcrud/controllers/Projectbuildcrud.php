@@ -87,6 +87,8 @@ class ProjectbuildCrud extends MY_Controller {
     protected $_form_add_unset_fields = '';
     protected $_formAddConfigInputValidation = '';
     protected $_formAddConfigInputValidationAtributos = '';
+    protected $_formAddDadosFillable = '$_dadosFillable = $_dados;'
+            . '$_dados = [];' . PHP_EOL;
 // FORM EDIT
     protected $_formEditFields = '';
     protected $_form_edit_unset_fields = '';
@@ -2125,7 +2127,7 @@ class ProjectbuildCrud extends MY_Controller {
                                 endif;
                             endif;
 
-                            /* QUANTIDADE DE COLUNA DO INPUT FIELD */
+                            /* QUANTIDADE DE COLUNAS DO INPUT FIELD */
                             if (!empty($_param_formAddEditField['form_add_edit_field_column'])):
                                 if (strlen($this->_formAddEditConfigInputClassCSS) > 0):
                                     $this->_formAddEditConfigInputClassCSS .= ' col-sm-' . (($_param_formAddEditField['form_add_edit_field_column'] > 0) ? $_param_formAddEditField['form_add_edit_field_column'] : '12');
@@ -3064,6 +3066,15 @@ class ProjectbuildCrud extends MY_Controller {
 
                             endif;
 
+                            /**
+                             * DADOS FILLABLE
+                             */
+                            $this->_formAddDadosFillable .= 'if( !empty( $_dadosFillable["' . $_row['field_name'] . '"] ) ){' . PHP_EOL
+                                    . '     $_dados["' . $_row['field_name'] . '"] = $_dadosFillable["' . $_row['field_name'] . '"];' . PHP_EOL
+                                    . '}else{'
+                                    . '     $_dados["' . $_row['field_name'] . '"] = NULL;' . PHP_EOL
+                                    . '}' . PHP_EOL;
+
                         endif;
                         /* END CAMPOS QUE SERÃO MOSTRADOS NO FORM ADD/EDIT */
 
@@ -3610,6 +3621,8 @@ class ProjectbuildCrud extends MY_Controller {
             $this->_formAddConvertDadosToDatabase = '/* CONVERTE DADOS PARA GRAVAR NA TABELA */' . PHP_EOL . $this->_formAddConvertDadosToDatabase . PHP_EOL . '/* CONVERTE DADOS PARA GRAVAR NA TABELA */' . PHP_EOL;
         endif;
         $this->_dadosController = str_replace('{{form-add-convert-dados-to-database}}', $this->_formAddConvertDadosToDatabase, $this->_dadosController);
+
+        $this->_dadosController = str_replace('{{form-dados-fillable}}', $this->_formAddDadosFillable, $this->_dadosController);
 
         if ($this->_formEditConvertDadosToDatabase):
             $this->_formEditConvertDadosToDatabase = '/* CONVERTE DADOS PARA GRAVAR NA TABELA */' . PHP_EOL . $this->_formEditConvertDadosToDatabase . PHP_EOL . '/* CONVERTE DADOS PARA GRAVAR NA TABELA */' . PHP_EOL;

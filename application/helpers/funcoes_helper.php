@@ -1808,7 +1808,7 @@ function bz_delete_file($_file_name, $_file_path) {
 
     $_fileDelete = $_file_path . $_file_name;
 
-    if (!empty($_fileDelete) && file_exists($_fileDelete)) {
+    if (!empty($_file_name) && file_exists($_fileDelete)) {
         unlink($_fileDelete);
         return true;
     } else {
