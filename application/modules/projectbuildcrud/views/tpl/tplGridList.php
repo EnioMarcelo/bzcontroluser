@@ -159,17 +159,19 @@
                         <?php $_row['btn-action'] = ''; ?>
 
                         <?php $_c++; ?>
+                    
+                        <?php $_edit = site_url($this->router->fetch_class() . '/edit/' . $_row['{{primary_key_field}}'] . '?' . bz_app_parametros_url()); ?>
 
                         <?php
                             {{grid-list-on-record}}
                         ?>
 
-                        <tr id="<?= $_row['{{primary_key_field}}']; ?>" style="<?= $_style_tr; ?>" class="ClTableGridListTbodyTr <?= $_class_tr; ?>">
+                        <tr id="<?= $_row['{{primary_key_field}}']; ?>" style="<?= $_style_tr; ?>" class="ClTableGridListTbodyTr <?= $_class_tr; ?>" data-action="<?= $_edit; ?>">
                             <!-- MARCA REGISTRO PARA SER DELETADO -->
                             <td class="text-center" style='width:3%;'><input class="checkbox checkbox-unit flat-red text-center" type="checkbox" name="btn-delete[]" value="<?= $_row['{{primary_key_field}}']; ?>"></td>
                             <!-- END MARCA REGISTRO PARA SER DELETADO -->
 
-                            <td class='text-center'  ><?= $_c; ?></td>
+                            <td class='text-center'><?= $_c; ?></td>
 
                             <!-- CAMPOS DA TABLE -->
                             {{grid-list-fields-table}}
@@ -178,7 +180,6 @@
                             <!-- BTN ACTION'S -->
                             <td class="tdBtnAction">
                                 <!-- BTN EDITA REGISTRO -->
-    <?php $_edit = site_url($this->router->fetch_class() . '/edit/' . $_row['{{primary_key_field}}'] . '?' . bz_app_parametros_url()); ?>
                                 <a href="<?= $_edit; ?>" class="btn btn-xs btn-primary btn-show-modal-aguarde ">
                                     <span class="glyphicon glyphicon-edit j-tooltip" data-placement="bottom" data-toggle="tooltip" data-original-title="Editar"></span>
                                 </a>

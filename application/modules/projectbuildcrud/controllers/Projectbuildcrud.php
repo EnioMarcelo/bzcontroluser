@@ -1751,11 +1751,13 @@ class ProjectbuildCrud extends MY_Controller {
                                 endif;
 
                                 $this->_gridListFields .= $_row['field_name'] . ',';
-                                $this->_gridListHeaderTable .= '<th class="thCl' . ucfirst($_row['field_name']) . '" class="' . $_class . '" style="' . $_width_field . '">' . $_param_gridListField['grid_list_label'] . '</th>' . PHP_EOL;
+                                $this->_gridListHeaderTable .= '<th class="thCl' . ucfirst($_row['field_name']) . ' ' . $_class . '" style="' . $_width_field . '">' . $_param_gridListField['grid_list_label'] . '</th>' . PHP_EOL;
 
                                 /**
                                  * FORMATAÇÃO DOS CAMPOS DA GRIDLIST $_ROW[] CONFORME SELEÇÃO DO CAMPO SELECT grid_list_field_input_type
                                  */
+                                $_classBtnEdit = ' j-btn-edit btn-show-modal-aguarde mouse-cursor-pointer ';
+
                                 if (!empty($_param_gridListField['grid_list_field_input_type'])) {
 
                                     /* CAMPO SELECT MODAL IMAGEM grid_list_field_type_modal_image  */
@@ -1767,9 +1769,9 @@ class ProjectbuildCrud extends MY_Controller {
                                             $_folderUploadImagem = json_decode($_param_formAddEditField[$_row['field_name']]->param_formaddedit)->form_add_edit_field_upload_imagem_folder;
 
                                             if ($_param_gridListField['grid_list_field_type_modal_image'] == 'icon-link') {
-                                                $this->_gridListFieldsTable .= '<td class="tdCl' . ucfirst($_row['field_name']) . '" class="' . $_class . '" style="' . $_width_field . '"><?= mc_image_link_modal($_row["' . $_row['field_name'] . '"], "' . $_folderUploadImagem . '"); ?></td>' . PHP_EOL;
+                                                $this->_gridListFieldsTable .= '<td class="tdCl' . ucfirst($_row['field_name']) . ' ' . $_class . '" style="' . $_width_field . '"><?= mc_image_link_modal($_row["' . $_row['field_name'] . '"], "' . $_folderUploadImagem . '"); ?></td>' . PHP_EOL;
                                             } else {
-                                                $this->_gridListFieldsTable .= '<td class="tdCl' . ucfirst($_row['field_name']) . '" class="' . $_class . '" style="' . $_width_field . '"><?= mc_image_thumb_modal($_row["' . $_row['field_name'] . '"], "' . $_folderUploadImagem . '"); ?></td>' . PHP_EOL;
+                                                $this->_gridListFieldsTable .= '<td class="tdCl' . ucfirst($_row['field_name']) . ' ' . $_class . '" style="' . $_width_field . '"><?= mc_image_thumb_modal($_row["' . $_row['field_name'] . '"], "' . $_folderUploadImagem . '"); ?></td>' . PHP_EOL;
                                             }
                                         }
 
@@ -1780,72 +1782,80 @@ class ProjectbuildCrud extends MY_Controller {
 
                                         $_folderUploadAquivo = json_decode($_param_formAddEditField[$_row['field_name']]->param_formaddedit)->form_add_edit_field_upload_arquivo_folder;
 
-                                        $this->_gridListFieldsTable .= '<td class="tdCl' . ucfirst($_row['field_name']) . '" class="' . $_class . '" style="' . $_width_field . '"><?= mc_file_link_download($_row["' . $_row['field_name'] . '"],"' . $_folderUploadAquivo . '"); ?></td>' . PHP_EOL;
+                                        $this->_gridListFieldsTable .= '<td class="tdCl' . ucfirst($_row['field_name']) . ' ' . $_class . '" style="' . $_width_field . '"><?= mc_file_link_download($_row["' . $_row['field_name'] . '"],"' . $_folderUploadAquivo . '"); ?></td>' . PHP_EOL;
 
                                         /* END CAMPO SELECT MODAL ARQUIVO grid_list_field_type_modal_arquivo  */
                                         /**/
                                         /* CAMPO INPUT NUMBER DECIMAL grid_list_field_input_type  */
                                     } elseif ($_param_gridListField['grid_list_field_input_type'] == 'number-decimal') {
 
-                                        $this->_gridListFieldsTable .= '<td class="tdCl' . ucfirst($_row['field_name']) . '" class="' . $_class . '" style="' . $_width_field . '"><?= bz_converteMoedaBrasil($_row["' . $_row['field_name'] . '"]); ?></td>' . PHP_EOL;
+                                        $_class .= $_classBtnEdit;
+                                        $this->_gridListFieldsTable .= '<td class="tdCl' . ucfirst($_row['field_name']) . ' ' . $_class . '" style="' . $_width_field . '"><?= bz_converteMoedaBrasil($_row["' . $_row['field_name'] . '"]); ?></td>' . PHP_EOL;
 
                                         /* END CAMPO INPUT NUMBER DECIMAL grid_list_field_input_type */
                                         /**/
                                         /* CAMPO INPUT MOEDA grid_list_field_input_type  */
                                     } elseif ($_param_gridListField['grid_list_field_input_type'] == 'moeda') {
 
-                                        $this->_gridListFieldsTable .= '<td class="tdCl' . ucfirst($_row['field_name']) . '" class="' . $_class . '" style="' . $_width_field . '">R$ <?= bz_converteMoedaBrasil($_row["' . $_row['field_name'] . '"]); ?></td>' . PHP_EOL;
+                                        $_class .= $_classBtnEdit;
+                                        $this->_gridListFieldsTable .= '<td class="tdCl' . ucfirst($_row['field_name']) . ' ' . $_class . '" style="' . $_width_field . '">R$ <?= bz_converteMoedaBrasil($_row["' . $_row['field_name'] . '"]); ?></td>' . PHP_EOL;
 
                                         /* END CAMPO INPUT MOEDA grid_list_field_input_type */
                                         /**/
                                         /* CAMPO INPUT NUMBER INTENGER grid_list_field_input_type  */
                                     } elseif ($_param_gridListField['grid_list_field_input_type'] == 'number') {
 
-                                        $this->_gridListFieldsTable .= '<td class="tdCl' . ucfirst($_row['field_name']) . '" class="' . $_class . '" style="' . $_width_field . '"><?= number_format($_row["' . $_row['field_name'] . '"], 0, "", ""); ?></td>' . PHP_EOL;
+                                        $_class .= $_classBtnEdit;
+                                        $this->_gridListFieldsTable .= '<td class="tdCl' . ucfirst($_row['field_name']) . ' ' . $_class . '" style="' . $_width_field . '"><?= number_format($_row["' . $_row['field_name'] . '"], 0, "", ""); ?></td>' . PHP_EOL;
 
                                         /* END CAMPO INPUT NUMBER INTENGER grid_list_field_input_type */
                                         /**/
                                         /* CAMPO INPUT DATE grid_list_field_input_type  */
                                     } elseif ($_param_gridListField['grid_list_field_input_type'] == 'date') {
 
-                                        $this->_gridListFieldsTable .= '<td class="tdCl' . ucfirst($_row['field_name']) . '" class="' . $_class . '" style="' . $_width_field . '"><?= bz_formatdata($_row["' . $_row['field_name'] . '"]); ?></td>' . PHP_EOL;
+                                        $_class .= $_classBtnEdit;
+                                        $this->_gridListFieldsTable .= '<td class="tdCl' . ucfirst($_row['field_name']) . ' ' . $_class . '" style="' . $_width_field . '"><?= bz_formatdata($_row["' . $_row['field_name'] . '"]); ?></td>' . PHP_EOL;
 
                                         /* END CAMPO INPUT DATE grid_list_field_input_type */
                                         /**/
                                         /* CAMPO INPUT TIME grid_list_field_input_type  */
                                     } elseif ($_param_gridListField['grid_list_field_input_type'] == 'time') {
 
-                                        $this->_gridListFieldsTable .= '<td class="tdCl' . ucfirst($_row['field_name']) . '" class="' . $_class . '" style="' . $_width_field . '"><?= bz_formatdata($_row["' . $_row['field_name'] . '"], "H:i:s"); ?></td>' . PHP_EOL;
+                                        $_class .= $_classBtnEdit;
+                                        $this->_gridListFieldsTable .= '<td class="tdCl' . ucfirst($_row['field_name']) . ' ' . $_class . '" style="' . $_width_field . '"><?= bz_formatdata($_row["' . $_row['field_name'] . '"], "H:i:s"); ?></td>' . PHP_EOL;
 
                                         /* END CAMPO INPUT TIME grid_list_field_input_type */
                                         /**/
                                         /* CAMPO INPUT DATETIME grid_list_field_input_type  */
                                     } elseif ($_param_gridListField['grid_list_field_input_type'] == 'datetime') {
 
-                                        $this->_gridListFieldsTable .= '<td class="tdCl' . ucfirst($_row['field_name']) . '" class="' . $_class . '" style="' . $_width_field . '"><?= bz_formatdata($_row["' . $_row['field_name'] . '"], "d/m/Y H:i:s"); ?></td>' . PHP_EOL;
+                                        $_class .= $_classBtnEdit;
+                                        $this->_gridListFieldsTable .= '<td class="tdCl' . ucfirst($_row['field_name']) . ' ' . $_class . '" style="' . $_width_field . '"><?= bz_formatdata($_row["' . $_row['field_name'] . '"], "d/m/Y H:i:s"); ?></td>' . PHP_EOL;
 
                                         /* END CAMPO INPUT DATETIME grid_list_field_input_type */
                                         /**/
                                         /* CAMPO INPUT SELECT grid_list_field_input_type  */
                                     } elseif ($_param_gridListField['grid_list_field_input_type'] == 'select') {
 
+                                        $_class .= $_classBtnEdit;
                                         $_pkSelect = strtolower(base64_decode($_param_gridListField['grid_list_field_value_select']));
                                         $_pkSelect = substr($_pkSelect, 7, (strpos($_pkSelect, ',') - 7));
 
-                                        $this->_gridListFieldsTable .= '<td class="tdCl' . ucfirst($_row['field_name']) . '" class="' . $_class . '" style="' . $_width_field . '"><?=$this->db->query("' . base64_decode($_param_gridListField['grid_list_field_value_select']) . ' WHERE ' . $_pkSelect . ' = \"$_row[' . $_row['field_name'] . ']\"")->row()->' . $_row['field_name'] . ';?></td>' . PHP_EOL;
+                                        $this->_gridListFieldsTable .= '<td class="tdCl' . ucfirst($_row['field_name']) . ' ' . $_class . '" style="' . $_width_field . '"><?=$this->db->query("' . base64_decode($_param_gridListField['grid_list_field_value_select']) . ' WHERE ' . $_pkSelect . ' = \"$_row[' . $_row['field_name'] . ']\"")->row()->' . $_row['field_name'] . ';?></td>' . PHP_EOL;
 
                                         /* END CAMPO INPUT SELECT grid_list_field_input_type */
                                         /**/
                                     } else {
                                         /**/
-                                        $this->_gridListFieldsTable .= '<td class="tdCl' . ucfirst($_row['field_name']) . '" class="' . $_class . '" style="' . $_width_field . '"><?= $_row["' . $_row['field_name'] . '"]; ?></td>' . PHP_EOL;
+                                        $_class .= $_classBtnEdit;
+                                        $this->_gridListFieldsTable .= '<td class="tdCl' . ucfirst($_row['field_name']) . ' ' . $_class . '" style="' . $_width_field . '"><?= $_row["' . $_row['field_name'] . '"]; ?></td>' . PHP_EOL;
                                         /**/
                                     }
 
                                     /**/
                                 } else {
 
-                                    $this->_gridListFieldsTable .= '<td class="tdCl' . ucfirst($_row['field_name']) . '" class="' . $_class . '" style="' . $_width_field . '"><?= $_row["' . $_row['field_name'] . '"]; ?></td>' . PHP_EOL;
+                                    $this->_gridListFieldsTable .= '<td class="tdCl' . ucfirst($_row['field_name']) . ' ' . $_class . '" style="' . $_width_field . '"><?= $_row["' . $_row['field_name'] . '"]; ?></td>' . PHP_EOL;
 
                                     /**/
                                 }
@@ -1899,8 +1909,8 @@ class ProjectbuildCrud extends MY_Controller {
                                     endif;
                                 endif;
 
-                                $this->_gridListHeaderTableExport .= '<th class="thCl' . ucfirst($_row['field_name']) . '" class="' . $_class . '" style="' . $_width_field . '">' . $_param_gridListField['grid_list_label'] . '</th>' . PHP_EOL;
-                                $this->_gridListFieldsTableExport .= '<td class="tdCl' . ucfirst($_row['field_name']) . '" class="' . $_class . '" style="' . $_width_field . '"><?= $_row["' . $_row['field_name'] . '"]; ?></td>' . PHP_EOL;
+                                $this->_gridListHeaderTableExport .= '<th class="thCl' . ucfirst($_row['field_name']) . ' ' . $_class . '" style="' . $_width_field . '">' . $_param_gridListField['grid_list_label'] . '</th>' . PHP_EOL;
+                                $this->_gridListFieldsTableExport .= '<td class="tdCl' . ucfirst($_row['field_name']) . ' ' . $_class . '" style="' . $_width_field . '"><?= $_row["' . $_row['field_name'] . '"]; ?></td>' . PHP_EOL;
                             endif;
 
                         endif;

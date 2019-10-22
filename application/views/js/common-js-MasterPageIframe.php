@@ -604,6 +604,20 @@
     //END EXECUTA QUANDO TERMINAR DE CARREGAR A PÁGINA
 
 
+    //GRID LIST LINE CLICK EDIT
+    $(function () {
+        $(".j-btn-edit").on('click', function (e) {
+
+            e.preventDefault();
+            var _action = $(this).parent().data('action');
+
+            window.location.href = _action;
+
+        });
+    });
+    //END GRID LIST LINE CLICK EDIT
+
+
 </script>
 
 

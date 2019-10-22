@@ -871,12 +871,7 @@ function bz_delete_file_for_expired_lifetime($_source_dir, $_minutes = 1) {
     $CI->load->helper('directory');
 
     $_diretoryMap = directory_map(FCPATH . $_source_dir, 1);
-
-    foreach ($_diretoryMap as $key => $file):
-        if ($file == 'index.html') {
-            unset($_diretoryMap[$key]);
-        }
-    endforeach;
+    $_diretoryMap = array_diff($_diretoryMap, ['.', '..', 'index.html']);
 
     foreach ($_diretoryMap as $file):
 
@@ -1805,15 +1800,21 @@ function bz_upload_file($_file_name, $_upload_path, $_allowed_types, $_max_size 
 function bz_delete_file($_file_name, $_file_path) {
     $CI = & get_instance();
     $CI->load->helper("file");
+    $CI->load->helper("directory");
 
     $_fileDelete = $_file_path . $_file_name;
 
     if (!empty($_file_name) && file_exists($_fileDelete)) {
         unlink($_fileDelete);
-        return true;
-    } else {
-        return false;
     }
+
+    $_folderContent = directory_map($_file_path, 1);
+    $_folderContent = array_diff($_folderContent, ['.', '..', 'index.html']);
+    if (count($_folderContent) == 0) {
+        delete_files($_file_path, true, false, 1);
+    }
+
+    return;
 }
 
 /**
@@ -1838,9 +1839,6 @@ function bz_createFolder($p, $mask = 0777) {
             $paths = explode('/', $p);
             $_i = '';
             $_data = ___DEFAULT_FILE_INDEX_CONTENT___;
-
-
-
 
             foreach ($paths as $path):
                 $_i .= $path . '/';
