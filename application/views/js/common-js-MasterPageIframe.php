@@ -94,6 +94,8 @@
      * set_mensagem_sweetalert('TITULO', 'MENSAGEM', 'warning');
      *
      * set_mensagem_notfit('MENSAGEM', 'info');
+     * 
+     * set_mensagem_trigger_notifi('MENSAGEM', 'info' );
      *
      * set_mensagem('TITULO','MENSAGEM', 'fa-times', 'info');
      *
