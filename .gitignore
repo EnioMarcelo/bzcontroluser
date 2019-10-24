@@ -1,14 +1,32 @@
-.DS_Store
+!application/*/.htaccess
 
 application/cache/*
 !application/cache/index.html
 !application/cache/.htaccess
 
+
 application/logs/*
 !application/logs/index.html
 !application/logs/.htaccess
 
-!application/*/.htaccess
+
+application/modules/*
+!application/modules/apps
+!application/modules/auditoria
+!application/modules/changepass
+!application/modules/dashboard
+!application/modules/grupos
+!application/modules/login
+!application/modules/manutencao
+!application/modules/menu
+!application/modules/page404
+!application/modules/projectbuildcrud
+!application/modules/userprofile
+!application/modules/usuarios
+
+
+
+
 
 composer.lock
 
@@ -27,6 +45,17 @@ DER
 storage
 phpinfo.php
 
+
+# OS generated files #
+######################
+**/.DS_Store
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
 
 
 # IDE Files
