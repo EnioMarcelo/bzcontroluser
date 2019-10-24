@@ -176,6 +176,4 @@
 
 
 
-<?php
-$this->load->view($this->router->fetch_class() . '/js/ajax-js');
-?>
+<?php $this->load->view($this->router->fetch_class() . '/js/ajax-js');?>

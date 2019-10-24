@@ -85,6 +85,10 @@
      * $json['message']['toastr']['tipo'] = 'info';
      * $json['message']['toastr']['icon'] = 'fa-thumbs-up';
      *
+     * $json['message']['triggernotifi']['mensagem'] = 'POST OK';
+     * $json['message']['triggernotifi']['tipo'] = 'info';
+     * $json['message']['triggernotifi']['timer'] = 3200;
+     *
      * MENSAGENS E AVISOS SESSION TEMP
      *
      * set_mensagem_sweetalert('TITULO', 'MENSAGEM', 'warning');
@@ -97,7 +101,7 @@
      *
      */
     var response_ajax = new Array();
-        
+
     var j_ajax_post = function (_url, _data, _arr) {
 
         $.ajax({
@@ -130,7 +134,7 @@
                 //data
                 if (response.data) {
                     response_ajax[_arr] = response.data;
-                    
+
                 }
 
 
@@ -181,6 +185,33 @@
                 }//end message notfit
 
 
+                //message trigger notfiti
+                if (response.message && response.message.triggernotifi) {
+
+                    var _param = [];
+
+                    _param['color'] = response.message.triggernotifi.tipo;
+                    _param['title'] = response.message.triggernotifi.mensagem;
+                    _param['timer'] = response.message.triggernotifi.timer;
+
+
+                    if (_param['color'] == 'undefined' || _param['color'] == null || _param['color'] == '') {
+                        _param['color'] = 'info';
+                    }
+
+                    if (_param['title'] == 'undefined' || _param['title'] == null || _param['title'] == '') {
+                        _param['title'] = 'xxxx ---- Faltou informar o texto.';
+                    }
+
+                    if (_param['timer'] == 'undefined' || _param['timer'] == null || _param['timer'] == '') {
+                        _param['timer'] = 3200;
+                    }
+
+                    triggerNotify(_param);
+                }
+                //end message trigger notfiti
+
+
 
                 //message nice
                 if (response.message && response.message.nice) {
@@ -189,8 +220,6 @@
                     var title = response.message.nice.title;
                     var position = response.message.nice.position;
                     var duration = response.message.nice.duration;
-
-                    console.log(response.message.nice);
 
                     if (text == 'undefined' || text == null) {
                         text = 'Faltou informar o texto.';

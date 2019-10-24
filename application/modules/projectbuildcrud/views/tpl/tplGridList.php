@@ -197,7 +197,7 @@
 
                         </tr>
 
-<?php endforeach; ?>
+                <?php endforeach; ?>
 
 
                 </tbody>
@@ -212,11 +212,11 @@
             <!-- PAGINAÇÃO -->
             <div class="box-footer clearfix">
                 <div class="text-center paginacao-links pagination pagination-sm no-margin pull-right">
-<?= $_result['links_paginacao']; ?>
+                    <?= $_result['links_paginacao']; ?>
                 </div>
                 <div class="text-left paginacao-links pagination pagination-sm no-margin text-primary">
                     <div class="padding-top-5">
-<?= $_result['dados_paginacao']; ?>
+                        <?= $_result['dados_paginacao']; ?>
                     </div>
                 </div>
             </div>

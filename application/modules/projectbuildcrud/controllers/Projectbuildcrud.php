@@ -1569,12 +1569,14 @@ class ProjectbuildCrud extends MY_Controller {
                 mkdir($this->_directory . '/controllers', 0755);
                 mkdir($this->_directory . '/models', 0755);
                 mkdir($this->_directory . '/views', 0755);
+                mkdir($this->_directory . '/views/css', 0755);
                 mkdir($this->_directory . '/views/js', 0755);
 
                 write_file($this->_directory . '/index.html', $_dados_index_html);
                 write_file($this->_directory . '/controllers/index.html', $_dados_index_html);
                 write_file($this->_directory . '/models/index.html', $_dados_index_html);
                 write_file($this->_directory . '/views/index.html', $_dados_index_html);
+                write_file($this->_directory . '/views/css/index.html', $_dados_index_html);
                 write_file($this->_directory . '/views/js/index.html', $_dados_index_html);
 
 //                write_file($this->_directory . '/views/v' . $this->_app_nome . 'FormAdd.php', $this->_dadosAdd);
@@ -3769,8 +3771,6 @@ class ProjectbuildCrud extends MY_Controller {
         $this->_dadosView = str_replace('{{grid-list-fields-table}}', $this->_gridListFieldsTable, $this->_dadosView);
         $this->_dadosView = str_replace('{{grid-list-show-status}}', $this->_gridListStatusDados, $this->_dadosView);
 
-        $this->_dadosView = str_replace('{{grid-list-scripts-css}}', $this->_gridListCodeEditorCSS, $this->_dadosView);
-        $this->_dadosView = str_replace('{{grid-list-scripts-js}}', $this->_gridListCodeEditorJS, $this->_dadosView);
         $this->_dadosView = str_replace('{{grid-list-on-record}}', $this->_gridListCodeEditorOnRecord, $this->_dadosView);
 
 //INPUT SEARCH E BUTTONS DA PESQUISA
@@ -3785,11 +3785,57 @@ class ProjectbuildCrud extends MY_Controller {
 //BUTTON CLEAR
         $this->_dadosView = str_replace('{{grid-list-button-clear}}', $this->_gridListClearhButton, $this->_dadosView);
 
+        /* CSS */
+        $this->_dadosView = str_replace('{{grid-list-scripts-css}}', "<?php \$this->load->view(\$this->router->fetch_class() . '/css/css-gridlist');?>", $this->_dadosView);
+
+        /* SCRIPT JS */
+        $this->_dadosView = str_replace('{{grid-list-scripts-js}}', "<?php \$this->load->view(\$this->router->fetch_class() . '/js/js-gridlist');?>", $this->_dadosView);
+
+
         /* GERA O ARQUIVO VIEW gridlist DA APLICAÇÃO */
         write_file($this->_directory . '/views/v' . $this->_app_nome . '.php', $this->_dadosView);
         /* EDND GERA O ARQUIVO VIEW gridlist DA APLICAÇÃO */
 
         $this->_dadosView = '';
+
+
+        /**
+         * GERA O ARQUIVO CSS
+         */
+        $_dados = '';
+
+        if ($this->_gridListCodeEditorCSS) {
+            $_dados = fopen($this->_directory . '/views/css/css-gridlist.php', 'w');
+            fwrite($_dados, "<?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>" . PHP_EOL . PHP_EOL);
+            fwrite($_dados, $this->_gridListCodeEditorCSS);
+            fclose($_dados);
+        } else {
+            $_dados = fopen($this->_directory . '/views/css/css-gridlist.php', 'w');
+            fwrite($_dados, "<?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>" . PHP_EOL . PHP_EOL);
+            fclose($_dados);
+        }
+        /* END GERA O ARQUIVO CSS */
+
+
+        /**
+         * GERA O ARQUIVO JS
+         */
+        $_dados = '';
+
+        if ($this->_gridListCodeEditorJS) {
+            $_dados = fopen($this->_directory . '/views/js/js-gridlist.php', 'w');
+            fwrite($_dados, "<?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>" . PHP_EOL . PHP_EOL);
+            fwrite($_dados, $this->_gridListCodeEditorJS);
+            fclose($_dados);
+        } else {
+            $_dados = fopen($this->_directory . '/views/js/js-gridlist.php', 'w');
+            fwrite($_dados, "<?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>" . PHP_EOL . PHP_EOL);
+            fclose($_dados);
+        }
+        /* END GERA O ARQUIVO JS */
+
+
+        /**/
     }
 
     /* END private function ger_gridList() */
@@ -3829,16 +3875,83 @@ class ProjectbuildCrud extends MY_Controller {
 
         $this->_dadosFormAdd = str_replace('{{form-addedit-input-form-open}}', $this->_formAddEditConfigFormOpen, $this->_dadosFormAdd);
         $this->_dadosFormAdd = str_replace('{{form-add-input-fields}}', $this->_formAddFields, $this->_dadosFormAdd);
-        $this->_dadosFormAdd = str_replace('{{form-add-scripts-js-mask}}', $this->_formAddEditConfigInputMask, $this->_dadosFormAdd);
 
-        $this->_dadosFormAdd = str_replace('{{form-add-scripts-css}}', $this->_formAddCodeEditorCSS, $this->_dadosFormAdd);
-        $this->_dadosFormAdd = str_replace('{{form-add-scripts-js}}', $this->_formAddCodeEditorJS, $this->_dadosFormAdd);
+
+        /* CSS */
+        $this->_dadosFormAdd = str_replace('{{form-add-scripts-css}}', "<?php \$this->load->view(\$this->router->fetch_class() . '/css/css-formAdd');?>", $this->_dadosFormAdd);
+
+        /* SCRIPT JS */
+        $this->_dadosFormAdd = str_replace('{{form-add-scripts-js}}', "<?php \$this->load->view(\$this->router->fetch_class() . '/js/js-formAdd');?>", $this->_dadosFormAdd);
+
+        /* SCRIPT JQUERY MASK */
+        $this->_dadosFormAdd = str_replace('{{form-add-scripts-js-mask}}', "<?php \$this->load->view(\$this->router->fetch_class() . '/js/js-mask-formAdd');?>", $this->_dadosFormAdd);
+
+
 
         /* GERA O ARQUIVO VIEW formadd DA APLICAÇÃO */
         write_file($this->_directory . '/views/v' . $this->_app_nome . 'FormAdd.php', $this->_dadosFormAdd);
         /* END GERA O ARQUIVO VIEW formadd DA APLICAÇÃO */
 
+
         $this->_dadosFormAdd = '';
+
+
+
+        /**
+         * GERA O ARQUIVO CSS
+         */
+        $_dados = '';
+
+        if ($this->_formAddCodeEditorCSS) {
+            $_dados = fopen($this->_directory . '/views/css/css-formAdd.php', 'w');
+            fwrite($_dados, "<?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>" . PHP_EOL . PHP_EOL);
+            fwrite($_dados, $this->_formAddCodeEditorCSS);
+            fclose($_dados);
+        } else {
+            $_dados = fopen($this->_directory . '/views/css/css-formAdd.php', 'w');
+            fwrite($_dados, "<?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>" . PHP_EOL . PHP_EOL);
+            fclose($_dados);
+        }
+        /* END GERA O ARQUIVO CSS */
+
+
+        /**
+         * GERA O ARQUIVO JS
+         */
+        $_dados = '';
+
+        if ($this->_formAddCodeEditorJS) {
+            $_dados = fopen($this->_directory . '/views/js/js-formAdd.php', 'w');
+            fwrite($_dados, "<?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>" . PHP_EOL . PHP_EOL);
+            fwrite($_dados, $this->_formAddCodeEditorJS);
+            fclose($_dados);
+        } else {
+            $_dados = fopen($this->_directory . '/views/js/js-formAdd.php', 'w');
+            fwrite($_dados, "<?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>" . PHP_EOL . PHP_EOL);
+            fclose($_dados);
+        }
+        /* END GERA O ARQUIVO JS */
+
+
+        /**
+         * GERA O ARQUIVO JS JQUERY MASK
+         */
+        $_dados = '';
+
+        if ($this->_formAddEditConfigInputMask) {
+            $_dados = fopen($this->_directory . '/views/js/js-mask-formAdd.php', 'w');
+            fwrite($_dados, "<?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>" . PHP_EOL . PHP_EOL);
+            fwrite($_dados, $this->_formAddEditConfigInputMask);
+            fclose($_dados);
+        } else {
+            $_dados = fopen($this->_directory . '/views/js/js-mask-formAdd.php', 'w');
+            fwrite($_dados, "<?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>" . PHP_EOL . PHP_EOL);
+            fclose($_dados);
+        }
+        /* END GERA O ARQUIVO JS JQUERY MASK */
+
+
+        /**/
     }
 
     /* END private function ger_formAdd() */
@@ -3878,14 +3991,82 @@ class ProjectbuildCrud extends MY_Controller {
 
         $this->_dadosFormEdit = str_replace('{{form-edit-input-fields}}', $this->_formEditFields, $this->_dadosFormEdit);
 
-        $this->_dadosFormEdit = str_replace('{{form-edit-scripts-css}}', $this->_formEditCodeEditorCSS, $this->_dadosFormEdit);
-        $this->_dadosFormEdit = str_replace('{{form-edit-scripts-js}}', $this->_formEditCodeEditorJS, $this->_dadosFormEdit);
-        $this->_dadosFormEdit = str_replace('{{form-edit-scripts-js-mask}}', $this->_formAddEditConfigInputMask, $this->_dadosFormEdit);
-
+//        $this->_dadosFormEdit = str_replace('{{form-edit-scripts-css}}', $this->_formEditCodeEditorCSS, $this->_dadosFormEdit);
+//        $this->_dadosFormEdit = str_replace('{{form-edit-scripts-js}}', $this->_formEditCodeEditorJS, $this->_dadosFormEdit);
 //        $this->_dadosFormEdit = str_replace('{{form-edit-scripts-js-mask}}', $this->_formAddEditConfigInputMask, $this->_dadosFormEdit);
-        //
-        //        $this->_dadosFormEdit = str_replace('{{form-edit-scripts-css}}', $this->_formAddCodeEditorCSS, $this->_dadosFormEdit);
-        //        $this->_dadosFormEdit = str_replace('{{form-edit-scripts-js}}', $this->_formAddCodeEditorJS, $this->_dadosFormEdit);
+
+
+
+        /* CSS */
+        $this->_dadosFormEdit = str_replace('{{form-edit-scripts-css}}', "<?php \$this->load->view(\$this->router->fetch_class() . '/css/css-formEdit');?>", $this->_dadosFormEdit);
+
+        /* SCRIPT JS */
+        $this->_dadosFormEdit = str_replace('{{form-edit-scripts-js}}', "<?php \$this->load->view(\$this->router->fetch_class() . '/js/js-formEdit');?>", $this->_dadosFormEdit);
+
+        /* SCRIPT JQUERY MASK */
+        $this->_dadosFormEdit = str_replace('{{form-edit-scripts-js-mask}}', "<?php \$this->load->view(\$this->router->fetch_class() . '/js/js-mask-formEdit');?>", $this->_dadosFormEdit);
+
+
+
+
+        /**
+         * GERA O ARQUIVO CSS
+         */
+        $_dados = '';
+
+        if ($this->_formEditCodeEditorCSS) {
+            $_dados = fopen($this->_directory . '/views/css/css-formEdit.php', 'w');
+            fwrite($_dados, "<?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>" . PHP_EOL . PHP_EOL);
+            fwrite($_dados, $this->_formEditCodeEditorCSS);
+            fclose($_dados);
+        } else {
+            $_dados = fopen($this->_directory . '/views/css/css-formEdit.php', 'w');
+            fwrite($_dados, "<?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>" . PHP_EOL . PHP_EOL);
+            fclose($_dados);
+        }
+        /* END GERA O ARQUIVO CSS */
+
+
+        /**
+         * GERA O ARQUIVO JS
+         */
+        $_dados = '';
+
+        if ($this->_formEditCodeEditorJS) {
+            $_dados = fopen($this->_directory . '/views/js/js-formEdit.php', 'w');
+            fwrite($_dados, "<?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>" . PHP_EOL . PHP_EOL);
+            fwrite($_dados, $this->_formEditCodeEditorJS);
+            fclose($_dados);
+        } else {
+            $_dados = fopen($this->_directory . '/views/js/js-formEdit.php', 'w');
+            fwrite($_dados, "<?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>" . PHP_EOL . PHP_EOL);
+            fclose($_dados);
+        }
+        /* END GERA O ARQUIVO JS */
+
+
+        /**
+         * GERA O ARQUIVO JS JQUERY MASK
+         */
+        $_dados = '';
+
+        if ($this->_formAddEditConfigInputMask) {
+            $_dados = fopen($this->_directory . '/views/js/js-mask-formEdit.php', 'w');
+            fwrite($_dados, "<?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>" . PHP_EOL . PHP_EOL);
+            fwrite($_dados, $this->_formAddEditConfigInputMask);
+            fclose($_dados);
+        } else {
+            $_dados = fopen($this->_directory . '/views/js/js-mask-formEdit.php', 'w');
+            fwrite($_dados, "<?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>" . PHP_EOL . PHP_EOL);
+            fclose($_dados);
+        }
+        /* END GERA O ARQUIVO JS JQUERY MASK */
+
+
+        /**/
+
+
+
 
         /* GERA O ARQUIVO VIEW formedit DA APLICAÇÃO */
         write_file($this->_directory . '/views/v' . $this->_app_nome . 'FormEdit.php', $this->_dadosFormEdit);
