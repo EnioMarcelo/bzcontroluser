@@ -38,227 +38,222 @@
         $('#modal-aguarde').modal('show');
     }
 
-
     /**
-     * AJAX FORM SUBMIT POST
+     * 
+     * FUNÇÃO QUE DISPARA UM AJAX POST
+     * 
+     * @param {type} _url
+     * @param {type} _data
+     * @param {type} _arr
+     * @returns {undefined}
+     * 
+     * 
+     * 
+     * Exemplos de Uso:
+     *
+     * DENTRO DE UMA FUNCTION NO CONTROLLER
+     *
+     * REDIRECIONA TELA
+     * $json['redirect'] = site_url('dashboard') ;
+     *
+     * RECARREGA TELA
+     * $json['reload'] = true ;
+     *
+     * RESET DE TODOS OS CAMPOS DO FORM
+     * $json['reset'] = true ;
+     *
+     * RETORNA OS DADOS DO POST OU QUALQUER OUTRO DADO INFORMADO
+     * $json['data'] = $_POST;
+     *
+     * MENSAGENS E AVISOS AJAX
+     *
+     * $json['message']['swal']['titulo'] = 'ATENÇÃO !!!';
+     * $json['message']['swal']['mensagem'] = 'POST OK';
+     * $json['message']['swal']['tipo'] = 'info';
+     *
+     * $json['message']['notfit']['mensagem'] = 'POST OK';
+     * $json['message']['notfit']['tipo'] = 'info';
+     * 
+     * $json['message']['nice']['title'] = 'Titulo';
+     * $json['message']['nice']['text'] = 'POST OK';
+     * $json['message']['nice']['tipo'] = 'info';
+     * $json['message']['nice']['position'] = 'br';
+     * $json['message']['nice']['duration'] = 3200;
+     *
+     * $json['message']['toastr']['titulo'] = 'ATENÇÃO !!!';
+     * $json['message']['toastr']['mensagem'] = 'POST OK';
+     * $json['message']['toastr']['tipo'] = 'info';
+     * $json['message']['toastr']['icon'] = 'fa-thumbs-up';
+     *
+     * MENSAGENS E AVISOS SESSION TEMP
+     *
+     * set_mensagem_sweetalert('TITULO', 'MENSAGEM', 'warning');
+     *
+     * set_mensagem_notfit('MENSAGEM', 'info');
+     *
+     * set_mensagem('TITULO','MENSAGEM', 'fa-times', 'info');
+     *
+     * echo json_encode( $json );
+     *
      */
-    $(function () {
+    var response_ajax = new Array();
+        
+    var j_ajax_post = function (_url, _data, _arr) {
 
-        /**
-         * Exemplos de Uso:
-         *
-         * DENTRO DE UMA FUNCTION NO CONTROLLER
-         *
-         * REDIRECIONA TELA
-         * $json['redirect'] = site_url('dashboard') ;
-         *
-         * RECARREGA TELA
-         * $json['reload'] = true ;
-         *
-         * RESET DE TODOS OS CAMPOS DO FORM
-         * $json['reset'] = true ;
-         *
-         * RETORNA OS DADOS DO POST OU QUALQUER OUTRO DADO INFORMADO
-         * $json['data'] = $_POST;
-         *
-         * MENSAGENS E AVISOS AJAX
-         *
-         * $json['message']['swal']['titulo'] = 'ATENÇÃO !!!';
-         * $json['message']['swal']['mensagem'] = 'POST OK';
-         * $json['message']['swal']['tipo'] = 'info';
-         *
-         * $json['message']['notfit']['mensagem'] = 'POST OK';
-         * $json['message']['notfit']['tipo'] = 'info';
-         *
-         * $json['message']['toastr']['titulo'] = 'ATENÇÃO !!!';
-         * $json['message']['toastr']['mensagem'] = 'POST OK';
-         * $json['message']['toastr']['tipo'] = 'info';
-         * $json['message']['toastr']['icon'] = 'fa-thumbs-up';
-         *
-         * MENSAGENS E AVISOS SESSION TEMP
-         *
-         * set_mensagem_sweetalert('TITULO', 'MENSAGEM', 'warning');
-         *
-         * set_mensagem_notfit('MENSAGEM', 'info');
-         *
-         * set_mensagem('TITULO','MENSAGEM', 'fa-times', 'info');
-         *
-         * echo json_encode( $json );
-         *
-         */
+        $.ajax({
+            url: _url,
+            async: false,
+            type: "POST",
+            dataType: "json",
+            data: {'<?php echo $this->security->get_csrf_token_name(); ?>': '<?php echo $this->security->get_csrf_hash(); ?>', 'data': _data},
+            beforeSend: function () {
+                modalAguardeOn();
+            },
+            success: function (response) {
 
-        $(".j_btn_ajax_form").click(function (e) {
-            e.preventDefault();
-            var _form = "#" + $(this).data("formId");
-            var _url = $(this).data("formAction");
-            var _data = $(form).serializeArray();
-
-            console.clear();
-            console.log(_form);
-            console.log(_url);
-            console.log(_data);
-
-            $.ajax({
-                url: _url,
-                type: "POST",
-                dataType: "json",
-                data: _data,
-                beforeSend: function () {
-                    modalAguardeOn();
-                },
-                success: function (response) {
-
-                    //redirect
-                    if (response.redirect) {
-                        window.location.href = response.redirect;
-                    }
-
-                    //reload
-                    if (response.reload) {
-                        window.location.reload();
-                    }
-
-                    //reset
-                    if (response.reset) {
-                        form[0].reset();
-                    }
-
-                    //debug
-                    if (response.debug) {
-                        console.log('Debug:');
-                        console.log(response.debug);
-                    }
-
-                    //data
-                    if (response.data) {
-                        return esponse.data;
-                    }
-
-
-                    //message toastr
-                    if (response.message && response.message.toastr) {
-                        var icon = '';
-                        if (response.message.toastr.icon) {
-                            icon = response.message.toastr.icon;
-                        } else {
-                            icon = 'fa-info-circle';
-                        }
-
-                        if (icon.length) {
-                        } else {
-                            icon = 'fa-circle';
-                        }
-                        var msg = '<div class="alert alert-' + response.message.toastr.tipo + '" role="alert">' +
-                                '<button type="button" class="close" data-dismiss="alert" aria-label="Close">' +
-                                '<span aria-hidden="true">&times;</span>' +
-                                '</button>' +
-                                '<h4 class="alert-heading"><i class = "margin-right-5 fa ' + icon + '"></i>' + response.message.toastr.titulo + '</h4>' + response.message.toastr.mensagem + '<br /></div>';
-                        $('.message-toastr').html(msg);
-                        setTimeout(function () {
-                            $('.alert').fadeOut(1000);
-                        }, 3000);
-                    }//end message toastr
-
-
-
-                    //message swal
-                    if (response.message && response.message.swal) {
-                        swal(response.message.swal.titulo, response.message.swal.mensagem, response.message.swal.tipo);
-                    }//end message swal
-
-
-
-                    //message notfit
-                    if (response.message && response.message.notfit) {
-                        if (response.message.notfit.tipo == 'warning') {
-                            notfit_msg_warning(response.message.notfit.mensagem);
-                        } else if (response.message.notfit.tipo == 'error') {
-                            notfit_msg_error(response.message.notfit.mensagem);
-                        } else if (response.message.notfit.tipo == 'success') {
-                            notfit_msg_success(response.message.notfit.mensagem);
-                        } else {
-                            notfit_msg_info(response.message.notfit.mensagem);
-                        }
-                    }//end message notfit
-
-
-
-                    //message nice
-                    if (response.message && response.message.nice) {
-                        var type = response.message.nice.type;
-                        var text = response.message.nice.text;
-                        var title = response.message.nice.title;
-                        var position = response.message.nice.position;
-                        var duration = response.message.nice.duration;
-
-                        console.log(response.message.nice);
-
-                        if (text == 'undefined' || text == null) {
-                            text = 'Faltou informar o texto.';
-                        }
-
-                        if (title == 'undefined' || title == null) {
-                            title = '';
-                        }
-
-
-                        if (position == 'undefined' || position == null) {
-                            position = 'br';
-                        }
-
-                        if (duration == 'undefined' || duration == null) {
-                            duration = '3200';
-                        }
-
-                        if (type == 'success') {
-                            $.HP.notice({
-                                message: text,
-                                title: title,
-                                location: position,
-                                duration: duration
-                            });
-                        } else if (type == 'error') {
-                            $.HP.error({
-                                message: text,
-                                title: title,
-                                location: position,
-                                duration: duration
-                            });
-                        } else if (type == 'warning') {
-                            $.HP.warning({
-                                message: text,
-                                title: title,
-                                location: position,
-                                duration: duration
-                            });
-                        } else {
-                            $.HP({
-                                message: text,
-                                title: title,
-                                location: position,
-                                duration: duration
-                            });
-                        }
-
-
-                        return
-
-                    }//end message nice
-
-
-
-
-                },
-                complete: function () {
-                    modalAguardeOff();
-                },
-                error: function () {
-                    var message = "Desculpe mas não foi possível processar a requisição. Avise o responsável pelo sistema !";
-                    swal('ATENÇÃO !!!', message, 'error');
+                //redirect
+                if (response.redirect) {
+                    window.location.href = response.redirect;
                 }
-            });
+
+                //reload
+                if (response.reload) {
+                    window.location.reload();
+                }
+
+                //debug
+                if (response.debug) {
+                    console.log('Debug:');
+                    console.log(response.debug);
+                }
+
+                //data
+                if (response.data) {
+                    response_ajax[_arr] = response.data;
+                    
+                }
+
+
+                //message toastr
+                if (response.message && response.message.toastr) {
+                    var icon = '';
+                    if (response.message.toastr.icon) {
+                        icon = response.message.toastr.icon;
+                    } else {
+                        icon = 'fa-info-circle';
+                    }
+
+                    if (icon.length) {
+                    } else {
+                        icon = 'fa-circle';
+                    }
+                    var msg = '<div class="alert alert-' + response.message.toastr.tipo + '" role="alert">' +
+                            '<button type="button" class="close" data-dismiss="alert" aria-label="Close">' +
+                            '<span aria-hidden="true">&times;</span>' +
+                            '</button>' +
+                            '<h4 class="alert-heading"><i class = "margin-right-5 fa ' + icon + '"></i>' + response.message.toastr.titulo + '</h4>' + response.message.toastr.mensagem + '<br /></div>';
+                    $('.message-toastr').html(msg);
+                    setTimeout(function () {
+                        $('.alert').fadeOut(1000);
+                    }, 3000);
+                }//end message toastr
+
+
+
+                //message swal
+                if (response.message && response.message.swal) {
+                    swal(response.message.swal.titulo, response.message.swal.mensagem, response.message.swal.tipo);
+                }//end message swal
+
+
+
+                //message notfit
+                if (response.message && response.message.notfit) {
+                    if (response.message.notfit.tipo == 'warning') {
+                        notfit_msg_warning(response.message.notfit.mensagem);
+                    } else if (response.message.notfit.tipo == 'error') {
+                        notfit_msg_error(response.message.notfit.mensagem);
+                    } else if (response.message.notfit.tipo == 'success') {
+                        notfit_msg_success(response.message.notfit.mensagem);
+                    } else {
+                        notfit_msg_info(response.message.notfit.mensagem);
+                    }
+                }//end message notfit
+
+
+
+                //message nice
+                if (response.message && response.message.nice) {
+                    var type = response.message.nice.type;
+                    var text = response.message.nice.text;
+                    var title = response.message.nice.title;
+                    var position = response.message.nice.position;
+                    var duration = response.message.nice.duration;
+
+                    console.log(response.message.nice);
+
+                    if (text == 'undefined' || text == null) {
+                        text = 'Faltou informar o texto.';
+                    }
+
+                    if (title == 'undefined' || title == null) {
+                        title = '';
+                    }
+
+                    if (position == 'undefined' || position == null) {
+                        position = 'br';
+                    }
+
+                    if (duration == 'undefined' || duration == null) {
+                        duration = '3200';
+                    }
+
+                    if (type == 'success') {
+                        $.HP.notice({
+                            message: text,
+                            title: title,
+                            location: position,
+                            duration: duration
+                        });
+                    } else if (type == 'error') {
+                        $.HP.error({
+                            message: text,
+                            title: title,
+                            location: position,
+                            duration: duration
+                        });
+                    } else if (type == 'warning') {
+                        $.HP.warning({
+                            message: text,
+                            title: title,
+                            location: position,
+                            duration: duration
+                        });
+                    } else {
+                        $.HP({
+                            message: text,
+                            title: title,
+                            location: position,
+                            duration: duration
+                        });
+                    }
+
+                    return;
+
+                }//end message nice
+
+            },
+            complete: function () {
+                modalAguardeOff();
+            },
+            error: function () {
+                var message = "Desculpe mas não foi possível processar a requisição. Avise o responsável pelo sistema !";
+                swal('ATENÇÃO !!!', message, 'error');
+            }
         });
-    });
+    }
+
+
     /**
      * LIGA O MODAL DE AGUARDE DEPOIS QUE CARREGA TODO O CONTEÚDO
      */

@@ -98,7 +98,7 @@
 
 
 <?php
-$this->load->view($this->router->fetch_class() . '/ajax/ajax-js');
+$this->load->view($this->router->fetch_class() . '/js/ajax-js');
 ?>
 
 

@@ -1569,13 +1569,13 @@ class ProjectbuildCrud extends MY_Controller {
                 mkdir($this->_directory . '/controllers', 0755);
                 mkdir($this->_directory . '/models', 0755);
                 mkdir($this->_directory . '/views', 0755);
-                mkdir($this->_directory . '/views/ajax', 0755);
+                mkdir($this->_directory . '/views/js', 0755);
 
                 write_file($this->_directory . '/index.html', $_dados_index_html);
                 write_file($this->_directory . '/controllers/index.html', $_dados_index_html);
                 write_file($this->_directory . '/models/index.html', $_dados_index_html);
                 write_file($this->_directory . '/views/index.html', $_dados_index_html);
-                write_file($this->_directory . '/views/ajax/index.html', $_dados_index_html);
+                write_file($this->_directory . '/views/js/index.html', $_dados_index_html);
 
 //                write_file($this->_directory . '/views/v' . $this->_app_nome . 'FormAdd.php', $this->_dadosAdd);
             //                    write_file($this->_directory . '/views/v' . $this->_app_nome . 'FormEdit.php', $this->_dadosEdit);
