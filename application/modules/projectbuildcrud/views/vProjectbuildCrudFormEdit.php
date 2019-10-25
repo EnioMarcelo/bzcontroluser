@@ -1095,7 +1095,7 @@
                     }
 
                     var _xmetodo = _metodophp.replace(/[^A-Za-z0-9_]+/g, '');
-                    _url = _url + '/fcn_' + _xmetodo + '/metodo-php';
+                    _url = _url + '/' + _xmetodo + '/metodo-php';
 
                     window.location = _url;
 
@@ -1146,7 +1146,7 @@
                     }
 
                     var _xmodel = _modelphp.replace(/[^A-Za-z0-9_]+/g, '');
-                    _url = _url + '/fcn_' + _xmodel + '/model-php';
+                    _url = _url + '/model_' + _xmodel + '/model-php';
                     window.location = _url;
 
                 });

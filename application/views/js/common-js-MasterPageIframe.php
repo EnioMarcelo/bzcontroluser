@@ -104,7 +104,7 @@
      */
     var response_ajax = new Array();
 
-    var j_ajax_post = function (_url, _data, _arr) {
+    var mc_ajax_post = function (_url, _data, _arr) {
 
         $.ajax({
             url: _url,

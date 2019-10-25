@@ -101,7 +101,7 @@
                                 'protected' => 'protected'
                             ];
 
-                            echo form_dropdown('code_type_method', $_code_type_method_options, $_parametros['code_type_method'], 'class="" style=""');
+                            echo form_dropdown('code_type_method', $_code_type_method_options, $_parametros['code_type_method'], 'id="code_type_method" class="" style=""');
                             ?>
                         </div>
                     </div>
@@ -111,7 +111,7 @@
                 <div class="col-md-3">
                     <div class="form-group">
                         <label class="" style="">
-                            <div class="icheckbox_flat-green" aria-checked="false" aria-disabled="false" style="position: relative;"><input <?= $_parametros['code_access_ajax_only']; ?> type="checkbox" name="code_access_ajax_only" class="flat-green" style="position: absolute; opacity: 0;" kl_vkbd_parsed="true"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div>
+                            <input <?= $_parametros['code_access_ajax_only']; ?> type="checkbox" id="code_access_ajax_only" name="code_access_ajax_only" class="flat-green" style="position: absolute; opacity: 0;" kl_vkbd_parsed="true">
                         </label>
                         <label>
                             &nbsp;Acesso somente por AJAX ?
@@ -182,6 +182,33 @@
                     });
 
         });//END ("#btn-del-code-editor")
+
+
+        /**
+         * BTN ON CHANGE EXECUTE BTN code_type_method TO SAVE
+         */
+        $('#code_type_method').on('change', function (e) {
+            e.preventDefault();
+            $('#btn-save-code-editor').trigger("click");
+        });
+        /* END BTN ON CHANGE EXECUTE BTN code_type_method TO SAVE */
+
+        /**
+         * BTN ON CHANGE EXECUTE BTN code_access_ajax_only TO SAVE
+         */
+        $('#code_access_ajax_only').on('ifChecked', function (e) {
+            e.preventDefault();
+            $(this).filter(':radio').iCheck('check');
+            $('#btn-save-code-editor').trigger("click");
+
+        });
+
+        $('#code_access_ajax_only').on('ifUnchecked', function (e) {
+            e.preventDefault();
+            $(this).filter(':radio').iCheck('uncheck');
+            $('#btn-save-code-editor').trigger("click");
+        });
+        /* END BTN ON CHANGE EXECUTE BTN code_access_ajax_only TO SAVE */
 
 
     });//END function
