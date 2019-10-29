@@ -86,7 +86,7 @@
           /* END DADOS FILLABLE */
 
           /* GRAVA REGISTRO */
-          $result = $this->create->ExecCreate($this->table_formaddedit_name, $_dados);
+          $result = $this->create->exec($this->table_formaddedit_name, $_dados);
           if ($this->db->trans_status() === FALSE):
             $this->db->trans_rollback();
             echo 'Erro ao inserir Dados... SQL: ' . $this->db->set($dados)->get_compiled_insert($this->table_formaddedit_name);
@@ -167,7 +167,7 @@
          /* UPDATE REGISTRO */
 
          $_where_update = {{form-edit-where-update-fields}}
-         $_result_update = $this->update->ExecUpdate($this->table_formaddedit_name, $_dados, $_where_update);
+         $_result_update = $this->update->exec($this->table_formaddedit_name, $_dados, $_where_update);
 
          if ($this->db->trans_status() === FALSE):
           $this->db->trans_rollback();
@@ -207,7 +207,7 @@ if ($_id):
 
   /* GET DADOS */
   $_where = 'WHERE {{primary_key_field}} = "' . $_id . '" LIMIT 1';
-  $_result = $this->read->ExecRead($this->table_formaddedit_name, $_where);
+  $_result = $this->read->exec($this->table_formaddedit_name, $_where);
 
   if ($_result->result()):
     $this->dados['dados'] = $_result->row();

@@ -14,20 +14,20 @@ class Dashboard extends MY_Controller {
 
     function __construct() {
         parent::__construct();
-
+    
         /**
          * CARREGA OS MENUS QUE O USUÁRIO LOGADO TEM ACESSO
          */
         $_acl_user = $this->user_acl_groups->_get_acl_user_by_email($this->session->userdata('user_login')['user_email']);
         $_apps_user = array_unique(array_column($_acl_user, 'app_name'));
-        $_r = $this->read->ExecRead('sec_menus', 'WHERE (parent_id IS NULL OR parent_id = 0) AND ativo = "Y" ORDER BY nome_menu');
+        $_r = $this->read->exec('sec_menus', 'WHERE (parent_id IS NULL OR parent_id = 0) AND ativo = "Y" ORDER BY nome_menu');
         $_s = [];
         $_m = [];
         $_menu = [];
 
         foreach ($_r->result_array() as $key => $menu):
 
-            $_s = $this->read->ExecRead('sec_menus', 'WHERE (parent_id > 0) AND ativo = "Y" AND parent_id = ' . $menu['id'] . ' AND app_name IN ("' . implode('","', $_apps_user) . '") ORDER BY nome_menu')->result_array();
+            $_s = $this->read->exec('sec_menus', 'WHERE (parent_id > 0) AND ativo = "Y" AND parent_id = ' . $menu['id'] . ' AND app_name IN ("' . implode('","', $_apps_user) . '") ORDER BY nome_menu')->result_array();
             if ($_s) {
                 $_m[$menu['nome_menu']][] = $_s;
             }

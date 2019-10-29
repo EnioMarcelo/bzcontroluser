@@ -13,7 +13,13 @@ class Create extends MY_model {
         parent::__construct();
     }
 
-    public function ExecCreate($table_name, array $dados) {
+    /**
+     * 
+     * @param type $table_name
+     * @param array $dados
+     * @return boolean
+     */
+    public function exec($table_name, array $dados) {
 
         if ($table_name != NULL) :
             $this->default_fields($table_name);

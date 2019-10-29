@@ -68,7 +68,7 @@ function mc_file_link_download($_file_name, $_file_folder = NULL, $_type = 'sing
 
     if ($_type == 'single') {
 
-        $_url_file = base_url(___CONF_UPLOAD_DIR___ . ___CONF_UPLOAD_FILE_DIR___ . $_file_folder) . $_file_name;
+        $_url_file = base_url(___CONF_UPLOAD_DIR___ . ___CONF_UPLOAD_FILE_DIR___ . ($_file_folder ? $_file_folder . DIRECTORY_SEPARATOR : $_file_folder)) . $_file_name;
 
         $_file = '<div class="btn-copy-to-clipboard btn-file-link-lightbox" ><i class="fa fa-fw fa-camera"></i> </a></div>';
 
@@ -96,11 +96,11 @@ function mc_image_thumb_modal($_image_name, $_image_folder = NULL, $_type = 'sin
 
     if ($_type == 'single') {
 
-        $_url_imagem = base_url(___CONF_UPLOAD_DIR___ . ___CONF_UPLOAD_IMAGE_DIR___ . $_image_folder) . $_image_name;
+        $_url_imagem = base_url(___CONF_UPLOAD_DIR___ . ___CONF_UPLOAD_IMAGE_DIR___ . $_image_folder) . ($_image_folder ? DIRECTORY_SEPARATOR . $_image_name : $_image_name);
         $_imagem = '<a class="btn-image-thumb-lightbox" href="' . $_url_imagem . '" data-lightbox="' . $_image_name . '"><img class="img-responsive" src="' . $_url_imagem . '"></a>';
 
         $_btn_view_copy_image = '<div class="display-flex display-flex-wrap display-flex-justify-content-right">'
-                . '     <div class="margin-bottom-0"><div class="btn-image-link-lightbox j-tooltip" data-toggle="tooltip" data-placement="left" data-original-title="Ver Imagem">' . $_imagem . '</div></div>'
+                . '     <div class="margin-bottom-0"><div class="btn-image-link-lightbox j-tooltip" data-toggle="tooltip" data-placement="right" data-original-title="Ver Imagem">' . $_imagem . '</div></div>'
                 . '     <div class="btn btn-default btn-xs margin-bottom-0 margin-top-3"><a href="' . $_url_imagem . '" download="' . $_image_name . '" class="j-tooltip" data-toggle="tooltip" data-original-title="Download"><i class="fa fa-download"></i></a>'
                 . '                                                                      &nbsp;&nbsp;|&nbsp;&nbsp;<a class="j-tooltip" data-toggle="tooltip" data-original-title="Copiar Link"  data-clipboard-message="Link da imagem copiado com sucesso." data-clipboard-text="' . $_url_imagem . '"><i class="fa fa-copy"></i></a></div>'
                 . '</div>';
@@ -371,7 +371,7 @@ function mc_findByFieldDataDB($_dataBaseName, $_field, $_value, $_condition = NU
  */
 function mc_selectDataDB($table_name, $where = NULL, $param = array()) {
     $CI = & get_instance();
-    return $CI->read->ExecRead($table_name, $where, $param);
+    return $CI->read->exec($table_name, $where, $param);
 }
 
 /**
@@ -383,7 +383,7 @@ function mc_selectDataDB($table_name, $where = NULL, $param = array()) {
  */
 function mc_insertDataDB($table_name, array $dados) {
     $CI = & get_instance();
-    return $CI->create->ExecCreate($table_name, $dados);
+    return $CI->create->exec($table_name, $dados);
 }
 
 /**
@@ -396,7 +396,7 @@ function mc_insertDataDB($table_name, array $dados) {
  */
 function mc_updateDataDB($table_name, array $dados, $termos) {
     $CI = & get_instance();
-    return $CI->update->ExecUpdate($table_name, $dados, $termos);
+    return $CI->update->exec($table_name, $dados, $termos);
 }
 
 /**

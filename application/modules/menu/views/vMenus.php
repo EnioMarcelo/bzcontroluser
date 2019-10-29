@@ -131,7 +131,7 @@
                                 <td class="col-md-2"><?= ($_row->parent_id > 0) ? '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' . $_row->nome_menu : '<i class="fa fa-th-list margin-right-5"></i><b>' . $_row->nome_menu . '</b>'; ?></td>
                                 <td class="col-md-3"><?= ($_row->parent_id > 0) ? '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' . $_row->descricao_menu : '<i class="fa fa-th-list margin-right-5"></i><b>' . $_row->descricao_menu; ?></b></td>
                                 <td class="col-md-2"><?= $_row->app_name; ?></td>
-                                <td class="col-md-2 text-uppercase"><?= ($_row->parent_id == 0) ? '' : $this->read->ExecRead('sec_menus', 'WHERE id = ' . $_row->parent_id . ' ORDER BY nome_menu')->row()->nome_menu; ?></td>
+                                <td class="col-md-2 text-uppercase"><?= ($_row->parent_id == 0) ? '' : $this->read->exec('sec_menus', 'WHERE id = ' . $_row->parent_id . ' ORDER BY nome_menu')->row()->nome_menu; ?></td>
 
 
                                 <!-- BTN ATIVA/DESATIVA STATUS-->
@@ -173,7 +173,7 @@
                                         <td class="col-md-2"><?= ($_row_menu_filho->parent_id > 0) ? '&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-long-arrow-right margin-right-5"></i>' . $_row_menu_filho->nome_menu : $_row_menu_filho->nome_menu; ?></td>
                                         <td class="col-md-3"><?= ($_row_menu_filho->parent_id > 0) ? '&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-long-arrow-right margin-right-5"></i>' . $_row_menu_filho->descricao_menu : $_row_menu_filho->descricao_menu; ?></td>
                                         <td class="col-md-2"><?= $_row_menu_filho->app_name; ?></td>
-                                        <td class="col-md-2 text-uppercase"><i class="fa fa-th-list margin-right-5"></i><b><?= ($_row_menu_filho->parent_id == 0) ? '' : $this->read->ExecRead('sec_menus', 'WHERE id = ' . $_row_menu_filho->parent_id . ' ORDER BY nome_menu')->row()->nome_menu; ?></b></td>
+                                        <td class="col-md-2 text-uppercase"><i class="fa fa-th-list margin-right-5"></i><b><?= ($_row_menu_filho->parent_id == 0) ? '' : $this->read->exec('sec_menus', 'WHERE id = ' . $_row_menu_filho->parent_id . ' ORDER BY nome_menu')->row()->nome_menu; ?></b></td>
 
 
                                         <!-- BTN ATIVA/DESATIVA STATUS-->

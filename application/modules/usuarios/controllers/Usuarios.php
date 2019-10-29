@@ -60,7 +60,7 @@ class Usuarios extends MY_Controller {
         /*
          * CARREGA OS DADOS DOS GRUPOS
          */
-        $this->dados['_grupos']['_result'] = $this->read->ExecRead('sec_grupos', 'ORDER BY descricao')->result();
+        $this->dados['_grupos']['_result'] = $this->read->exec('sec_grupos', 'ORDER BY descricao')->result();
 
 
         if ($this->input->post()) :
@@ -158,7 +158,7 @@ class Usuarios extends MY_Controller {
                 /**
                  * Grava registro
                  */
-                $result = $this->create->ExecCreate($this->table_name, $_dados);
+                $result = $this->create->exec($this->table_name, $_dados);
 
                 if ($result):
 
@@ -259,7 +259,7 @@ class Usuarios extends MY_Controller {
         /*
          * CARREGA OS DADOS DOS GRUPOS
          */
-        $this->dados['_grupos']['_result'] = $this->read->ExecRead('sec_grupos', 'ORDER BY descricao')->result();
+        $this->dados['_grupos']['_result'] = $this->read->exec('sec_grupos', 'ORDER BY descricao')->result();
 
         if ($this->input->post()):
 
@@ -357,7 +357,7 @@ class Usuarios extends MY_Controller {
 
                     $_where = 'WHERE id = "' . $this->input->post('id') . '"';
 
-                    if ($this->update->ExecUpdate($this->table_name, $_dados, $_where)):
+                    if ($this->update->exec($this->table_name, $_dados, $_where)):
 
                         //GRAVA AUDITORIA
                         $dados_auditoria['creator'] = 'user';
@@ -457,7 +457,7 @@ class Usuarios extends MY_Controller {
              * BUSCA OS DADOS
              */
             $_where = 'WHERE id = "' . $_id . '" LIMIT 1';
-            $_result = $this->read->ExecRead($this->table_name, $_where);
+            $_result = $this->read->exec($this->table_name, $_where);
 
             if ($_result->result()):
                 $this->dados['dados'] = $_result->row();
@@ -605,7 +605,7 @@ class Usuarios extends MY_Controller {
              * BUSCA O USUÁRIO NO SISTEMA PARA CONSULTAR SE ESTÁ ATIVO OU INATIVO NO SISTEMA
              */
             $_where = 'WHERE id = "' . $_id . '" LIMIT 1';
-            $_result = $this->read->ExecRead($this->table_name, $_where);
+            $_result = $this->read->exec($this->table_name, $_where);
 
             if ($_result->result()):
 
@@ -616,7 +616,7 @@ class Usuarios extends MY_Controller {
                 $dados['id'] = $_result->row()->id;
                 $_where = 'WHERE id = "' . $_result->row()->id . '"';
 
-                if ($this->update->ExecUpdate($this->table_name, $dados, $_where)):
+                if ($this->update->exec($this->table_name, $dados, $_where)):
                     //GRAVA AUDITORIA
                     $dados_auditoria['creator'] = 'user';
                     $dados_auditoria['action'] = 'status change';
@@ -760,7 +760,7 @@ class Usuarios extends MY_Controller {
              * BUSCA OS DADOS
              */
             $_where = 'WHERE id = ' . $_id . ' AND email = "' . $_email . '" LIMIT 1';
-            $_result = $this->read->ExecRead($this->table_name, $_where);
+            $_result = $this->read->exec($this->table_name, $_where);
 
             if ($_result->result()):
 
@@ -768,7 +768,7 @@ class Usuarios extends MY_Controller {
 
                 $_dados['senha'] = $_pass;
 
-                if ($this->update->ExecUpdate($this->table_name, $_dados, $_where)):
+                if ($this->update->exec($this->table_name, $_dados, $_where)):
 
                     $_r = array('success' => 'true', 'csrf_token' => $this->security->get_csrf_hash());
 
@@ -827,7 +827,7 @@ class Usuarios extends MY_Controller {
     private function current_super_admin($_id) {
 
         $_where = 'WHERE id = "' . $_id . '"';
-        $_result = $this->read->ExecRead($this->table_name, $_where)->row();
+        $_result = $this->read->exec($this->table_name, $_where)->row();
 
         if ($_result):
 

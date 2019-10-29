@@ -14,7 +14,14 @@ class Read extends MY_model {
         parent::__construct();
     }
 
-    public function ExecRead($table_name, $termos = NULL, $array = array()) {
+    /**
+     * 
+     * @param type $table_name
+     * @param type $termos
+     * @param type $array
+     * @return boolean
+     */
+    public function exec($table_name, $termos = NULL, $array = array()) {
 
         $_distinct = '*';
 
@@ -36,7 +43,14 @@ class Read extends MY_model {
         endif;
     }
 
-    public function ExecReadField($table_name, $fields, $termos = NULL) {
+    /**
+     * 
+     * @param type $table_name
+     * @param type $fields
+     * @param type $termos
+     * @return boolean
+     */
+    public function field($table_name, $fields, $termos = NULL) {
 
         if ($table_name != NULL):
             $sql = "SELECT " . $fields . " FROM " . $table_name . " " . $termos;

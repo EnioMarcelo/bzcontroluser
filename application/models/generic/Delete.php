@@ -14,20 +14,26 @@ class Delete extends CI_Model {
         parent::__construct();
     }
 
-    public function ExecDelete($table_name, $termos) {
+    /**
+     * 
+     * @param type $table_name
+     * @param type $termos
+     * @return boolean
+     */
+    public function exec($table_name, $termos) {
 
         if ($table_name != NULL && $termos != NULL):
-            
+
             $this->load->model('generic/read');
-            $result = $this->read->ExecRead($table_name, $termos);
+            $result = $this->read->exec($table_name, $termos);
 
             if ($result->result()):
                 $qrDelete = "DELETE FROM {$table_name} {$termos}";
-                
+
                 $this->db->trans_start();
                 $stDelete = $this->db->query($qrDelete);
                 $this->db->trans_complete();
-                
+
                 if ($stDelete):
                     return TRUE;
                 else:

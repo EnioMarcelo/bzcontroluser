@@ -132,7 +132,7 @@
             $_menuFilho = '';
 
             foreach ($row_menus as $row_menu_filho):
-                $_icon_menu_pai = $this->read->ExecRead('sec_menus', 'WHERE id = ' . $row_menu_filho['id_menu_pai'] . ' AND ativo = "Y" ORDER BY nome_menu')->row('menu_icon');
+                $_icon_menu_pai = $this->read->exec('sec_menus', 'WHERE id = ' . $row_menu_filho['id_menu_pai'] . ' AND ativo = "Y" ORDER BY nome_menu')->row('menu_icon');
                 if ($_icon_menu_pai):
                     $_menuBuild = str_replace('fa fa-caret-right', 'fa ' . $_icon_menu_pai, $_menuBuild);
                 endif;

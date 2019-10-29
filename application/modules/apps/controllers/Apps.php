@@ -140,7 +140,7 @@ class Apps extends MY_Controller {
                 /**
                  * Grava registro
                  */
-                $result = $this->create->ExecCreate($this->table_name, $_dados);
+                $result = $this->create->exec($this->table_name, $_dados);
 
                 if ($result):
 
@@ -232,7 +232,7 @@ class Apps extends MY_Controller {
 
                     $_where = 'WHERE app_name = "' . $this->input->post('app_name') . '"';
 
-                    if ($this->update->ExecUpdate($this->table_name, $_dados, $_where)):
+                    if ($this->update->exec($this->table_name, $_dados, $_where)):
                         //GRAVA AUDITORIA
                         $dados_auditoria['creator'] = 'user';
                         $dados_auditoria['action'] = 'edit';
@@ -270,7 +270,7 @@ class Apps extends MY_Controller {
              * BUSCA OS DADOS DO APP
              */
             $_where = 'WHERE app_name = "' . $_id . '" LIMIT 1';
-            $_result = $this->read->ExecRead($this->table_name, $_where);
+            $_result = $this->read->exec($this->table_name, $_where);
 
             if ($_result->result()):
 
@@ -366,7 +366,7 @@ class Apps extends MY_Controller {
              * BUSCA O USUÁRIO NO SISTEMA PARA CONSULTAR SE ESTÁ ATIVO OU INATIVO NO SISTEMA
              */
             $_where = 'WHERE app_name = "' . $_id . '" LIMIT 1';
-            $_result = $this->read->ExecRead($this->table_name, $_where);
+            $_result = $this->read->exec($this->table_name, $_where);
 
             if ($_result->result()):
 
@@ -377,7 +377,7 @@ class Apps extends MY_Controller {
                 $dados['app_name'] = $_result->row()->app_name;
                 $_where = 'WHERE app_name = "' . $_result->row()->app_name . '"';
 
-                if ($this->update->ExecUpdate($this->table_name, $dados, $_where)):
+                if ($this->update->exec($this->table_name, $dados, $_where)):
                     //GRAVA AUDITORIA
                     $dados_auditoria['creator'] = 'user';
                     $dados_auditoria['action'] = 'status change';

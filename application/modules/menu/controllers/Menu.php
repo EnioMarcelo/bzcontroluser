@@ -38,7 +38,7 @@ class Menu extends MY_Controller {
         /*
          * CARREGA MENU PAI
          */
-        $this->dados['_menupai']['_result'] = $this->read->ExecRead('sec_menus', 'WHERE nivel_menu = 0 ORDER BY nome_menu')->result();
+        $this->dados['_menupai']['_result'] = $this->read->exec('sec_menus', 'WHERE nivel_menu = 0 ORDER BY nome_menu')->result();
 
         /*
          * TEMPLATE QUE SERÁ USADO PELO MÓDULO DO SISTEMA
@@ -56,12 +56,12 @@ class Menu extends MY_Controller {
         /*
          * CARREGA OS DADOS DOS APLICATIVOS
          */
-        $this->dados['_apps']['_result'] = $this->read->ExecRead('sec_aplicativos', 'ORDER BY app_descricao')->result();
+        $this->dados['_apps']['_result'] = $this->read->exec('sec_aplicativos', 'ORDER BY app_descricao')->result();
 
         /*
          * CARREGA MENU PAI
          */
-        $this->dados['_menupai']['_result'] = $this->read->ExecRead('sec_menus', 'WHERE nivel_menu = 0 ORDER BY nome_menu')->result();
+        $this->dados['_menupai']['_result'] = $this->read->exec('sec_menus', 'WHERE nivel_menu = 0 ORDER BY nome_menu')->result();
 
 
         if ($this->input->post()) :
@@ -85,7 +85,7 @@ class Menu extends MY_Controller {
                 endif;
 
                 if ($_dados['parent_id']):
-                    $_NivelMenuiID = $this->read->ExecRead('sec_menus', 'WHERE id = ' . $_dados['parent_id'] . ' ORDER BY nome_menu')->row()->nivel_menu;
+                    $_NivelMenuiID = $this->read->exec('sec_menus', 'WHERE id = ' . $_dados['parent_id'] . ' ORDER BY nome_menu')->row()->nivel_menu;
                     $_dados['nivel_menu'] = $_NivelMenuiID + 1;
                 endif;
 
@@ -145,7 +145,7 @@ class Menu extends MY_Controller {
                 /**
                  * Grava registro
                  */
-                $result = $this->create->ExecCreate($this->table_name, $_dados);
+                $result = $this->create->exec($this->table_name, $_dados);
 
                 if ($result):
 
@@ -197,12 +197,12 @@ class Menu extends MY_Controller {
         /*
          * CARREGA OS DADOS DOS APLICATIVOS
          */
-        $this->dados['_apps']['_result'] = $this->read->ExecRead('sec_aplicativos', 'ORDER BY app_descricao')->result();
+        $this->dados['_apps']['_result'] = $this->read->exec('sec_aplicativos', 'ORDER BY app_descricao')->result();
 
         /*
          * CARREGA MENU PAI
          */
-        $this->dados['_menupai']['_result'] = $this->read->ExecRead('sec_menus', 'WHERE nivel_menu = 0 ORDER BY nome_menu')->result();
+        $this->dados['_menupai']['_result'] = $this->read->exec('sec_menus', 'WHERE nivel_menu = 0 ORDER BY nome_menu')->result();
 
         if ($this->input->post()):
 
@@ -280,7 +280,7 @@ class Menu extends MY_Controller {
 
                     $_where = 'WHERE id = "' . $this->input->post('id') . '"';
 
-                    if ($this->update->ExecUpdate($this->table_name, $_dados, $_where)):
+                    if ($this->update->exec($this->table_name, $_dados, $_where)):
 
                         //GRAVA AUDITORIA
                         $dados_auditoria['creator'] = 'user';
@@ -320,7 +320,7 @@ class Menu extends MY_Controller {
              * BUSCA OS DADOS
              */
             $_where = 'WHERE id = "' . $_id . '" LIMIT 1';
-            $_result = $this->read->ExecRead($this->table_name, $_where);
+            $_result = $this->read->exec($this->table_name, $_where);
 
             if ($_result->result()):
                 $this->dados['dados'] = $_result->row();
@@ -446,7 +446,7 @@ class Menu extends MY_Controller {
              * BUSCA O MENU NO SISTEMA PARA CONSULTAR SE ESTÁ ATIVO OU INATIVO NO SISTEMA
              */
             $_where = 'WHERE id = "' . $_id . '" LIMIT 1';
-            $_result = $this->read->ExecRead($this->table_name, $_where);
+            $_result = $this->read->exec($this->table_name, $_where);
 
             if ($_result->result()):
 
@@ -457,7 +457,7 @@ class Menu extends MY_Controller {
                 $dados['id'] = $_result->row()->id;
                 $_where = 'WHERE id = "' . $_result->row()->id . '"';
 
-                if ($this->update->ExecUpdate($this->table_name, $dados, $_where)):
+                if ($this->update->exec($this->table_name, $dados, $_where)):
                     //GRAVA AUDITORIA
                     $dados_auditoria['creator'] = 'user';
                     $dados_auditoria['action'] = 'status change';
@@ -498,7 +498,7 @@ class Menu extends MY_Controller {
                     $_where_app = 'WHERE app_name = "' . $dados_app['app_name'] . '"';
 
                     // GRAVA A AUDITORIA DA ALTERAÇÃO
-                    if ($this->update->ExecUpdate('sec_aplicativos', $dados_app, $_where_app)):
+                    if ($this->update->exec('sec_aplicativos', $dados_app, $_where_app)):
                         //GRAVA AUDITORIA
                         $dados_auditoria['creator'] = 'user';
                         $dados_auditoria['action'] = 'status change Aplicativos by the Menus';
@@ -519,7 +519,7 @@ class Menu extends MY_Controller {
 
                     $dados_menu['ativo'] = ($_result->row()->ativo == 'Y') ? 'N' : 'Y';
                     $_where_menu = 'WHERE parent_id = ' . $_result->row()->id;
-                    $_r_menu = $this->update->ExecUpdate('sec_menus', $dados_menu, $_where_menu);
+                    $_r_menu = $this->update->exec('sec_menus', $dados_menu, $_where_menu);
 
                     if ($_r_menu):
 
@@ -533,7 +533,7 @@ class Menu extends MY_Controller {
                             $_where_app = 'WHERE app_name = "' . $dados_app['app_name'] . '"';
 
                             // GRAVA A AUDITORIA DAS ALTERAÇÕES
-                            if ($this->update->ExecUpdate('sec_aplicativos', $dados_app, $_where_app)):
+                            if ($this->update->exec('sec_aplicativos', $dados_app, $_where_app)):
                                 //GRAVA AUDITORIA
                                 $dados_auditoria['creator'] = 'user';
                                 $dados_auditoria['action'] = 'status change Aplicativos by the Menus';

@@ -109,7 +109,7 @@ class Userprofile extends MY_Controller {
         $termosDB = array();
         $termosDB = 'WHERE email = "' . $this->session->userdata['user_login']['user_email'] . '" LIMIT 1';
 
-        $result = $this->read->ExecRead($this->table_name, $termosDB)->row();
+        $result = $this->read->exec($this->table_name, $termosDB)->row();
 
         if ($result):
 
@@ -153,7 +153,7 @@ class Userprofile extends MY_Controller {
 
         $termosDB = 'WHERE id = ' . $_id;
 
-        $result = $this->update->ExecUpdate($this->table_name, $_dados, $termosDB);
+        $result = $this->update->exec($this->table_name, $_dados, $termosDB);
 
         if ($result) {
             //GRAVA AUDITORIA
@@ -178,7 +178,7 @@ class Userprofile extends MY_Controller {
 
         $termosDB = 'WHERE email = "' . $this->input->post('email', TRUE) . '" AND senha = "' . $this->input->post('senha_atual', TRUE) . '" AND ativo = "Y" ';
 
-        $result = $this->update->ExecUpdate($this->table_name, $_dados, $termosDB);
+        $result = $this->update->exec($this->table_name, $_dados, $termosDB);
 
         if ($result) {
 
@@ -202,7 +202,7 @@ class Userprofile extends MY_Controller {
     private function check_senha_atual() {
 
         $termosDB = 'WHERE email = "' . $this->input->post('email', TRUE) . '" AND senha = "' . xss_clean($this->input->post('senha_atual', TRUE)) . '" AND ativo = "Y" ';
-        $result = $this->read->ExecRead($this->table_name, $termosDB);
+        $result = $this->read->exec($this->table_name, $termosDB);
 
         if ($result->result()) {
             return true;

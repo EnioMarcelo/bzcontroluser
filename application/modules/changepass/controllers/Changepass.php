@@ -109,7 +109,7 @@ class Changepass extends MY_Controller {
              */
             $termosDB = array();
             $termosDB = 'WHERE email = "' . xss_clean($this->input->post('email', TRUE)) . '" AND ativo = "Y" LIMIT 1';
-            $result = $this->read->ExecRead($this->table_name, $termosDB);
+            $result = $this->read->exec($this->table_name, $termosDB);
 
             if ($result->result()):
                 /*
@@ -127,7 +127,7 @@ class Changepass extends MY_Controller {
                 $dados['senha'] = $newpassMD5;
                 $termosDB = 'WHERE email = "' . $result->row()->email . '"';
 
-                if ($this->update->ExecUpdate($this->table_name, $dados, $termosDB)):
+                if ($this->update->exec($this->table_name, $dados, $termosDB)):
 
                     //GRAVA AUDITORIA
                     $dados_auditoria['creator'] = 'user';

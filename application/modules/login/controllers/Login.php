@@ -84,7 +84,7 @@ class Login extends MY_Controller {
 
         if ($result->num_rows() > 0):
             $termosDB = "WHERE (timestamp+" . $this->config->item('sess_expiration') . ") <= " . time();
-            $this->delete->ExecDelete('ci_sessions', $termosDB);
+            $this->delete->exec('ci_sessions', $termosDB);
         endif;
     }
 
@@ -99,7 +99,7 @@ class Login extends MY_Controller {
          */
         $termosDB = array();
         $termosDB = 'WHERE email = "' . $this->input->post('email', TRUE) . '" AND senha = "' . $this->input->post('senha', TRUE) . '" AND ativo = "Y" ';
-        $result = $this->read->ExecRead($this->table_name, $termosDB);
+        $result = $this->read->exec($this->table_name, $termosDB);
 
 
         //CHECK MULTIPLOS LOGINS
@@ -108,7 +108,7 @@ class Login extends MY_Controller {
                 if ($result->row()->super_admin == 'N'):
 
                     //CHECK SE EXISTE USUÁRIO LOGADO, SE EXISTIR REDIRECIONA PARA AVISO DE ERRO E NÃO DEIXA ENTRAR NO SISTEMA
-                    $result_multiplo_login = $this->read->ExecRead('ci_sessions', 'WHERE data LIKE "%' . $this->input->post('email', TRUE) . '%"');
+                    $result_multiplo_login = $this->read->exec('ci_sessions', 'WHERE data LIKE "%' . $this->input->post('email', TRUE) . '%"');
 
                     if ($result_multiplo_login->result()):
                         $this->session->unset_userdata('user_login');
@@ -126,7 +126,7 @@ class Login extends MY_Controller {
         //GRAVA A DATA E HORA DO ÚLTIMO LOGIN
         if ($result->result()):
             $_ultimoLogin = $result->row()->ultimo_login;
-            $this->update->ExecUpdate($this->table_name, array('ultimo_login' => date('Y-m-d H:i:s')), $termosDB);
+            $this->update->exec($this->table_name, array('ultimo_login' => date('Y-m-d H:i:s')), $termosDB);
         endif;
 
 
@@ -207,7 +207,7 @@ class Login extends MY_Controller {
 //        $dados = array();
 //        $dados['nome'] = 'Teste NEW 2';
 //        $dados['dados'] = 'TESTE NEW INSERT';
-//        $result = $this->create->ExecCreate($this->table_name, $dados) ;
+//        $result = $this->create->exec($this->table_name, $dados) ;
 //        if ($result):
 //            echo 'OK INSERT...';
 //        else:
@@ -221,7 +221,7 @@ class Login extends MY_Controller {
      */
 //        $termosDB = "WHERE id = 10";
 //
-//        if ($this->delete->ExecDelete($this->table_name, $termosDB)):
+//        if ($this->delete->exec($this->table_name, $termosDB)):
 //            echo 'Deletado OK...';
 //        else:
 //            echo 'Erro ao Deletar...';
@@ -239,7 +239,7 @@ class Login extends MY_Controller {
 //        $dados['dados'] = '1 2 23 34 4  zzzzzzzz';
 //        $termosDB = 'WHERE id = 20';
 //
-//        if ($this->update->ExecUpdate($this->table_name, $dados, $termosDB)):
+//        if ($this->update->exec($this->table_name, $dados, $termosDB)):
 //            echo 'Atualizado OK...';
 //        else:
 //            echo 'Erro ao Atualizar...';
@@ -256,7 +256,7 @@ class Login extends MY_Controller {
 //        
 //        $termosDB = 'WHERE nome LIKE "%teste%"';
 //        
-//        $result = $this->read->ExecRead($this->table_name, $termosDB) ;
+//        $result = $this->read->exec($this->table_name, $termosDB) ;
 //        
 //        if ($result->result()):
 ////            echo 'Leitura OK...<hr><pre>';

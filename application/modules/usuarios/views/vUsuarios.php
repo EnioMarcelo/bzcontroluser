@@ -214,7 +214,7 @@
                                 $_btn_conected_tooltip_msg = 'Usuário Desconectado';
                                 $_btn_conected_status = 'poweroff';
 
-                                $_conected = $this->read->ExecRead('ci_sessions', 'WHERE data LIKE "%' . $_row->email . '%"')->result();
+                                $_conected = $this->read->exec('ci_sessions', 'WHERE data LIKE "%' . $_row->email . '%"')->result();
                                 if ($_conected):
                                     $_btn_conected = 'btn-success';
                                     $_btn_conected_tooltip_msg = 'Desconectar Usuário';

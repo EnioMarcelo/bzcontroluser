@@ -919,7 +919,7 @@ function bz_delete_files_orphans($_param = array()) {
              */
             $termosDB = array();
             $termosDB = 'WHERE ' . $_param['field_name'] . ' = "' . $_r[1] . '" LIMIT 1';
-            $result = $CI->read->ExecRead($_param['table_name'], $termosDB);
+            $result = $CI->read->exec($_param['table_name'], $termosDB);
 
             if ($result->num_rows() == 0):
                 /*
@@ -1400,7 +1400,7 @@ function add_auditoria($dados = array()) {
     endif;
 
 
-    $result = $CI->create->ExecCreate('sec_auditoria', $dados);
+    $result = $CI->create->exec('sec_auditoria', $dados);
 
     return $result;
 }
@@ -1796,6 +1796,7 @@ function bz_upload_file($_file_name, $_upload_path, $_allowed_types, $_max_size 
  * @param type $_file_name
  * @param type $_file_path
  * @return boolean
+ *
  */
 function bz_delete_file($_file_name, $_file_path) {
     $CI = & get_instance();
@@ -1804,14 +1805,38 @@ function bz_delete_file($_file_name, $_file_path) {
 
     $_fileDelete = $_file_path . $_file_name;
 
+
     if (!empty($_file_name) && file_exists($_fileDelete)) {
         unlink($_fileDelete);
     }
 
-    $_folderContent = directory_map($_file_path, 1);
-    $_folderContent = array_diff($_folderContent, ['.', '..', 'index.html']);
-    if (count($_folderContent) == 0) {
-        delete_files($_file_path, true, false, 1);
+    $_r = array_filter(explode('/', $_file_path));
+
+    $x = '';
+    while (true) {
+
+        if (!is_dir($_file_path)) {
+            break;
+        }
+
+        $_folderContent = directory_map($_file_path, 1);
+        $_folderContent = array_diff($_folderContent, ['.', '..', 'index.html']);
+
+        if (count($_folderContent) == 0) {
+            delete_files($_file_path, true, false, 1);
+        } else {
+            break;
+        }
+
+        $x = array_pop($_r);
+
+        if (!empty($x)) {
+            if (mc_contains_in_string($x, ___CONF_UPLOAD_DIR___)) {
+                break;
+            }
+        }
+
+        $_file_path = '/' . implode('/', $_r) . '/';
     }
 
     return;

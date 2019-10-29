@@ -166,7 +166,7 @@ class ProjectbuildCrud extends MY_Controller {
                 $_dados['grid_list_field_value_select'] = base64_encode($_dados['grid_list_field_value_select']);
 
                 $_where = 'WHERE proj_build_id = ' . $this->input->post('projeto_id') . ' AND field_name = "' . $this->input->post('field_name') . '" AND screen_type = "' . $_screen_type . '"';
-                if ($this->update->ExecUpdate('proj_build_fields', array('param_gridlist' => json_encode($_dados, JSON_UNESCAPED_UNICODE)), $_where)):
+                if ($this->update->exec('proj_build_fields', array('param_gridlist' => json_encode($_dados, JSON_UNESCAPED_UNICODE)), $_where)):
 
                     $_r = array('csrf_token' => $this->security->get_csrf_hash(), 'return' => 'SAVE-SETUP-GRIDLIST-OK');
                     echo json_encode($_r);
@@ -179,7 +179,7 @@ class ProjectbuildCrud extends MY_Controller {
                 $_projeto_id = $this->input->post('projeto_id');
                 $_field_name = $this->input->post('field_name');
 
-                $_setupGridList = $this->read->ExecRead('proj_build_fields', 'WHERE proj_build_id = ' . $_projeto_id . ' AND field_name = "' . $_field_name . '" AND screen_type = "' . $_screen_type . '"')->row()->param_gridlist;
+                $_setupGridList = $this->read->exec('proj_build_fields', 'WHERE proj_build_id = ' . $_projeto_id . ' AND field_name = "' . $_field_name . '" AND screen_type = "' . $_screen_type . '"')->row()->param_gridlist;
 
                 $_r = json_decode($_setupGridList);
 
@@ -378,7 +378,7 @@ class ProjectbuildCrud extends MY_Controller {
                   endif; */
 
                 $_where = 'WHERE proj_build_id = ' . $this->input->post('modal_projeto_id') . ' AND field_name = "' . $this->input->post('field_name') . '" AND screen_type = "' . $_screen_type . '"';
-                if ($this->update->ExecUpdate('proj_build_fields', array('param_formaddedit' => json_encode($_dados, JSON_UNESCAPED_UNICODE)), $_where)):
+                if ($this->update->exec('proj_build_fields', array('param_formaddedit' => json_encode($_dados, JSON_UNESCAPED_UNICODE)), $_where)):
 
                     $_r = array('csrf_token' => $this->security->get_csrf_hash(), 'return' => 'SAVE-SETUP-FORMADDEDIT-OK');
                     echo json_encode($_r);
@@ -391,7 +391,7 @@ class ProjectbuildCrud extends MY_Controller {
                 $_projeto_id = $this->input->post('projeto_id');
                 $_field_name = $this->input->post('field_name');
 
-                $_setupFormAddEdit = $this->read->ExecRead('proj_build_fields', 'WHERE proj_build_id = ' . $_projeto_id . ' AND field_name = "' . $_field_name . '" AND screen_type = "' . $_screen_type . '"')->row()->param_formaddedit;
+                $_setupFormAddEdit = $this->read->exec('proj_build_fields', 'WHERE proj_build_id = ' . $_projeto_id . ' AND field_name = "' . $_field_name . '" AND screen_type = "' . $_screen_type . '"')->row()->param_formaddedit;
 
                 $_r = json_decode($_setupFormAddEdit);
 
@@ -458,7 +458,7 @@ class ProjectbuildCrud extends MY_Controller {
                     $_post['field_length'] = '255';
                     $_post['param_gridlist'] = '{"grid_list_show":"on","grid_list_search":"no","grid_list_export":"on","grid_list_label":"' . $_post['field_name'] . '","grid_list_aligne_label":"text-left","grid_list_field_length":"10%","grid_list_field_aligne":"text-left","grid_list_field_type":"virtual"}';
 
-                    $result = $this->create->ExecCreate('proj_build_fields', $_post);
+                    $result = $this->create->exec('proj_build_fields', $_post);
 
                     if ($result):
 
@@ -488,7 +488,7 @@ class ProjectbuildCrud extends MY_Controller {
             elseif ($_post['task'] == 'delete-field-gridlist'):
 
                 $termosDB = "WHERE proj_build_id = '{$_post['proj_build_id']}' AND field_name = '{$_post['field_name']}'";
-                $_d = $this->delete->ExecDelete('proj_build_fields', $termosDB);
+                $_d = $this->delete->exec('proj_build_fields', $termosDB);
 
                 if ($_d):
                     $_response['title'] = 'OK !!!';
@@ -549,7 +549,7 @@ class ProjectbuildCrud extends MY_Controller {
                 /**
                  * Grava registro
                  */
-                $result = $this->create->ExecCreate($this->table_name, $_dados);
+                $result = $this->create->exec($this->table_name, $_dados);
 
                 if ($result):
 
@@ -576,7 +576,7 @@ class ProjectbuildCrud extends MY_Controller {
                             'code_type' => 'blank',
                             'code_screen' => 'blank',
                         );
-                        $this->create->ExecCreate('proj_build_codeeditor', $_dadosCodeEditor);
+                        $this->create->exec('proj_build_codeeditor', $_dadosCodeEditor);
 
                         /**/
                     }
@@ -597,7 +597,7 @@ class ProjectbuildCrud extends MY_Controller {
                      */
                     $_dados_sec_aplicativos['app_name'] = $_dados['app_nome'];
                     $_dados_sec_aplicativos['app_descricao'] = $_dados['app_titulo'];
-                    $result_create_sec_aplicativos = $this->create->ExecCreate('sec_aplicativos', $_dados_sec_aplicativos);
+                    $result_create_sec_aplicativos = $this->create->exec('sec_aplicativos', $_dados_sec_aplicativos);
 
                     if ($result_create_sec_aplicativos):
 
@@ -672,7 +672,7 @@ class ProjectbuildCrud extends MY_Controller {
 
                     $_where = 'WHERE id = "' . $this->input->post('id') . '"';
 
-                    if ($this->update->ExecUpdate($this->table_name, $_dados, $_where)):
+                    if ($this->update->exec($this->table_name, $_dados, $_where)):
 
                         /**
                          * UPDATE CODEEDITOR APP BLANK
@@ -680,7 +680,7 @@ class ProjectbuildCrud extends MY_Controller {
                         if ($this->input->post('type_project') == 'blank') {
 
                             $_whereCodeEditor = 'WHERE proj_build_id = "' . $this->input->post('id') . '" AND code_type = "blank" AND code_screen = "blank"';
-                            $this->update->ExecUpdate('proj_build_codeeditor', $_dadosCodeEditor, $_whereCodeEditor);
+                            $this->update->exec('proj_build_codeeditor', $_dadosCodeEditor, $_whereCodeEditor);
 
                             /**/
                         }
@@ -738,7 +738,7 @@ class ProjectbuildCrud extends MY_Controller {
              * BUSCA OS DADOS
              */
             $_where = 'WHERE id = "' . $_id . '" LIMIT 1';
-            $_result = $this->read->ExecRead($this->table_name, $_where);
+            $_result = $this->read->exec($this->table_name, $_where);
 
             if ($_result->row()->type_project == 'crud') {
                 $this->dados['_titulo_app'] .= ' CRUD';
@@ -756,7 +756,7 @@ class ProjectbuildCrud extends MY_Controller {
                 if ($this->dados['dados']->type_project == 'blank') {
 
                     $_whereCodeEditorBlank = 'WHERE proj_build_id = "' . $_id . '" AND code_type = "blank" AND code_screen = "blank" LIMIT 1';
-                    $_resultCodeEditorBlank = $this->read->ExecRead('proj_build_codeeditor', $_whereCodeEditorBlank);
+                    $_resultCodeEditorBlank = $this->read->exec('proj_build_codeeditor', $_whereCodeEditorBlank);
                     $this->dados['dados']->_codeEditorBlank = $_resultCodeEditorBlank->row();
                 }
                 /* END GET DADOS CODE EDITOR APP BLANK */
@@ -775,12 +775,12 @@ class ProjectbuildCrud extends MY_Controller {
                     /*
                      * CARREGA OS CAMPOS DA GRID LIST
                      */
-                    $this->dados['_fields_table_gridlist']['_result'] = $this->read->ExecRead('proj_build_fields', 'WHERE proj_build_id = ' . $_id . ' AND screen_type = "gridlist" ORDER BY order_field_gridlist')->result_array();
+                    $this->dados['_fields_table_gridlist']['_result'] = $this->read->exec('proj_build_fields', 'WHERE proj_build_id = ' . $_id . ' AND screen_type = "gridlist" ORDER BY order_field_gridlist')->result_array();
 
                     /*
                      * CARREGA OS CAMPOS DO FORM ADD/EDIT
                      */
-                    $this->dados['_fields_table_formAddEdit']['_result'] = $this->read->ExecRead('proj_build_fields', 'WHERE proj_build_id = ' . $_id . ' AND screen_type = "formaddedit" ORDER BY order_field_form')->result_array();
+                    $this->dados['_fields_table_formAddEdit']['_result'] = $this->read->exec('proj_build_fields', 'WHERE proj_build_id = ' . $_id . ' AND screen_type = "formaddedit" ORDER BY order_field_form')->result_array();
 
 // GET EVENTOS PHP
                     $_r_eventos_php = $this->db->get_where('proj_build_codeeditor', array('code_type' => 'evento-php', 'proj_build_id' => $_id))->result_array();
@@ -953,7 +953,7 @@ class ProjectbuildCrud extends MY_Controller {
                 unset($_dados['screen_type']);
 
                 $_where = 'WHERE proj_build_id = "' . $_dados['projeto_id'] . '" AND field_name = "' . $_dados['field_name'] . '" AND screen_type = "' . $_screen_type . '"';
-                if ($this->update->ExecUpdate('proj_build_fields', array('order_field_gridlist' => $_dados['order_field_gridlist']), $_where)):
+                if ($this->update->exec('proj_build_fields', array('order_field_gridlist' => $_dados['order_field_gridlist']), $_where)):
                 /**/
                 endif;
 
@@ -970,7 +970,7 @@ class ProjectbuildCrud extends MY_Controller {
                 unset($_dados['screen_type']);
 
                 $_where = 'WHERE proj_build_id = "' . $_dados['projeto_id'] . '" AND field_name = "' . $_dados['field_name'] . '" AND screen_type = "' . $_screen_type . '"';
-                if ($this->update->ExecUpdate('proj_build_fields', array('order_field_form' => $_dados['order_field_form']), $_where)):
+                if ($this->update->exec('proj_build_fields', array('order_field_form' => $_dados['order_field_form']), $_where)):
                 /**/
                 endif;
 
@@ -1242,7 +1242,7 @@ class ProjectbuildCrud extends MY_Controller {
 
             $_dadosTable = array();
 
-            if (!$this->read->ExecRead('proj_build_fields', 'WHERE proj_build_id = ' . $_proj_build_id . ' AND field_name = "' . $_field->name . '" AND screen_type = "' . $_screen_type . '"')->result()):
+            if (!$this->read->exec('proj_build_fields', 'WHERE proj_build_id = ' . $_proj_build_id . ' AND field_name = "' . $_field->name . '" AND screen_type = "' . $_screen_type . '"')->result()):
 
                 $_dadosTable['proj_build_id'] = $_proj_build_id;
                 $_dadosTable['field_name'] = $_field->name;
@@ -1286,7 +1286,7 @@ class ProjectbuildCrud extends MY_Controller {
                 endif;
                 /* END PARÂMETROS DO CAMPO */
 
-                $this->create->ExecCreate('proj_build_fields', $_dadosTable);
+                $this->create->exec('proj_build_fields', $_dadosTable);
 
             endif;
 
@@ -1385,7 +1385,7 @@ class ProjectbuildCrud extends MY_Controller {
                         'code_screen = "' . $this->input->post('code_screen') . '" AND ' .
                         'code_type = "' . $this->input->post('code_type') . '"';
 
-                $_query = $this->read->ExecRead('proj_build_codeeditor', $_where);
+                $_query = $this->read->exec('proj_build_codeeditor', $_where);
 
                 if ($_query->result_array()):
                     /*
@@ -1396,7 +1396,7 @@ class ProjectbuildCrud extends MY_Controller {
                         'code_type_method' => ($this->input->post('code_access_ajax_only') == 'on' ? 'public' : $this->input->post('code_type_method')),
                         'code_script' => base64_encode($this->input->post('code_script', false)),
                     );
-                    $this->update->ExecUpdate('proj_build_codeeditor', $_data_code_editor, $_where);
+                    $this->update->exec('proj_build_codeeditor', $_data_code_editor, $_where);
 
                     set_mensagem_trigger_notifi(strtoupper(str_replace('-', ' ', $this->input->post('code_type'))) . ' Atualizado com Sucesso.', 'success');
 
@@ -1413,7 +1413,7 @@ class ProjectbuildCrud extends MY_Controller {
                         'code_type_method' => ($this->input->post('code_access_ajax_only') == 'on' ? 'public' : $this->input->post('code_type_method')),
                         'code_script' => base64_encode($this->input->post('code_script', false)),
                     );
-                    $this->create->ExecCreate('proj_build_codeeditor', $_data_code_editor);
+                    $this->create->exec('proj_build_codeeditor', $_data_code_editor);
 
                     set_mensagem_trigger_notifi(strtoupper(str_replace('-', ' ', $this->input->post('code_type'))) . ' Adicionado com Sucesso.', 'success');
 
@@ -1464,7 +1464,7 @@ class ProjectbuildCrud extends MY_Controller {
          * GET DADOS DO PROJETO
          */
         $_where = 'WHERE id = "' . $_idProjeto . '" LIMIT 1';
-        $_result = $this->read->ExecRead($this->table_name, $_where);
+        $_result = $this->read->exec($this->table_name, $_where);
 
         if ($_result->result()):
 
@@ -1551,7 +1551,7 @@ class ProjectbuildCrud extends MY_Controller {
          * CHECK SE O NOME DO APP JÁ FOI CADASTRADO
          */
         $_where = 'WHERE app_nome = "' . $_app_nome . '" AND type_project = "crud" LIMIT 1';
-        $_result = $this->read->ExecRead($this->table_name, $_where);
+        $_result = $this->read->exec($this->table_name, $_where);
 
         if ($_result->result()):
             $this->form_validation->set_message('check_name_app_exist', 'Este Aplicativo <b>' . $_app_nome . '</b> já existe.');
@@ -2263,12 +2263,14 @@ class ProjectbuildCrud extends MY_Controller {
 
                             elseif ($_param_formAddEditField['form_add_edit_field_type'] == 'upload-imagem'):
 
-                                $this->_formAddEditConfigInput = '<input type="file" name="' . $_row['field_name'] . '" class="form-control-file margin-bottom-10" placeholder="" value="<?= set_value("' . $_row['field_name'] . '", isset($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : set_value("' . $_row['field_name'] . '")); ?>"  />';
+                                $_fileExtension = '.' . str_replace('|', ',.', $_param_formAddEditField['form_add_edit_field_upload_imagem_extensao_permitida']);
 
-                                $this->_formAddEditConfigInput = '<input type="file" name="' . $_row['field_name'] . '" class="form-control-file margin-bottom-10" placeholder="" value="<?= set_value("' . $_row['field_name'] . '", isset($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : set_value("' . $_row['field_name'] . '")); ?>"  />' . PHP_EOL
+                                /* $this->_formAddEditConfigInput = '<input type="file" name="' . $_row['field_name'] . '" class="form-control-file margin-bottom-10" placeholder="" value="<?= set_value("' . $_row['field_name'] . '", isset($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : set_value("' . $_row['field_name'] . '")); ?>"  />'; */
+
+                                $this->_formAddEditConfigInput = '<input type="file" name="' . $_row['field_name'] . '" class="form-control-file margin-bottom-10" placeholder="" value="<?= set_value("' . $_row['field_name'] . '", isset($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : set_value("' . $_row['field_name'] . '")); ?>" accept="' . $_fileExtension . '"  />' . PHP_EOL
                                         . '<?php if ($this->uri->segment(2) == "edit"): ?>' . PHP_EOL
                                         . '     <div class="col-xs-12 col-sm-12 col-md-3 col-lg-2"><?= mc_image_thumb_modal($dados->' . $_row['field_name'] . ',"' . $_param_formAddEditField['form_add_edit_field_upload_imagem_folder'] . '"); ?></div>' . PHP_EOL
-                                        . '     <div class="btn-ver-imagem margin-top-5 margin-bottom-5" style="font-size: 0.8em"><i class="fa fa-fw fa-camera"></i> <?= anchor(___CONF_UPLOAD_DIR___ . "/" . ___CONF_UPLOAD_IMAGE_DIR___ . "/' . $_param_formAddEditField['form_add_edit_field_upload_imagem_folder'] . '" . set_value("imagem_nome", isset($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : set_value("' . $_row['field_name'] . '")), "Ver Imagem", "data-lightbox=\'' . $_row['field_name'] . '\'"); ?></div>' . PHP_EOL
+                                        /* . '     <div class="btn-ver-imagem margin-top-5 margin-bottom-5" style="font-size: 0.8em"><i class="fa fa-fw fa-camera"></i> <?= anchor(___CONF_UPLOAD_DIR___ . ___CONF_UPLOAD_IMAGE_DIR___ . "' . $_param_formAddEditField['form_add_edit_field_upload_imagem_folder'] . ($_param_formAddEditField['form_add_edit_field_upload_imagem_folder'] ? DIRECTORY_SEPARATOR : '') . '" . set_value("imagem_nome", isset($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : set_value("' . $_row['field_name'] . '")), "xxxxVer Imagem", "data-lightbox=\'' . $_row['field_name'] . '\'"); ?></div>' . PHP_EOL */
                                         . '     <input type="hidden" name="' . $_row['field_name'] . '" value="<?= $dados->' . $_row['field_name'] . ';?>">' . PHP_EOL
                                         . '     ' . PHP_EOL
                                         . '<?php else: ?>' . PHP_EOL
@@ -2288,7 +2290,7 @@ class ProjectbuildCrud extends MY_Controller {
                                         . " */" . PHP_EOL
                                         . "foreach (\$_dados as \$_value):" . PHP_EOL
                                         . "     \$_file_name = mc_findByIdDataDB(\$this->table_formaddedit_name, \$_value)->row()->" . $_row['field_name'] . ";" . PHP_EOL
-                                        . "     bz_delete_file(\$_file_name, bz_absolute_path() . ___CONF_UPLOAD_DIR___ . ___CONF_UPLOAD_IMAGE_DIR___ . '" . $_param_formAddEditField['form_add_edit_field_upload_imagem_folder'] . "');" . PHP_EOL
+                                        . "     bz_delete_file(\$_file_name, bz_absolute_path() . ___CONF_UPLOAD_DIR___ . ___CONF_UPLOAD_IMAGE_DIR___ . '" . ($_param_formAddEditField['form_add_edit_field_upload_imagem_folder'] ? $_param_formAddEditField['form_add_edit_field_upload_imagem_folder'] . DIRECTORY_SEPARATOR : $_param_formAddEditField['form_add_edit_field_upload_imagem_folder']) . "');" . PHP_EOL
                                         . "endforeach;" . PHP_EOL
                                         . "/* END DELETA IMAGEM */";
 
@@ -2297,15 +2299,17 @@ class ProjectbuildCrud extends MY_Controller {
                                         . " */" . PHP_EOL
                                         . "if (isset(\$this->task['uploaded_image']) && \$this->task['uploaded_image']) {" . PHP_EOL
                                         . "     \$_file_name = mc_findByIdDataDB(\$this->table_formaddedit_name, \$_id)->row()->" . $_row['field_name'] . ";" . PHP_EOL
-                                        . "     bz_delete_file(\$_file_name, bz_absolute_path() . ___CONF_UPLOAD_DIR___ . ___CONF_UPLOAD_IMAGE_DIR___ . '" . $_param_formAddEditField['form_add_edit_field_upload_imagem_folder'] . "');" . PHP_EOL
+                                        . "     bz_delete_file(\$_file_name, bz_absolute_path() . ___CONF_UPLOAD_DIR___ . ___CONF_UPLOAD_IMAGE_DIR___ . '" . ($_param_formAddEditField['form_add_edit_field_upload_imagem_folder'] ? $_param_formAddEditField['form_add_edit_field_upload_imagem_folder'] . DIRECTORY_SEPARATOR : $_param_formAddEditField['form_add_edit_field_upload_imagem_folder']) . "');" . PHP_EOL
                                         . "}" . PHP_EOL
                                         . "/* END DELETA IMAGEM */";
 
                             elseif ($_param_formAddEditField['form_add_edit_field_type'] == 'upload-arquivo'):
 
-                                $this->_formAddEditConfigInput = '<input type="file" name="' . $_row['field_name'] . '" class="form-control-file margin-bottom-10" placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" value="<?=set_value("' . $_row['field_name'] . '",isset($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : set_value("' . $_row['field_name'] . '"));?>" ' . $this->_formAddEditConfigInputAtributos . ' />' . PHP_EOL
+                                $_fileExtension = '.' . str_replace('|', ',.', $_param_formAddEditField['form_add_edit_field_upload_arquivo_extensao_permitida']);
+
+                                $this->_formAddEditConfigInput = '<input type="file" name="' . $_row['field_name'] . '" class="form-control-file margin-bottom-10" placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" value="<?=set_value("' . $_row['field_name'] . '",isset($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : set_value("' . $_row['field_name'] . '"));?>" ' . $this->_formAddEditConfigInputAtributos . ' accept="' . $_fileExtension . '" />' . PHP_EOL
                                         . '<?php if ($this->uri->segment(2) == "edit"): ?>' . PHP_EOL
-                                        . '     <input type="hidden" name="' . $_row['field_name'] . '" value="<?= $dados->' . $_row['field_name'] . ';?>">' . PHP_EOL
+                                        . '     <input type="hidden" name="' . $_row['field_name'] . '" value="<?= $dados->' . $_row['field_name'] . ';?>" />' . PHP_EOL
                                         . '     <div id="" class=""><?= mc_file_link_download($dados->' . $_row['field_name'] . ',"' . $_param_formAddEditField['form_add_edit_field_upload_arquivo_folder'] . '"); ?></div>' . PHP_EOL
                                         . '<?php else: ?>' . PHP_EOL
                                         . '     ' . PHP_EOL
@@ -2324,7 +2328,7 @@ class ProjectbuildCrud extends MY_Controller {
                                         . " */" . PHP_EOL
                                         . "foreach (\$_dados as \$_value):" . PHP_EOL
                                         . "     \$_file_name = mc_findByIdDataDB(\$this->table_formaddedit_name, \$_value)->row()->" . $_row['field_name'] . ";" . PHP_EOL
-                                        . "     bz_delete_file(\$_file_name, bz_absolute_path() . ___CONF_UPLOAD_DIR___ . ___CONF_UPLOAD_FILE_DIR___ . '" . $_param_formAddEditField['form_add_edit_field_upload_arquivo_folder'] . "');" . PHP_EOL
+                                        . "     bz_delete_file(\$_file_name, bz_absolute_path() . ___CONF_UPLOAD_DIR___ . ___CONF_UPLOAD_FILE_DIR___ . '" . ($_param_formAddEditField['form_add_edit_field_upload_arquivo_folder'] ? $_param_formAddEditField['form_add_edit_field_upload_arquivo_folder'] . DIRECTORY_SEPARATOR : $_param_formAddEditField['form_add_edit_field_upload_arquivo_folder']) . "');" . PHP_EOL
                                         . "endforeach;" . PHP_EOL
                                         . "/* END DELETA ARQUIVO */";
 
@@ -2333,7 +2337,7 @@ class ProjectbuildCrud extends MY_Controller {
                                         . " */" . PHP_EOL
                                         . "if (isset(\$this->task['uploaded_file']) && \$this->task['uploaded_file']) {" . PHP_EOL
                                         . "     \$_file_name = mc_findByIdDataDB(\$this->table_formaddedit_name, \$_id)->row()->" . $_row['field_name'] . ";" . PHP_EOL
-                                        . "     bz_delete_file(\$_file_name, bz_absolute_path() . ___CONF_UPLOAD_DIR___ . ___CONF_UPLOAD_FILE_DIR___ . '" . $_param_formAddEditField['form_add_edit_field_upload_arquivo_folder'] . "');" . PHP_EOL
+                                        . "     bz_delete_file(\$_file_name, bz_absolute_path() . ___CONF_UPLOAD_DIR___ . ___CONF_UPLOAD_FILE_DIR___ . '" . ($_param_formAddEditField['form_add_edit_field_upload_arquivo_folder'] ? $_param_formAddEditField['form_add_edit_field_upload_arquivo_folder'] . DIRECTORY_SEPARATOR : $_param_formAddEditField['form_add_edit_field_upload_arquivo_folder']) . "');" . PHP_EOL
                                         . "}" . PHP_EOL
                                         . "/* END DELETA ARQUIVO */";
 
