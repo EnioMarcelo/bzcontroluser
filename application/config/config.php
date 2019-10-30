@@ -9,6 +9,25 @@ $config['modules_locations'] = array(
     APPPATH . 'modules/' => '../modules/',
 );
 
+
+/*
+  |--------------------------------------------------------------------------
+  | Not Login Check App
+  |--------------------------------------------------------------------------
+  |
+  | Apps/Programas que não precisam fazer o login para acessa-los.
+  | com o nome do app neste array, o sistema não pedirá o acesso por login e senha.
+  |
+  |
+ */
+
+$config['bzNotCheckLoginApp'] = [
+    'login',
+    'changepass',
+    'manutencao'
+];
+
+
 /*
   |--------------------------------------------------------------------------
   | Base Site URL

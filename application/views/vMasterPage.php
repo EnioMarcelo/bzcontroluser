@@ -15,7 +15,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title><?= bz_remove_strip_tags_content(___CONF_TITULO_SISTEMA___); ?></title>
+        <title><?= bz_remove_strip_tags_content($this->config->item('config_system')['CONF_TITULO_SISTEMA']); ?></title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
 
         <!-- Theme style iCheck-->
@@ -170,9 +170,9 @@
                 <!-- Logo -->
                 <a href="<?= site_url(); ?>" class="logo">
                     <!-- mini logo for sidebar mini 50x50 pixels -->
-                    <span class="logo-mini"><?= ___CONF_NOME_SISTEMA_ABREVIADO___; ?></span>
+                    <span class="logo-mini"><?= $this->config->item('config_system')['CONF_NOME_SISTEMA_ABREVIADO']; ?></span>
                     <!-- logo for regular state and mobile devices -->
-                    <span class="logo-lg"><?= ___CONF_NOME_SISTEMA___; ?></span>
+                    <span class="logo-lg"><?= $this->config->item('config_system')['CONF_NOME_SISTEMA']; ?></span>
                 </a>
                 <!-- Header Navbar -->
                 <nav class="navbar navbar-static-top" role="navigation">

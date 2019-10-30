@@ -15,7 +15,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>ADMIN <?= bz_remove_strip_tags_content(___CONF_TITULO_SISTEMA___); ?>| Log in</title>
+        <title>ADMIN <?= bz_remove_strip_tags_content($this->config->item('config_system')['CONF_TITULO_SISTEMA']); ?>| Log in</title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
         <!-- Bootstrap 3.3.4 -->
         <link href="<?= base_url('assets'); ?>/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
@@ -67,18 +67,18 @@
     </head>
 
 
-    <body class="login-page" <?= (___CONF_LOGIN_BG_IMAGE___) ? ___CONF_LOGIN_BG_IMAGE___ : ''; ?> >
+    <body class="login-page" <?= ($this->config->item('config_system')['CONF_LOGIN_BG_IMAGE']) ? $this->config->item('config_system')['CONF_LOGIN_BG_IMAGE'] : ''; ?> >
         <div class="login-box">
 
             <div class="login-logo">
 
                 <!-- LOGO -->
-                <?php if (___CONF_LOGIN_LOGO___): ?>
+                <?php if ($this->config->item('config_system')['CONF_LOGIN_LOGO']): ?>
                     <div class="login-logo-img">
-                        <?= ___CONF_LOGIN_LOGO___; ?>
+                        <?= $this->config->item('config_system')['CONF_LOGIN_LOGO']; ?>
                     </div>
                 <?php else: ?>
-                    <a href="<?= site_url(); ?>"><b>Admin</b><?= ___CONF_TITULO_SISTEMA___; ?></a>
+                    <a href="<?= site_url(); ?>"><b>Admin</b><?= $this->config->item('config_system')['CONF_TITULO_SISTEMA']; ?></a>
                 <?php endif; ?>
                 <!-- LOGO -->
 
@@ -125,9 +125,9 @@
 
 
             <!-- FOOTER -->
-            <?php if (___CONF_LOGIN_FOOTER___): ?>
+            <?php if ($this->config->item('config_system')['CONF_LOGIN_FOOTER']): ?>
                 <div class="login-footer">
-                    <?= ___CONF_LOGIN_FOOTER___; ?>
+                    <?= $this->config->item('config_system')['CONF_LOGIN_FOOTER']; ?>
                 </div><!-- /.login-footer -->
             <?php endif; ?>                
             <!-- FOOTER -->

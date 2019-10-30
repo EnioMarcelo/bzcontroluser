@@ -12,6 +12,23 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 /**
  *  ==================================================================================================================================================================
+ *      VALIDATE
+ *  ==================================================================================================================================================================
+ */
+
+/**
+ * MACRO IS EMAIL
+ * Valida Email
+ * 
+ * @param string $email
+ * @return bool
+ */
+function mc_is_email($email) {
+    return filter_var($email, FILTER_VALIDATE_EMAIL);
+}
+
+/**
+ *  ==================================================================================================================================================================
  *      IMAGES
  *  ==================================================================================================================================================================
  */
@@ -502,7 +519,7 @@ function mc_format_date($data, $mascara) {
  * @param type $decimal
  * @param type $lang
  * @param type $cifrao
- * @return boolean
+ * @return boolean|string
  */
 function mc_format_moeda($valor, $decimal = 2, $lang = "br", $cifrao = null) {
     if ($lang == 'br') {
@@ -512,6 +529,63 @@ function mc_format_moeda($valor, $decimal = 2, $lang = "br", $cifrao = null) {
     } else {
         return false;
     }
+}
+
+/**
+ * MACRO SLUG
+ * @param string $string
+ * @return string
+ */
+function mc_slug($string) {
+
+    $string = filter_var(mb_strtolower($string), FILTER_SANITIZE_STRIPPED);
+    $formats = 'ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜüÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûýýþÿRr"!@#$%&*()_-+={[}]/?;:.,\\\'<>°ºª';
+    $replace = 'aaaaaaaceeeeiiiidnoooooouuuuuybsaaaaaaaceeeeiiiidnoooooouuuyybyRr                                 ';
+
+    $slug = str_replace(["-----", "----", "---", "--"], "-", str_replace(" ", "-", trim(strtr(utf8_decode($string), utf8_decode($formats), $replace))));
+
+    return $slug;
+}
+
+/**
+ * MACRO LIMIT WORDS
+ * Limita a quantidade de palavras que deseja mostrar
+ * 
+ * @param string $string
+ * @param int $limit
+ * @param string $pointer
+ * @return string
+ */
+function mc_limit_words($string, $limit, $pointer = "...") {
+    $string = trim(filter_var($string, FILTER_SANITIZE_SPECIAL_CHARS));
+    $arrWords = explode(" ", $string);
+    $numWords = count($arrWords);
+
+    if ($numWords < $limit) {
+        return $string;
+    }
+
+    $words = implode(" ", array_slice($arrWords, 0, $limit));
+    return "{$words}{$pointer}";
+}
+
+/**
+ * MACRO LIMIT CHARS
+ * Limita a quantidade de caracteres que deseja mostrar
+ * 
+ * @param string $string
+ * @param int $limit
+ * @param string $pointer
+ * @return string
+ */
+function mc_limit_chars($string, $limit, $pointer = "...") {
+    $string = trim(filter_var($string, FILTER_SANITIZE_SPECIAL_CHARS));
+    if (mb_strlen($string) <= $limit) {
+        return $string;
+    }
+
+    $chars = mb_substr($string, 0, mb_strrpos(mb_substr($string, 0, $limit), " "));
+    return "{$chars}{$pointer}";
 }
 
 /**

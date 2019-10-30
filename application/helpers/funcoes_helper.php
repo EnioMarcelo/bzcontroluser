@@ -323,43 +323,46 @@ function bz_enviar_email($para, $assunto, $mensagem, $formato = 'html') {
     $CI->load->library('email');
 
 
-    $servidor_email = '';
+    $servidor_email = false;
 
     $config['mailtype'] = $formato;
 
-    if (strlen(___CONF_EMAIL_SMTP_HOST___) > 0 and strlen(___CONF_EMAIL_SMTP_PORT___) > 0 and strlen(___CONF_EMAIL_SMTP_USER___) > 0 and strlen(___CONF_EMAIL_SMTP_PASS___) > 0 and strlen(___CONF_EMAIL_FROM_EMAIL___) > 0):
-        $servidor_email = 'OK';
+    if (strlen($CI->config->item('config_email')['CONF_EMAIL_SMTP_HOST']) > 0 AND
+            strlen($CI->config->item('config_email')['CONF_EMAIL_SMTP_HOST']) > 0 AND
+            strlen($CI->config->item('config_email')['CONF_EMAIL_SMTP_USER']) > 0 AND
+            strlen($CI->config->item('config_email')['CONF_EMAIL_SMTP_PASS']) > 0 AND
+            strlen($CI->config->item('config_email')['CONF_EMAIL_FROM_EMAIL']) > 0):
+        $servidor_email = true;
     endif;
     /**/
-    if ($servidor_email == 'OK'):
+    if ($servidor_email):
         $config['mailtype'] = $formato;
-        $config['protocol'] = ___CONF_EMAIL_SMTP_PROTOCOL___;
-        $config['smtp_host'] = ___CONF_EMAIL_SMTP_HOST___;
-        $config['smtp_port'] = ___CONF_EMAIL_SMTP_PORT___;
-        $config['smtp_timeout'] = ___CONF_EMAIL_SMTP_TIMEOUT___;
-        $config['smtp_user'] = ___CONF_EMAIL_SMTP_USER___;
-        $config['smtp_pass'] = ___CONF_EMAIL_SMTP_PASS___;
-        $config['charset'] = ___CONF_EMAIL_SMTP_CHARSET___;
-        $config['newline'] = ___CONF_EMAIL_SMTP_NEWLINE___;
+        $config['protocol'] = $CI->config->item('config_email')['CONF_EMAIL_SMTP_PROTOCOL'];
+        $config['smtp_host'] = $CI->config->item('config_email')['CONF_EMAIL_SMTP_HOST'];
+        $config['smtp_port'] = $CI->config->item('config_email')['CONF_EMAIL_SMTP_PORT'];
+        $config['smtp_timeout'] = $CI->config->item('config_email')['CONF_EMAIL_SMTP_TIMEOUT'];
+        $config['smtp_user'] = $CI->config->item('config_email')['CONF_EMAIL_SMTP_USER'];
+        $config['smtp_pass'] = $CI->config->item('config_email')['CONF_EMAIL_SMTP_PASS'];
+        $config['charset'] = $CI->config->item('config_email')['CONF_EMAIL_SMTP_CHARSET'];
+        $config['newline'] = $CI->config->item('config_email')['CONF_EMAIL_SMTP_NEWLINE'];
 
-        if (___CONF_EMAIL_SMTP_CRYPTO___) {
-            $config['smtp_crypto'] = ___CONF_EMAIL_SMTP_CRYPTO___;
+        if ($CI->config->item('config_email')['CONF_EMAIL_SMTP_CRYPTO']) {
+            $config['smtp_crypto'] = $CI->config->item('config_email')['CONF_EMAIL_SMTP_CRYPTO'];
         }
 
-        if (___CONF_EMAIL_SMTP_VALIDATION___) {
-            $config['validation'] = ___CONF_EMAIL_SMTP_VALIDATION___;
+        if ($CI->config->item('config_email')['CONF_EMAIL_SMTP_VALIDATION']) {
+            $config['validation'] = $CI->config->item('config_email')['CONF_EMAIL_SMTP_VALIDATION'];
         }
 
     endif;
 
     $CI->email->initialize($config);
 
-    if ($servidor_email == 'OK'):
-    else:
+    if (!$servidor_email):
         exit('DADOS INCOMPLETOS DA CONTA DO USUÁRIO DO EMAIL. FAVOR VERIFICAR AS VARIÁVEIS CONSTANTES DO SERVIDOR DO EMAIL.');
     endif;
 
-    $CI->email->from(___CONF_EMAIL_FROM_EMAIL___);
+    $CI->email->from($CI->config->item('config_email')['CONF_EMAIL_FROM_EMAIL']);
     $CI->email->to($para);
     $CI->email->subject($assunto);
     $CI->email->message($mensagem);
@@ -367,7 +370,7 @@ function bz_enviar_email($para, $assunto, $mensagem, $formato = 'html') {
         return TRUE;
     else:
         //echo show_error($CI->email->print_debugger());
-        echo '<hr>ERRO AO ENVIAR EMAIL.';
+//        echo '<hr>ERRO AO ENVIAR EMAIL.';
         return FALSE;
     endif;
 }

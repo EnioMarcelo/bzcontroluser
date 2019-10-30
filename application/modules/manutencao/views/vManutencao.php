@@ -16,7 +16,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>ADMIN <?= bz_remove_strip_tags_content(___CONF_TITULO_SISTEMA___); ?>| Manutenção</title>
+        <title>ADMIN <?= bz_remove_strip_tags_content($this->config->item('config_system')['CONF_TITULO_SISTEMA']); ?>| Manutenção</title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
         <!-- Bootstrap 3.3.4 -->
         <link href="<?= base_url('assets'); ?>/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
@@ -60,7 +60,7 @@
     <body class="login-page">
         <div class="text-center" style="margin: 7% auto;">
             <div class="login-logo">
-                <a href="<?= site_url(); ?>"><b>Admin</b><?= ___CONF_TITULO_SISTEMA___; ?></a>
+                <a href="<?= site_url(); ?>"><b>Admin</b><?= $this->config->item('config_system')['CONF_TITULO_SISTEMA']; ?></a>
             </div><!-- /.login-logo -->
             <div class="login-box-body">
 

@@ -15,7 +15,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>ADMIN <?= bz_remove_strip_tags_content(___CONF_TITULO_SISTEMA___); ?>| Esqueci minha senha</title>
+        <title>ADMIN <?= bz_remove_strip_tags_content($this->config->item('config_system')['CONF_TITULO_SISTEMA']); ?>| Esqueci minha senha</title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
         <!-- Bootstrap 3.3.4 -->
         <link href="<?= base_url('assets'); ?>/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
@@ -40,7 +40,7 @@
         <!-- Stick de Mensagens - NICE - http://demo.hackandphp.com/jquery-nice-notify-notification-messages/ -->
         <link href="<?= base_url('assets'); ?>/css/jquery.nice.css<?= '?' . date('YmdHis'); ?>" rel="stylesheet" type="text/css"/>
         <!-- CUSTOM MASTERPAGE -->
-        <link href="<?= base_url('assets'); ?>/css/custom-masterpage.css" rel="stylesheet" type="text/css" />
+        <link href="<?= base_url('assets'); ?>/css/custom-masterPage.css" rel="stylesheet" type="text/css" />
         <!-- BOOT BUZA -->
         <link href="<?= base_url('assets'); ?>/css/boot-buza.css" rel="stylesheet" type="text/css" />
 
@@ -64,18 +64,18 @@
     </head>
 
 
-    <body class="login-page" <?= (___CONF_LOGIN_CHANGE_PASS_BG_IMAGE___) ? ___CONF_LOGIN_CHANGE_PASS_BG_IMAGE___ : ''; ?>>
+    <body class="login-page" <?= ($this->config->item('config_system')['CONF_LOGIN_CHANGE_PASS_BG_IMAGE']) ? $this->config->item('config_system')['CONF_LOGIN_CHANGE_PASS_BG_IMAGE'] : ''; ?>>
         <div class="login-box">
 
             <div class="login-logo">
 
                 <!-- LOGO -->
-                <?php if (___CONF_LOGIN_CHANGE_PASS_LOGO___): ?>
+                <?php if ($this->config->item('config_system')['CONF_LOGIN_CHANGE_PASS_LOGO']): ?>
                     <div class="login-logo-img">
-                        <?= ___CONF_LOGIN_CHANGE_PASS_LOGO___; ?>
+                        <?= $this->config->item('config_system')['CONF_LOGIN_CHANGE_PASS_LOGO']; ?>
                     </div>
                 <?php else: ?>
-                    <a href="<?= site_url(); ?>"><b>Admin</b><?= ___CONF_TITULO_SISTEMA___; ?></a>
+                    <a href="<?= site_url(); ?>"><b>Admin</b><?= $this->config->item('config_system')['CONF_TITULO_SISTEMA']; ?></a>
                 <?php endif; ?>
                 <!-- LOGO -->
 
@@ -135,9 +135,9 @@
 
 
             <!-- FOOTER -->
-            <?php if (___CONF_LOGIN_CHANGE_PASS_FOOTER___): ?>
+            <?php if ($this->config->item('config_system')['CONF_LOGIN_CHANGE_PASS_FOOTER']): ?>
                 <div class="login-footer">
-                    <?= ___CONF_LOGIN_CHANGE_PASS_FOOTER___; ?>
+                    <?= $this->config->item('config_system')['CONF_LOGIN_CHANGE_PASS_FOOTER']; ?>
                 </div><!-- /.login-footer -->
             <?php endif; ?>                
             <!-- FOOTER -->
@@ -151,18 +151,17 @@
 
 
 <!-- MODAL AGUARDE -->
-<!--<div id="modal-aguarde" class="bz-aguarde-modal">
+<div id="modal-aguarde" class="bz-aguarde-modal" style="background-color: rgba(255, 255, 255, 0.5);">
     <div class="bz-aguarde-modal-dialog">
-        <div class="bz-aguarde-modal-content">
-
+        <div class="bz-aguarde-modal-content" style="color: #3b3b1f;">
             <div class="bz-aguarde-modal-body">
                 <p class="text-center">Aguarde</p>
                 <p class="text-center"><img src="<?= base_url('assets'); ?>/img/Facebook.gif" width="50px" style="margin-top: -20px;"></p>
             </div>
 
-        </div> /.bz-aguarde-modal-content 
-    </div> /.bz-aguarde-modal-dialog 
-</div> /.bz-aguarde-modal -->
+        </div> 
+    </div> 
+</div> 
 <!-- END MODAL AGUARDE -->
 
 

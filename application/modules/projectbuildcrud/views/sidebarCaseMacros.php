@@ -9,7 +9,7 @@
             <li><a href="#control-sidebar-modelo-tab" data-toggle="tab"><i class="fa fa-language"></i></a></li>
             <li><a href="#control-sidebar-diversos-tab" data-toggle="tab"><i class="fa fa-puzzle-piece"></i></a></li>
         <?php elseif ($_parametros['code_type'] == 'jquery'): ?>
-            <li class="active"><a href="#control-sidebar-jquery-tab" data-toggle="tab"><i class="fa fa-database"></i></a></li>
+            <li class="active"><a href="#control-sidebar-jquery-tab" data-toggle="tab"><i class="">jQuery</i></a></li>
         <?php endif; ?>
         <li><a><span class="fa fa-close j-tooltip mouse-cursor-pointer" data-toggle="control-sidebar" data-placement="bottom" data-toggle="tooltip" data-original-title="Fechar"></span></a></li>
 
@@ -112,11 +112,12 @@
 
                         <ul class="list-unstyled">
 
-                            <li><button type="button" class="btn btn-default btn-block margin-bottom-3 j-btn-sidebar-database-insert" data-toggle="control-sidebar" data-clipboard-message="Código copiado com sucesso, CTRL+V para colar no editor." data-clipboard-text="<?= base64_decode(___MACRO_DIVERSOS_CUT_WORDS___); ?>">String Corta Palavras</button></li>
+                            <li><button type="button" class="btn btn-default btn-block margin-bottom-3 j-btn-sidebar-database-insert" data-toggle="control-sidebar" data-clipboard-message="Código copiado com sucesso, CTRL+V para colar no editor." data-clipboard-text="<?= base64_decode(___MACRO_DIVERSOS_LIMIT_CHARS___); ?>">String Limit Chars</button></li>
+                            <li><button type="button" class="btn btn-default btn-block margin-bottom-3 j-btn-sidebar-database-insert" data-toggle="control-sidebar" data-clipboard-message="Código copiado com sucesso, CTRL+V para colar no editor." data-clipboard-text="<?= base64_decode(___MACRO_DIVERSOS_LIMIT_WORDS___); ?>">String Limit Words</button></li>
                             <li><button type="button" class="btn btn-default btn-block margin-bottom-3 j-btn-sidebar-database-insert" data-toggle="control-sidebar" data-clipboard-message="Código copiado com sucesso, CTRL+V para colar no editor." data-clipboard-text="<?= base64_decode(___MACRO_DIVERSOS_MONTH_DATE___); ?>">Mês de uma Data</button></li>
                             <li><button type="button" class="btn btn-default btn-block margin-bottom-3 j-btn-sidebar-database-insert" data-toggle="control-sidebar" data-clipboard-message="Código copiado com sucesso, CTRL+V para colar no editor." data-clipboard-text="<?= base64_decode(___MACRO_DIVERSOS_EXTENSIVE_VALUE___); ?>">Valor por Extenso</button></li>
                             <li><button type="button" class="btn btn-default btn-block margin-bottom-3 j-btn-sidebar-database-insert" data-toggle="control-sidebar" data-clipboard-message="Código copiado com sucesso, CTRL+V para colar no editor." data-clipboard-text="<?= base64_decode(___MACRO_DIVERSOS_FARMAT_DATE___); ?>">Formata Data</button></li>
-                            <li><button type="button" class="btn btn-default btn-block margin-bottom-3 j-btn-sidebar-database-insert" data-toggle="control-sidebar" data-clipboard-message="Código copiado com sucesso, CTRL+V para colar no editor." data-clipboard-text="<?= base64_decode(___MACRO_DIVERSOS_CONTAINS_STRING___); ?>">Contem na String</button></li>
+                            <li><button type="button" class="btn btn-default btn-block margin-bottom-3 j-btn-sidebar-database-insert" data-toggle="control-sidebar" data-clipboard-message="Código copiado com sucesso, CTRL+V para colar no editor." data-clipboard-text="<?= base64_decode(___MACRO_DIVERSOS_CONTAINS_STRING___); ?>">Contém na String</button></li>
                             <li><button type="button" class="btn btn-default btn-block margin-bottom-3 j-btn-sidebar-database-insert" data-toggle="control-sidebar" data-clipboard-message="Código copiado com sucesso, CTRL+V para colar no editor." data-clipboard-text="<?= base64_decode(___MACRO_DIVERSOS_FORMAT_MOEDA___); ?>">Formatação de Moeda</button></li>
                             <li><button type="button" class="btn btn-default btn-block margin-bottom-3 j-btn-sidebar-database-insert" data-toggle="control-sidebar" data-clipboard-message="Código copiado com sucesso, CTRL+V para colar no editor." data-clipboard-text="<?= base64_decode(___MACRO_DIVERSOS_RANDOM_STRING___); ?>">String Randômica</button></li>
                             <li><button type="button" class="btn btn-default btn-block margin-bottom-3 j-btn-sidebar-database-insert" data-toggle="control-sidebar" data-clipboard-message="Código copiado com sucesso, CTRL+V para colar no editor." data-clipboard-text="<?= base64_decode(___MACRO_DIVERSOS_FILL_STRING___); ?>">Preenche String</button></li>
@@ -141,16 +142,31 @@
             <!-- jQuery tab content -->
             <div class="tab-pane active" id="control-sidebar-jquery-tab" style="margin-top:-15px;">
 
-                <h4 class='control-sidebar-heading'>
-                    <spam>jQuery</spam>
-                </h4>
+                <!--                <h4 class='control-sidebar-heading'>
+                                    <spam>jQuery</spam>
+                                </h4>-->
 
                 <ul class="list-unstyled clearfix" style="margin-top:-10px">
                     <li style="float:left; width: 100%; padding: 0px;">
 
                         <ul class="list-unstyled">
                             <li class="margin-bottom-3">Scripts</li>
-                            <li><button type="button" class="btn btn-default btn-block margin-bottom-3 j-btn-sidebar-database-insert" data-toggle="control-sidebar" data-clipboard-message="Código copiado com sucesso, CTRL+V para colar no editor." data-clipboard-text="<?= base64_decode('alF1ZXJ5IENvZGU='); ?>">Teste Code</button></li>
+
+                            <!--TODOS-->
+                            <li><button type="button" class="btn btn-default btn-block margin-bottom-3 j-btn-sidebar-database-insert" data-toggle="control-sidebar" data-clipboard-message="Código copiado com sucesso, CTRL+V para colar no editor." data-clipboard-text="<?= base64_decode(___MACRO_JS_AJAX_POST___); ?>">Ajax Post</button></li>
+                            <li><button type="button" class="btn btn-default btn-block margin-bottom-3 j-btn-sidebar-database-insert" data-toggle="control-sidebar" data-clipboard-message="Código copiado com sucesso, CTRL+V para colar no editor." data-clipboard-text="<?= base64_decode(___MACRO_JS_OPEN_MODAL___); ?>">Open Modal</button></li>
+                            <li><button type="button" class="btn btn-default btn-block margin-bottom-3 j-btn-sidebar-database-insert" data-toggle="control-sidebar" data-clipboard-message="Código copiado com sucesso, CTRL+V para colar no editor." data-clipboard-text="<?= base64_decode(___MACRO_JS_CLOSE_MODAL___); ?>">Close Modal</button></li>
+
+                            <!--GRID LIST-->
+                            <?php if (mc_slug($_parametros['code_screen_title']) == 'grid-list'): ?>
+                                <li><button type="button" class="btn btn-default btn-block margin-bottom-3 j-btn-sidebar-database-insert" data-toggle="control-sidebar" data-clipboard-message="Código copiado com sucesso, CTRL+V para colar no editor." data-clipboard-text="<?= base64_decode(___MACRO_JS_BUTTONS_GRIDLIST___); ?>">Buttons Grid List</button></li>
+                                <li><button type="button" class="btn btn-default btn-block margin-bottom-3 j-btn-sidebar-database-insert" data-toggle="control-sidebar" data-clipboard-message="Código copiado com sucesso, CTRL+V para colar no editor." data-clipboard-text="<?= base64_decode(___MACRO_JS_SEARCH_BAR_ELEMENT_GRIDLIST___); ?>">Search Element</button></li>
+                            <?php endif; ?>
+
+                            <!--FORM ADD/EDIT-->
+                            <?php if (mc_slug($_parametros['code_screen_title']) == 'form-add' || mc_slug($_parametros['code_screen_title']) == 'form-edit'): ?>
+                                <li><button type="button" class="btn btn-default btn-block margin-bottom-3 j-btn-sidebar-database-insert" data-toggle="control-sidebar" data-clipboard-message="Código copiado com sucesso, CTRL+V para colar no editor." data-clipboard-text="<?= base64_decode(___MACRO_JS_BUTTONS_FORM_ADD_EDIT___); ?>">Buttons Form Add/Edit</button></li>
+                                <?php endif; ?>
                         </ul>
 
 

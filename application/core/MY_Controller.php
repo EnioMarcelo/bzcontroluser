@@ -26,6 +26,20 @@ class MY_Controller extends MX_Controller {
 
         parent::__construct();
 
+
+        /**
+         * CARREGA O ARQUIVO application/config/config_system
+         * Dados Gerais do Systema
+         */
+        $this->config->load('config_system', TRUE);
+
+        /**
+         * CARREGA O ARQUIVO application/config/config_email
+         * Dados do Servidor de Email
+         */
+        $this->config->load('config_email', TRUE);
+
+
         /**
          * LAYOUT SKINS/COLOR AND TITILES SYSTEM
          */
@@ -67,11 +81,8 @@ class MY_Controller extends MX_Controller {
         /**
          * ARRAY DE APPs QUE NÃO PRECISAM CHECAR SE FEZ LOGIN OU SE TEM PERMISSÃO DE ACESSO.
          */
-        $_notCheckLoginApp = [
-            'login',
-            'changepass',
-            'manutencao'
-        ];
+        $_notCheckLoginApp = $this->config->item('bzNotCheckLoginApp');
+
 
         if (!in_array($this->router->fetch_class(), $_notCheckLoginApp)):
 

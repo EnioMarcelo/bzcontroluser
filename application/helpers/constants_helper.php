@@ -24,30 +24,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 /**
  * ========================================================================================================================================================================
- * SISTEMA
+ * PATHs
  * ========================================================================================================================================================================
  */
-/* CAMINHO RELATIVO DA PASTA ONDE ESTÁ O APP NO SERVIDOR */
+/* CAMINHO RELATIVO DA PASTA ONDE ESTÁ SISTEMA */
 define('___CONF_APP_ABSOLUTE_PATH___', FCPATH);
-
-
-define('___CONF_TITULO_SISTEMA___', 'BUZZAControl');
-define('___CONF_NOME_SISTEMA___', '<b>BUZZA</b>Control');
-define('___CONF_NOME_SISTEMA_ABREVIADO___', '<b>BZ</b>CN');
-
-/* LOGIN */
-define('___CONF_LOGIN_BG_IMAGE___', 'style="background: url(assets/img/bg-login.jpg) no-repeat center center; background-size:cover"');
-define('___CONF_LOGIN_LOGO___', '<div style="color:#000000"><b>Admin</b>' . ___CONF_TITULO_SISTEMA___ . '</a></div>');
-define('___CONF_LOGIN_FOOTER___', '<div style="text-align: center; margin-top: 5px; font-size: 0.8em;"><a style="color:#ffffff">ENIO MARCELO</a><p><a style="color:#ffffff">&copy 2017</a></p></div>');
-
-/* LOGIN - CHANGE PASSWORD */
-define('___CONF_LOGIN_CHANGE_PASS_BG_IMAGE___', 'style="background: url(assets/img/bg-login.jpg) no-repeat center center; background-size:cover"');
-define('___CONF_LOGIN_CHANGE_PASS_LOGO___', '<div style="color:#000000"><b>Admin</b>' . ___CONF_TITULO_SISTEMA___ . '</a></div>');
-define('___CONF_LOGIN_CHANGE_PASS_FOOTER___', '<div style="text-align: center; margin-top: 5px; font-size: 0.8em;"><a style="color:#ffffff">ENIO MARCELO</a><p><a style="color:#ffffff">&copy 2017</a></p></div>');
 
 /**
  * ========================================================================================================================================================================
- * END SISTEMA
+ * END PATHs
  * ========================================================================================================================================================================
  */
 /**
@@ -62,29 +47,6 @@ define("___CONF_UPLOAD_MEDIA_DIR___", "medias/");
 /**
  * ========================================================================================================================================================================
  * END UPLOAD
- * ========================================================================================================================================================================
- */
-/**
- * ========================================================================================================================================================================
- * PARA ENVIAR EMAIL PELO SISTEMA
- * ========================================================================================================================================================================
- */
-define('___CONF_EMAIL_SMTP_HOST___', 'smtp.sendgrid.net');
-define('___CONF_EMAIL_SMTP_PORT___', '587');
-define('___CONF_EMAIL_SMTP_PROTOCOL___', 'smtp');
-define('___CONF_EMAIL_SMTP_TIMEOUT___', '60');
-define('___CONF_EMAIL_SMTP_CRYPTO___', 'TLS'); //SSL ou TLS
-
-define('___CONF_EMAIL_SMTP_CHARSET___', 'utf-8');
-define('___CONF_EMAIL_SMTP_NEWLINE___', '\r\n');
-define('___CONF_EMAIL_SMTP_VALIDATION___', '');
-
-define('___CONF_EMAIL_SMTP_USER___', 'apikey');
-define('___CONF_EMAIL_SMTP_PASS___', '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');
-define('___CONF_EMAIL_FROM_EMAIL___', 'no-reply@eniomarcelo.com.br');
-/**
- * ========================================================================================================================================================================
- * END PARA ENVIAR EMAIL PELO SISTEMA
  * ========================================================================================================================================================================
  */
 /**
@@ -122,3 +84,9 @@ define('___MSG_AUDITORIA_NOT_DELETE_RELAT_REGISTRO___', 'Registro não pode ser 
  * END MENSAGENS DO SISTEMA
  * ========================================================================================================================================================================
  */
+
+
+/**
+ * ARQUIVO INDEX.HTML DEFAULT Directory access is forbidden
+ */
+define('___DEFAULT_FILE_INDEX_CONTENT___', 'PCFET0NUWVBFIGh0bWw+DQo8aHRtbD4NCjxoZWFkPg0KCTx0aXRsZT40MDMgRm9yYmlkZGVuPC90aXRsZT4NCjwvaGVhZD4NCjxib2R5Pg0KDQo8cD5EaXJlY3RvcnkgYWNjZXNzIGlzIGZvcmJpZGRlbi48L3A+DQoNCjwvYm9keT4NCjwvaHRtbD4=');
