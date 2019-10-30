@@ -1973,3 +1973,21 @@ function bz_get_gravatar($email, $s = 80, $d = 'mp', $r = 'g', $img = false, $at
     }
     return $url;
 }
+
+/**
+ * REMOVE LINHAS EM BRANCO DE UM ARQUIVO
+ * 
+ * @param type $string
+ * @return mixed
+ */
+function bz_removeEmptyLines($string) {
+
+    if (empty($string)) {
+        return false;
+    }
+
+    $string = remove_invisible_characters($string);
+    $string = preg_replace("/(^[\r\n]*|[\r\n]+)[\s\t]*[\r\n]+/", "\n", $string);
+
+    return $string;
+}

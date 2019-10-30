@@ -3491,7 +3491,7 @@ class ProjectbuildCrud extends MY_Controller {
         $this->_dadosController = str_replace('{{controller-metodos-php}}', $this->_controller_metodos_php, $this->_dadosController);
 
         /* GERA O ARQUIVO controller DO APP BLANK */
-        write_file($this->_directory . '/controllers/' . $this->_app_nome . '.php', $this->_dadosController);
+        write_file($this->_directory . '/controllers/' . $this->_app_nome . '.php', bz_removeEmptyLines($this->_dadosController));
         /* END GERA O ARQUIVO controller DO APP BLANK */
 
         $this->_dadosController = '';
@@ -3561,7 +3561,7 @@ class ProjectbuildCrud extends MY_Controller {
         $this->_dadosController = str_replace('{{blank-code}}', $this->_blankCode, $this->_dadosController);
 
         /* GERA O ARQUIVO controller DO APP BLANK */
-        write_file($this->_directory . '/views/v' . $this->_app_nome . '.php', $this->_dadosController);
+        write_file($this->_directory . '/views/v' . $this->_app_nome . '.php', bz_removeEmptyLines($this->_dadosController));
         /* END GERA O ARQUIVO controller DO APP BLANK */
 
         $this->_dadosController = '';
@@ -3702,7 +3702,7 @@ class ProjectbuildCrud extends MY_Controller {
         /* END EXPORT REPORT */
 
         /* GERA O ARQUIVO controller DA APLICAÇÃO */
-        write_file($this->_directory . '/controllers/' . $this->_app_nome . '.php', $this->_dadosController);
+        write_file($this->_directory . '/controllers/' . $this->_app_nome . '.php', bz_removeEmptyLines($this->_dadosController));
         /* END GERA O ARQUIVO controller DA APLICAÇÃO */
 
         $this->_dadosController = '';
@@ -3737,7 +3737,7 @@ class ProjectbuildCrud extends MY_Controller {
         $this->_dadosModel = str_replace('{{models-metodos-php}}', $this->_models_metodos_php, $this->_dadosModel);
 
         /* GERA O ARQUIVO model DA APLICAÇÃO */
-        write_file($this->_directory . '/models/' . $this->_app_nome . '_model.php', $this->_dadosModel);
+        write_file($this->_directory . '/models/' . $this->_app_nome . '_model.php', bz_removeEmptyLines($this->_dadosModel));
         /* END GERA O ARQUIVO model DA APLICAÇÃO */
 
         $this->_dadosModel = '';
@@ -3797,7 +3797,7 @@ class ProjectbuildCrud extends MY_Controller {
 
 
         /* GERA O ARQUIVO VIEW gridlist DA APLICAÇÃO */
-        write_file($this->_directory . '/views/v' . $this->_app_nome . '.php', $this->_dadosView);
+        write_file($this->_directory . '/views/v' . $this->_app_nome . '.php', bz_removeEmptyLines($this->_dadosView));
         /* EDND GERA O ARQUIVO VIEW gridlist DA APLICAÇÃO */
 
         $this->_dadosView = '';
@@ -3811,7 +3811,7 @@ class ProjectbuildCrud extends MY_Controller {
         if ($this->_gridListCodeEditorCSS) {
             $_dados = fopen($this->_directory . '/views/css/css-gridlist.php', 'w');
             fwrite($_dados, "<?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>" . PHP_EOL . PHP_EOL);
-            fwrite($_dados, $this->_gridListCodeEditorCSS);
+            fwrite($_dados, bz_removeEmptyLines($this->_gridListCodeEditorCSS));
             fclose($_dados);
         } else {
             $_dados = fopen($this->_directory . '/views/css/css-gridlist.php', 'w');
@@ -3829,7 +3829,7 @@ class ProjectbuildCrud extends MY_Controller {
         if ($this->_gridListCodeEditorJS) {
             $_dados = fopen($this->_directory . '/views/js/js-gridlist.php', 'w');
             fwrite($_dados, "<?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>" . PHP_EOL . PHP_EOL);
-            fwrite($_dados, $this->_gridListCodeEditorJS);
+            fwrite($_dados, bz_removeEmptyLines($this->_gridListCodeEditorJS));
             fclose($_dados);
         } else {
             $_dados = fopen($this->_directory . '/views/js/js-gridlist.php', 'w');
@@ -3893,7 +3893,7 @@ class ProjectbuildCrud extends MY_Controller {
 
 
         /* GERA O ARQUIVO VIEW formadd DA APLICAÇÃO */
-        write_file($this->_directory . '/views/v' . $this->_app_nome . 'FormAdd.php', $this->_dadosFormAdd);
+        write_file($this->_directory . '/views/v' . $this->_app_nome . 'FormAdd.php', bz_removeEmptyLines($this->_dadosFormAdd));
         /* END GERA O ARQUIVO VIEW formadd DA APLICAÇÃO */
 
 
@@ -3909,7 +3909,7 @@ class ProjectbuildCrud extends MY_Controller {
         if ($this->_formAddCodeEditorCSS) {
             $_dados = fopen($this->_directory . '/views/css/css-formAdd.php', 'w');
             fwrite($_dados, "<?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>" . PHP_EOL . PHP_EOL);
-            fwrite($_dados, $this->_formAddCodeEditorCSS);
+            fwrite($_dados, bz_removeEmptyLines($this->_formAddCodeEditorCSS));
             fclose($_dados);
         } else {
             $_dados = fopen($this->_directory . '/views/css/css-formAdd.php', 'w');
@@ -3927,7 +3927,7 @@ class ProjectbuildCrud extends MY_Controller {
         if ($this->_formAddCodeEditorJS) {
             $_dados = fopen($this->_directory . '/views/js/js-formAdd.php', 'w');
             fwrite($_dados, "<?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>" . PHP_EOL . PHP_EOL);
-            fwrite($_dados, $this->_formAddCodeEditorJS);
+            fwrite($_dados, bz_removeEmptyLines($this->_formAddCodeEditorJS));
             fclose($_dados);
         } else {
             $_dados = fopen($this->_directory . '/views/js/js-formAdd.php', 'w');
@@ -3945,7 +3945,7 @@ class ProjectbuildCrud extends MY_Controller {
         if ($this->_formAddEditConfigInputMask) {
             $_dados = fopen($this->_directory . '/views/js/js-mask-formAdd.php', 'w');
             fwrite($_dados, "<?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>" . PHP_EOL . PHP_EOL);
-            fwrite($_dados, $this->_formAddEditConfigInputMask);
+            fwrite($_dados, bz_removeEmptyLines($this->_formAddEditConfigInputMask));
             fclose($_dados);
         } else {
             $_dados = fopen($this->_directory . '/views/js/js-mask-formAdd.php', 'w');
@@ -4021,7 +4021,7 @@ class ProjectbuildCrud extends MY_Controller {
         if ($this->_formEditCodeEditorCSS) {
             $_dados = fopen($this->_directory . '/views/css/css-formEdit.php', 'w');
             fwrite($_dados, "<?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>" . PHP_EOL . PHP_EOL);
-            fwrite($_dados, $this->_formEditCodeEditorCSS);
+            fwrite($_dados, bz_removeEmptyLines($this->_formEditCodeEditorCSS));
             fclose($_dados);
         } else {
             $_dados = fopen($this->_directory . '/views/css/css-formEdit.php', 'w');
@@ -4039,7 +4039,7 @@ class ProjectbuildCrud extends MY_Controller {
         if ($this->_formEditCodeEditorJS) {
             $_dados = fopen($this->_directory . '/views/js/js-formEdit.php', 'w');
             fwrite($_dados, "<?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>" . PHP_EOL . PHP_EOL);
-            fwrite($_dados, $this->_formEditCodeEditorJS);
+            fwrite($_dados, bz_removeEmptyLines($this->_formEditCodeEditorJS));
             fclose($_dados);
         } else {
             $_dados = fopen($this->_directory . '/views/js/js-formEdit.php', 'w');
@@ -4057,7 +4057,7 @@ class ProjectbuildCrud extends MY_Controller {
         if ($this->_formAddEditConfigInputMask) {
             $_dados = fopen($this->_directory . '/views/js/js-mask-formEdit.php', 'w');
             fwrite($_dados, "<?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>" . PHP_EOL . PHP_EOL);
-            fwrite($_dados, $this->_formAddEditConfigInputMask);
+            fwrite($_dados, bz_removeEmptyLines($this->_formAddEditConfigInputMask));
             fclose($_dados);
         } else {
             $_dados = fopen($this->_directory . '/views/js/js-mask-formEdit.php', 'w');
@@ -4073,7 +4073,7 @@ class ProjectbuildCrud extends MY_Controller {
 
 
         /* GERA O ARQUIVO VIEW formedit DA APLICAÇÃO */
-        write_file($this->_directory . '/views/v' . $this->_app_nome . 'FormEdit.php', $this->_dadosFormEdit);
+        write_file($this->_directory . '/views/v' . $this->_app_nome . 'FormEdit.php', bz_removeEmptyLines($this->_dadosFormEdit));
         /* END GERA O ARQUIVO VIEW formedit DA APLICAÇÃO */
 
         $this->_dadosFormEdit = '';
