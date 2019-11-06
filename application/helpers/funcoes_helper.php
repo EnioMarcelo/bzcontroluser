@@ -461,10 +461,10 @@ function bz_filter_array($_p = array()) {
  * @param string $include_letter = false            Se vai ter letras na string
  * @param string $include_numbers = true            Se vai ter números na string
  * @param string $include_special_chars = false     Se vai ter caracteres especiais na string
- *
+ * @return type
  */
 function mc_random_number($chars_min = 6, $chars_max = 6, $use_upper_case = false, $include_letter = false, $include_numbers = true, $include_special_chars = false) {
-    $length = rand($chars_min, $chars_max);
+    $length = mt_rand($chars_min, $chars_max);
     $selection = '';
     if ($include_letter) {
         $selection .= "aeubcdefgh";
@@ -478,7 +478,7 @@ function mc_random_number($chars_min = 6, $chars_max = 6, $use_upper_case = fals
 
     $_string = "";
     for ($i = 0; $i < $length; $i++) {
-        $current_letter = $use_upper_case ? (rand(0, 1) ? strtoupper($selection[(rand() % strlen($selection))]) : $selection[(rand() % strlen($selection))]) : $selection[(rand() % strlen($selection))];
+        $current_letter = $use_upper_case ? (mt_rand(0, 1) ? strtoupper($selection[(mt_rand() % strlen($selection))]) : $selection[(mt_rand() % strlen($selection))]) : $selection[(mt_rand() % strlen($selection))];
 
         if ($use_upper_case):
             $current_letter = strtoupper($current_letter);
@@ -895,49 +895,39 @@ function bz_delete_file_for_expired_lifetime($_source_dir, $_minutes = 1) {
 /**
  * FUNÇÃO QUE DELETA ARQUIVOS QUE ESTÃO SEM CADASTRO EM UMA TABELA, ÓRFÃOS.
  *
- * Os parametros são passados em array(''=>'').
- *
- * @param string $_param['path_file']            Caminho onde está o arquivo
- * @param string $_param['table_name']           Tabela que será procurado o arquivo
- * @param string $_param['field_name']           Nome do campo que está gravado o nome doarquivo
- *
- * @return void
+ * @param string $_path_file            Caminho absoluto onde está o arquivo
+ * @param string $_table_name           Tabela onde será procurado o arquivo
+ * @param string $_field_name           Nome do campo onde está gravado o nome do arquivo
  *
  */
-function bz_delete_files_orphans($_param = array()) {
+function bz_delete_files_orphans($_path_file, $_table_name, $_field_name) {
 
     $CI = & get_instance();
+    $CI->load->helper('directory');
 
-    $_directory = $_param['path_file'];
-    $_scan = glob($_directory);
-    $_scan = array_map('strtolower', $_scan);
-    $_r = '';
+    $_scan = directory_map($_path_file);
+    $_scan = array_diff($_scan, ['.', '..', 'index.html']);
 
-    foreach ($_scan as $key => $file):
+    foreach ($_scan as $key => $file) {
 
-        $_r = explode('/', $file);
-        if (!in_array("index.html", $_r) && !in_array("index.php", $_r)):
+        /*
+         * PROCURA NA TABELA O NOME DO ARQUIVO
+         */
+        $termosDB = array();
+        $termosDB = 'WHERE ' . $_field_name . ' LIKE "%' . $file . '%" LIMIT 1';
+        $result = $CI->read->exec($_table_name, $termosDB);
+
+        if ($result->num_rows() == 0) {
             /*
-             * PROCURA NA TABELA O NOME DO ARQUIVO
+             * SE NÃO ENCONTROU NA TABELA, APAGA O ARQUIVO.
              */
-            $termosDB = array();
-            $termosDB = 'WHERE ' . $_param['field_name'] . ' = "' . $_r[1] . '" LIMIT 1';
-            $result = $CI->read->exec($_param['table_name'], $termosDB);
+            $_filepath = $_path_file . $file;
 
-            if ($result->num_rows() == 0):
-                /*
-                 * SE NÃO ENCONTROU NA TABELA, APAGA O ARQUIVO.
-                 */
-                $_filepath = $_r[0] . '/' . $_r[1];
-                if (is_file($_filepath)):
-                    unlink($_filepath);
-                endif;
-
-            endif;
-
-        endif;
-
-    endforeach;
+            if (is_file($_filepath)) {
+                unlink($_filepath);
+            }
+        }
+    }
 }
 
 //END bz_delete_files_orphans()
@@ -1752,10 +1742,12 @@ function bz_remove_strip_tags_content($string) {
  */
 function bz_upload_file($_file_name, $_upload_path, $_allowed_types, $_max_size = 1024, $_max_width = 0, $_max_height = 0) {
 
+    /* VALIDATION UPLOAD FILE */
     if (empty($_file_name)) {
         $_error['error']['message'] = 'Nenhum arquivo enviado para Upload.';
         return $_error;
     }
+    /* END VALIDATION UPLOAD FILE */
 
     $CI = & get_instance();
 

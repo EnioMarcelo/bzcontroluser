@@ -38,6 +38,75 @@
         $('#modal-aguarde').modal('show');
     }
 
+
+
+
+
+    /**
+     * 
+     * FUNCTION DELETE IMAGE AJAX - MULTI UPLOAD IMAGE
+     */
+    $(function () {
+
+        $('.j-btn-del-image').on('click', function () {
+
+            var _image = $(this);
+            var t = 'Deseja excluir esta imagem ?';
+
+            modalAguardeOn();
+
+            swal({
+                title: "ATENÇÃO",
+                text: t,
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            })
+                    .then((willDelete) => {
+                        if (willDelete) {
+
+                            /**
+                             * MACRO AJAX
+                             */
+                            var _method = '/del_image';
+                            var _route = '<?= site_url() . $this->router->fetch_class(); ?>' + _method;
+                            var _data_json = {'id': _image.data('id'),
+                                'image': _image.data('image')
+                            };
+                            mc_ajax_post(_route, _data_json, 'retorno_del_imagem');
+                            /** END MACRO AJAX */
+
+                            if (response_ajax['retorno_del_imagem'] == 'OK') {
+                                _image.parent().fadeOut(500, function () {
+                                    _image.remove();
+                                });
+                            }
+
+                            modalAguardeOff();
+
+                        } else {
+
+                            modalAguardeOff();
+
+                        }
+                    });
+
+        });
+
+    });
+
+    /* END FUNCTION DELETE IMAGE AJAX - MULTI UPLOAD IMAGE */
+
+
+
+
+
+
+
+
+
+
+
     /**
      * 
      * FUNÇÃO QUE DISPARA UM AJAX POST
@@ -103,7 +172,6 @@
      *
      */
     var response_ajax = new Array();
-
     var mc_ajax_post = function (_url, _data, _arr) {
 
         $.ajax({
@@ -136,7 +204,6 @@
                 //data
                 if (response.data) {
                     response_ajax[_arr] = response.data;
-
                 }
 
 
@@ -191,12 +258,9 @@
                 if (response.message && response.message.triggernotifi) {
 
                     var _param = [];
-
                     _param['color'] = response.message.triggernotifi.tipo;
                     _param['title'] = response.message.triggernotifi.mensagem;
                     _param['timer'] = response.message.triggernotifi.timer;
-
-
                     if (_param['color'] == 'undefined' || _param['color'] == null || _param['color'] == '') {
                         _param['color'] = 'info';
                     }
@@ -222,7 +286,6 @@
                     var title = response.message.nice.title;
                     var position = response.message.nice.position;
                     var duration = response.message.nice.duration;
-
                     if (text == 'undefined' || text == null) {
                         text = 'Faltou informar o texto.';
                     }
@@ -270,7 +333,6 @@
                     }
 
                     return;
-
                 }//end message nice
 
             },
@@ -636,18 +698,31 @@
 
             e.preventDefault();
             var _action = $(this).parent().data('action');
-
             window.location.href = _action;
-
         });
     });
     //END GRID LIST LINE CLICK EDIT
 
 
+    // VALIDA A QUANTIDADE DE ARQUIVOS QUE O SERVIDOR PERMITE SER ENVIADO PARA UPLOAD
+    $(function () {
+        $("input[type='file']").on('change', function (e) {
+            e.preventDefault();
+            var $fileUpload = $(this);
+            var message = "Quantidade máxima permitida de upload para este servidor é de <?= ini_get('max_file_uploads'); ?> arquivos.";
+
+            if (parseInt($fileUpload.get(0).files.length) > <?= ini_get('max_file_uploads'); ?>) {
+                swal('ATENÇÃO !!!', message, 'error');
+                $fileUpload.val('');
+                modalAguardeOff();
+            }
+        });
+    });
+    // END VALIDA A QUANTIDADE DE ARQUIVOS QUE O SERVIDOR PERMITE SER ENVIADO PARA UPLOAD
+
+
+
+
+
 </script>
-
-
-
-
-
 

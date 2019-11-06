@@ -292,6 +292,7 @@
                                 <select class="form-control input-sm" name="grid_list_field_type_modal_image">
                                     <option value="icon-link">Icon Link</option>
                                     <option value="thumb">Thumbnail</option>
+                                    <option value="multi-upload">Multi Upload</option>
                                 </select>
                             </div>
 

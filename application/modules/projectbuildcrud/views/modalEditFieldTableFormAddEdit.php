@@ -401,12 +401,32 @@
                                     </div>
                                 </div>
 
-
-
-
-
-
                             </fieldset>
+
+
+                            <!--MULTI UPLOAD DE IMAGEM-->
+                            <fieldset id='id-fildset-active-multi-upload-imagem'>
+                                <legend class="text-center"></legend>
+
+                                <div class="form-group col-bg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <label>Multi Upload:</label>
+                                    <div class="input-group col-bg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <input type="checkbox" class="form-control input-sm btn_form_add_edit_active_multi_upload_imagem" data-toggle="toggle" data-on="ON" data-off="OFF" name="form_add_edit_active_multi_upload_imagem">
+                                    </div>
+                                </div>
+                            </fieldset>
+
+                            <fieldset class="" style="margin-top:-25px;">
+                                <legend class="text-center" style="border-bottom:none;"></legend>
+
+                                <div class="form-group col-bg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <label>Quantidade máxima de imagem para upload:</label>
+                                    <div class="input-group col-bg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <input type="number" class="form-control input-sm" name="form_add_edit_active_multi_upload_imagem_max_file" value="<?= ini_get('max_file_uploads'); ?>">
+                                    </div>
+                                </div>
+                            </fieldset>
+                            <!--MULTI UPLOAD DE IMAGEM-->
                         </div>
                         <!--END COLUNA 2-->
 
@@ -508,7 +528,7 @@
                                 </div>
 
                                 <div class="form-group col-bg-12 col-md-12 col-sm-12 col-xs-12">
-                                    <label>sssExtensões Permitidas:</label>
+                                    <label>Extensões Permitidas:</label>
                                     <div class="input-group col-bg-12 col-md-12 col-sm-12 col-xs-12">
                                         <input class="form-control input-sm" type="text" name="form_add_edit_field_upload_imagem_extensao_permitida" value="">
                                     </div>
@@ -553,14 +573,14 @@
 
                             <!--UPLOAD ARQUIVO-->
                             <div id="id-div-upload-arquivo" class="col-bg-12 col-md-12 col-sm-12 col-xs-12">
-                                
+
                                 <div class="form-group col-bg-12 col-md-12 col-sm-12 col-xs-12">
                                     <label>Diretório:</label>
                                     <div class="input-group col-bg-12 col-md-12 col-sm-12 col-xs-12">
                                         <input class="form-control input-sm" type="text" name="form_add_edit_field_upload_arquivo_folder" value="">
                                     </div>
                                 </div>
-                                
+
                                 <div class="form-group col-bg-12 col-md-12 col-sm-12 col-xs-12">
                                     <label>Extensões Permitidas:</label>
                                     <div class="input-group col-bg-12 col-md-12 col-sm-12 col-xs-12">
@@ -616,7 +636,6 @@
 
         var csrfName = '<?php echo $this->security->get_csrf_token_name(); ?>';
         var csrfHash = '';
-
         if (csrfHash === '') {
             csrfHash = '<?php echo $this->security->get_csrf_hash(); ?>';
         }
@@ -630,7 +649,6 @@
 
             csrfHash = $("input[name='<?php echo $this->security->get_csrf_token_name(); ?>']").val();
             $("input[name='<?php echo $this->security->get_csrf_token_name(); ?>']").attr('value', '<?php echo $this->security->get_csrf_hash(); ?>');
-
             $.ajax({
                 type: "POST",
                 url: "<?= site_url($this->router->fetch_class() . '/setup_formaddedit'); ?>",
@@ -651,7 +669,9 @@
                     /* END RENEW TOKEN CSRF */
 
 
-                    //RESET CAMPOS
+                    /**
+                     *  RESET CAMPOS 
+                     */
                     $('input[name="form_add_edit_field_show"]').filter(':radio').iCheck('uncheck');
                     $('select[name="form_add_edit_field_type"]').val('text');
                     $('select[name="form_add_edit_field_read_only_in_form"]').val('todos');
@@ -659,6 +679,8 @@
                     $('select[name="form_add_edit_field_hidden"]').val('');
                     $('select[name="form_add_edit_field_required_in_form"]').val('todos');
                     $('select[name="form_add_edit_field_required"]').val('');
+                    $('input[name="form_add_edit_active_multi_upload_imagem"]').bootstrapToggle('off');
+                    $('input[name="form_add_edit_active_multi_upload_imagem_max_file"]').val('');
                     $('input[name="form_add_edit_field_mask"]').val('');
                     $('textarea[name="form_add_edit_field_mask_complement"]').val('');
                     $('input[name="form_add_edit_field_label"]').val('');
@@ -672,8 +694,8 @@
                     $('input[name="form_add_edit_field_min_length"]').val('');
                     $('input[name="form_add_edit_field_max_length"]').val('');
                     $('input[name="form_add_edit_field_editorhtml_ckeditor_line_height"]').val('');
-
                     $('#id-div-upload-imagem').addClass('hide');
+                    $('#id-fildset-active-multi-upload-imagem').addClass('hide');
                     $('input[name="form_add_edit_field_upload_imagem_folder"]').val('');
                     $('input[name="form_add_edit_field_upload_imagem_extensao_permitida"]').val('');
                     $('input[name="form_add_edit_field_upload_imagem_tamanho_maximo"]').val('');
@@ -683,7 +705,6 @@
                     $('.btn_form_add_edit_field_hidden').parent().parent().parent().removeClass('hide');
                     $('.btn_form_add_edit_field_read_only').parent().parent().parent().removeClass('hide');
                     $('select[name="form_add_edit_field_required_in_form"]').removeClass('hide');
-
                     $('#id-div-upload-arquivo').addClass('hide');
                     $('input[name="form_add_edit_field_upload_arquivo_folder"]').val('');
                     $('input[name="form_add_edit_field_upload_arquivo_extensao_permitida"]').val('');
@@ -692,15 +713,20 @@
                     $('.btn_form_add_edit_field_hidden').parent().parent().parent().removeClass('hide');
                     $('.btn_form_add_edit_field_read_only').parent().parent().parent().removeClass('hide');
                     $('select[name="form_add_edit_field_required_in_form"]').removeClass('hide');
-
-
                     if (_primary_key == 1) {
                         $('.j-flag-pk').show();
                     } else {
                         $('.j-flag-pk').hide();
                     }
+                    /* END RESET CAMPOS */
 
-                    //CARREGA CAMPOS
+
+
+
+
+                    /**
+                     * CARREGA CAMPOS
+                     */
                     if (result.form_add_edit_field_show === 'on') {
                         $('input[id="form_add_edit_field_show_on"]').filter(':radio').iCheck('check');
                     } else {
@@ -711,8 +737,6 @@
                     $('select[name="form_add_edit_field_read_only_in_form"]').removeAttr('selected').val(result.form_add_edit_field_read_only_in_form).attr('selected', true);
                     $('select[name="form_add_edit_field_hidden_in_form"]').removeAttr('selected').val(result.form_add_edit_field_hidden_in_form).attr('selected', true);
                     $('select[name="form_add_edit_field_required_in_form"]').removeAttr('selected').val(result.form_add_edit_field_required_in_form).attr('selected', true);
-
-
                     //INPUT MASK
                     if (result.form_add_edit_field_type == 'text' || result.form_add_edit_field_type == 'number-decimal') {
                         $('input[name="form_add_edit_field_mask"]').parent().removeClass('hide');
@@ -761,6 +785,7 @@
                     //INPUT UPLOAD IMAGEM upload-imagem
                     if (result.form_add_edit_field_type == 'upload-imagem') {
                         $('#id-div-upload-imagem').removeClass('hide');
+                        $('#id-fildset-active-multi-upload-imagem').removeClass('hide');
                         $('input[name="form_add_edit_field_upload_imagem_folder"]').val(result.form_add_edit_field_upload_imagem_folder);
                         $('input[name="form_add_edit_field_upload_imagem_extensao_permitida"]').val(result.form_add_edit_field_upload_imagem_extensao_permitida);
                         $('input[name="form_add_edit_field_upload_imagem_tamanho_maximo"]').val(result.form_add_edit_field_upload_imagem_tamanho_maximo);
@@ -770,7 +795,22 @@
                         $('.btn_form_add_edit_field_hidden').parent().parent().parent().addClass('hide');
                         $('.btn_form_add_edit_field_read_only').parent().parent().parent().addClass('hide');
                         $('select[name="form_add_edit_field_required_in_form"]').addClass('hide');
+                        // MULTI UPLOAD
+                        if (result.form_add_edit_active_multi_upload_imagem === 'on') {
+                            $('input[name="form_add_edit_active_multi_upload_imagem"]').bootstrapToggle('on');
+                            $('input[name="form_add_edit_active_multi_upload_imagem_max_file"]').val(result.form_add_edit_active_multi_upload_imagem_max_file);
+                            $('input[name="form_add_edit_active_multi_upload_imagem_max_file"]').parent().parent().parent().removeClass('hide');
+                        } else {
+                            $('input[name="form_add_edit_active_multi_upload_imagem"]').bootstrapToggle('off');
+                            $('input[name="form_add_edit_active_multi_upload_imagem_max_file"]').parent().parent().parent().addClass('hide');
+                            $('input[name="form_add_edit_active_multi_upload_imagem_max_file"]').val('<?= ini_get('max_file_uploads'); ?>');
+                        }
 
+                    } else {
+                        // MULTI UPLOAD
+                        $('input[name="form_add_edit_active_multi_upload_imagem"]').bootstrapToggle('off');
+                        $('input[name="form_add_edit_active_multi_upload_imagem_max_file"]').parent().parent().parent().addClass('hide');
+                        $('input[name="form_add_edit_active_multi_upload_imagem_max_file"]').val('<?= ini_get('max_file_uploads'); ?>');
                     }
 
                     //INPUT UPLOAD ARQUIVO upload-arquivo
@@ -783,24 +823,20 @@
                         $('.btn_form_add_edit_field_hidden').parent().parent().parent().addClass('hide');
                         $('.btn_form_add_edit_field_read_only').parent().parent().parent().addClass('hide');
                         $('select[name="form_add_edit_field_required_in_form"]').addClass('hide');
-
                     }
 
 
                     if (result.form_add_edit_field_type === 'select-manual') {
                         $('textarea[name="form_add_edit_field_value_select_manual"]').parent().parent().removeClass('hide');
                         $('textarea[name="form_add_edit_field_value_select_manual"]').val(result.form_add_edit_field_value_select_manual);
-
                     } else {
                         $('input[name="form_add_edit_field_value_select_manual"]').parent().parent().addClass('hide');
                         $('input[name="form_add_edit_field_value_select_manual"]').val('');
-
                     }
 
                     if (result.form_add_edit_field_type === 'select-dinamic') {
                         $('textarea[name="form_add_edit_field_value_select_dinamic"]').parent().parent().removeClass('hide');
                         $('textarea[name="form_add_edit_field_value_select_dinamic"]').val(result.form_add_edit_field_value_select_dinamic);
-
                     } else {
                         $('textarea[name="form_add_edit_field_value_select_dinamic"]').parent().parent().addClass('hide');
                         $('textarea[name="form_add_edit_field_value_select_dinamic"]').val('');
@@ -809,7 +845,6 @@
                     if (result.form_add_edit_field_type === 'select-multiple-manual') {
                         $('textarea[name="form_add_edit_field_value_select_multiple_manual"]').parent().parent().removeClass('hide');
                         $('textarea[name="form_add_edit_field_value_select_multiple_manual"]').val(result.form_add_edit_field_value_select_multiple_manual);
-
                     } else {
                         $('textarea[name="form_add_edit_field_value_select_multiple_manual"]').parent().parent().addClass('hide');
                         $('textarea[name="form_add_edit_field_value_select_multiple_manual"]').val('');
@@ -818,7 +853,6 @@
                     if (result.form_add_edit_field_type === 'select-multiple-dinamic') {
                         $('textarea[name="form_add_edit_field_value_select_multiple_dinamic"]').parent().parent().removeClass('hide');
                         $('textarea[name="form_add_edit_field_value_select_multiple_dinamic"]').val(result.form_add_edit_field_value_select_multiple_dinamic);
-
                     } else {
                         $('textarea[name="form_add_edit_field_value_select_multiple_dinamic"]').parent().parent().addClass('hide');
                         $('textarea[name="form_add_edit_field_value_select_multiple_dinamic"]').val('');
@@ -828,7 +862,6 @@
                     if (result.form_add_edit_field_type === 'radio-manual') {
                         $('textarea[name="form_add_edit_field_value_radiobutton_manual"]').parent().parent().removeClass('hide');
                         $('textarea[name="form_add_edit_field_value_radiobutton_manual"]').val(result.form_add_edit_field_value_radiobutton_manual);
-
                     } else {
                         $('textarea[name="form_add_edit_field_value_radiobutton_manual"]').parent().parent().addClass('hide');
                         $('textarea[name="form_add_edit_field_value_radiobutton_manual"]').val('');
@@ -838,7 +871,6 @@
                     if (result.form_add_edit_field_type === 'radio-dinamic') {
                         $('textarea[name="form_add_edit_field_value_radiobutton_dinamic"]').parent().parent().removeClass('hide');
                         $('textarea[name="form_add_edit_field_value_radiobutton_dinamic"]').val(result.form_add_edit_field_value_radiobutton_dinamic);
-
                     } else {
                         $('textarea[name="form_add_edit_field_value_radiobutton_dinamic"]').parent().parent().addClass('hide');
                         $('textarea[name="form_add_edit_field_value_radiobutton_dinamic"]').val('');
@@ -850,7 +882,6 @@
                         $('input[name="form_add_edit_field_value_checkbox_manual_off"]').parent().parent().removeClass('hide');
                         $('input[name="form_add_edit_field_value_checkbox_manual_on"]').val(result.form_add_edit_field_value_checkbox_manual_on);
                         $('input[name="form_add_edit_field_value_checkbox_manual_off"]').val(result.form_add_edit_field_value_checkbox_manual_off);
-
                     } else {
                         $('input[name="form_add_edit_field_value_checkbox_manual_on"]').parent().parent().addClass('hide');
                         $('input[name="form_add_edit_field_value_checkbox_manual_off"]').parent().parent().addClass('hide');
@@ -861,7 +892,6 @@
                     if (result.form_add_edit_field_type === 'checkbox-multiple-manual') {
                         $('textarea[name="form_add_edit_field_value_checkbox_multiple_manual"]').parent().parent().removeClass('hide');
                         $('textarea[name="form_add_edit_field_value_checkbox_multiple_manual"]').val(result.form_add_edit_field_value_checkbox_multiple_manual);
-
                     } else {
                         $('textarea[name="form_add_edit_field_value_checkbox_multiple_manual"]').parent().parent().addClass('hide');
                         $('textarea[name="form_add_edit_field_value_checkbox_multiple_manual"]').val('');
@@ -870,7 +900,6 @@
                     if (result.form_add_edit_field_type === 'checkbox-multiple-dinamic') {
                         $('textarea[name="form_add_edit_field_value_checkbox_multiple_dinamic"]').parent().parent().removeClass('hide');
                         $('textarea[name="form_add_edit_field_value_checkbox_multiple_dinamic"]').val(result.form_add_edit_field_value_checkbox_multiple_dinamic);
-
                     } else {
                         $('textarea[name="form_add_edit_field_value_checkbox_multiple_dinamic"]').parent().parent().addClass('hide');
                         $('textarea[name="form_add_edit_field_value_checkbox_multiple_dinamic"]').val('');
@@ -880,11 +909,8 @@
 
                     $('input[name="form_add_edit_field_mask"]').val(result.form_add_edit_field_mask);
                     $('textarea[name="form_add_edit_field_mask_complement"]').val(result.form_add_edit_field_mask_complement);
-
                     $('input[name="form_add_edit_field_label"]').val(result.form_add_edit_field_label);
-
                     $('input[name="form_add_edit_field_placeholder"]').val(result.form_add_edit_field_placeholder);
-
                     // HIDDEN
                     if (result.form_add_edit_field_hidden === 'on') {
                         $('input[name="form_add_edit_field_hidden"]').bootstrapToggle('on');
@@ -930,29 +956,23 @@
 
 
                     $('select[name="form_add_edit_field_column"]').removeAttr('selected').val(result.form_add_edit_field_column).attr('selected', true);
-
                     $('select[name="form_add_edit_field_convert_letter_into"]').removeAttr('selected').val(result.form_add_edit_field_convert_letter_into).attr('selected', true);
-
                     $('select[name="form_add_edit_field_type_characters"]').removeAttr('selected').val(result.form_add_edit_field_type_characters).attr('selected', true);
-
                     $('input[name="form_add_edit_field_min_length"]').val(result.form_add_edit_field_min_length);
-
                     $('input[name="form_add_edit_field_max_length"]').val(result.form_add_edit_field_max_length);
-
                     $('input[name="form_add_edit_field_max_length"]').val(result.form_add_edit_field_editorhtml_ckeditor_line_height);
-
                     $('#modal-btn-edit-field-table-formaddedit').css('display', 'block');
+                    /* END CARREGA CAMPOS */
 
                 }, //END success
                 complete: function (result) {
 
                     $('#modal-aguarde').modal('hide');
-
                 }, //END complete
                 error: function () {
                     notfit_msg_error('Ocorreu um ERRO Inesperado, Contacte o Administrador do Sistema.');
                 }//END error
-            });//END AJAX
+            }); //END AJAX
 
         }
 
@@ -960,7 +980,6 @@
         $(document).keyup(function (e) {
 
             var _visible_modal = $('#modal-btn-edit-field-table-formaddedit').is(":visible");
-
             if (e.which == 27) {
                 if (_visible_modal) {
                     $('#modal-btn-edit-field-table-formaddedit').fadeOut(100);
@@ -969,21 +988,40 @@
             }
 
         });
-
-
         //MODAL CLOSE
         $('.j_btn_modal_box_close').click(function () {
             $('#modal-btn-edit-field-table-formaddedit').fadeOut(100);
             hide_notifit_msg();
-        });//END $('.j_btn_modal_box_close').click()
+        }); //END $('.j_btn_modal_box_close').click()
 
 
 
+        /**
+         * QUANTO O BOTÃO MULTI UPLOAD IMAGEM FOR CLICADO
+         */
+        $('input[name="form_add_edit_active_multi_upload_imagem"]').change(function (e) {
+            var _clicked = $(this).parent().hasClass('off');
+            if (_clicked === true) {
+                $('input[name="form_add_edit_active_multi_upload_imagem_max_file"]').parent().parent().parent().addClass('hide');
 
-        //QUANDO O CAMPO Tipo do Campo É SELECIONADO
+            }
+
+            if (_clicked === false) {
+                $('input[name="form_add_edit_active_multi_upload_imagem_max_file"]').parent().parent().parent().removeClass('hide');
+
+            }
+
+            console.clear();
+            console.log('--> ' + _clicked);
+        }); // END QUANTO O BOTÃO MULTI UPLOAD IMAGEM FOR CLICADO
+
+
+
+        /**
+         * QUANDO O CAMPO Tipo do Campo É SELECIONADO
+         */
         $('select[name="form_add_edit_field_type"]').change(function (e) {
             var _selected = $(this).val();
-
             $('textarea[name="form_add_edit_field_value_select_manual"]').val('');
             $('textarea[name="form_add_edit_field_value_select_dinamic"]').val('');
             $('textarea[name="form_add_edit_field_value_select_multiple_manual"]').val('');
@@ -1004,9 +1042,9 @@
             $('input[name="form_add_edit_field_upload_imagem_folder"]').val('');
             $('input[name="form_add_edit_field_upload_imagem_extensao_permitida"]').val('');
             $('input[name="form_add_edit_field_upload_imagem_tamanho_maximo"]').val('');
-
             $('#id-div-upload-arquivo').addClass('hide');
             $('#id-div-upload-imagem').addClass('hide');
+            $('#id-fildset-active-multi-upload-imagem').addClass('hide');
             $('input[name="form_add_edit_field_placeholder"]').parent().removeClass('hide');
             $('.btn_form_add_edit_field_hidden').parent().parent().parent().removeClass('hide');
             $('.btn_form_add_edit_field_read_only').parent().parent().parent().removeClass('hide');
@@ -1015,8 +1053,6 @@
             $('input[name="form_add_edit_field_upload_imagem_extensao_permitida"]').parent().parent().parent().addClass('hide');
             $('input[name="form_add_edit_field_upload_arquivo_folder"]').parent().parent().parent().addClass('hide');
             $('input[name="form_add_edit_field_upload_arquivo_extensao_permitida"]').parent().parent().parent().addClass('hide');
-
-
             //INPUT MASK
             if (_selected == 'text' || _selected == 'number-decimal') {
                 $('input[name="form_add_edit_field_mask"]').parent().removeClass('hide');
@@ -1045,7 +1081,6 @@
                 $('input[name="form_add_edit_field_min_length"]').parent().parent().removeClass('hide');
             } else {
                 $('input[name="form_add_edit_field_min_length"]').parent().parent().addClass('hide');
-
             }
 
             //INPUT MAX LENGHT
@@ -1067,6 +1102,7 @@
             //INPUT UPLOAD IMAGEM upload-imagem
             if (_selected == 'upload-imagem') {
                 $('#id-div-upload-imagem').removeClass('hide');
+                $('#id-fildset-active-multi-upload-imagem').removeClass('hide');
                 $('input[name="form_add_edit_field_upload_imagem_folder"]').val('');
                 $('input[name="form_add_edit_field_upload_imagem_extensao_permitida"]').val('jpg|jpeg|gif|png');
                 $('input[name="form_add_edit_field_upload_imagem_tamanho_maximo"]').val('100');
@@ -1076,10 +1112,23 @@
                 $('.btn_form_add_edit_field_hidden').parent().parent().parent().addClass('hide');
                 $('.btn_form_add_edit_field_read_only').parent().parent().parent().addClass('hide');
                 $('select[name="form_add_edit_field_required_in_form"]').addClass('hide');
-
                 $('input[name="form_add_edit_field_upload_imagem_folder"]').parent().parent().parent().removeClass('hide');
                 $('input[name="form_add_edit_field_upload_imagem_extensao_permitida"]').parent().parent().parent().removeClass('hide');
+                // MULTI UPLOAD
+                if (result.form_add_edit_active_multi_upload_imagem === 'on') {
+                    $('input[name="form_add_edit_active_multi_upload_imagem"]').bootstrapToggle('on');
+                    $('input[name="form_add_edit_active_multi_upload_imagem_max_file"]').parent().parent().parent().removeClass('hide');
+                    $('input[name="form_add_edit_active_multi_upload_imagem_max_file"]').val(result.form_add_edit_active_multi_upload_imagem_max_file);
+                } else {
+                    $('input[name="form_add_edit_active_multi_upload_imagem"]').bootstrapToggle('off');
+                    $('input[name="form_add_edit_active_multi_upload_imagem_max_file"]').parent().parent().parent().addClass('hide');
+                    $('input[name="form_add_edit_active_multi_upload_imagem_max_file"]').val('<?= ini_get('max_file_uploads'); ?>');
+                }
 
+            } else {
+                $('input[name="form_add_edit_active_multi_upload_imagem"]').bootstrapToggle('off');
+                $('input[name="form_add_edit_active_multi_upload_imagem_max_file"]').parent().parent().parent().addClass('hide');
+                $('input[name="form_add_edit_active_multi_upload_imagem_max_file"]').val('<?= ini_get('max_file_uploads'); ?>');
             }
 
 
@@ -1096,17 +1145,13 @@
                 $('.btn_form_add_edit_field_hidden').parent().parent().parent().addClass('hide');
                 $('.btn_form_add_edit_field_read_only').parent().parent().parent().addClass('hide');
                 $('select[name="form_add_edit_field_required_in_form"]').addClass('hide');
-
                 $('input[name="form_add_edit_field_upload_arquivo_folder"]').parent().parent().parent().removeClass('hide');
                 $('input[name="form_add_edit_field_upload_arquivo_extensao_permitida"]').parent().parent().parent().removeClass('hide');
-
-
             }
 
 
             if (_selected == 'select-manual') {
                 $('textarea[name="form_add_edit_field_value_select_manual"]').parent().parent().removeClass('hide');
-
             } else {
                 $('textarea[name="form_add_edit_field_value_select_manual"]').parent().parent().addClass('hide');
             }
@@ -1171,17 +1216,13 @@
             }
 
         });
-
-
         //QUANDO ABRE A MODAL DE EDIÇÃO DOS INPUTS
         $('.j_btn_modal_edit_fields_table_formaddedit').click(function (e) {
             e.preventDefault();
-
             var _projeto_id = $(this).parent('tr:first').attr('rel-projeto-id');
             var _field_name = $(this).parent('tr:first').attr('id');
             var _primary_key = $(this).parent('tr:first').attr('rel-primary-key');
             var _screen_type = $(this).parent().parent().parent().attr('id');
-
             if (_screen_type === 'tableGridlistFormAddEdit') {
                 _screen_type = 'formaddedit';
             } else {
@@ -1189,28 +1230,22 @@
             }
 
             $('#form_add_edit_modal_field_name').html(_field_name);
-
             $('input[name="modal_projeto_id"]').val(_projeto_id);
             $('input[name="field_name"]').val(_field_name);
             $('input[name="screen_type"]').val(_screen_type);
             $('input[name="primary_key"]').val(_primary_key);
-
             get_dados(_screen_type, _projeto_id, _field_name, _primary_key);
-
-
-        });//END $('.j_btn_modal_edit_fields_table_formaddedit').click()
+        }); //END $('.j_btn_modal_edit_fields_table_formaddedit').click()
 
 
         //BUTTON READ ONLY / SOMENTE LEITURA CLICK
         $('input[name="form_add_edit_field_read_only"]').on('change', function (e) {
 
             var _r = $(this).parent().hasClass('off');
-
             var _r = $(this).parent().hasClass('off');
             if (_r === true) {
                 $('select[name="form_add_edit_field_read_only_in_form"]').val('todos');
                 $('select[name="form_add_edit_field_read_only_in_form"]').addClass('hide');
-
             } else {
                 $('select[name="form_add_edit_field_read_only_in_form"]').removeClass('hide');
                 //$('input[name="form_add_edit_field_required"]').bootstrapToggle('off');
@@ -1218,14 +1253,11 @@
             }
 
         });
-
-
         //BUTTON HIDE / OCULTO CLICK
         $('input[name="form_add_edit_field_hidden"]').on('change', function (e) {
 
             var _r = $(this).parent().hasClass('off');
             var _v = $(this).children().children().val();
-
             if (_r === true) {
                 $('select[name="form_add_edit_field_hidden_in_form"]').val('todos');
                 $('select[name="form_add_edit_field_hidden_in_form"]').addClass('hide');
@@ -1247,15 +1279,12 @@
         $('input[name="form_add_edit_field_required"]').on('change', function (e) {
 
             var _r = $(this).parent().hasClass('off');
-
             if (_r === true) {
                 $('select[name="form_add_edit_field_required_in_form"]').val('todos');
                 $('select[name="form_add_edit_field_required_in_form"]').addClass('hide');
-
                 //$('input[name="form_add_edit_field_required"]').parent().removeClass('disabled');
             } else {
                 $('select[name="form_add_edit_field_required_in_form"]').removeClass('hide');
-
                 //$('input[name="form_add_edit_field_required"]').bootstrapToggle('off');
                 //$('input[name="form_add_edit_field_required"]').parent().addClass('disabled');
             }
@@ -1271,31 +1300,22 @@
 //                }
 
         });
-
-
         //SUBMIT FORM formAddEdit
         $(".j_btn_save_form_formAddEdit").click(function (e) {
             e.preventDefault();
-
             var _btn_save = $(this);
             var _label_field_name = $('input[name="form_add_edit_field_label"]').val();
             var _field_name = $('#form_add_edit_modal_field_name').text();
-
             var _action = $('#formAddEdit').attr('action');
             var _data = $('#formAddEdit').serialize();
             var _dataArray = $('#formAddEdit').serializeArray();
-
             var _projeto_id = $('input[name="modal_projeto_id"]').val();
             var _screen_type = $('input[name="screen_type"]').val();
             var _primary_key = $('input[name="primary_key"]').val();
-
             btnDataObj = {};
-
             $(_dataArray).each(function (i, field) {
                 btnDataObj[field.name] = field.value;
             });
-
-
             //if (btnDataObj['form_add_edit_field_hidden'] === 'on' || btnDataObj['form_add_edit_field_read_only'] === 'on') {
 
             /*btnDataObj['form_add_edit_field_required'] = 'off';
@@ -1314,8 +1334,6 @@
 
 
             _data = btnDataObj;
-
-
             $.ajax({
                 type: "POST",
                 url: _action,
@@ -1324,7 +1342,6 @@
                 beforeSend: function () {
 
                     _btn_save.hide();
-
                 }, //END beforeSend
                 success: function (result) {
 
@@ -1335,7 +1352,6 @@
                         csrfHash = result.csrf_token;
                     }
                     $("input[name='<?php echo $this->security->get_csrf_token_name(); ?>']").attr('value', csrfHash);
-
                     /* END RENEW TOKEN CSRF */
 
                     if (result.return === 'SAVE-SETUP-FORMADDEDIT-OK') {
@@ -1347,7 +1363,6 @@
                             if ($(this).attr('id') == _field_name) {
 
                                 dataObj = {};
-
                                 $(_dataArray).each(function (i, field) {
                                     dataObj[field.name] = field.value;
                                 });
@@ -1359,7 +1374,7 @@
                                     $(this).children().first().next().children().addClass('text-green').removeClass('fa-toggle-off').addClass('fa-toggle-on');
                                 }
                             }
-                        });/*END MARCA REGISTRO OFF PARA MOSTRAR NA VIEW*/
+                        }); /*END MARCA REGISTRO OFF PARA MOSTRAR NA VIEW*/
 //                        notfit_msg_success('SETUP do Campo <b>' + _label_field_name + '</b> Atualizado com Sucesso.');
 
                         var param = [];
@@ -1367,11 +1382,7 @@
                         param['color'] = "success";
                         param['timer'] = 3000;
                         triggerNotify(param);
-
-
-
                         get_dados(_screen_type, _projeto_id, _field_name, _primary_key);
-
                     } else {
 
 //                        notfit_msg_error('Ocorreu um ERRO Inesperado, Contacte o Administrador do Sistema.' + result.return);
@@ -1389,7 +1400,6 @@
 
                     $('#modal-aguarde').modal('hide');
                     _btn_save.show();
-
                 }, //END complete
                 error: function (xhr, error) {
 
@@ -1416,14 +1426,13 @@
                     param['color'] = "error";
                     param['timer'] = 3000;
                     triggerNotify(param);
-
                 }//END error
-            });//END AJAX
+            }); //END AJAX
 
 
 
 
-        });//END $(".j_btn_save_form_GridList").click()
+        }); //END $(".j_btn_save_form_GridList").click()
 
 
     });

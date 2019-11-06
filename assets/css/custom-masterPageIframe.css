@@ -96,3 +96,12 @@ input[name=id] {
 
 }
 
+/**
+ * LIGHT BOX
+ */
+.thumbnail {
+    margin-bottom: 0px;
+}
+
+
+

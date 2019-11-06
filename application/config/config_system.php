@@ -26,3 +26,4 @@ $config['CONF_LOGIN_FOOTER'] = '<div style="text-align: center; margin-top: 5px;
 $config['CONF_LOGIN_CHANGE_PASS_BG_IMAGE'] = 'style="background: url(assets/img/bg-login.jpg) no-repeat center center; background-size:cover"';
 $config['CONF_LOGIN_CHANGE_PASS_LOGO'] = '<div style="color:#000000"><b>Admin</b>' . $config['CONF_TITULO_SISTEMA'] . '</a></div>';
 $config['CONF_LOGIN_CHANGE_PASS_FOOTER'] = '<div style="text-align: center; margin-top: 5px; font-size: 0.8em;"><a style="color:#ffffff">ENIO MARCELO</a><p><a style="color:#ffffff">&copy 2017</a></p></div>';
+

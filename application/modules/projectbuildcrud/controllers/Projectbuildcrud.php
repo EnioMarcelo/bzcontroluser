@@ -1772,8 +1772,10 @@ class ProjectbuildCrud extends MY_Controller {
 
                                             if ($_param_gridListField['grid_list_field_type_modal_image'] == 'icon-link') {
                                                 $this->_gridListFieldsTable .= '<td class="tdCl' . ucfirst($_row['field_name']) . ' ' . $_class . '" style="' . $_width_field . '"><?= mc_image_link_modal($_row["' . $_row['field_name'] . '"], "' . $_folderUploadImagem . '"); ?></td>' . PHP_EOL;
-                                            } else {
+                                            } else if ($_param_gridListField['grid_list_field_type_modal_image'] == 'thumb') {
                                                 $this->_gridListFieldsTable .= '<td class="tdCl' . ucfirst($_row['field_name']) . ' ' . $_class . '" style="' . $_width_field . '"><?= mc_image_thumb_modal($_row["' . $_row['field_name'] . '"], "' . $_folderUploadImagem . '"); ?></td>' . PHP_EOL;
+                                            } else if ($_param_gridListField['grid_list_field_type_modal_image'] == 'multi-upload') {
+                                                $this->_gridListFieldsTable .= '<td class="tdCl' . ucfirst($_row['field_name']) . ' ' . $_class . '" style="' . $_width_field . '"><?= mc_image_thumb_modal($_row["' . $_row['field_name'] . '"], "' . $_folderUploadImagem . '", "multi"); ?></td>' . PHP_EOL;
                                             }
                                         }
 
@@ -1867,21 +1869,21 @@ class ProjectbuildCrud extends MY_Controller {
                             endif;
 
                         endif;
-// END CAMPOS QUE SERÃO MOSTRADOS NA GRID LIST
-                        //                    echo '<br>--> ' . $_row['field_name'] . ' - ' . !empty($_param_gridListField['grid_list_aligne_label']) . ' - ' . $this->_primary_key_field;
+                        /* END CAMPOS QUE SERÃO MOSTRADOS NA GRID LIST */
+
 
                         /*
                          * CAMPOS QUE SERÃO MOSTRADOS NA EXPORT
                          */
                         if ($_param_gridListField['grid_list_export'] == 'on'):
 
-//CAMPOS VIRTUAIS
+                            /* CAMPOS VIRTUAIS */
                             if (!empty($_param_gridListField['grid_list_field_type'])):
                                 if ($_param_gridListField['grid_list_field_type'] == 'virtual'):
                                     $this->_gridListVirtualFieldsTable[] = $_row['field_name'];
                                 endif;
                             endif;
-//END CAMPOS VIRTUAIS
+                            /* END CAMPOS VIRTUAIS */
 
                             if (strtolower($_row['field_name']) == 'ativo'):
                                 $this->_gridListStatusDados = 'Y';
@@ -2265,43 +2267,158 @@ class ProjectbuildCrud extends MY_Controller {
 
                                 $_fileExtension = '.' . str_replace('|', ',.', $_param_formAddEditField['form_add_edit_field_upload_imagem_extensao_permitida']);
 
+                                $this->task['multiUploadImagem'] = ((!empty($_param_formAddEditField['form_add_edit_active_multi_upload_imagem']) && $_param_formAddEditField['form_add_edit_active_multi_upload_imagem'] == 'on') ? 1 : 0);
+
                                 /* $this->_formAddEditConfigInput = '<input type="file" name="' . $_row['field_name'] . '" class="form-control-file margin-bottom-10" placeholder="" value="<?= set_value("' . $_row['field_name'] . '", isset($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : set_value("' . $_row['field_name'] . '")); ?>"  />'; */
 
-                                $this->_formAddEditConfigInput = '<input type="file" name="' . $_row['field_name'] . '" class="form-control-file margin-bottom-10" placeholder="" value="<?= set_value("' . $_row['field_name'] . '", isset($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : set_value("' . $_row['field_name'] . '")); ?>" accept="' . $_fileExtension . '"  />' . PHP_EOL
-                                        . '<?php if ($this->uri->segment(2) == "edit"): ?>' . PHP_EOL
-                                        . '     <div class="col-xs-12 col-sm-12 col-md-3 col-lg-2"><?= mc_image_thumb_modal($dados->' . $_row['field_name'] . ',"' . $_param_formAddEditField['form_add_edit_field_upload_imagem_folder'] . '"); ?></div>' . PHP_EOL
-                                        /* . '     <div class="btn-ver-imagem margin-top-5 margin-bottom-5" style="font-size: 0.8em"><i class="fa fa-fw fa-camera"></i> <?= anchor(___CONF_UPLOAD_DIR___ . ___CONF_UPLOAD_IMAGE_DIR___ . "' . $_param_formAddEditField['form_add_edit_field_upload_imagem_folder'] . ($_param_formAddEditField['form_add_edit_field_upload_imagem_folder'] ? DIRECTORY_SEPARATOR : '') . '" . set_value("imagem_nome", isset($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : set_value("' . $_row['field_name'] . '")), "xxxxVer Imagem", "data-lightbox=\'' . $_row['field_name'] . '\'"); ?></div>' . PHP_EOL */
-                                        . '     <input type="hidden" name="' . $_row['field_name'] . '" value="<?= $dados->' . $_row['field_name'] . ';?>">' . PHP_EOL
-                                        . '     ' . PHP_EOL
-                                        . '<?php else: ?>' . PHP_EOL
-                                        . '     ' . PHP_EOL
-                                        . '     ' . PHP_EOL
-                                        . '     ' . PHP_EOL
-                                        . '<?php endif; ?>' . PHP_EOL;
 
-                                $this->_formAddConvertDadosToDatabase .= "if( !empty(\$this->task['result_upload']['file_name']) ):" . PHP_EOL
-                                        . "     \$_dados['" . $_row['field_name'] . "'] = \$this->task['result_upload']['file_name'];" . PHP_EOL
-                                        . "endif;";
+                                if ($this->task['multiUploadImagem']) {
+
+
+                                    $this->_formAddEditConfigInput = '<input type="file" name="' . $_row['field_name'] . '[]" class="form-control-file margin-bottom-10" placeholder="" value="<?= set_value("' . $_row['field_name'] . '", isset($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : set_value("' . $_row['field_name'] . '")); ?>" accept="' . $_fileExtension . '"  multiple/>' . PHP_EOL
+                                            . '<?php if ($this->uri->segment(2) == "edit"): ?>' . PHP_EOL
+                                            . ''
+                                            . '     <?php $images = json_decode($dados->' . $_row['field_name'] . '); ?>' . PHP_EOL
+                                            . '     <?php $galleryID = mc_random_number(); ?>' . PHP_EOL
+                                            . ''
+                                            . '     <?php foreach ($images as $image): ?>' . PHP_EOL
+                                            . '         <?php $_linkImg = base_url() . ___CONF_UPLOAD_DIR___ . ___CONF_UPLOAD_IMAGE_DIR___ . "' . $_param_formAddEditField['form_add_edit_field_upload_imagem_folder'] . '/" . $image; ?>'
+                                            . ''
+                                            . '         <div class="pull-left margin-bottom-5 margin-right-10">' . PHP_EOL
+                                            . '             <a class="" href="<?= $_linkImg; ?>" rel="lightbox[\' <?= $galleryID ?> \']">' . PHP_EOL
+                                            . '                 <img class="img-thumbnail" style="width:150px; height: 100px; object-fit: cover;" src="<?= $_linkImg; ?>">' . PHP_EOL
+                                            . '             </a>' . PHP_EOL
+                                            . '             <div class="text-right text-normal mouse-cursor-pointer margin-right-5 j-btn-del-image" style="font-size:0.8em" data-image="<?= $image; ?>" data-id="<?= $dados->id; ?>">Excluir Imagem<i class="fa fa-trash text-normal margin-left-5"></i></div>' . PHP_EOL
+                                            . '         </div>' . PHP_EOL
+                                            . '     <?php endforeach; ?>' . PHP_EOL
+                                            . ''
+                                            . '<?php else: ?>' . PHP_EOL
+                                            . ''
+                                            . '<?php endif; ?>' . PHP_EOL;
+
+
+                                    $this->_formAddConvertDadosToDatabase .= ""
+                                            . "if( \$this->task['uploaded_image']==TRUE && !empty(\$this->task['files_uploaded']) ):" . PHP_EOL
+                                            . "     \$_dados['" . $_row['field_name'] . "'] = json_encode(\$this->task['files_uploaded']);" . PHP_EOL
+                                            . "endif;" . PHP_EOL
+                                            . "";
+
+
+
+                                    $this->_controller_metodos_php .= ""
+                                            . "/**" . PHP_EOL
+                                            . " * DELETE IMAGE" . PHP_EOL
+                                            . " */" . PHP_EOL
+                                            . ""
+                                            . "public function del_image() {" . PHP_EOL
+                                            . "     /* CERTIFICA SE O ACESSO A ESTA FUNCTION REALMENTE ESTÁ SENDO FEITO POR AJAX. */" . PHP_EOL
+                                            . "     bz_check_is_ajax_request();" . PHP_EOL
+                                            . ""
+                                            . "     if (\$this->input->post('data')) {" . PHP_EOL
+                                            . "         \$_data = \$this->input->post('data');" . PHP_EOL
+                                            . "         \$_imageDel = \$_data['image'];" . PHP_EOL
+                                            . "         \$_IdImageDel = \$_data['id'];" . PHP_EOL
+                                            . "         \$_pathImage = '';" . PHP_EOL
+                                            . ""
+                                            . "         \$_data = \$this->read->exec(\$this->table_formaddedit_name, 'WHERE id=' . \$_IdImageDel)->row()->" . $_row['field_name'] . ";" . PHP_EOL
+                                            . "         \$_data = json_decode(\$_data);" . PHP_EOL
+                                            . ""
+                                            . "         foreach (\$_data as \$key => \$image) {" . PHP_EOL
+                                            . "             if (\$image == \$_imageDel) {" . PHP_EOL
+                                            . "                 unset(\$_data[\$key]);" . PHP_EOL
+                                            . "             }" . PHP_EOL
+                                            . "         }" . PHP_EOL
+                                            . ""
+                                            . "         \$_data = array_values(\$_data);" . PHP_EOL
+                                            . ""
+                                            . "         \$_data = json_encode(\$_data);" . PHP_EOL
+                                            . ""
+                                            . "         \$_resultDelDB = \$this->update->exec(\$this->table_formaddedit_name, ['" . $_row['field_name'] . "' => \$_data], 'WHERE id=' . \$_IdImageDel);" . PHP_EOL
+                                            . ""
+                                            . "         if (\$_resultDelDB) {" . PHP_EOL
+                                            . "             bz_delete_file(\$_imageDel, bz_absolute_path() . ___CONF_UPLOAD_DIR___ . ___CONF_UPLOAD_IMAGE_DIR___ . '" . $_param_formAddEditField['form_add_edit_field_upload_imagem_folder'] . "/');" . PHP_EOL
+                                            . "             \$json['message']['triggernotifi']['mensagem'] = 'Imagem excluida com sucesso.';" . PHP_EOL
+                                            . "             \$json['message']['triggernotifi']['tipo'] = 'success';" . PHP_EOL
+                                            . "             \$json['data'] = 'OK';" . PHP_EOL
+                                            . "         } else {" . PHP_EOL
+                                            . "             \$json['message']['triggernotifi']['mensagem'] = 'Erro ao excluir imagem.';" . PHP_EOL
+                                            . "             \$json['message']['triggernotifi']['tipo'] = 'error';" . PHP_EOL
+                                            . "             \$json['data'] = 'ERRO';" . PHP_EOL
+                                            . "         }" . PHP_EOL
+                                            . ""
+                                            . "         echo json_encode(\$json);" . PHP_EOL
+                                            . ""
+                                            . "     }" . PHP_EOL
+                                            . "}" . PHP_EOL
+                                            . "/* END DELETE IMAGE */" . PHP_EOL;
+
+                                    /**/
+                                } else {
+
+                                    $this->_formAddEditConfigInput = '<input type="file" name="' . $_row['field_name'] . '" class="form-control-file margin-bottom-10" placeholder="" value="<?= set_value("' . $_row['field_name'] . '", isset($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : set_value("' . $_row['field_name'] . '")); ?>" accept="' . $_fileExtension . '"  />' . PHP_EOL
+                                            . '<?php if ($this->uri->segment(2) == "edit"): ?>' . PHP_EOL
+                                            . '     <div class="col-xs-12 col-sm-12 col-md-3 col-lg-2"><?= mc_image_thumb_modal($dados->' . $_row['field_name'] . ',"' . $_param_formAddEditField['form_add_edit_field_upload_imagem_folder'] . '"); ?></div>' . PHP_EOL
+                                            /* . '     <div class="btn-ver-imagem margin-top-5 margin-bottom-5" style="font-size: 0.8em"><i class="fa fa-fw fa-camera"></i> <?= anchor(___CONF_UPLOAD_DIR___ . ___CONF_UPLOAD_IMAGE_DIR___ . "' . $_param_formAddEditField['form_add_edit_field_upload_imagem_folder'] . ($_param_formAddEditField['form_add_edit_field_upload_imagem_folder'] ? DIRECTORY_SEPARATOR : '') . '" . set_value("imagem_nome", isset($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : set_value("' . $_row['field_name'] . '")), "xxxxVer Imagem", "data-lightbox=\'' . $_row['field_name'] . '\'"); ?></div>' . PHP_EOL */
+                                            . '     <input type="hidden" name="' . $_row['field_name'] . '" value="<?= $dados->' . $_row['field_name'] . ';?>">' . PHP_EOL
+                                            . '     ' . PHP_EOL
+                                            . '<?php else: ?>' . PHP_EOL
+                                            . '     ' . PHP_EOL
+                                            . '     ' . PHP_EOL
+                                            . '     ' . PHP_EOL
+                                            . '<?php endif; ?>' . PHP_EOL;
+
+
+                                    $this->_formAddConvertDadosToDatabase .= "" . PHP_EOL
+                                            . "if( !empty(\$this->task['result_upload']['file_name']) ):" . PHP_EOL
+                                            . "     \$_dados['" . $_row['field_name'] . "'] = \$this->task['result_upload']['file_name'];" . PHP_EOL
+                                            . "endif;" . PHP_EOL
+                                            . "";
+                                }
 
                                 $this->_formEditConvertDadosToDatabase .= $this->_formAddConvertDadosToDatabase;
 
-                                $this->_controller_DeleteFileFunction = "/**" . PHP_EOL
-                                        . " * DELETA IMAGEM" . PHP_EOL
-                                        . " */" . PHP_EOL
-                                        . "foreach (\$_dados as \$_value):" . PHP_EOL
-                                        . "     \$_file_name = mc_findByIdDataDB(\$this->table_formaddedit_name, \$_value)->row()->" . $_row['field_name'] . ";" . PHP_EOL
-                                        . "     bz_delete_file(\$_file_name, bz_absolute_path() . ___CONF_UPLOAD_DIR___ . ___CONF_UPLOAD_IMAGE_DIR___ . '" . ($_param_formAddEditField['form_add_edit_field_upload_imagem_folder'] ? $_param_formAddEditField['form_add_edit_field_upload_imagem_folder'] . DIRECTORY_SEPARATOR : $_param_formAddEditField['form_add_edit_field_upload_imagem_folder']) . "');" . PHP_EOL
-                                        . "endforeach;" . PHP_EOL
-                                        . "/* END DELETA IMAGEM */";
+                                if ($this->task['multiUploadImagem']):
+                                    $this->_controller_DeleteFileFunction .= ""
+                                            . "/**" . PHP_EOL
+                                            . " * DELETA IMAGEM" . PHP_EOL
+                                            . " */" . PHP_EOL
+                                            . ""
+                                            . "foreach (\$_dados as \$_value):" . PHP_EOL
+                                            . "     \$_files = mc_findByIdDataDB(\$this->table_formaddedit_name, \$_value)->row()->" . $_row['field_name'] . ";" . PHP_EOL
+                                            . "     \$_files = json_decode(\$_files);" . PHP_EOL
+                                            . ""
+                                            . "     foreach (\$_files as \$_file):" . PHP_EOL
+                                            . "         bz_delete_file(\$_file, bz_absolute_path() . ___CONF_UPLOAD_DIR___ . ___CONF_UPLOAD_IMAGE_DIR___ . '" . ($_param_formAddEditField['form_add_edit_field_upload_imagem_folder'] ? $_param_formAddEditField['form_add_edit_field_upload_imagem_folder'] . DIRECTORY_SEPARATOR : $_param_formAddEditField['form_add_edit_field_upload_imagem_folder']) . "');" . PHP_EOL
+                                            . "     endforeach;" . PHP_EOL
+                                            . ""
+                                            . "endforeach;" . PHP_EOL
+                                            . ""
+                                            . "/* END DELETA IMAGEM */" . PHP_EOL
+                                            . ""
+                                            . "";
 
-                                $this->_form_edit_unset_fields .= "/**" . PHP_EOL . PHP_EOL
-                                        . " * DELETA IMAGEM" . PHP_EOL
-                                        . " */" . PHP_EOL
-                                        . "if (isset(\$this->task['uploaded_image']) && \$this->task['uploaded_image']) {" . PHP_EOL
-                                        . "     \$_file_name = mc_findByIdDataDB(\$this->table_formaddedit_name, \$_id)->row()->" . $_row['field_name'] . ";" . PHP_EOL
-                                        . "     bz_delete_file(\$_file_name, bz_absolute_path() . ___CONF_UPLOAD_DIR___ . ___CONF_UPLOAD_IMAGE_DIR___ . '" . ($_param_formAddEditField['form_add_edit_field_upload_imagem_folder'] ? $_param_formAddEditField['form_add_edit_field_upload_imagem_folder'] . DIRECTORY_SEPARATOR : $_param_formAddEditField['form_add_edit_field_upload_imagem_folder']) . "');" . PHP_EOL
-                                        . "}" . PHP_EOL
-                                        . "/* END DELETA IMAGEM */";
+                                else:
+
+                                    $this->_controller_DeleteFileFunction .= "/**" . PHP_EOL
+                                            . " * DELETA IMAGEM" . PHP_EOL
+                                            . " */" . PHP_EOL
+                                            . "foreach (\$_dados as \$_value):" . PHP_EOL
+                                            . "     \$_file_name = mc_findByIdDataDB(\$this->table_formaddedit_name, \$_value)->row()->" . $_row['field_name'] . ";" . PHP_EOL
+                                            . "     bz_delete_file(\$_file_name, bz_absolute_path() . ___CONF_UPLOAD_DIR___ . ___CONF_UPLOAD_IMAGE_DIR___ . '" . ($_param_formAddEditField['form_add_edit_field_upload_imagem_folder'] ? $_param_formAddEditField['form_add_edit_field_upload_imagem_folder'] . DIRECTORY_SEPARATOR : $_param_formAddEditField['form_add_edit_field_upload_imagem_folder']) . "');" . PHP_EOL
+                                            . "endforeach;" . PHP_EOL
+                                            . "/* END DELETA IMAGEM */";
+
+                                    $this->_form_edit_unset_fields .= "/**" . PHP_EOL . PHP_EOL
+                                            . " * DELETA IMAGEM" . PHP_EOL
+                                            . " */" . PHP_EOL
+                                            . "if (isset(\$this->task['uploaded_image']) && \$this->task['uploaded_image']) {" . PHP_EOL
+                                            . "     \$_file_name = mc_findByIdDataDB(\$this->table_formaddedit_name, \$_id)->row()->" . $_row['field_name'] . ";" . PHP_EOL
+                                            . "     bz_delete_file(\$_file_name, bz_absolute_path() . ___CONF_UPLOAD_DIR___ . ___CONF_UPLOAD_IMAGE_DIR___ . '" . ($_param_formAddEditField['form_add_edit_field_upload_imagem_folder'] ? $_param_formAddEditField['form_add_edit_field_upload_imagem_folder'] . DIRECTORY_SEPARATOR : $_param_formAddEditField['form_add_edit_field_upload_imagem_folder']) . "');" . PHP_EOL
+                                            . "}" . PHP_EOL
+                                            . "/* END DELETA IMAGEM */";
+                                endif;
+
+                            /**/
 
                             elseif ($_param_formAddEditField['form_add_edit_field_type'] == 'upload-arquivo'):
 
@@ -2578,9 +2695,9 @@ class ProjectbuildCrud extends MY_Controller {
                                 $_r .= "<?php" . PHP_EOL;
                                 $_r .= "\$_checkbox_multiple_manual_" . $_row['field_name'] . " = '';" . PHP_EOL;
                                 $_r .= "if( !empty(\$this->input->post('" . $_row['field_name'] . "')) ):" . PHP_EOL;
-                                $_r .= "\$_checkbox_multiple_manual_" . $_row['field_name'] . " = \$this->input->post('" . $_row['field_name'] . "');" . PHP_EOL;
+                                $_r .= "    \$_checkbox_multiple_manual_" . $_row['field_name'] . " = \$this->input->post('" . $_row['field_name'] . "');" . PHP_EOL;
                                 $_r .= "elseif( !empty(\$dados->" . $_row['field_name'] . ") ):" . PHP_EOL;
-                                $_r .= "\$_checkbox_multiple_manual_" . $_row['field_name'] . " = json_decode(\$dados->" . $_row['field_name'] . ", true);" . PHP_EOL;
+                                $_r .= "    \$_checkbox_multiple_manual_" . $_row['field_name'] . " = json_decode(\$dados->" . $_row['field_name'] . ", true);" . PHP_EOL;
                                 $_r .= "endif;" . PHP_EOL;
                                 $_r .= "?>" . PHP_EOL . PHP_EOL;
 
@@ -2611,29 +2728,29 @@ class ProjectbuildCrud extends MY_Controller {
                                         $_r .= "\$_keyOptions_" . $_row['field_name'] . " = array();" . PHP_EOL;
                                         $_r .= "\$_list_" . $_row['field_name'] . "[0] = '" . $_param_formAddEditField['form_add_edit_field_placeholder'] . "' ;" . PHP_EOL;
                                         $_r .= "foreach (\$_options_" . $_row['field_name'] . " as \$key => \$value_" . $_row['field_name'] . "):" . PHP_EOL;
-                                        $_r .= "\$_keyOptions_" . $_row['field_name'] . "[] = \$key;" . PHP_EOL;
+                                        $_r .= "    \$_keyOptions_" . $_row['field_name'] . "[] = \$key;" . PHP_EOL;
                                         $_r .= "endforeach;" . PHP_EOL . PHP_EOL;
 
                                         $_r .= "\$_checkbox_multiple_dinamic_" . $_row['field_name'] . " = '';" . PHP_EOL;
                                         $_r .= "if( !empty(\$this->input->post('" . $_row['field_name'] . "')) ):" . PHP_EOL;
-                                        $_r .= "\$_checkbox_multiple_dinamic_" . $_row['field_name'] . " = \$this->input->post('" . $_row['field_name'] . "');" . PHP_EOL;
+                                        $_r .= "    \$_checkbox_multiple_dinamic_" . $_row['field_name'] . " = \$this->input->post('" . $_row['field_name'] . "');" . PHP_EOL;
                                         $_r .= "elseif( !empty(\$dados->" . $_row['field_name'] . ") ):" . PHP_EOL;
-                                        $_r .= "\$_checkbox_multiple_dinamic_" . $_row['field_name'] . " = json_decode(\$dados->" . $_row['field_name'] . ", true);" . PHP_EOL;
+                                        $_r .= "    \$_checkbox_multiple_dinamic_" . $_row['field_name'] . " = json_decode(\$dados->" . $_row['field_name'] . ", true);" . PHP_EOL;
                                         $_r .= "endif;" . PHP_EOL . PHP_EOL;
 
                                         $_r .= "foreach (\$_results_" . $_row['field_name'] . "->result_array() as \$_r_" . $_row['field_name'] . "):" . PHP_EOL;
-                                        $_r .= "\$_checked = '';" . PHP_EOL;
-                                        $_r .= "\$_lst_" . $_row['field_name'] . "[ \$_r_" . $_row['field_name'] . "[ \$_keyOptions_" . $_row['field_name'] . "[0] ] ] = \$_r_" . $_row['field_name'] . "[ \$_keyOptions_" . $_row['field_name'] . "[1] ];" . PHP_EOL;
-                                        $_r .= "if( \$_checkbox_multiple_dinamic_" . $_row['field_name'] . " ):" . PHP_EOL;
-                                        $_r .= "if (in_array(\$_r_" . $_row['field_name'] . "[ \$_keyOptions_" . $_row['field_name'] . "[0] ], \$_checkbox_multiple_dinamic_" . $_row['field_name'] . ")):" . PHP_EOL;
-                                        $_r .= "\$_checked = 'checked';" . PHP_EOL;
-                                        $_r .= "endif;" . PHP_EOL;
-                                        $_r .= "endif;" . PHP_EOL;
-                                        $_r .= "?>" . PHP_EOL;
+                                        $_r .= "    \$_checked = '';" . PHP_EOL;
+                                        $_r .= "    \$_lst_" . $_row['field_name'] . "[ \$_r_" . $_row['field_name'] . "[ \$_keyOptions_" . $_row['field_name'] . "[0] ] ] = \$_r_" . $_row['field_name'] . "[ \$_keyOptions_" . $_row['field_name'] . "[1] ];" . PHP_EOL;
+                                        $_r .= "    if( \$_checkbox_multiple_dinamic_" . $_row['field_name'] . " ):" . PHP_EOL;
+                                        $_r .= "        if (in_array(\$_r_" . $_row['field_name'] . "[ \$_keyOptions_" . $_row['field_name'] . "[0] ], \$_checkbox_multiple_dinamic_" . $_row['field_name'] . ")):" . PHP_EOL;
+                                        $_r .= "            \$_checked = 'checked';" . PHP_EOL;
+                                        $_r .= "        endif;" . PHP_EOL;
+                                        $_r .= "    endif;" . PHP_EOL;
+                                        $_r .= "    ?>" . PHP_EOL;
 
-                                        $_r .= '<input class="flat-green" type="checkbox" name="' . $_row['field_name'] . '[<?=$_r_' . $_row['field_name'] . '[ $_keyOptions_' . $_row['field_name'] . '[1] ];?>]" value="<?=$_r_' . $_row['field_name'] . '[ $_keyOptions_' . $_row['field_name'] . '[0] ];?>" <?= $_checked; ?> /> <?=$_r_' . $_row['field_name'] . '[ $_keyOptions_' . $_row['field_name'] . '[1] ];?><i class="margin-right-10"></i>' . PHP_EOL;
+                                        $_r .= '    <input class="flat-green" type="checkbox" name="' . $_row['field_name'] . '[<?=$_r_' . $_row['field_name'] . '[ $_keyOptions_' . $_row['field_name'] . '[1] ];?>]" value="<?=$_r_' . $_row['field_name'] . '[ $_keyOptions_' . $_row['field_name'] . '[0] ];?>" <?= $_checked; ?> /> <?=$_r_' . $_row['field_name'] . '[ $_keyOptions_' . $_row['field_name'] . '[1] ];?><i class="margin-right-10"></i>' . PHP_EOL;
 
-                                        $_r .= "<?php" . PHP_EOL;
+                                        $_r .= "    <?php" . PHP_EOL;
                                         $_r .= "endforeach;" . PHP_EOL;
                                         $_r .= "?>" . PHP_EOL;
                                         $_r .= "</p>" . PHP_EOL;
@@ -2808,14 +2925,15 @@ class ProjectbuildCrud extends MY_Controller {
 
 //echo '-- > ' . $_classDisabledReadOnlyAsterisk;
 
-                                        $this->_formAddEditFields .= '
-																					                                                <?php $_error = form_error("' . $_row['field_name'] . '", "<small class=\'text-danger col-xs-12 bz-input-error\'>", "</small>"); ?>
-																					                                                <div id="' . $_row['field_name'] . '" class="form-group has-feedback ' . $this->_formAddEditConfigInputClassCSS . '">
-																					                                                    <label for="' . $_row['field_name'] . '"><i class="fa fa-asterisk margin-right-5 text-error ' . $_classDisabledReadOnlyAsterisk . '" style="font-size: 0.7em;"></i>' . $_param_formAddEditField['form_add_edit_field_label'] . '</label>
-																					                                                    ' . $this->_formAddEditConfigInput . '
-																					                                                    <?= $_error; ?>
-																					                                                </div>
-																					                                                ' . PHP_EOL;
+                                        $this->_formAddEditFields .= ''
+                                                . '<?php $_error = form_error("' . $_row['field_name'] . '", "<small class=\'text-danger col-xs-12 bz-input-error\'>", "</small>"); ?>' . PHP_EOL
+                                                . '<div id="' . $_row['field_name'] . '" class="form-group has-feedback ' . $this->_formAddEditConfigInputClassCSS . '">' . PHP_EOL
+                                                . '<label for="' . $_row['field_name'] . '"><i class="fa fa-asterisk margin-right-5 text-error ' . $_classDisabledReadOnlyAsterisk . '" style="font-size: 0.7em;"></i>' . $_param_formAddEditField['form_add_edit_field_label'] . '</label>' . PHP_EOL
+                                                . '' . $this->_formAddEditConfigInput . '' . PHP_EOL
+                                                . '<?= $_error; ?>' . PHP_EOL
+                                                . ' </div>' . PHP_EOL
+                                                . '' . PHP_EOL . PHP_EOL . PHP_EOL;
+
 
                                         /* VALDATION ATRIBUTO REQUIRED */
                                         if ($_param_formAddEditField['form_add_edit_field_type'] == 'checkbox-multiple-manual' || $_param_formAddEditField['form_add_edit_field_type'] == 'checkbox-multiple-dinamic' || $_param_formAddEditField['form_add_edit_field_type'] == 'select-multiple-manual' || $_param_formAddEditField['form_add_edit_field_type'] == 'select-dinamic' || $_param_formAddEditField['form_add_edit_field_type'] == 'select-multiple-dinamic' || $_param_formAddEditField['form_add_edit_field_type'] == 'radio-dinamic'):
@@ -2826,14 +2944,15 @@ class ProjectbuildCrud extends MY_Controller {
                                                 $this->_formAddEditConfigInputValidationAtributos .= '|callback_validation_required_' . $_row["field_name"];
                                             endif;
 
-                                            $this->_formAddEditConfigInputValidationCallback .= "
-																								                                                 /* VALIDAÇÃO POR CALLBACK DO CAMPO " . $_row["field_name"] . ". */
-																								                                                  public function validation_required_" . $_row["field_name"] . "() {
-																								                                                      if (\$this->input->post('" . $_row["field_name"] . "')) return true;
-																								                                                      \$this->form_validation->set_message('validation_required_" . $_row["field_name"] . "', 'O campo <b>" . $_param_formAddEditField['form_add_edit_field_label'] . "</b> é obrigatório.');
-																								                                                      return false;
-																								                                                  }
-																								                                                  /* END VALIDAÇÃO POR CALLBACK DO CAMPO " . $_row["field_name"] . ". */" . PHP_EOL . PHP_EOL . PHP_EOL;
+                                            $this->_formAddEditConfigInputValidationCallback .= ""
+                                                    . ""
+                                                    . "/* VALIDAÇÃO POR CALLBACK DO CAMPO " . $_row["field_name"] . ". */" . PHP_EOL
+                                                    . "public function validation_required_" . $_row["field_name"] . "() {" . PHP_EOL
+                                                    . "     if (\$this->input->post('" . $_row["field_name"] . "')) return true;" . PHP_EOL
+                                                    . "         \$this->form_validation->set_message('validation_required_" . $_row["field_name"] . "', 'O campo <b>" . $_param_formAddEditField['form_add_edit_field_label'] . "</b> é obrigatório.');" . PHP_EOL
+                                                    . "         return false;" . PHP_EOL
+                                                    . "     }" . PHP_EOL
+                                                    . "/* END VALIDAÇÃO POR CALLBACK DO CAMPO " . $_row["field_name"] . ". */" . PHP_EOL . PHP_EOL . PHP_EOL;
 
                                         else:
 
@@ -2853,7 +2972,7 @@ class ProjectbuildCrud extends MY_Controller {
                                             /**
                                              * CALLBACK UPLOAD IMAGES - VALIDATION REQUIRED
                                              */
-                                            if ($_param_formAddEditField['form_add_edit_field_type'] == 'upload-imagem'):
+                                            if ($_param_formAddEditField['form_add_edit_field_type'] == 'upload-imagem') {
 
                                                 $this->_formAddEditConfigFormOpen = 'form_open_multipart';
 
@@ -2863,37 +2982,176 @@ class ProjectbuildCrud extends MY_Controller {
                                                     else:
                                                         $this->_formAddEditConfigInputValidationAtributos .= '|callback_validation_upload_images_' . $_row["field_name"];
                                                     endif;
+
+                                                    if ($this->task['multiUploadImagem']) {
+                                                        $this->_formAddEditConfigInputValidationAtributos .= "[' . (!empty(\$_id) ? \$_id : '') . ']";
+                                                    }
+
+
                                                 endif;
 
-                                                $this->_formAddEditConfigInputValidationCallback .= "
-																											                                                 /* VALIDAÇÃO POR CALLBACK UPLOAD DE IMAGENS " . $_row["field_name"] . ". */
-																											                                                  public function validation_upload_images_" . $_row["field_name"] . "() {
+                                                /**
+                                                 * SE BOTÃO DE MULTI UPLOAD ESTIVER LIGADO ON
+                                                 */
+                                                if ($this->task['multiUploadImagem']) {
 
-																											                                                        if (empty(\$_FILES['" . $_row["field_name"] . "']['name']) && !empty(\$this->input->post('" . $_row["field_name"] . "')) ) {
-																											                                                            return true;
-																											                                                        }
+                                                    $this->_formAddEditConfigInputValidationCallback .= ""
+                                                            . "/* VALIDAÇÃO POR CALLBACK MULTI UPLOAD DE IMAGENS " . $_row["field_name"] . ". */" . PHP_EOL
+                                                            . "public function validation_upload_images_" . $_row["field_name"] . "(\$_str = NULL, \$_id = NULL) {" . PHP_EOL
+                                                            . "     /**" . PHP_EOL
+                                                            . "      * VALIDAÇÃO DE UPLOAD DE ARQUIVOS" . PHP_EOL
+                                                            . "      */" . PHP_EOL
+                                                            . ""
+                                                            . "     /* REQUIRED */" . PHP_EOL
+                                                            . "     \$_count = 0;" . PHP_EOL
+                                                            . "     foreach (\$_FILES['" . $_row["field_name"] . "']['name'] as \$file){" . PHP_EOL
+                                                            . "         if (\$file) {" . PHP_EOL
+                                                            . "             \$_count++;" . PHP_EOL
+                                                            . "         }" . PHP_EOL
+                                                            . "     }" . PHP_EOL
+                                                            . "     if (\$_count == 0) {" . PHP_EOL
+                                                            . "         \$this->form_validation->set_message('validation_upload_images_" . $_row["field_name"] . "', 'Nenhuma imagem selecionada para ser enviada.');" . PHP_EOL
+                                                            . "         return false;" . PHP_EOL
+                                                            . "     }else if (\$_count > " . $_param_formAddEditField['form_add_edit_active_multi_upload_imagem_max_file'] . ") {" . PHP_EOL
+                                                            . "         \$this->form_validation->set_message('validation_upload_images_" . $_row["field_name"] . "', 'Quantidade de imagens selecionadas é maior que o permitido. Quantidade máxima permitida é de " . $_param_formAddEditField['form_add_edit_active_multi_upload_imagem_max_file'] . " imagens.');" . PHP_EOL
+                                                            . "         return false;" . PHP_EOL
+                                                            . "     }" . PHP_EOL
+                                                            . ""
+                                                            . "     /* END REQUIRED */" . PHP_EOL
+                                                            . ""
+                                                            . "     /* ONLY IMAGES FILE */" . PHP_EOL
+                                                            . "     \$_count = 0;" . PHP_EOL
+                                                            . "     \$_total = 0;" . PHP_EOL
+                                                            . "     foreach (\$_FILES['" . $_row["field_name"] . "']['type'] as \$type){" . PHP_EOL
+                                                            . "         \$_total++;" . PHP_EOL
+                                                            . "         if (strpos(\$type, 'image/') !== 0) {" . PHP_EOL
+                                                            . "             \$_count++;" . PHP_EOL
+                                                            . "         }" . PHP_EOL
+                                                            . "     }" . PHP_EOL
+                                                            . "     if (\$_count > 0) {" . PHP_EOL
+                                                            . "         if (\$_total == 1) {" . PHP_EOL
+                                                            . "             \$this->form_validation->set_message('validation_upload_images_" . $_row["field_name"] . "', 'Arquivo enviado não é um arquivo de imagem.');" . PHP_EOL
+                                                            . "         } else {" . PHP_EOL
+                                                            . "             \$this->form_validation->set_message('validation_upload_images_" . $_row["field_name"] . "', 'Algum arquivo enviado não é um arquivo de imagem.');" . PHP_EOL
+                                                            . "         }" . PHP_EOL
+                                                            . "         return false;" . PHP_EOL
+                                                            . "     }" . PHP_EOL
+                                                            . "     /* END ONLY IMAGES FILE */" . PHP_EOL
+                                                            . ""
+                                                            . "     /* SIZE FILE */" . PHP_EOL
+                                                            . "     \$_count = 0;" . PHP_EOL
+                                                            . "     \$_total = 0;" . PHP_EOL
+                                                            . "     \$_fizeFile = " . $_param_formAddEditField['form_add_edit_field_upload_imagem_tamanho_maximo'] . ";" . PHP_EOL
+                                                            . "     foreach (\$_FILES['" . $_row["field_name"] . "']['size'] as \$size){" . PHP_EOL
+                                                            . "         \$_total++;" . PHP_EOL
+                                                            . "         if ((\$size / 1000) > \$_fizeFile) {" . PHP_EOL
+                                                            . "             \$_count++;"
+                                                            . "         }" . PHP_EOL
+                                                            . "     }" . PHP_EOL
+                                                            . "     if (\$_count > 0) {" . PHP_EOL
+                                                            . "         if (\$_total == 1) {" . PHP_EOL
+                                                            . "             \$this->form_validation->set_message('validation_upload_images_" . $_row["field_name"] . "', 'Arquivo enviado tem tamanho maior que o permitido.');" . PHP_EOL
+                                                            . "         } else {" . PHP_EOL
+                                                            . "             \$this->form_validation->set_message('validation_upload_images_" . $_row["field_name"] . "', 'Algum arquivo enviado tem tamanho maior que o permitido.');" . PHP_EOL
+                                                            . "         }" . PHP_EOL
+                                                            . "         return false;" . PHP_EOL
+                                                            . "     }" . PHP_EOL
+                                                            . ""
+                                                            . "     /* END SIZE FILE */" . PHP_EOL
+                                                            . ""
+                                                            . "     /* END VALIDAÇÃO DE UPLOAD DE ARQUIVO */" . PHP_EOL
+                                                            . ""
+                                                            . ""
+                                                            . "     /* UPLOAD FILE */" . PHP_EOL
+                                                            . ""
+                                                            . "     \$_count = 0;" . PHP_EOL
+                                                            . "     \$_count = count(\$_FILES['" . $_row["field_name"] . "']['name']);" . PHP_EOL
+                                                            . "     \$_uploadFILES = \$_FILES;" . PHP_EOL
+                                                            . "     \$_filesUploaded = [];" . PHP_EOL
+                                                            . ""
+                                                            . "     for (\$i = 0; \$i < \$_count; \$i++) {" . PHP_EOL
+                                                            . ""
+                                                            . "         \$_FILES = [];" . PHP_EOL
+                                                            . "         \$_FILES['" . $_row["field_name"] . "']['name'] = \$_uploadFILES['" . $_row["field_name"] . "']['name'][\$i];" . PHP_EOL
+                                                            . "         \$_FILES['" . $_row["field_name"] . "']['type'] = \$_uploadFILES['" . $_row["field_name"] . "']['type'][\$i];" . PHP_EOL
+                                                            . "         \$_FILES['" . $_row["field_name"] . "']['tmp_name'] = \$_uploadFILES['" . $_row["field_name"] . "']['tmp_name'][\$i];" . PHP_EOL
+                                                            . "         \$_FILES['" . $_row["field_name"] . "']['error'] = \$_uploadFILES['" . $_row["field_name"] . "']['error'][\$i];" . PHP_EOL
+                                                            . "         \$_FILES['" . $_row["field_name"] . "']['size'] = \$_uploadFILES['" . $_row["field_name"] . "']['size'][\$i];" . PHP_EOL
+                                                            . ""
+                                                            . "     \$this->task['result_upload'] = bz_upload_file('" . $_row["field_name"] . "', ___CONF_UPLOAD_IMAGE_DIR___ . '" . $_param_formAddEditField['form_add_edit_field_upload_imagem_folder'] . "', '" . $_param_formAddEditField['form_add_edit_field_upload_imagem_extensao_permitida'] . "', '" . $_param_formAddEditField['form_add_edit_field_upload_imagem_tamanho_maximo'] . "', '" . $_param_formAddEditField['form_add_edit_field_upload_imagem_max_width'] . "', '" . $_param_formAddEditField['form_add_edit_field_upload_imagem_max_height'] . "');" . PHP_EOL
+                                                            . ""
+                                                            . "         if (isset(\$this->task['result_upload']['error'])) {" . PHP_EOL
+                                                            . "             \$_path_file = bz_absolute_path() . ___CONF_UPLOAD_DIR___ . ___CONF_UPLOAD_IMAGE_DIR___ . '" . ($_param_formAddEditField['form_add_edit_field_upload_imagem_folder'] ? $_param_formAddEditField['form_add_edit_field_upload_imagem_folder'] . DIRECTORY_SEPARATOR : $_param_formAddEditField['form_add_edit_field_upload_imagem_folder']) . "';" . PHP_EOL
+                                                            . "             \$_table_name = \$this->table_formaddedit_name;" . PHP_EOL
+                                                            . "             \$_field_name = '" . $_row["field_name"] . "';" . PHP_EOL
+                                                            . "             bz_delete_files_orphans(\$_path_file, \$_table_name, \$_field_name);" . PHP_EOL
+                                                            . ""
+                                                            . "             \$this->form_validation->set_message('validation_upload_images_" . $_row["field_name"] . "', \$this->task['result_upload']['error']['message']);" . PHP_EOL
+                                                            . "             return false;" . PHP_EOL
+                                                            . "         }" . PHP_EOL
+                                                            . ""
+                                                            . "         \$_filesUploaded[] = \$this->task['result_upload']['file_name'];" . PHP_EOL
+                                                            . ""
+                                                            . "     }" . PHP_EOL
+                                                            . ""
+                                                            . "     /* END UPLOAD FILE */" . PHP_EOL
+                                                            . ""
+                                                            . "     if (!empty(\$this->input->post('btn-editar')) && !empty(\$_id)) {" . PHP_EOL
+                                                            . "         \$_json_" . $_row["field_name"] . " = \$this->read->exec(\$this->table_formaddedit_name, 'WHERE id=' . \$_id)->row()->" . $_row["field_name"] . ";" . PHP_EOL
+                                                            . "         if (\$_json_" . $_row["field_name"] . ") {" . PHP_EOL
+                                                            . "             \$_json_" . $_row["field_name"] . " = json_decode(\$_json_" . $_row["field_name"] . ");" . PHP_EOL
+                                                            . "             \$this->task['files_uploaded'] = array_merge(\$_json_" . $_row["field_name"] . ", \$_filesUploaded);" . PHP_EOL
+                                                            . "         }" . PHP_EOL
+                                                            . "     } else {" . PHP_EOL
+                                                            . "         \$this->task['files_uploaded'] = \$_filesUploaded;" . PHP_EOL
+                                                            . "     }" . PHP_EOL
+                                                            . ""
+                                                            . "     \$this->task['uploaded_image'] = true;" . PHP_EOL
+                                                            . ""
+                                                            . "}" . PHP_EOL
+                                                            . "/* END VALIDAÇÃO POR CALLBACK MULTI UPLOAD DE IMAGENS " . $_row["field_name"] . ". */" . PHP_EOL . PHP_EOL . PHP_EOL;
+                                                } else {
 
-																											                                                        if (empty(\$_FILES['" . $_row["field_name"] . "']['name'])) {
-																											                                                            \$this->form_validation->set_message('validation_upload_images_" . $_row["field_name"] . "', 'Nenhuma imagem selecionada para ser enviada.');
-																											                                                            return false;
-																											                                                        }
-
-																											                                                        if (strpos(\$_FILES['" . $_row["field_name"] . "']['type'], 'image/') !== 0) {
-																											                                                            \$this->form_validation->set_message('validation_upload_images_" . $_row["field_name"] . "', 'Este arquivo não é um arquivo de imagem.');
-																											                                                            return false;
-																											                                                        }
-
-																											                                                        \$this->task['result_upload'] = bz_upload_file('" . $_row["field_name"] . "', ___CONF_UPLOAD_IMAGE_DIR___ . '" . $_param_formAddEditField['form_add_edit_field_upload_imagem_folder'] . "', '" . $_param_formAddEditField['form_add_edit_field_upload_imagem_extensao_permitida'] . "', '" . $_param_formAddEditField['form_add_edit_field_upload_imagem_tamanho_maximo'] . "', '" . $_param_formAddEditField['form_add_edit_field_upload_imagem_max_width'] . "', '" . $_param_formAddEditField['form_add_edit_field_upload_imagem_max_height'] . "');
-
-																											                                                        if (isset(\$this->task['result_upload']['error'])) {
-																											                                                            \$this->form_validation->set_message('validation_upload_images_" . $_row["field_name"] . "', \$this->task['result_upload']['error']['message']);
-																											                                                            return false;
-																											                                                        }
-
-																											                                                        \$this->task['uploaded_image'] = true;
-																											                                                  }
-																											                                                  /* END VALIDAÇÃO POR CALLBACK UPLOAD DE IMAGENS " . $_row["field_name"] . ". */" . PHP_EOL . PHP_EOL . PHP_EOL;
-                                            endif;
+                                                    /**
+                                                     * SE BOTÃO DE MULTI UPLOAD ESTIVER DESLIGADO OFF
+                                                     */
+                                                    $this->_formAddEditConfigInputValidationCallback .= ""
+                                                            . "/* VALIDAÇÃO POR CALLBACK UPLOAD DE IMAGENS " . $_row["field_name"] . ". */" . PHP_EOL
+                                                            . ""
+                                                            . "public function validation_upload_images_" . $_row["field_name"] . "() {" . PHP_EOL
+                                                            . ""
+                                                            . "     if (empty(\$_FILES['" . $_row["field_name"] . "']['name']) && !empty(\$this->input->post('" . $_row["field_name"] . "')) ) {" . PHP_EOL
+                                                            . "         return true;" . PHP_EOL
+                                                            . "     }" . PHP_EOL
+                                                            . ""
+                                                            . "     if (empty(\$_FILES['" . $_row["field_name"] . "']['name'])) {" . PHP_EOL
+                                                            . "         \$this->form_validation->set_message('validation_upload_images_" . $_row["field_name"] . "', 'Nenhuma imagem selecionada para ser enviada.');" . PHP_EOL
+                                                            . "         return false;" . PHP_EOL
+                                                            . "     }" . PHP_EOL
+                                                            . ""
+                                                            . "     if (strpos(\$_FILES['" . $_row["field_name"] . "']['type'], 'image/') !== 0) {" . PHP_EOL
+                                                            . "         \$this->form_validation->set_message('validation_upload_images_" . $_row["field_name"] . "', 'Este arquivo não é um arquivo de imagem.');" . PHP_EOL
+                                                            . "         return false;" . PHP_EOL
+                                                            . "     }" . PHP_EOL
+                                                            . ""
+                                                            . "     \$this->task['result_upload'] = bz_upload_file('" . $_row["field_name"] . "', ___CONF_UPLOAD_IMAGE_DIR___ . '" . $_param_formAddEditField['form_add_edit_field_upload_imagem_folder'] . "', '" . $_param_formAddEditField['form_add_edit_field_upload_imagem_extensao_permitida'] . "', '" . $_param_formAddEditField['form_add_edit_field_upload_imagem_tamanho_maximo'] . "', '" . $_param_formAddEditField['form_add_edit_field_upload_imagem_max_width'] . "', '" . $_param_formAddEditField['form_add_edit_field_upload_imagem_max_height'] . "');" . PHP_EOL
+                                                            . ""
+                                                            . "     if (isset(\$this->task['result_upload']['error'])) {" . PHP_EOL
+                                                            . "         \$_path_file = bz_absolute_path() . ___CONF_UPLOAD_DIR___ . ___CONF_UPLOAD_IMAGE_DIR___ . '" . ($_param_formAddEditField['form_add_edit_field_upload_imagem_folder'] ? $_param_formAddEditField['form_add_edit_field_upload_imagem_folder'] . DIRECTORY_SEPARATOR : $_param_formAddEditField['form_add_edit_field_upload_imagem_folder']) . "';" . PHP_EOL
+                                                            . "         \$_table_name = \$this->table_formaddedit_name;" . PHP_EOL
+                                                            . "         \$_field_name = '" . $_row["field_name"] . "';" . PHP_EOL
+                                                            . "         bz_delete_files_orphans(\$_path_file, \$_table_name, \$_field_name);" . PHP_EOL
+                                                            . ""
+                                                            . "         \$this->form_validation->set_message('validation_upload_images_" . $_row["field_name"] . "', \$this->task['result_upload']['error']['message']);" . PHP_EOL
+                                                            . "         return false;" . PHP_EOL
+                                                            . "     }" . PHP_EOL
+                                                            . ""
+                                                            . "     \$this->task['uploaded_image'] = true;" . PHP_EOL
+                                                            . ""
+                                                            . "}" . PHP_EOL
+                                                            . "/* END VALIDAÇÃO POR CALLBACK UPLOAD DE IMAGENS " . $_row["field_name"] . ". */" . PHP_EOL . PHP_EOL;
+                                                }
+                                            }
 
                                             /**
                                              * CALLBACK UPLOAD FILES - VALIDATION REQUIRED
@@ -3096,9 +3354,6 @@ class ProjectbuildCrud extends MY_Controller {
 
                     endforeach;
 
-//echo 'ADD -- > ' . $this->_formAddConfigInputValidation . '<br/>';
-                    //echo 'EDIT -- > ' . $this->_formEditConfigInputValidation . '<br/>';
-
                     /*
                      * DIVIDE OS formAddEditFields
                      */
@@ -3196,7 +3451,9 @@ class ProjectbuildCrud extends MY_Controller {
                                 $this->_controller_metodos_php .= '/*' . PHP_EOL;
                                 $this->_controller_metodos_php .= ' * CERTIFICA SE O ACESSO A ESTA FUNCTION REALMENTE ESTÁ SENDO FEITO POR AJAX.' . PHP_EOL;
                                 $this->_controller_metodos_php .= ' */' . PHP_EOL;
-                                $this->_controller_metodos_php .= 'bz_check_is_ajax_request();' . PHP_EOL . PHP_EOL . PHP_EOL;
+                                $this->_controller_metodos_php .= 'bz_check_is_ajax_request();' . PHP_EOL;
+                                $this->_controller_metodos_php .= '/* END CERTIFICA SE O ACESSO A ESTA FUNCTION REALMENTE ESTÁ SENDO FEITO POR AJAX. */' . PHP_EOL;
+                                $this->_controller_metodos_php .= '/**/' . PHP_EOL;
                             } else {
 
                                 $this->_controller_metodos_php .= $_row_getCode_ControllerMetodosPHP->code_type_method . " function " . $_row_getCode_ControllerMetodosPHP->code_screen . '($_p = null) {' . PHP_EOL;
@@ -3474,7 +3731,9 @@ class ProjectbuildCrud extends MY_Controller {
                     $this->_controller_metodos_php .= '/*' . PHP_EOL;
                     $this->_controller_metodos_php .= ' * CERTIFICA SE O ACESSO A ESTA FUNCTION REALMENTE ESTÁ SENDO FEITO POR AJAX.' . PHP_EOL;
                     $this->_controller_metodos_php .= ' */' . PHP_EOL;
-                    $this->_controller_metodos_php .= 'bz_check_is_ajax_request();' . PHP_EOL . PHP_EOL . PHP_EOL;
+                    $this->_controller_metodos_php .= 'bz_check_is_ajax_request();' . PHP_EOL;
+                    $this->_controller_metodos_php .= '/* END CERTIFICA SE O ACESSO A ESTA FUNCTION REALMENTE ESTÁ SENDO FEITO POR AJAX. */' . PHP_EOL . PHP_EOL . PHP_EOL;
+                    $this->_controller_metodos_php .= '/* */' . PHP_EOL . PHP_EOL . PHP_EOL;
                 } else {
 
                     $this->_controller_metodos_php .= $_row_getCode_ControllerMetodosPHP->code_type_method . " function " . $_row_getCode_ControllerMetodosPHP->code_screen . '($_p = null) {' . PHP_EOL;

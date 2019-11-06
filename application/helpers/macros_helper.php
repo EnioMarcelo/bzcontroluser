@@ -56,7 +56,7 @@ function mc_image_link_modal($_image_name, $_image_folder = NULL, $_type = 'sing
 
     if ($_type == 'single') {
 
-        $_url_imagem = base_url(___CONF_UPLOAD_DIR___ . ___CONF_UPLOAD_IMAGE_DIR___ . $_image_folder) . $_image_name;
+        $_url_imagem = base_url(___CONF_UPLOAD_DIR___ . ___CONF_UPLOAD_IMAGE_DIR___ . ($_image_folder ? $_image_folder . DIRECTORY_SEPARATOR : $_image_folder)) . $_image_name;
 
         $_imagem = '<div class="btn-copy-to-clipboard btn-image-link-lightbox" ><a href="' . $_url_imagem . '" data-lightbox="' . $_image_name . '" data-title="" ><i class="fa fa-fw fa-camera"></i> </a></div>';
 
@@ -122,10 +122,25 @@ function mc_image_thumb_modal($_image_name, $_image_folder = NULL, $_type = 'sin
                 . '                                                                      &nbsp;&nbsp;|&nbsp;&nbsp;<a class="j-tooltip" data-toggle="tooltip" data-original-title="Copiar Link"  data-clipboard-message="Link da imagem copiado com sucesso." data-clipboard-text="' . $_url_imagem . '"><i class="fa fa-copy"></i></a></div>'
                 . '</div>';
 
-
         return $_btn_view_copy_image;
-    } elseif ($_type = 'group') {
-        
+        /**/
+    } elseif ($_type = 'multi') {
+
+        $_images = json_decode($_image_name);
+        $_url_imagem = '';
+        $_gallery = '';
+        $_IDgallery = mc_random_number();
+        $_count = 0;
+
+        foreach ($_images as $_image):
+            $_count++;
+            $_url_imagem = base_url(___CONF_UPLOAD_DIR___ . ___CONF_UPLOAD_IMAGE_DIR___ . $_image_folder) . ($_image_folder ? DIRECTORY_SEPARATOR . $_image : $_image);
+            $_gallery .= '<a class="' . ($_count == 1 ? '' : 'hide') . ' thumbnail" href="' . $_url_imagem . '" rel="lightbox[' . $_IDgallery . ']"><img src="' . $_url_imagem . '" title="' . $_image . '"></a>' . PHP_EOL;
+
+        endforeach;
+
+        return $_gallery;
+        /**/
     }
 }
 
