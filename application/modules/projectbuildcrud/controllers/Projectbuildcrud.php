@@ -1845,7 +1845,7 @@ class ProjectbuildCrud extends MY_Controller {
                                         $_pkSelect = strtolower(base64_decode($_param_gridListField['grid_list_field_value_select']));
                                         $_pkSelect = substr($_pkSelect, 7, (strpos($_pkSelect, ',') - 7));
 
-                                        $this->_gridListFieldsTable .= '<td class="tdCl' . ucfirst($_row['field_name']) . ' ' . $_class . '" style="' . $_width_field . '"><?=$this->db->query("' . base64_decode($_param_gridListField['grid_list_field_value_select']) . ' WHERE ' . $_pkSelect . ' = \"$_row[' . $_row['field_name'] . ']\"")->row()->' . $_row['field_name'] . ';?></td>' . PHP_EOL;
+                                        $this->_gridListFieldsTable .= '<td class="tdCl' . ucfirst($_row['field_name']) . ' ' . $_class . '" style="' . $_width_field . '"><?=$this->db->query("' . base64_decode($_param_gridListField['grid_list_field_value_select']) . ' WHERE ' . $_pkSelect . ' = ".$_row["' . $_row['field_name'] . '"])->row()->' . str_replace('_id', '', $_row['field_name']) . ';?></td>' . PHP_EOL;
 
                                         /* END CAMPO INPUT SELECT grid_list_field_input_type */
                                         /**/

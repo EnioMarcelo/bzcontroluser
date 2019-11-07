@@ -64,7 +64,7 @@ class Grupos extends MY_Controller {
 
         if ($this->input->post()) :
 
-            $this->form_validation->set_rules('descricao', '<b>NOME DO GRUPO</b>', 'trim|required|min_length[10]|min_length[10]|max_length[250]');
+            $this->form_validation->set_rules('descricao', '<b>NOME DO GRUPO</b>', 'trim|required|min_length[3]|max_length[250]');
             $this->form_validation->set_rules('apps', '<b>APLICATIVOS</b>', 'callback_valid_apps');
 
             if ($this->form_validation->run() == TRUE):
@@ -189,7 +189,7 @@ class Grupos extends MY_Controller {
 
             if ($this->input->post('btn-editar') == 'btn-editar'):
 
-                $this->form_validation->set_rules('descricao', '<b>NOME DO GRUPO</b>', 'trim|required|min_length[10]|min_length[10]|max_length[250]');
+                $this->form_validation->set_rules('descricao', '<b>NOME DO GRUPO</b>', 'trim|required|min_length[3]|max_length[250]');
                 $this->form_validation->set_rules('apps', '<b>APLICATIVOS</b>', 'callback_valid_apps');
 
                 if ($this->form_validation->run() == TRUE):
