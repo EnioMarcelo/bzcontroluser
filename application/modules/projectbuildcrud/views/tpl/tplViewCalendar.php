@@ -1,8 +1,8 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 <!--
 /*
-  Created on : 07/11/2019, 10:35AM
-  Author     : ENIO MARCELO BUZANELI CDSCSDCS - eniomarcelo@gmail.com
+  Created on : {{created-date}}, {{created-time}}
+  Author     : {{author-name}} - {{author-email}}
  */
 -->
 <!-- BREADCUMBS -->

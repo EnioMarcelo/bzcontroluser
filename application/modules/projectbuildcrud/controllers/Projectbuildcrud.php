@@ -24,8 +24,10 @@ class ProjectbuildCrud extends MY_Controller {
     protected $_app_nome = '';
     protected $_directory = '';
     protected $_dadosController = '';
+    protected $_dadosControllerCalendar = '';
     protected $_dadosModel = '';
     protected $_dadosView = '';
+    protected $_dadosViewCalendar = '';
     protected $_dadosFormAdd = '';
     protected $_dadosAdd = 'Add';
     protected $_dadosEdit = 'Edit';
@@ -34,6 +36,7 @@ class ProjectbuildCrud extends MY_Controller {
     protected $_appTableName = '';
     protected $_appArrayDados = '';
     protected $_primary_key_field = '';
+    protected $_appCalendarInputs = [];
 // CONTROLLER
     protected $_controller_metodos_php = '';
     protected $_controller_onScriptinit = '';
@@ -1713,6 +1716,8 @@ class ProjectbuildCrud extends MY_Controller {
                 $this->_directory = FCPATH . 'application/modules/' . strtolower($this->_app_nome);
                 $this->_gridListFieldsOrderBy = $_r_projetc->row()->order_by;
                 $this->_gridListVirtualFieldsTable = [];
+                $this->_appCalendarInputs = json_decode($_r_projetc->row()->calendar_inputs);
+
 
                 /*
                  * CHECK SE O DIRETÓRIO DO APP JÁ EXISTE
@@ -3821,8 +3826,7 @@ class ProjectbuildCrud extends MY_Controller {
         $this->_dadosController = str_replace('{{created-date}}', date('d/m/Y'), $this->_dadosController);
         $this->_dadosController = str_replace('{{created-time}}', date('H:i') . ((date('H') > 11) ? 'PM' : 'AM'), $this->_dadosController);
         $this->_dadosController = str_replace('{{author-name}}', $this->session->userdata('user_login')['user_nome'], $this->_dadosController);
-        $this->_dadosController = str_replace('{{author-email}}', $this->session->userdata('user_login')[
-                'user_email'], $this->_dadosController);
+        $this->_dadosController = str_replace('{{author-email}}', $this->session->userdata('user_login')['user_email'], $this->_dadosController);
 
         $this->_dadosController = str_replace('{{titulo-app}}', $this->_appTitulo, $this->_dadosController);
 
@@ -3997,11 +4001,93 @@ class ProjectbuildCrud extends MY_Controller {
 
         /* END EXPORT REPORT */
 
+
+
+        /**
+         * ########################################################################################################################################################################
+         * 
+         * CALENDAR CONTROLLER/VIEW
+         * 
+         * ########################################################################################################################################################################
+         */
+        if (!empty($this->_appCalendarInputs->calendarCheckboxAtivar) && $this->_appCalendarInputs->calendarCheckboxAtivar == 'on') {
+
+
+            /**
+             *  IMPORTA O TEMPLATE CONTROLLER DO CALENDAR 
+             */
+            $_template = file(FCPATH . 'application/modules/ProjectbuildCrud/views/tpl/tplControllerCalendar.php');
+            $this->_dadosControllerCalendar = '';
+
+            foreach ($_template as $_row):
+                $this->_dadosControllerCalendar .= $_row;
+            endforeach;
+
+
+
+            /*
+             * FAZ AS SUBSTITUIÇÕES DOS MARCADORES PELOS CÓDIGOS GERADOS
+             */
+            $this->_dadosController = str_replace('{{calendar-view-app}}', '$this->dados[\'_view_app_calendar\'] = \'v' . $this->_app_nome . 'Calendar\';', $this->_dadosController);
+            $this->_dadosController = str_replace('{{calendar-controller}}', $this->_dadosControllerCalendar, $this->_dadosController);
+
+
+            /* ############################################################################################################################################################ */
+
+
+            /**
+             *  IMPORTA O TEMPLATE VIEW DO CALENDAR 
+             */
+            $_template = file(FCPATH . 'application/modules/ProjectbuildCrud/views/tpl/tplViewCalendar.php');
+            $this->_dadosViewCalendar = '';
+
+            foreach ($_template as $_row):
+                $this->_dadosViewCalendar .= $_row;
+            endforeach;
+
+
+            /*
+             * FAZ AS SUBSTITUIÇÕES DOS MARCADORES PELOS CÓDIGOS GERADOS
+             */
+            $this->_dadosViewCalendar = str_replace('{{created-date}}', date('d/m/Y'), $this->_dadosViewCalendar);
+            $this->_dadosViewCalendar = str_replace('{{created-time}}', date('H:i') . ((date('H') > 11) ? 'PM' : 'AM' ), $this->_dadosViewCalendar);
+            $this->_dadosViewCalendar = str_replace('{{author-name}}', $this->session->userdata('user_login')['user_nome'], $this->_dadosViewCalendar);
+            $this->_dadosViewCalendar = str_replace('{{author-email}}', $this->session->userdata('user_login')['user_email'], $this->_dadosViewCalendar);
+
+
+            /* GERA O ARQUIVO view DO CALENDAR */
+            write_file($this->_directory . '/views/v' . $this->_app_nome . 'Calendar.php', bz_removeEmptyLines($this->_dadosViewCalendar));
+            /* END GERA O ARQUIVO view DO CALENDAR */
+
+
+            $this->_dadosViewCalendar = '';
+
+
+            /**/
+        }else {
+            $this->_dadosController = str_replace('{{calendar-view-app}}', '', $this->_dadosController);
+            $this->_dadosController = str_replace('{{calendar-controller}}', '', $this->_dadosController);
+
+            if (is_file($this->_directory . '/views/v' . $this->_app_nome . 'Calendar.php')) {
+                unlink($this->_directory . '/views/v' . $this->_app_nome . 'Calendar.php');
+            }
+        }
+
+        /* ########################################################################################################################################################################
+         * END CALENDAR CONTROLLER/VIEW
+         * ########################################################################################################################################################################
+         */
+
+
+
+
+
         /* GERA O ARQUIVO controller DA APLICAÇÃO */
         write_file($this->_directory . '/controllers/' . $this->_app_nome . '.php', bz_removeEmptyLines($this->_dadosController));
         /* END GERA O ARQUIVO controller DA APLICAÇÃO */
 
         $this->_dadosController = '';
+        $this->_dadosControllerCalendar = '';
     }
 
     /* END private function ger_controller() */
@@ -4055,8 +4141,6 @@ class ProjectbuildCrud extends MY_Controller {
 
         foreach ($_dados as $_row):
             $this->_dadosView .= $_row;
-
-
         endforeach;
 
         /*

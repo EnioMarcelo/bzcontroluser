@@ -29,6 +29,9 @@
       $this->dados['_view_app_list'] = 'v{{app-nome}}';
       $this->dados['_view_app_add'] = 'v{{app-nome}}FormAdd';
       $this->dados['_view_app_edit'] = 'v{{app-nome}}FormEdit';
+      {{calendar-view-app}}
+      
+      
 
       /* TABELA QUE SERÁ USADO PELO MÓDULO DO SISTEMA */
       $this->table_gridlist_name = '{{table-gridlist-name}}';
@@ -548,6 +551,7 @@ private function get_paginacao() {
 }
 /* END function get_paginacao()  */
 
+{{calendar-controller}}
 
 {{controller-metodos-php}}
 

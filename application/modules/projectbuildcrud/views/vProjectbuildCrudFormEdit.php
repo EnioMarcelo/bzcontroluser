@@ -786,9 +786,6 @@
                         _screen_type = '';
                     }
 
-//                        csrfHash = $("input[name='<?php echo $this->security->get_csrf_token_name(); ?>']").val();
-//                        $("input[name='<?php echo $this->security->get_csrf_token_name(); ?>']").attr('value', '<?php echo $this->security->get_csrf_hash(); ?>');
-
                     $.ajax({
                         type: "POST",
                         url: "<?= site_url($this->router->fetch_class() . '/reorder_linegridlist'); ?>",
