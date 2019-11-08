@@ -25,7 +25,7 @@ class MY_Controller extends MX_Controller {
     public function __construct($_security = true) {
 
         parent::__construct();
-        
+
 
         /**
          * CARREGA O ARQUIVO application/config/config_system

@@ -132,6 +132,7 @@
                         <!--BUTTON EDIT CODE MÉTODOS PHP-->
 
 
+
                         <!--BUTTON EDIT CODE MODELS PHP-->
                         <div class="btn-group margin-left-5" data-url="<?= site_url($this->router->fetch_class() . '/codeeditor/' . $dados->id); ?>">
                             <button type="button" class="btn btn-sm btn-primary btn-flat j-btn-add-new-models-php"><i class="fa fa-fw fa-code"></i> MODELS PHP</button>
@@ -351,6 +352,7 @@
                                     <ul class="nav nav-pills">
                                         <li class="<?= ($this->input->get('tab') == 'gridlist') ? 'active' : ((empty($this->input->get('tab'))) ? 'active' : null); ?>"><a data-toggle="pill" href="#gridlist">Grid List</a></li>
                                         <li class="<?= ($this->input->get('tab') == 'formaddedit') ? 'active' : null; ?>"><a data-toggle="pill" href="#gridformaddedit">Form ADD/EDIT</a></li>
+                                        <li class="<?= ($this->input->get('tab') == 'calendar') ? 'active' : null; ?>"><a data-toggle="pill" href="#calendar">Calendário</a></li>
                                     </ul>
 
                                     <div class="tab-content">
@@ -501,683 +503,812 @@
                                                 </table>
                                             </div>
                                         </div>
+
+
+
+                                        <div id="calendar" class="tab-pane fade <?= ($this->input->get('tab') == 'calendar') ? 'in active' : null; ?>">
+                                            <h3>Calendar Config</h3>
+
+                                            <p></p>
+
+                                            <section class="content">
+                                                <div class="row">
+
+                                                    <!--COLUNA DA ESQUERDA-->
+                                                    <!--                                                    <div class="col-md-6">
+                                                    
+                                                                                                        </div>-->
+                                                    <!--END COLUNA DA ESQUERDA-->
+
+
+
+                                                    <!--COLUNA DA DIREITA-->
+                                                    <div class="col-md-6">
+                                                        <!-- general form elements -->
+                                                        <div class="box box-primary">
+                                                            <div class="box-header with-border">
+
+                                                                <?php
+                                                                $_dadosCalendarInputs = json_decode($dados->calendar_inputs);
+                                                                $_calendarInputValue = '';
+                                                                $_calendarTableFieldName = ['' => 'selecione...'];
+                                                                foreach ($_fields_table_formAddEdit['_result'] as $_tableFieldName):
+                                                                    $_calendarTableFieldName[$_tableFieldName['field_name']] = $_tableFieldName['field_name'];
+                                                                endforeach;
+                                                                
+                                                                ?>
+
+                                                                <div class="form-group">
+                                                                    <label>
+                                                                        <input type="checkbox" name="calendarCheckboxAtivar" class="flat-green" <?= (!empty($_dadosCalendarInputs->calendarCheckboxAtivar) ? 'checked' : (set_value('calendarCheckboxAtivar') ? 'checked' : '')); ?>/>
+                                                                        Ativar Calendário
+                                                                    </label>
+                                                                </div>
+
+
+                                                                <div class="box-header with-border">
+                                                                    <h3 class="box-title">Campos</h3>
+                                                                </div>
+                                                                <!-- /.box-header -->
+
+                                                                <div class="box-body">
+
+                                                                    <!--COLUNA DA ESQUERDA-->
+                                                                    <div class="col-md-6">
+
+                                                                        <div class="form-group">
+                                                                            <?php $_error = form_error("calendarInputTitulo", "<small class='text-danger col-xs-12 bz-input-error'>", "</small>"); ?>
+                                                                            <label for="calendarInputTitulo">Título</label>
+                                                                            <?= form_dropdown('calendarInputTitulo', $_calendarTableFieldName, (!empty($_dadosCalendarInputs->calendarInputTitulo) ? $_dadosCalendarInputs->calendarInputTitulo : ( set_value('calendarInputTitulo') ? set_value('calendarInputTitulo') : '') ), 'id="calendarInputTitulo" class="form-control"'); ?>
+                                                                            <?= $_error; ?>
+                                                                        </div>
+
+
+                                                                        <div class="form-group">
+                                                                            <?php $_error = form_error("calendarInputDataStart", "<small class='text-danger col-xs-12 bz-input-error'>", "</small>"); ?>
+                                                                            <label for="calendarInputDataStart">Data Início</label>
+                                                                            <?= form_dropdown('calendarInputDataStart', $_calendarTableFieldName, (!empty($_dadosCalendarInputs->calendarInputDataStart) ? $_dadosCalendarInputs->calendarInputDataStart : ( set_value('calendarInputDataStart') ? set_value('calendarInputDataStart') : '') ), 'id="calendarInputDataStart" class="form-control"'); ?>
+                                                                            <?= $_error; ?>
+                                                                        </div>
+
+
+                                                                    </div>
+                                                                    <!--END COLUNA DA ESQUERDA-->
+
+
+                                                                    <!--COLUNA DA DIREITA-->
+                                                                    <div class="col-md-6">
+
+                                                                        <div class="form-group">
+                                                                            <?php $_error = form_error("calendarInputDescricao", "<small class='text-danger col-xs-12 bz-input-error'>", "</small>"); ?>
+                                                                            <label for="calendarInputDescricao">Descrição</label>
+                                                                            <?= form_dropdown('calendarInputDescricao', $_calendarTableFieldName, (!empty($_dadosCalendarInputs->calendarInputDescricao) ? $_dadosCalendarInputs->calendarInputDescricao : ( set_value('calendarInputDescricao') ? set_value('calendarInputDescricao') : '') ), 'id="calendarInputDescricao" class="form-control"'); ?>
+                                                                            <?= $_error; ?>
+                                                                        </div>
+
+                                                                        <div class="form-group">
+                                                                            <?php $_error = form_error("calendarInputDataEnd", "<small class='text-danger col-xs-12 bz-input-error'>", "</small>"); ?>
+                                                                            <label for="calendarInputDataEnd">Data Final</label>
+                                                                            <?= form_dropdown('calendarInputDataEnd', $_calendarTableFieldName, (!empty($_dadosCalendarInputs->calendarInputDataEnd) ? $_dadosCalendarInputs->calendarInputDataEnd : ( set_value('calendarInputDataEnd') ? set_value('calendarInputDataEnd') : '') ), 'id="calendarInputDataEnd" class="form-control"'); ?>
+                                                                            <?= $_error; ?>
+                                                                        </div>
+
+                                                                    </div>
+                                                                    <!--END COLUNA DA DIREITA-->
+
+                                                                    <div class="box-footer">
+                                                                        <button type="submit" id="btn-editar" class="btn btn-sm btn-primary btn-show-modal-aguarde margin-right-5 pull-right" name="btn-editar" value="btn-editar">
+                                                                            <span class="fa fa-save margin-right-5" aria-hidden="true"></span> Salvar
+                                                                        </button>
+                                                                    </div>
+
+
+                                                                </div>
+                                                                <!-- /.box-body -->
+
+
+
+
+
+
+
+                                                            </div>
+                                                            <!-- /.box -->
+
+
+                                                        </div>
+                                                    </div>
+                                                    <!--END COLUNA DA DIREITA-->
+                                                </div>
+                                        </div>
+
+
+
+
+
+
+
+
+
+
                                     </div>
-
-
-
-
-
-
                                 </div>
+
+
+
+
+
+
                             </div>
-                            <!--END TABLE FIELDs proj_build_fields-->
+                        </div>
+                        <!--END TABLE FIELDs proj_build_fields-->
 
-                            <div class="box-footer text-right">
+                        <div class="box-footer text-right">
 
-                                <div class="text-center"><i class="fa fa-asterisk margin-right-5 text-error" style="font-size: 0.7em;"></i> Campos Obrigatórios</div>
-
-                            </div>
+                            <div class="text-center"><i class="fa fa-asterisk margin-right-5 text-error" style="font-size: 0.7em;"></i> Campos Obrigatórios</div>
 
                         </div>
+
                     </div>
-                <?php endif; ?>
-                <!-- END Table Grid List / Form Add/EDIT -->
+                </div>
+            <?php endif; ?>
+            <!-- END Table Grid List / Form Add/EDIT -->
 
 
 
-                <!-- CODE EDITOR -->
-                <?php if ($dados->type_project == 'blank'): ?>
-                    <div class="box-body pad codeeditor">
-                        <textarea id="codeeditor_1"  class="col-xs-12" name="code_script" rows="30" width=="100%" autofocus /><?= (($dados->_codeEditorBlank->code_script) ? base64_decode($dados->_codeEditorBlank->code_script) : null); ?></textarea>
-                    </div>
-                <?php endif; ?>
+            <!-- CODE EDITOR -->
+            <?php if ($dados->type_project == 'blank'): ?>
+                <div class="box-body pad codeeditor">
+                    <textarea id="codeeditor_1"  class="col-xs-12" name="code_script" rows="30" width=="100%" autofocus /><?= (($dados->_codeEditorBlank->code_script) ? base64_decode($dados->_codeEditorBlank->code_script) : null); ?></textarea>
+                </div>
+            <?php endif; ?>
 
-                <!-- END CODE EDITOR -->
-
-
-                <!-- FIELDS HIDDEN -->
-                <input type="hidden" name="id" value="<?= (set_value('id')) ? set_value('id') : $dados->id; ?>" readonly/>
-                <input type="hidden" name="type_project" value="<?= (set_value('type_project')) ? set_value('type_project') : $dados->type_project; ?>" readonly/>
-                <input type="hidden" name="task" value="edit-app" readonly/>
-                <!-- END FIELDS HIDDEN -->
+            <!-- END CODE EDITOR -->
 
 
-            </div>
+            <!-- FIELDS HIDDEN -->
+            <input type="hidden" name="id" value="<?= (set_value('id')) ? set_value('id') : $dados->id; ?>" readonly/>
+            <input type="hidden" name="type_project" value="<?= (set_value('type_project')) ? set_value('type_project') : $dados->type_project; ?>" readonly/>
+            <input type="hidden" name="task" value="edit-app" readonly/>
+            <!-- END FIELDS HIDDEN -->
+
 
         </div>
-
 
     </div>
 
 
-    <?= form_close(); ?>
-
-    <?php $this->load->view('modalBuildApp'); ?>
-
-    <?php $this->load->view('modalIcons'); ?>
-
-    <?php $this->load->view('modalEditFieldTableGridList'); ?>
-
-    <?php $this->load->view('modalEditFieldTableFormAddEdit'); ?>
+</div>
 
 
+<?= form_close(); ?>
+
+<?php $this->load->view('modalBuildApp'); ?>
+
+<?php $this->load->view('modalIcons'); ?>
+
+<?php $this->load->view('modalEditFieldTableGridList'); ?>
+
+<?php $this->load->view('modalEditFieldTableFormAddEdit'); ?>
 
 
-    <script>
 
-        $(function () {
 
-            var csrfName = '<?php echo $this->security->get_csrf_token_name(); ?>';
-            var csrfHash = '';
+<script>
 
-            if (csrfHash === '') {
-                csrfHash = '<?php echo $this->security->get_csrf_hash(); ?>';
+    $(function () {
+
+        var csrfName = '<?php echo $this->security->get_csrf_token_name(); ?>';
+        var csrfHash = '';
+
+        if (csrfHash === '') {
+            csrfHash = '<?php echo $this->security->get_csrf_hash(); ?>';
+        }
+
+        $(window).scroll(function () {
+
+            var _s = $(window).scrollTop();
+
+            if (_s > 140) {
+                $('.fixa').css({"top": $(window).scrollTop() - 50});
+                $('.fixa').removeClass('hide');
+            } else {
+                $('.fixa').addClass('hide');
             }
 
-            $(window).scroll(function () {
+        });
 
-                var _s = $(window).scrollTop();
 
-                if (_s > 140) {
-                    $('.fixa').css({"top": $(window).scrollTop() - 50});
-                    $('.fixa').removeClass('hide');
-                } else {
-                    $('.fixa').addClass('hide');
-                }
+        /**
+         * REORDER LINE GRID LIST
+         */
+        $('html').on('mouseenter', '.j_order_gridlist', function () {
+
+            $(this).css({'cursor': 'move'});
+
+            $('.j_drag_active_gridlist').attr('draggable', 'true');
+
+            $('html').on('drag', '.j_drag_active_gridlist', function (event) {
+                event.preventDefault();
+                event.stopPropagation();
+
+                dragIndexGridList = $(this).index();
+                dragContentGridList = $(this);
 
             });
 
+            $('html').on('dragover', '.j_drag_active_gridlist', function (event) {
+                event.preventDefault();
+                event.stopPropagation();
 
-            /**
-             * REORDER LINE GRID LIST
-             */
-            $('html').on('mouseenter', '.j_order_gridlist', function () {
+                $(this).css('border', '2px dashed #ccc');
 
-                $(this).css({'cursor': 'move'});
+            });
 
-                $('.j_drag_active_gridlist').attr('draggable', 'true');
+            $('html').on('dragleave', '.j_drag_active_gridlist', function (event) {
+                event.preventDefault();
+                event.stopPropagation();
 
-                $('html').on('drag', '.j_drag_active_gridlist', function (event) {
-                    event.preventDefault();
-                    event.stopPropagation();
+                $(this).css('border', 'none');
+                $(this).css({'cursor': 'pointer'});
 
-                    dragIndexGridList = $(this).index();
-                    dragContentGridList = $(this);
+            });
 
-                });
+            $('html').on('drop', '.j_drag_active_gridlist', function (event) {
+                event.preventDefault();
+                event.stopPropagation();
 
-                $('html').on('dragover', '.j_drag_active_gridlist', function (event) {
-                    event.preventDefault();
-                    event.stopPropagation();
+                dropElementGridList = $(this);
 
-                    $(this).css('border', '2px dashed #ccc');
+                $(this).css('border', 'none');
 
-                });
+                if (dragIndexGridList > dropElementGridList.index()) {
+                    dropElementGridList.before(dragContentGridList);
+                } else {
+                    dropElementGridList.after(dragContentGridList);
+                }
 
-                $('html').on('dragleave', '.j_drag_active_gridlist', function (event) {
-                    event.preventDefault();
-                    event.stopPropagation();
 
-                    $(this).css('border', 'none');
-                    $(this).css({'cursor': 'pointer'});
+                var _c = 0;
+                $('#tableGridlist > tbody tr').each(function () {
 
-                });
+                    _c++;
 
-                $('html').on('drop', '.j_drag_active_gridlist', function (event) {
-                    event.preventDefault();
-                    event.stopPropagation();
+                    $(this).find("td:first").text(_c);
+                    var _r = $(this).find("td:first").text();
+                    var _projeto_id = $(this).parent().find('tr:first').attr('rel-projeto-id');
+                    var _field_name = $(this).find("td:eq(5)").text();
+                    var _screen_type = $(this).parent().parent().attr('id');
 
-                    dropElementGridList = $(this);
-
-                    $(this).css('border', 'none');
-
-                    if (dragIndexGridList > dropElementGridList.index()) {
-                        dropElementGridList.before(dragContentGridList);
+                    if (_screen_type === 'tableGridlist') {
+                        _screen_type = 'gridlist';
                     } else {
-                        dropElementGridList.after(dragContentGridList);
+                        _screen_type = '';
                     }
-
-
-                    var _c = 0;
-                    $('#tableGridlist > tbody tr').each(function () {
-
-                        _c++;
-
-                        $(this).find("td:first").text(_c);
-                        var _r = $(this).find("td:first").text();
-                        var _projeto_id = $(this).parent().find('tr:first').attr('rel-projeto-id');
-                        var _field_name = $(this).find("td:eq(5)").text();
-                        var _screen_type = $(this).parent().parent().attr('id');
-
-                        if (_screen_type === 'tableGridlist') {
-                            _screen_type = 'gridlist';
-                        } else {
-                            _screen_type = '';
-                        }
 
 //                        csrfHash = $("input[name='<?php echo $this->security->get_csrf_token_name(); ?>']").val();
 //                        $("input[name='<?php echo $this->security->get_csrf_token_name(); ?>']").attr('value', '<?php echo $this->security->get_csrf_hash(); ?>');
 
-                        $.ajax({
-                            type: "POST",
-                            url: "<?= site_url($this->router->fetch_class() . '/reorder_linegridlist'); ?>",
-                            data: {[csrfName]: csrfHash, 'task': 'SAVE-REORDER-GRID-LIST', 'screen_type': _screen_type, 'projeto_id': _projeto_id, 'field_name': _field_name, 'order_field_gridlist': _r},
-                            dataType: "json",
-                            beforeSend: function () {
-
-
-                            }, //END beforeSend
-                            success: function (result) {
-
-                                if (result.csrf_token) {
-                                    csrfHash = result.csrf_token;
-                                }
-
-                                $("input[name='<?php echo $this->security->get_csrf_token_name(); ?>']").attr('value', csrfHash);
-
-                                if (result.message === 'SAVE-REORDER-FIELDS-GRIDLIST-OK') {
-                                    /**/
-                                } else {
-
-                                    $.toast({
-                                        heading: 'ATENÇÃO !!!',
-                                        text: 'Ocorreu um ERRO Inesperado, Contacte o Administrador do Sistema.',
-                                        position: 'top-center',
-                                        icon: 'error'
-                                    });
-
-                                }
-
-
-
-                            }, //END success
-                            complete: function () {
-
-                                parent.$('#modal-aguarde').modal('hide');
-
-                            }, //END complete
-                            error: function () {
-                                $.toast({
-                                    heading: 'ATENÇÃO !!!',
-                                    text: 'Ocorreu um ERRO Inesperado, Contacte o Administrador do Sistema.',
-                                    position: 'top-center',
-                                    icon: 'error'
-                                });
-                            }//END error
-                        }); //END AJAX
-
-
-
-                    });// END $('table tbody tr').each()
-
-                    $(dragContentGridList).fadeTo('slow', 0.5).fadeTo('slow', 1.0).fadeTo('slow', 0.5).fadeTo('slow', 1.0);
-
-                });
-
-
-
-            });
-
-
-            $('html').on('mouseleave', '.j_order_gridlist', function () {
-                $('.j_drag_active_gridlist').removeAttr('draggable');
-                $('html').unbind('drag dragover dragleave drop');
-            });
-            // END REORDER LINE GRID LIST
-
-
-
-            /**
-             * REORDER LINE GRID LIST FORM ADD/EDIT
-             */
-            $('html').on('mouseenter', '.j_order_gridlist_formAddEdit', function () {
-
-                $(this).css({'cursor': 'move'});
-
-                $('.j_drag_active_gridlist_formAddEdit').attr('draggable', 'true');
-
-                $('html').on('drag', '.j_drag_active_gridlist_formAddEdit', function (event) {
-                    event.preventDefault();
-                    event.stopPropagation();
-
-                    dragIndexGridList = $(this).index();
-                    dragContentGridList = $(this);
-
-                });
-
-                $('html').on('dragover', '.j_drag_active_gridlist_formAddEdit', function (event) {
-                    event.preventDefault();
-                    event.stopPropagation();
-
-                    $(this).css('border', '2px dashed #ccc');
-
-                });
-
-                $('html').on('dragleave', '.j_drag_active_gridlist_formAddEdit', function (event) {
-                    event.preventDefault();
-                    event.stopPropagation();
-
-                    $(this).css('border', 'none');
-                    $(this).css({'cursor': 'pointer'});
-
-                });
-
-                $('html').on('drop', '.j_drag_active_gridlist_formAddEdit', function (event) {
-                    event.preventDefault();
-                    event.stopPropagation();
-
-                    dropElementGridList = $(this);
-
-                    $(this).css('border', 'none');
-
-                    if (dragIndexGridList > dropElementGridList.index()) {
-                        dropElementGridList.before(dragContentGridList);
-                    } else {
-                        dropElementGridList.after(dragContentGridList);
-                    }
-
-                    var _c = 0;
-
-                    $('#tableGridlistFormAddEdit > tbody tr').each(function () {
-
-                        _c++;
-
-                        $(this).find("td:first").text(_c);
-                        var _r = $(this).find("td:first").text();
-                        var _projeto_id = $(this).parent().find('tr:first').attr('rel-projeto-id');
-                        var _field_name = $(this).find("td:eq(3)").text();
-                        var _screen_type = $(this).parent().parent().attr('id');
-
-                        if (_screen_type === 'tableGridlistFormAddEdit') {
-                            _screen_type = 'formaddedit';
-                        } else {
-                            _screen_type = '';
-                        }
-
-//                        csrfHash = $("input[name='<?php echo $this->security->get_csrf_token_name(); ?>']").val();
-//                        $("input[name='<?php echo $this->security->get_csrf_token_name(); ?>']").attr('value', '<?php echo $this->security->get_csrf_hash(); ?>');
-
-                        $.ajax({
-                            type: "POST",
-                            url: "<?= site_url($this->router->fetch_class() . '/reorder_linegridlist'); ?>",
-                            data: {[csrfName]: csrfHash, 'task': 'SAVE-REORDER-GRID-LIST-FORM-ADD-EDIT', 'screen_type': _screen_type, 'projeto_id': _projeto_id, 'field_name': _field_name, 'order_field_form': _r},
-                            dataType: "json",
-                            beforeSend: function () {
-
-
-                            }, //END beforeSend
-                            success: function (result) {
-
-                                if (result.csrf_token) {
-                                    csrfHash = result.csrf_token;
-                                }
-
-                                $("input[name='<?php echo $this->security->get_csrf_token_name(); ?>']").attr('value', csrfHash);
-
-                                if (result.message === 'SAVE-REORDER-FIELDS-GRIDLIST-OK') {
-                                    /**/
-                                } else {
-
-                                    $.toast({
-                                        heading: 'ATENÇÃO !!!',
-                                        text: 'Ocorreu um ERRO Inesperado, Contacte o Administrador do Sistema.',
-                                        position: 'top-center',
-                                        icon: 'error'
-                                    });
-
-                                }
-
-                            }, //END success
-                            complete: function () {
-
-                                parent.$('#modal-aguarde').modal('hide');
-
-                            }, //END complete
-                            error: function () {
-                                $.toast({
-                                    heading: 'ATENÇÃO !!!',
-                                    text: 'Ocorreu um ERRO Inesperado, Contacte o Administrador do Sistema.',
-                                    position: 'top-center',
-                                    icon: 'error'
-                                });
-                            }//END error
-                        }); //END AJAX
-
-
-
-                    });// END $('table tbody tr').each()
-
-
-                    $(dragContentGridList).fadeTo('slow', 0.5).fadeTo('slow', 1.0).fadeTo('slow', 0.5).fadeTo('slow', 1.0);
-
-                });
-
-
-
-            });
-
-
-            $('html').on('mouseleave', '.j_order_gridlist_formAddEdit', function () {
-                $('.j_drag_active_gridlist_formAddEdit').removeAttr('draggable');
-                $('html').unbind('drag dragover dragleave drop');
-            });
-            // END REORDER LINE GRID LIST FORM ADD/EDIT
-
-
-            /**
-             * BUTTON SWITCH STATUS FIELD
-             */
-            $(".j-btn-switch-list-show-field").click(function () {
-
-                var _c = $(this).hasClass("fa-toggle-off");
-                var _screen_type = $(this).attr('rel-screen-type');
-
-                if (_screen_type === 'gridlist') {
-                    var _field_name = $(this).closest("td").next().next().next().next().text();
-                } else if (_screen_type === 'formaddedit') {
-                    var _field_name = $(this).closest("td").next().next().text();
-                }
-
-                var _switch = '';
-
-                if (_c) {
-                    $(this).removeClass("fa-toggle-off").addClass("text-green").addClass("fa-toggle-on").parent().parent().removeClass("font-color-gray-light");
-                    _switch = 'on';
-                } else {
-                    $(this).removeClass("fa-toggle-on").removeClass("text-green").addClass("fa-toggle-off").parent().parent().addClass("font-color-gray-light");
-
-                    if (_screen_type == 'gridlist') {
-                        $(this).parent().next().children().removeClass("fa-toggle-on").removeClass("text-green").addClass("fa-toggle-off").parent().parent().addClass("font-color-gray-light");
-                        $(this).parent().next().next().children().removeClass("fa-toggle-on").removeClass("text-green").addClass("fa-toggle-off").parent().parent().addClass("font-color-gray-light");
-                    }
-
-                    _switch = 'off';
-                }
-
-                csrfHash = $("input[name='<?php echo $this->security->get_csrf_token_name(); ?>']").val();
-                $("input[name='<?php echo $this->security->get_csrf_token_name(); ?>']").attr('value', '<?php echo $this->security->get_csrf_hash(); ?>');
-
-                $.post("<?= site_url($this->router->fetch_class() . '/switch_show_field_on_off'); ?>",
-                        {
-                            [csrfName]: csrfHash,
-                            task: "SAVE-SWITCH",
-                            screen_type: _screen_type,
-                            project_id: "<?= $dados->id; ?>",
-                            field_name: _field_name,
-                            grid_list_show: _switch
-
-                        },
-                        function (data, status) {
-
-                            if (data.csrf_token) {
-                                csrfHash = data.csrf_token;
+                    $.ajax({
+                        type: "POST",
+                        url: "<?= site_url($this->router->fetch_class() . '/reorder_linegridlist'); ?>",
+                        data: {[csrfName]: csrfHash, 'task': 'SAVE-REORDER-GRID-LIST', 'screen_type': _screen_type, 'projeto_id': _projeto_id, 'field_name': _field_name, 'order_field_gridlist': _r},
+                        dataType: "json",
+                        beforeSend: function () {
+
+
+                        }, //END beforeSend
+                        success: function (result) {
+
+                            if (result.csrf_token) {
+                                csrfHash = result.csrf_token;
                             }
 
-                            $("input[name='" + [csrfName] + "']").val(csrfHash);
+                            $("input[name='<?php echo $this->security->get_csrf_token_name(); ?>']").attr('value', csrfHash);
 
-                            if (data.message === 'SAVE-SWITCH-OK') {
+                            if (result.message === 'SAVE-REORDER-FIELDS-GRIDLIST-OK') {
+                                /**/
                             } else {
+
                                 $.toast({
-                                    heading: 'ATENÇÃO !!!',
+                                    heading: 'ATENÇÃOxxx !!!',
                                     text: 'Ocorreu um ERRO Inesperado, Contacte o Administrador do Sistema.',
                                     position: 'top-center',
                                     icon: 'error'
                                 });
+
                             }
 
-                        }, 'json');
 
-            });
-            /**
-             * END BUTTON SWITCH STATUS FIELD
-             */
 
+                        }, //END success
+                        complete: function () {
 
-            /**
-             * BUTTON SWITCH SEARCH FIELD
-             */
-            $(".j-btn-switch-list-search-field").click(function () {
+                            parent.$('#modal-aguarde').modal('hide');
 
-                var _c = $(this).hasClass("fa-toggle-off");
-                var _field_name = $(this).closest("td").next().next().next().text();
-                var _screen_type = $(this).attr('rel-screen-type');
-                var _switch = '';
+                        }, //END complete
+                        error: function () {
+                            $.toast({
+                                heading: 'ATENÇÃO !!!',
+                                text: 'Ocorreu um ERRO Inesperado, Contacte o Administrador do Sistema.',
+                                position: 'top-center',
+                                icon: 'error'
+                            });
+                        }//END error
+                    }); //END AJAX
 
-                var _t = $(this).parent().prev().children().hasClass("fa-toggle-off");
-                if (_t) {
-//                    return false;
-                }
 
-                if (_c) {
-                    $(this).removeClass("fa-toggle-off").addClass("text-green").addClass("fa-toggle-on").parent().parent().removeClass("font-color-gray-light");
-                    _switch = 'on';
-                } else {
-                    $(this).removeClass("fa-toggle-on").removeClass("text-green").addClass("fa-toggle-off");
-                    _switch = 'off';
-                }
 
+                });// END $('table tbody tr').each()
 
-                $.post("<?= site_url($this->router->fetch_class() . '/switch_search_field_on_off'); ?>",
-                        {
-                            [csrfName]: csrfHash,
-                            task: "SAVE-SWITCH",
-                            screen_type: _screen_type,
-                            project_id: "<?= $dados->id; ?>",
-                            field_name: _field_name,
-                            grid_list_search: _switch
+                $(dragContentGridList).fadeTo('slow', 0.5).fadeTo('slow', 1.0).fadeTo('slow', 0.5).fadeTo('slow', 1.0);
 
-                        },
-                        function (data, status) {
-
-                            if (data.csrf_token) {
-                                csrfHash = data.csrf_token;
-                            }
-
-                            $("input[name='" + [csrfName] + "']").val(csrfHash);
-
-                            if (data.message === 'SAVE-SWITCH-OK') {
-                            } else {
-                                $.toast({
-                                    heading: 'ATENÇÃO !!!',
-                                    text: 'Ocorreu um ERRO Inesperado, Contacte o Administrador do Sistema.',
-                                    position: 'top-center',
-                                    icon: 'error'
-                                });
-                            }
-
-                        }, 'json');
-
-            });
-            /**
-             * END BUTTON SWITCH SEARCH FIELD
-             */
-
-
-
-            /**
-             * BUTTON SWITCH EXPORT FIELD
-             */
-            $(".j-btn-switch-list-export-field").click(function () {
-
-                var _c = $(this).hasClass("fa-toggle-off");
-                var _field_name = $(this).closest("td").next().next().text();
-                var _screen_type = $(this).attr('rel-screen-type');
-                var _switch = '';
-
-                var _t = $(this).parent().prev().children().hasClass("fa-toggle-off");
-                if (_t) {
-//                    return false;
-                }
-
-                if (_c) {
-                    $(this).removeClass("fa-toggle-off").addClass("text-green").addClass("fa-toggle-on").parent().parent().removeClass("font-color-gray-light");
-                    _switch = 'on';
-                } else {
-                    $(this).removeClass("fa-toggle-on").removeClass("text-green").addClass("fa-toggle-off");
-                    _switch = 'off';
-                }
-
-
-                $.post("<?= site_url($this->router->fetch_class() . '/switch_export_field_on_off'); ?>",
-                        {
-                            [csrfName]: csrfHash,
-                            task: "SAVE-SWITCH",
-                            screen_type: _screen_type,
-                            project_id: "<?= $dados->id; ?>",
-                            field_name: _field_name,
-                            grid_list_export: _switch
-
-                        },
-                        function (data, status) {
-
-                            if (data.csrf_token) {
-                                csrfHash = data.csrf_token;
-                            }
-
-                            $("input[name='" + [csrfName] + "']").val(csrfHash);
-
-                            if (data.message === 'SAVE-SWITCH-OK') {
-                            } else {
-                                $.toast({
-                                    heading: 'ATENÇÃO !!!',
-                                    text: 'Ocorreu um ERRO Inesperado, Contacte o Administrador do Sistema.',
-                                    position: 'top-center',
-                                    icon: 'error'
-                                });
-                            }
-
-                        }, 'json');
-
-            });
-            /**
-             * END BUTTON SWITCH EXPORT FIELD
-             */
-
-
-
-
-            //ADD NEW METODO PHP
-            $(".j-btn-add-new-metodo-php").click(function () {
-
-                $(document).keydown(function (e) {
-                    if (e.keyCode == 32) {
-                        return false;
-                    }
-                });
-
-                var _url = $(this).parent().attr("data-url");
-                var _xmetodo = '';
-
-
-                swal({
-                    title: 'Método PHP',
-                    text: 'Método',
-
-                    content: {
-                        element: "input",
-                        attributes: {
-                            placeholder: "Digite o Nome do Método PHP Aqui...",
-                            type: "text",
-                        },
-
-                    },
-                    button: {
-                        text: "Novo",
-                        closeModal: false,
-                    },
-
-                }).then(_metodophp => {
-                    if (!_metodophp) {
-                        swal.stopLoading();
-                        swal.close();
-//                        swal("Opss!", "Favor Informar o Nome do Método PHP", "warning");
-                        return false;
-                    }
-
-                    var _xmetodo = _metodophp.replace(/[^A-Za-z0-9_]+/g, '');
-                    _url = _url + '/' + _xmetodo + '/metodo-php';
-
-                    window.location = _url;
-
-
-                });
-
-
-            });
-
-
-
-            //ADD NEW MODELS PHP
-            $(".j-btn-add-new-models-php").click(function () {
-
-                $(document).keydown(function (e) {
-                    if (e.keyCode == 32) {
-                        return false;
-                    }
-                });
-
-                var _url = $(this).parent().attr("data-url");
-                var _xmodel = '';
-
-
-                swal({
-                    title: 'Model PHP',
-                    text: 'Model',
-
-                    content: {
-                        element: "input",
-                        attributes: {
-                            placeholder: "Digite o Nome do Model PHP Aqui...",
-                            type: "text",
-                        },
-
-                    },
-                    button: {
-                        text: "Novo",
-                        closeModal: false,
-                    },
-
-                }).then(_modelphp => {
-                    if (!_modelphp) {
-                        swal.stopLoading();
-                        swal.close();
-//                        swal("Opss!", "Favor Informar o Nome do Método PHP", "warning");
-                        return false;
-                    }
-
-                    var _xmodel = _modelphp.replace(/[^A-Za-z0-9_]+/g, '');
-                    _url = _url + '/model_' + _xmodel + '/model-php';
-                    window.location = _url;
-
-                });
-
-
-
-
-
-            });
-
-            /**
-             * BTN ON CHANGE EXECUTE BTN EDITAR TO SAVE
-             */
-            $('.triggerBtnEditar').change(function () {
-                $('#btn-editar').trigger("click");
-                return false;
-            });
-
-            /**
-             * INPUT OUT FOCUS OU BLUR EXECUTE BTN EDITAR TO SAVE
-             */
-            $('.outInputTriggerBtnEditar').blur(function () {
-                $('#btn-editar').trigger("click");
-                return false;
             });
 
 
 
         });
 
-    </script>
+
+        $('html').on('mouseleave', '.j_order_gridlist', function () {
+            $('.j_drag_active_gridlist').removeAttr('draggable');
+            $('html').unbind('drag dragover dragleave drop');
+        });
+        // END REORDER LINE GRID LIST
+
+
+
+        /**
+         * REORDER LINE GRID LIST FORM ADD/EDIT
+         */
+        $('html').on('mouseenter', '.j_order_gridlist_formAddEdit', function () {
+
+            $(this).css({'cursor': 'move'});
+
+            $('.j_drag_active_gridlist_formAddEdit').attr('draggable', 'true');
+
+            $('html').on('drag', '.j_drag_active_gridlist_formAddEdit', function (event) {
+                event.preventDefault();
+                event.stopPropagation();
+
+                dragIndexGridList = $(this).index();
+                dragContentGridList = $(this);
+
+            });
+
+            $('html').on('dragover', '.j_drag_active_gridlist_formAddEdit', function (event) {
+                event.preventDefault();
+                event.stopPropagation();
+
+                $(this).css('border', '2px dashed #ccc');
+
+            });
+
+            $('html').on('dragleave', '.j_drag_active_gridlist_formAddEdit', function (event) {
+                event.preventDefault();
+                event.stopPropagation();
+
+                $(this).css('border', 'none');
+                $(this).css({'cursor': 'pointer'});
+
+            });
+
+            $('html').on('drop', '.j_drag_active_gridlist_formAddEdit', function (event) {
+                event.preventDefault();
+                event.stopPropagation();
+
+                dropElementGridList = $(this);
+
+                $(this).css('border', 'none');
+
+                if (dragIndexGridList > dropElementGridList.index()) {
+                    dropElementGridList.before(dragContentGridList);
+                } else {
+                    dropElementGridList.after(dragContentGridList);
+                }
+
+                var _c = 0;
+
+                $('#tableGridlistFormAddEdit > tbody tr').each(function () {
+
+                    _c++;
+
+                    $(this).find("td:first").text(_c);
+                    var _r = $(this).find("td:first").text();
+                    var _projeto_id = $(this).parent().find('tr:first').attr('rel-projeto-id');
+                    var _field_name = $(this).find("td:eq(3)").text();
+                    var _screen_type = $(this).parent().parent().attr('id');
+
+                    if (_screen_type === 'tableGridlistFormAddEdit') {
+                        _screen_type = 'formaddedit';
+                    } else {
+                        _screen_type = '';
+                    }
+
+//                        csrfHash = $("input[name='<?php echo $this->security->get_csrf_token_name(); ?>']").val();
+//                        $("input[name='<?php echo $this->security->get_csrf_token_name(); ?>']").attr('value', '<?php echo $this->security->get_csrf_hash(); ?>');
+
+                    $.ajax({
+                        type: "POST",
+                        url: "<?= site_url($this->router->fetch_class() . '/reorder_linegridlist'); ?>",
+                        data: {[csrfName]: csrfHash, 'task': 'SAVE-REORDER-GRID-LIST-FORM-ADD-EDIT', 'screen_type': _screen_type, 'projeto_id': _projeto_id, 'field_name': _field_name, 'order_field_form': _r},
+                        dataType: "json",
+                        beforeSend: function () {
+
+
+                        }, //END beforeSend
+                        success: function (result) {
+
+                            if (result.csrf_token) {
+                                csrfHash = result.csrf_token;
+                            }
+
+                            $("input[name='<?php echo $this->security->get_csrf_token_name(); ?>']").attr('value', csrfHash);
+
+                            if (result.message === 'SAVE-REORDER-FIELDS-GRIDLIST-OK') {
+                                /**/
+                            } else {
+
+                                $.toast({
+                                    heading: 'ATENÇÃO !!!',
+                                    text: 'Ocorreu um ERRO Inesperado, Contacte o Administrador do Sistema.',
+                                    position: 'top-center',
+                                    icon: 'error'
+                                });
+
+                            }
+
+                        }, //END success
+                        complete: function () {
+
+                            parent.$('#modal-aguarde').modal('hide');
+
+                        }, //END complete
+                        error: function () {
+                            $.toast({
+                                heading: 'ATENÇÃO !!!',
+                                text: 'Ocorreu um ERRO Inesperado, Contacte o Administrador do Sistema.',
+                                position: 'top-center',
+                                icon: 'error'
+                            });
+                        }//END error
+                    }); //END AJAX
+
+
+
+                });// END $('table tbody tr').each()
+
+
+                $(dragContentGridList).fadeTo('slow', 0.5).fadeTo('slow', 1.0).fadeTo('slow', 0.5).fadeTo('slow', 1.0);
+
+            });
+
+
+
+        });
+
+
+        $('html').on('mouseleave', '.j_order_gridlist_formAddEdit', function () {
+            $('.j_drag_active_gridlist_formAddEdit').removeAttr('draggable');
+            $('html').unbind('drag dragover dragleave drop');
+        });
+        // END REORDER LINE GRID LIST FORM ADD/EDIT
+
+
+        /**
+         * BUTTON SWITCH STATUS FIELD
+         */
+        $(".j-btn-switch-list-show-field").click(function () {
+
+            var _c = $(this).hasClass("fa-toggle-off");
+            var _screen_type = $(this).attr('rel-screen-type');
+
+            if (_screen_type === 'gridlist') {
+                var _field_name = $(this).closest("td").next().next().next().next().text();
+            } else if (_screen_type === 'formaddedit') {
+                var _field_name = $(this).closest("td").next().next().text();
+            }
+
+            var _switch = '';
+
+            if (_c) {
+                $(this).removeClass("fa-toggle-off").addClass("text-green").addClass("fa-toggle-on").parent().parent().removeClass("font-color-gray-light");
+                _switch = 'on';
+            } else {
+                $(this).removeClass("fa-toggle-on").removeClass("text-green").addClass("fa-toggle-off").parent().parent().addClass("font-color-gray-light");
+
+                if (_screen_type == 'gridlist') {
+                    $(this).parent().next().children().removeClass("fa-toggle-on").removeClass("text-green").addClass("fa-toggle-off").parent().parent().addClass("font-color-gray-light");
+                    $(this).parent().next().next().children().removeClass("fa-toggle-on").removeClass("text-green").addClass("fa-toggle-off").parent().parent().addClass("font-color-gray-light");
+                }
+
+                _switch = 'off';
+            }
+
+            csrfHash = $("input[name='<?php echo $this->security->get_csrf_token_name(); ?>']").val();
+            $("input[name='<?php echo $this->security->get_csrf_token_name(); ?>']").attr('value', '<?php echo $this->security->get_csrf_hash(); ?>');
+
+            $.post("<?= site_url($this->router->fetch_class() . '/switch_show_field_on_off'); ?>",
+                    {
+                        [csrfName]: csrfHash,
+                        task: "SAVE-SWITCH",
+                        screen_type: _screen_type,
+                        project_id: "<?= $dados->id; ?>",
+                        field_name: _field_name,
+                        grid_list_show: _switch
+
+                    },
+                    function (data, status) {
+
+                        if (data.csrf_token) {
+                            csrfHash = data.csrf_token;
+                        }
+
+                        $("input[name='" + [csrfName] + "']").val(csrfHash);
+
+                        if (data.message === 'SAVE-SWITCH-OK') {
+                        } else {
+                            $.toast({
+                                heading: 'ATENÇÃO !!!',
+                                text: 'Ocorreu um ERRO Inesperado, Contacte o Administrador do Sistema.',
+                                position: 'top-center',
+                                icon: 'error'
+                            });
+                        }
+
+                    }, 'json');
+
+        });
+        /**
+         * END BUTTON SWITCH STATUS FIELD
+         */
+
+
+        /**
+         * BUTTON SWITCH SEARCH FIELD
+         */
+        $(".j-btn-switch-list-search-field").click(function () {
+
+            var _c = $(this).hasClass("fa-toggle-off");
+            var _field_name = $(this).closest("td").next().next().next().text();
+            var _screen_type = $(this).attr('rel-screen-type');
+            var _switch = '';
+
+            var _t = $(this).parent().prev().children().hasClass("fa-toggle-off");
+            if (_t) {
+//                    return false;
+            }
+
+            if (_c) {
+                $(this).removeClass("fa-toggle-off").addClass("text-green").addClass("fa-toggle-on").parent().parent().removeClass("font-color-gray-light");
+                _switch = 'on';
+            } else {
+                $(this).removeClass("fa-toggle-on").removeClass("text-green").addClass("fa-toggle-off");
+                _switch = 'off';
+            }
+
+
+            $.post("<?= site_url($this->router->fetch_class() . '/switch_search_field_on_off'); ?>",
+                    {
+                        [csrfName]: csrfHash,
+                        task: "SAVE-SWITCH",
+                        screen_type: _screen_type,
+                        project_id: "<?= $dados->id; ?>",
+                        field_name: _field_name,
+                        grid_list_search: _switch
+
+                    },
+                    function (data, status) {
+
+                        if (data.csrf_token) {
+                            csrfHash = data.csrf_token;
+                        }
+
+                        $("input[name='" + [csrfName] + "']").val(csrfHash);
+
+                        if (data.message === 'SAVE-SWITCH-OK') {
+                        } else {
+                            $.toast({
+                                heading: 'ATENÇÃO !!!',
+                                text: 'Ocorreu um ERRO Inesperado, Contacte o Administrador do Sistema.',
+                                position: 'top-center',
+                                icon: 'error'
+                            });
+                        }
+
+                    }, 'json');
+
+        });
+        /**
+         * END BUTTON SWITCH SEARCH FIELD
+         */
+
+
+
+        /**
+         * BUTTON SWITCH EXPORT FIELD
+         */
+        $(".j-btn-switch-list-export-field").click(function () {
+
+            var _c = $(this).hasClass("fa-toggle-off");
+            var _field_name = $(this).closest("td").next().next().text();
+            var _screen_type = $(this).attr('rel-screen-type');
+            var _switch = '';
+
+            var _t = $(this).parent().prev().children().hasClass("fa-toggle-off");
+            if (_t) {
+//                    return false;
+            }
+
+            if (_c) {
+                $(this).removeClass("fa-toggle-off").addClass("text-green").addClass("fa-toggle-on").parent().parent().removeClass("font-color-gray-light");
+                _switch = 'on';
+            } else {
+                $(this).removeClass("fa-toggle-on").removeClass("text-green").addClass("fa-toggle-off");
+                _switch = 'off';
+            }
+
+
+            $.post("<?= site_url($this->router->fetch_class() . '/switch_export_field_on_off'); ?>",
+                    {
+                        [csrfName]: csrfHash,
+                        task: "SAVE-SWITCH",
+                        screen_type: _screen_type,
+                        project_id: "<?= $dados->id; ?>",
+                        field_name: _field_name,
+                        grid_list_export: _switch
+
+                    },
+                    function (data, status) {
+
+                        if (data.csrf_token) {
+                            csrfHash = data.csrf_token;
+                        }
+
+                        $("input[name='" + [csrfName] + "']").val(csrfHash);
+
+                        if (data.message === 'SAVE-SWITCH-OK') {
+                        } else {
+                            $.toast({
+                                heading: 'ATENÇÃO !!!',
+                                text: 'Ocorreu um ERRO Inesperado, Contacte o Administrador do Sistema.',
+                                position: 'top-center',
+                                icon: 'error'
+                            });
+                        }
+
+                    }, 'json');
+
+        });
+        /**
+         * END BUTTON SWITCH EXPORT FIELD
+         */
+
+
+
+
+        //ADD NEW METODO PHP
+        $(".j-btn-add-new-metodo-php").click(function () {
+
+            $(document).keydown(function (e) {
+                if (e.keyCode == 32) {
+                    return false;
+                }
+            });
+
+            var _url = $(this).parent().attr("data-url");
+            var _xmetodo = '';
+
+
+            swal({
+                title: 'Método PHP',
+                text: 'Método',
+
+                content: {
+                    element: "input",
+                    attributes: {
+                        placeholder: "Digite o Nome do Método PHP Aqui...",
+                        type: "text",
+                    },
+
+                },
+                button: {
+                    text: "Novo",
+                    closeModal: false,
+                },
+
+            }).then(_metodophp => {
+                if (!_metodophp) {
+                    swal.stopLoading();
+                    swal.close();
+//                        swal("Opss!", "Favor Informar o Nome do Método PHP", "warning");
+                    return false;
+                }
+
+                var _xmetodo = _metodophp.replace(/[^A-Za-z0-9_]+/g, '');
+                _url = _url + '/' + _xmetodo + '/metodo-php';
+
+                window.location = _url;
+
+
+            });
+
+
+        });
+
+
+
+        //ADD NEW MODELS PHP
+        $(".j-btn-add-new-models-php").click(function () {
+
+            $(document).keydown(function (e) {
+                if (e.keyCode == 32) {
+                    return false;
+                }
+            });
+
+            var _url = $(this).parent().attr("data-url");
+            var _xmodel = '';
+
+
+            swal({
+                title: 'Model PHP',
+                text: 'Model',
+
+                content: {
+                    element: "input",
+                    attributes: {
+                        placeholder: "Digite o Nome do Model PHP Aqui...",
+                        type: "text",
+                    },
+
+                },
+                button: {
+                    text: "Novo",
+                    closeModal: false,
+                },
+
+            }).then(_modelphp => {
+                if (!_modelphp) {
+                    swal.stopLoading();
+                    swal.close();
+//                        swal("Opss!", "Favor Informar o Nome do Método PHP", "warning");
+                    return false;
+                }
+
+                var _xmodel = _modelphp.replace(/[^A-Za-z0-9_]+/g, '');
+                _url = _url + '/model_' + _xmodel + '/model-php';
+                window.location = _url;
+
+            });
+
+
+
+
+
+        });
+
+        /**
+         * BTN ON CHANGE EXECUTE BTN EDITAR TO SAVE
+         */
+        $('.triggerBtnEditar').change(function () {
+            $('#btn-editar').trigger("click");
+            return false;
+        });
+
+        /**
+         * INPUT OUT FOCUS OU BLUR EXECUTE BTN EDITAR TO SAVE
+         */
+        $('.outInputTriggerBtnEditar').blur(function () {
+            $('#btn-editar').trigger("click");
+            return false;
+        });
+
+
+
+    });
+
+</script>
 
 
 

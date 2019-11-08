@@ -19,7 +19,7 @@
 
       /* LOAD MODEL */
       $this->load->model('{{app-nome}}_model', 'm', TRUE);
-
+      
 
       /* TÍTULO DA APLICAÇÃO */
       $this->dados['_titulo_app'] = '{{titulo-app}}';

@@ -652,9 +652,41 @@ class ProjectbuildCrud extends MY_Controller {
                     $this->form_validation->set_rules('primary_key', '<b>CHAVE PRIMÁRIA</b>', 'trim|required|max_length[50]');
                 }
 
+                if (!empty($this->input->post('calendarCheckboxAtivar')) && $this->input->post('calendarCheckboxAtivar') == 'on') {
+                    $this->form_validation->set_rules('calendarInputTitulo', '<b>TÍTULO</b> ', 'trim|required');
+                    $this->form_validation->set_rules('calendarInputDescricao', '<b>DESCRIÇÃO</b> ', 'trim|required');
+                    $this->form_validation->set_rules('calendarInputDataStart', '<b>DATA INÍCIO</b> ', 'trim|required');
+                    $this->form_validation->set_rules('calendarInputDataEnd', '<b>DATA FINAL</b> ', 'trim|required');
+                }
+
+
                 if ($this->form_validation->run() == true):
 
                     $_dados = $this->input->post();
+
+                    /**
+                     * PREPARA OS DADOS DOS CAMPOS DO CALENDÁRIO PARA GRAVAR
+                     */
+                    $_calendarInputs = [];
+
+
+                    foreach ($_dados as $key => $calendarInput) {
+                        if (mc_contains_in_string('calendarInput', $key) || mc_contains_in_string('calendarCheckboxAtivar', $key)) {
+
+                            if ($this->input->post('calendarCheckboxAtivar') == 'on') {
+                                $_calendarInputs[$key] = $calendarInput;
+                            } else {
+                                $_calendarInputs[$key] = '';
+                            }
+
+                            unset($_dados[$key]);
+                        }
+                    }
+
+                    $_dados['calendar_inputs'] = json_encode($_calendarInputs);
+
+                    /* END PREPARA OS DADOS DOS CAMPOS DO CALENDÁRIO PARA GRAVAR */
+
                     $_dados['code_script'] = $this->input->post('code_script', false);
 
                     if ($this->input->post('type_project') == 'crud') {
@@ -712,6 +744,8 @@ class ProjectbuildCrud extends MY_Controller {
                         $dados_auditoria['description'] = ___MSG_AUDITORIA_UPDATE_SUCCESS___;
                         $dados_auditoria['last_query'] = $this->db->last_query();
                         add_auditoria($dados_auditoria);
+
+                        $this->form_validation->clear_field_data();
 
                     else:
                         /* GRAVA AUDITORIA */
@@ -862,7 +896,7 @@ class ProjectbuildCrud extends MY_Controller {
         if ($this->form_validation->run() == true):
 
             $_dados = $this->input->post('dadosdel', true);
-            $_dados = explode(',', $_dados);
+            $_dados = explode(', ', $_dados);
 
             foreach ($_dados as $_rowdel):
 
@@ -914,14 +948,14 @@ class ProjectbuildCrud extends MY_Controller {
                     endif;
 
                 else:
-//set_mensagem_toastr('<i class="fa fa-fw fa-thumbs-o-down" style="font-size: 1.5em"></i>', _MSG_ERROR_DEL_REGISTRO_, 'error', 'top-center');
+//set_mensagem_toastr('<i class = "fa fa-fw fa-thumbs-o-down" style = "font-size: 1.5em"></i>', _MSG_ERROR_DEL_REGISTRO_, 'error', 'top-center');
                     set_mensagem_trigger_notifi(___MSG_ERROR_DEL_REGISTRO___, 'error');
                 endif;
 
             endforeach;
 
         else:
-//set_mensagem_toastr('<i class="fa fa-fw fa-thumbs-o-down" style="font-size: 1.5em"></i>', _MSG_ERROR_DE_VALIDACAO_, 'error', 'top-center');
+//set_mensagem_toastr('<i class = "fa fa-fw fa-thumbs-o-down" style = "font-size: 1.5em"></i>', _MSG_ERROR_DE_VALIDACAO_, 'error', 'top-center');
             set_mensagem_trigger_notifi(___MSG_ERROR_DE_VALIDACAO___, 'error');
         endif;
 
@@ -952,7 +986,7 @@ class ProjectbuildCrud extends MY_Controller {
                 unset($_dados['task']);
                 unset($_dados['screen_type']);
 
-                $_where = 'WHERE proj_build_id = "' . $_dados['projeto_id'] . '" AND field_name = "' . $_dados['field_name'] . '" AND screen_type = "' . $_screen_type . '"';
+                $_where = 'WHERE proj_build_id = "' . $_dados['projeto_id'] . '" AND field_name  = "' . $_dados ['field_name'] . '  " AND  screen_type  =  "' . $_screen_type . ' "';
                 if ($this->update->exec('proj_build_fields', array('order_field_gridlist' => $_dados['order_field_gridlist']), $_where)):
                 /**/
                 endif;
@@ -1088,7 +1122,7 @@ class ProjectbuildCrud extends MY_Controller {
 
                     /* if ($_grid_list_show == 'off') {
                       $_response['message'] = 'SAVE-SWITCH-OK';
-                      echo json_encode($_response);
+                      echo json_e ncode($_response);
                       exit;
                       } */
 
@@ -1280,9 +1314,9 @@ class ProjectbuildCrud extends MY_Controller {
                  * PARÂMETROS DO CAMPO
                  */
                 if ($_screen_type == 'gridlist'):
-                    $_dadosTable['param_gridlist'] = '{"grid_list_show":"on","grid_list_search":"on","grid_list_export":"on","grid_list_field_input_type":"' . $_input_type . '","grid_list_label":"' . $_dadosTable['field_name'] . '","grid_list_aligne_label":"text-left","grid_list_field_length":"","grid_list_field_aligne":"text-left"}';
+                    $_dadosTable['param_gridlist'] = '{"grid_list_show":"on", "grid_list_search":"on", "grid_list_export":"on", "grid_list_field_input_type":"' . $_input_type . '", "grid_list_label":"' . $_dadosTable['field_name'] . '", "grid_list_aligne_label":"text-left", "grid_list_field_length":"", "grid_list_field_aligne":"text-left"}';
                 elseif ($_screen_type == 'formaddedit'):
-                    $_dadosTable['param_formaddedit'] = '{"form_add_edit_field_show":"on","form_add_edit_field_type":"' . $_input_type . '","form_add_edit_field_label":"' . $_dadosTable['field_name'] . '","form_add_edit_field_placeholder":"","form_add_edit_field_max_length":"' . (($_dadosTable['field_length'] > 0) ? $_dadosTable['field_length'] : '') . '"}';
+                    $_dadosTable['param_formaddedit'] = '{"form_add_edit_field_show":"on", "form_add_edit_field_type":"' . $_input_type . '", "form_add_edit_field_label":"' . $_dadosTable['field_name'] . '", "form_add_edit_field_placeholder":"", "form_add_edit_field_max_length":"' . (($_dadosTable['field_length'] > 0) ? $_dadosTable['field_length'] : '') . '"}';
                 endif;
                 /* END PARÂMETROS DO CAMPO */
 
@@ -1342,7 +1376,7 @@ class ProjectbuildCrud extends MY_Controller {
          */
         if (($_code_type == 'metodo-php' || 'model-php' || $_code_type == 'evento-php') && !empty($_idProjeto)):
 
-            $this->dados['_parametros']['code_screen_title'] = ' [ ' . $_code_screen . '($_p = null) ]';
+            $this->dados['_parametros']['code_screen_title'] = ' [' . $_code_screen . ' ($_p = null)]';
 
         else:
 
@@ -1431,8 +1465,8 @@ class ProjectbuildCrud extends MY_Controller {
                 $_r_del_code_editor = $this->db->delete('proj_build_codeeditor');
 
                 if ($_r_del_code_editor):
-                    set_mensagem_trigger_notifi(strtoupper(str_replace('-', ' ', $_dados_del_code['code_type'])) . ': ' . $_dados_del_code['code_screen'] . '() Deletado com Sucesso.', 'success');
-                    redirect('projectbuildcrud/edit/' . $_dados_del_code['proj_build_id'] . '?tab=gridlist');
+                    set_mensagem_trigger_notifi(strtoupper(str_replace('-', ' ', $_dados_del_code['code_type'])) . ': ' . $_dados_del_code['code_screen'] . ' () Deletado com Sucesso.', 'success');
+                    redirect('projectbuildcrud/edit/' . $_dados_del_code['proj_build_id'] . '?tab = gridlist');
                 else:
 
                 endif;
@@ -1446,7 +1480,7 @@ class ProjectbuildCrud extends MY_Controller {
          */
         $this->dados['_parametros']['code_screen'] = $_code_screen;
 
-        if (($_code_screen == 'gridlist')):
+        if (( $_code_screen == 'gridlist')):
             $this->dados['_parametros']['code_screen_title'] = 'GRID LIST';
         elseif (($_code_screen == 'formadd')):
             $this->dados['_parametros']['code_screen_title'] = 'FORM ADD';
@@ -1498,7 +1532,7 @@ class ProjectbuildCrud extends MY_Controller {
         else:
 
             set_mensagem_trigger_notifi('O parâmetro passado para Editor de Códigos do Projeto não confere.', 'warning');
-            redirect(site_url('projectbuildcrud?search=' . $this->_app_nome));
+            redirect(site_url('projectbuildcrud?search = ' . $this->_app_nome));
             exit;
 
         endif;
@@ -1631,25 +1665,25 @@ class ProjectbuildCrud extends MY_Controller {
             /*
              * GERA O CONTROLLER DO APP BLANK
              */
-            echo '<div class="callout callout-success">
-			                Gerando Controller do App Blank...
-			                </div>';
+            echo '<div class = "callout callout-success">
+                        Gerando Controller do App Blank...
+                        </div>';
             $this->ger_controllerBlank();
 
             /*
              * GERA O MODEL DO APP BLANK
              */
-            echo '<div class="callout callout-success">
-			                Gerando Model do App Blank...
-			                </div>';
+            echo '<div class = "callout callout-success">
+                        Gerando Model do App Blank...
+                        </div>';
             $this->ger_modelsBlank();
 
             /*
              * GERA O VIEW DO APP BLANK
              */
-            echo '<div class="callout callout-success">
-			                Gerando View do App Blank...
-			                </div>';
+            echo '<div class = "callout callout-success">
+                        Gerando View do App Blank...
+                        </div>';
             $this->ger_viewBlank();
 
         else:
@@ -1659,7 +1693,7 @@ class ProjectbuildCrud extends MY_Controller {
              */
             $this->db->select('*');
             $this->db->from('proj_build a');
-            $this->db->join('proj_build_fields b', 'b.proj_build_id=a.id', 'left');
+            $this->db->join('proj_build_fields b', 'b.proj_build_id = a.id', 'left');
             $this->db->where('a.id', $this->_project_id);
             $this->db->where('b.screen_type', 'gridlist');
             $this->db->order_by('order_field_gridlist');
@@ -1707,7 +1741,7 @@ class ProjectbuildCrud extends MY_Controller {
 
                         /* CAMPOS PARA FILTRAGEM DOS DADOS */
                         if ($_param_gridListField['grid_list_search'] == 'on' && (empty($_param_gridListField['grid_list_field_type']) || $_param_gridListField['grid_list_field_type'] != 'virtual')):
-                            $this->_gridListSearchFields .= $_row['field_name'] . ',';
+                            $this->_gridListSearchFields .= $_row['field_name'] . ', ';
                         endif;
                         /* END CAMPOS PARA FILTRAGEM DOS DADOS */
 
@@ -1733,27 +1767,30 @@ class ProjectbuildCrud extends MY_Controller {
                                 if (!empty($_param_gridListField['grid_list_aligne_label'])):
                                     if ($_param_gridListField['grid_list_aligne_label'] == 'text-left'):
                                         if (!empty($_width_field)):
-                                            $_width_field .= '; text-align:left';
+                                            $_width_field .= ';
+                        text-align:left';
                                         else:
                                             $_width_field .= 'text-align:left';
                                         endif;
                                     elseif ($_param_gridListField['grid_list_aligne_label'] == 'text-center'):
                                         if (!empty($_width_field)):
-                                            $_width_field .= '; text-align:center';
+                                            $_width_field .= ';
+                        text-align:center';
                                         else:
                                             $_width_field .= 'text-align:center';
                                         endif;
                                     elseif ($_param_gridListField['grid_list_aligne_label'] == 'text-right'):
                                         if (!empty($_width_field)):
-                                            $_width_field .= '; text-align:right';
+                                            $_width_field .= ';
+                        text-align:right';
                                         else:
                                             $_width_field .= 'text-align:right';
                                         endif;
                                     endif;
                                 endif;
 
-                                $this->_gridListFields .= $_row['field_name'] . ',';
-                                $this->_gridListHeaderTable .= '<th class="thCl' . ucfirst($_row['field_name']) . ' ' . $_class . '" style="' . $_width_field . '">' . $_param_gridListField['grid_list_label'] . '</th>' . PHP_EOL;
+                                $this->_gridListFields .= $_row['field_name'] . ', ';
+                                $this->_gridListHeaderTable .= '<th class = "thCl' . ucfirst($_row['field_name']) . ' ' . $_class . '" style = "' . $_width_field . '">' . $_param_gridListField['grid_list_label'] . '</th>' . PHP_EOL;
 
                                 /**
                                  * FORMATAÇÃO DOS CAMPOS DA GRIDLIST $_ROW[] CONFORME SELEÇÃO DO CAMPO SELECT grid_list_field_input_type
@@ -1771,11 +1808,12 @@ class ProjectbuildCrud extends MY_Controller {
                                             $_folderUploadImagem = json_decode($_param_formAddEditField[$_row['field_name']]->param_formaddedit)->form_add_edit_field_upload_imagem_folder;
 
                                             if ($_param_gridListField['grid_list_field_type_modal_image'] == 'icon-link') {
-                                                $this->_gridListFieldsTable .= '<td class="tdCl' . ucfirst($_row['field_name']) . ' ' . $_class . '" style="' . $_width_field . '"><?= mc_image_link_modal($_row["' . $_row['field_name'] . '"], "' . $_folderUploadImagem . '"); ?></td>' . PHP_EOL;
+                                                $this->_gridListFieldsTable .= '<td class = "tdCl' . ucfirst($_row['field_name']) . ' ' . $_class . '" style = "' . $_width_field . '"><? = mc_image_link_modal ($_row["' . $_row['field_name'] . '"], "' . $_folderUploadImagem . '");
+                        ?></td>' . PHP_EOL;
                                             } else if ($_param_gridListField['grid_list_field_type_modal_image'] == 'thumb') {
-                                                $this->_gridListFieldsTable .= '<td class="tdCl' . ucfirst($_row['field_name']) . ' ' . $_class . '" style="' . $_width_field . '"><?= mc_image_thumb_modal($_row["' . $_row['field_name'] . '"], "' . $_folderUploadImagem . '"); ?></td>' . PHP_EOL;
+                                                $this->_gridListFieldsTable .= '<td class="tdCl' . ucfirst($_row['field_name']) . ' ' . $_class . '" style="' . $_width_field . '"><?= mc_image_thumb_modal ($_row["' . $_row['field_name'] . '"], "' . $_folderUploadImagem . '"); ?></td>' . PHP_EOL;
                                             } else if ($_param_gridListField['grid_list_field_type_modal_image'] == 'multi-upload') {
-                                                $this->_gridListFieldsTable .= '<td class="tdCl' . ucfirst($_row['field_name']) . ' ' . $_class . '" style="' . $_width_field . '"><?= mc_image_thumb_modal($_row["' . $_row['field_name'] . '"], "' . $_folderUploadImagem . '", "multi"); ?></td>' . PHP_EOL;
+                                                $this->_gridListFieldsTable .= '<td class="tdCl' . ucfirst($_row['field_name']) . ' ' . $_class . '" style="' . $_width_field . '"><?= mc_image_thumb_modal ($_row["' . $_row['field_name'] . '"], "' . $_folderUploadImagem . '", "multi"); ?></td>' . PHP_EOL;
                                             }
                                         }
 
@@ -1786,7 +1824,7 @@ class ProjectbuildCrud extends MY_Controller {
 
                                         $_folderUploadAquivo = json_decode($_param_formAddEditField[$_row['field_name']]->param_formaddedit)->form_add_edit_field_upload_arquivo_folder;
 
-                                        $this->_gridListFieldsTable .= '<td class="tdCl' . ucfirst($_row['field_name']) . ' ' . $_class . '" style="' . $_width_field . '"><?= mc_file_link_download($_row["' . $_row['field_name'] . '"],"' . $_folderUploadAquivo . '"); ?></td>' . PHP_EOL;
+                                        $this->_gridListFieldsTable .= '<td class="tdCl' . ucfirst($_row['field_name']) . ' ' . $_class . '" style="' . $_width_field . '"><?= mc_file_link_download ($_row["' . $_row['field_name'] . '"], "' . $_folderUploadAquivo . '"); ?></td>' . PHP_EOL;
 
                                         /* END CAMPO SELECT MODAL ARQUIVO grid_list_field_type_modal_arquivo  */
                                         /**/
@@ -1794,7 +1832,7 @@ class ProjectbuildCrud extends MY_Controller {
                                     } elseif ($_param_gridListField['grid_list_field_input_type'] == 'number-decimal') {
 
                                         $_class .= $_classBtnEdit;
-                                        $this->_gridListFieldsTable .= '<td class="tdCl' . ucfirst($_row['field_name']) . ' ' . $_class . '" style="' . $_width_field . '"><?= bz_converteMoedaBrasil($_row["' . $_row['field_name'] . '"]); ?></td>' . PHP_EOL;
+                                        $this->_gridListFieldsTable .= '<td class="tdCl' . ucfirst($_row['field_name']) . ' ' . $_class . '" style="' . $_width_field . '"><?= bz_converteMoedaBrasil ($_row["' . $_row['field_name'] . '"]); ?></td>' . PHP_EOL;
 
                                         /* END CAMPO INPUT NUMBER DECIMAL grid_list_field_input_type */
                                         /**/
@@ -1802,7 +1840,7 @@ class ProjectbuildCrud extends MY_Controller {
                                     } elseif ($_param_gridListField['grid_list_field_input_type'] == 'moeda') {
 
                                         $_class .= $_classBtnEdit;
-                                        $this->_gridListFieldsTable .= '<td class="tdCl' . ucfirst($_row['field_name']) . ' ' . $_class . '" style="' . $_width_field . '">R$ <?= bz_converteMoedaBrasil($_row["' . $_row['field_name'] . '"]); ?></td>' . PHP_EOL;
+                                        $this->_gridListFieldsTable .= '<td class="tdCl' . ucfirst($_row['field_name']) . ' ' . $_class . '" style="' . $_width_field . '">R$ <?= bz_converteMoedaBrasil ($_row["' . $_row['field_name'] . '"]); ?></td>' . PHP_EOL;
 
                                         /* END CAMPO INPUT MOEDA grid_list_field_input_type */
                                         /**/
@@ -1810,7 +1848,7 @@ class ProjectbuildCrud extends MY_Controller {
                                     } elseif ($_param_gridListField['grid_list_field_input_type'] == 'number') {
 
                                         $_class .= $_classBtnEdit;
-                                        $this->_gridListFieldsTable .= '<td class="tdCl' . ucfirst($_row['field_name']) . ' ' . $_class . '" style="' . $_width_field . '"><?= number_format($_row["' . $_row['field_name'] . '"], 0, "", ""); ?></td>' . PHP_EOL;
+                                        $this->_gridListFieldsTable .= '<td class="tdCl' . ucfirst($_row['field_name']) . ' ' . $_class . '" style="' . $_width_field . '"><?= number_format ($_row["' . $_row['field_name'] . '"], 0, "", ""); ?></td>' . PHP_EOL;
 
                                         /* END CAMPO INPUT NUMBER INTENGER grid_list_field_input_type */
                                         /**/
@@ -1818,7 +1856,7 @@ class ProjectbuildCrud extends MY_Controller {
                                     } elseif ($_param_gridListField['grid_list_field_input_type'] == 'date') {
 
                                         $_class .= $_classBtnEdit;
-                                        $this->_gridListFieldsTable .= '<td class="tdCl' . ucfirst($_row['field_name']) . ' ' . $_class . '" style="' . $_width_field . '"><?= bz_formatdata($_row["' . $_row['field_name'] . '"]); ?></td>' . PHP_EOL;
+                                        $this->_gridListFieldsTable .= '<td class="tdCl' . ucfirst($_row['field_name']) . ' ' . $_class . '" style="' . $_width_field . '"><?= bz_formatdata ($_row["' . $_row['field_name'] . '"]); ?></td>' . PHP_EOL;
 
                                         /* END CAMPO INPUT DATE grid_list_field_input_type */
                                         /**/
@@ -1826,7 +1864,7 @@ class ProjectbuildCrud extends MY_Controller {
                                     } elseif ($_param_gridListField['grid_list_field_input_type'] == 'time') {
 
                                         $_class .= $_classBtnEdit;
-                                        $this->_gridListFieldsTable .= '<td class="tdCl' . ucfirst($_row['field_name']) . ' ' . $_class . '" style="' . $_width_field . '"><?= bz_formatdata($_row["' . $_row['field_name'] . '"], "H:i:s"); ?></td>' . PHP_EOL;
+                                        $this->_gridListFieldsTable .= '<td class="tdCl' . ucfirst($_row['field_name']) . ' ' . $_class . '" style="' . $_width_field . '"><?= bz_formatdata ($_row["' . $_row['field_name'] . '"], "H:i:s"); ?></td>' . PHP_EOL;
 
                                         /* END CAMPO INPUT TIME grid_list_field_input_type */
                                         /**/
@@ -1834,7 +1872,7 @@ class ProjectbuildCrud extends MY_Controller {
                                     } elseif ($_param_gridListField['grid_list_field_input_type'] == 'datetime') {
 
                                         $_class .= $_classBtnEdit;
-                                        $this->_gridListFieldsTable .= '<td class="tdCl' . ucfirst($_row['field_name']) . ' ' . $_class . '" style="' . $_width_field . '"><?= bz_formatdata($_row["' . $_row['field_name'] . '"], "d/m/Y H:i:s"); ?></td>' . PHP_EOL;
+                                        $this->_gridListFieldsTable .= '<td class="tdCl' . ucfirst($_row['field_name']) . ' ' . $_class . '" style="' . $_width_field . '"><?= bz_formatdata ($_row["' . $_row['field_name'] . '"], "d/m/Y H:i:s"); ?></td>' . PHP_EOL;
 
                                         /* END CAMPO INPUT DATETIME grid_list_field_input_type */
                                         /**/
@@ -1845,7 +1883,7 @@ class ProjectbuildCrud extends MY_Controller {
                                         $_pkSelect = strtolower(base64_decode($_param_gridListField['grid_list_field_value_select']));
                                         $_pkSelect = substr($_pkSelect, 7, (strpos($_pkSelect, ',') - 7));
 
-                                        $this->_gridListFieldsTable .= '<td class="tdCl' . ucfirst($_row['field_name']) . ' ' . $_class . '" style="' . $_width_field . '"><?=$this->db->query("' . base64_decode($_param_gridListField['grid_list_field_value_select']) . ' WHERE ' . $_pkSelect . ' = ".$_row["' . $_row['field_name'] . '"])->row()->' . str_replace('_id', '', $_row['field_name']) . ';?></td>' . PHP_EOL;
+                                        $this->_gridListFieldsTable .= '<td class="tdCl' . ucfirst($_row['field_name']) . ' ' . $_class . '" style="' . $_width_field . '"><?= $this->db->query ("' . base64_decode($_param_gridListField['grid_list_field_value_select']) . ' WHERE ' . $_pkSelect . ' = ".$_row["' . $_row['field_name'] . '"])->row ()->' . str_replace('_id', '', $_row['field_name']) . '; ?></td>' . PHP_EOL;
 
                                         /* END CAMPO INPUT SELECT grid_list_field_input_type */
                                         /**/
@@ -1927,20 +1965,20 @@ class ProjectbuildCrud extends MY_Controller {
                     $this->_gridListSearchFields = substr($this->_gridListSearchFields, 0, -1);
                     if ($this->_gridListSearchFields) {
                         $this->_gridListSearchFields = "if (\$this->input->get('search', TRUE)):
-                            \$_dados_pag['search'] = array('_concat_fields' => '" . $this->_gridListSearchFields . "', '_string' => \$this->input->get('search', TRUE));
+                        \$_dados_pag['search'] = array('_concat_fields' => '" . $this->_gridListSearchFields . "', '_string' => \$this->input->get('search', TRUE));
                         endif;";
 
                         $this->_gridListSearchInput = "<!-- INPUT SEARCH -->
-                            <input type='text' name='search' value='<?= \$this->input->get('search'); ?>' class='form-control input-sm pull-right' style ='width: 150px;' placeholder='Pesquisar' autofocus>
-                            <!-- INPUT SEARCH -->";
+                        <input type='text' name='search' value='<?= \$this->input->get ('search'); ?>' class='form-control input-sm pull-right' style ='width: 150px;' placeholder='Pesquisar' autofocus>
+                        <!-- INPUT SEARCH -->";
 
                         $this->_gridListSearchButton = "<!-- BTN SEARCH -->
-                            <button class='btn btn-sm btn-primary btn-show-modal-aguarde j-tooltip' data-placement='bottom' data-toggle='tooltip' data-original-title='Pesquisa'><i class='fa fa-search'></i></button>
-                            <!-- BTN SEARCH -->";
+                        <button class='btn btn-sm btn-primary btn-show-modal-aguarde j-tooltip' data-placement='bottom' data-toggle='tooltip' data-original-title='Pesquisa'><i class='fa fa-search'></i></button>
+                        <!-- BTN SEARCH -->";
 
                         $this->_gridListClearhButton = "<!-- BTN LIMPAR -->
-                            <a href='<?= site_url(\$this->router->fetch_class()); ?>' class='btn btn-sm btn-default btn-show-modal-aguarde j-tooltip' data-placement='bottom' data-toggle='tooltip' data-original-title='Limpar'><i class='glyphicon glyphicon-minus'></i></a>
-                            <!-- BTN LIMPAR -->";
+                        <a href='<?= site_url (\$this->router->fetch_class ()); ?>' class='btn btn-sm btn-default btn-show-modal-aguarde j-tooltip' data-placement='bottom' data-toggle='tooltip' data-original-title='Limpar'><i class='glyphicon glyphicon-minus'></i></a>
+                        <!-- BTN LIMPAR -->";
                     } else {
                         $this->_gridListDivButtons = 'pull-right margin-right-25';
                     }
@@ -2004,7 +2042,7 @@ class ProjectbuildCrud extends MY_Controller {
                 endif;
 
             else:
-                set_mensagem_trigger_notifi('Um ERRO Inesperável Ocorreu ao gerar GRID LIST.', 'error');
+                set_mensagem_trigger_notifi('Um ERRO Inesperado Ocorreu ao gerar GRID LIST.', 'error');
                 redirect(site_url('projectbuildcrud'));
                 exit;
             endif;
@@ -2064,7 +2102,7 @@ class ProjectbuildCrud extends MY_Controller {
                             $this->_formAddConfigInputValidationAtributos = 'trim';
                             $this->_formEditConfigInputValidationAtributos = 'trim';
 
-//                        if (!empty($_param_formAddEditField['form_add_edit_field_read_only'])):
+                            //                        if (!empty($_param_formAddEditField['form_add_edit_field_read_only'])):
                             //                            if ($_param_formAddEditField['form_add_edit_field_read_only'] == 'on'):
                             //                                if ($_param_formAddEditField['form_add_edit_field_read_only_in_form'] == 'todos'):
                             //                                    echo $_row['field_name'] . ' - READ ONLY TODOS...';
@@ -2162,7 +2200,7 @@ class ProjectbuildCrud extends MY_Controller {
 
                             if ($_param_formAddEditField['form_add_edit_field_type'] == 'text'):
 
-                                $this->_formAddEditConfigInput = '<input type="text" name="' . $_row['field_name'] . '" class="form-control ' . (!empty($_param_formAddEditField['form_add_edit_field_convert_letter_into']) ? $_param_formAddEditField['form_add_edit_field_convert_letter_into'] : null) . ' ' . ((!empty($_param_formAddEditField['form_add_edit_field_mask'])) ? 'j-mask-' . $_row['field_name'] : '') . ' " placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" ' . $this->_formAddEditConfigInputAtributos . ' value="<?=set_value("' . $_row['field_name'] . '",!empty($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : set_value("' . $_row['field_name'] . '"));?>" />';
+                                $this->_formAddEditConfigInput = '<input type="text" name="' . $_row['field_name'] . '" class="form-control ' . (!empty($_param_formAddEditField['form_add_edit_field_convert_letter_into']) ? $_param_formAddEditField['form_add_edit_field_convert_letter_into'] : null) . ' ' . ((!empty($_param_formAddEditField['form_add_edit_field_mask'])) ? 'j-mask-' . $_row['field_name'] : '') . ' " placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" ' . $this->_formAddEditConfigInputAtributos . ' value="<?= set_value ("' . $_row['field_name'] . '", !empty ($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : set_value ("' . $_row['field_name'] . '")); ?>" />';
 
                                 if ($_row['field_type'] == 'int'):
                                     $this->_formAddConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = preg_replace("/[^0-9]/", "", $_dados["' . $_row['field_name'] . '"]);' . PHP_EOL;
@@ -2173,11 +2211,11 @@ class ProjectbuildCrud extends MY_Controller {
 
                             elseif ($_param_formAddEditField['form_add_edit_field_type'] == 'text-long'):
 
-                                $this->_formAddEditConfigInput = '<textarea rows="5" name="' . $_row['field_name'] . '" class="form-control" placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" ' . $this->_formAddEditConfigInputAtributos . '/><?=set_value("' . $_row['field_name'] . '",isset($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : set_value("' . $_row['field_name'] . '"));?></textarea>';
+                                $this->_formAddEditConfigInput = '<textarea rows="5" name="' . $_row['field_name'] . '" class="form-control" placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" ' . $this->_formAddEditConfigInputAtributos . '/><?= set_value ("' . $_row['field_name'] . '", isset ($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : set_value ("' . $_row['field_name'] . '")); ?></textarea>';
 
                             elseif ($_param_formAddEditField['form_add_edit_field_type'] == 'text-ckeditor'):
 
-                                $this->_formAddEditConfigInput = '<textarea id="ckeditor-' . $_row['field_name'] . '" rows="5" name="' . $_row['field_name'] . '" class="form-control" placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" ' . $this->_formAddEditConfigInputAtributos . '/><?=set_value("' . $_row['field_name'] . '",isset($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : set_value("' . $_row['field_name'] . '"));?></textarea>';
+                                $this->_formAddEditConfigInput = '<textarea id="ckeditor-' . $_row['field_name'] . '" rows="5" name="' . $_row['field_name'] . '" class="form-control" placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" ' . $this->_formAddEditConfigInputAtributos . '/><?= set_value  ("' . $_row['field_name'] . '", isset ($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : set_value ("' . $_row['field_name'] . '")); ?></textarea>';
 
                                 $this->_formAddConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = $this->input->post("' . $_row['field_name'] . '",FALSE);';
                                 $this->_formEditConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = $this->input->post("' . $_row['field_name'] . '",FALSE);';
@@ -2214,7 +2252,7 @@ class ProjectbuildCrud extends MY_Controller {
 
                             elseif ($_param_formAddEditField['form_add_edit_field_type'] == 'date'):
 
-                                $this->_formAddEditConfigInput = '<input type="text" name="' . $_row['field_name'] . '" class="form-control datepicker j-mask-data-ptbr j-mask-' . $_row['field_name'] . '" placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" value="<?=set_value("' . $_row['field_name'] . '",isset($dados->' . $_row['field_name'] . ') ? bz_formatdata($dados->' . $_row['field_name'] . ',"d/m/Y") : set_value("' . $_row['field_name'] . '"));?>" ' . $this->_formAddEditConfigInputAtributos . ' />';
+                                $this->_formAddEditConfigInput = '<input type="text" name="' . $_row['field_name'] . '" class="form-control datepicker j-mask-data-ptbr j-mask-' . $_row['field_name'] . '" placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" value="<?= set_value ("' . $_row['field_name'] . '", isset ($dados->' . $_row['field_name'] . ') ? bz_formatdata ($dados->' . $_row['field_name'] . ', "d/m/Y") : set_value ("' . $_row['field_name'] . '")); ?>" ' . $this->_formAddEditConfigInputAtributos . ' />';
                                 $this->_formAddEditConfigInputMask .= '$(".j-mask-' . $_row['field_name'] . '").mask("00/00/0000", {placeholder: "__/__/____"});' . PHP_EOL;
                                 $this->_formAddConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = bz_formatdata($_dados["' . $_row['field_name'] . '"],"Y-m-d");' . PHP_EOL;
                                 if ($_row['primary_key'] == 0):
@@ -2223,7 +2261,7 @@ class ProjectbuildCrud extends MY_Controller {
 
                             elseif ($_param_formAddEditField['form_add_edit_field_type'] == 'datetime'):
 
-                                $this->_formAddEditConfigInput = '<input type="text" name="' . $_row['field_name'] . '" class="form-control datetimepicker j-mask-datahora-ptbr j-mask-' . $_row['field_name'] . '" placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" value="<?=set_value("' . $_row['field_name'] . '",isset($dados->' . $_row['field_name'] . ') ? bz_formatdata($dados->' . $_row['field_name'] . ',"d/m/Y H:i:s") : set_value("' . $_row['field_name'] . '"));?>" ' . $this->_formAddEditConfigInputAtributos . ' />';
+                                $this->_formAddEditConfigInput = '<input type="text" name="' . $_row['field_name'] . '" class="form-control datetimepicker j-mask-datahora-ptbr j-mask-' . $_row['field_name'] . '" placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" value="<?= set_value ("' . $_row['field_name'] . '", isset ($dados->' . $_row['field_name'] . ') ? bz_formatdata ($dados->' . $_row['field_name'] . ', "d/m/Y H:i:s") : set_value ("' . $_row['field_name'] . '")); ?>" ' . $this->_formAddEditConfigInputAtributos . ' />';
                                 $this->_formAddEditConfigInputMask .= '$(".j-mask-' . $_row['field_name'] . '").mask("00/00/0000 00:00", {placeholder: "__/__/____ __:__"});' . PHP_EOL;
                                 $this->_formAddConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = bz_formatdata($_dados["' . $_row['field_name'] . '"],"Y-m-d H:i:s");' . PHP_EOL;
                                 if ($_row['primary_key'] == 0):
@@ -2232,16 +2270,16 @@ class ProjectbuildCrud extends MY_Controller {
 
                             elseif ($_param_formAddEditField['form_add_edit_field_type'] == 'time'):
 
-                                $this->_formAddEditConfigInput = '<input type="text" name="' . $_row['field_name'] . '" class="form-control timepicker j-mask-hora-ptbr j-mask-' . $_row['field_name'] . '" placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" value="<?=set_value("' . $_row['field_name'] . '",isset($dados->' . $_row['field_name'] . ') ? bz_formatdata($dados->' . $_row['field_name'] . ',"H:i:s") : set_value("' . $_row['field_name'] . '"));?>" ' . $this->_formAddEditConfigInputAtributos . ' />';
+                                $this->_formAddEditConfigInput = '<input type="text" name="' . $_row['field_name'] . '" class="form-control timepicker j-mask-hora-ptbr j-mask-' . $_row['field_name'] . '" placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" value="<?= set_value ("' . $_row['field_name'] . '", isset ($dados->' . $_row['field_name'] . ') ? bz_formatdata ($dados->' . $_row['field_name'] . ', "H:i:s") : set_value ("' . $_row['field_name'] . '")); ?>" ' . $this->_formAddEditConfigInputAtributos . ' />';
                                 $this->_formAddEditConfigInputMask .= '$(".j-mask-' . $_row['field_name'] . '").mask("00:00", {placeholder: "__:__"});' . PHP_EOL;
 
                             elseif ($_param_formAddEditField['form_add_edit_field_type'] == 'number'):
 
-                                $this->_formAddEditConfigInput = '<input type="number" name="' . $_row['field_name'] . '" class="form-control" placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" value="<?=set_value("' . $_row['field_name'] . '",isset($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : set_value("' . $_row['field_name'] . '"));?>" pattern="[0-9]" onkeypress="return (event.charCode >= 48 && event.charCode <= 57) ||  event.charCode == 0 " ' . $this->_formAddEditConfigInputAtributos . ' />';
+                                $this->_formAddEditConfigInput = '<input type="number" name="' . $_row['field_name'] . '" class="form-control" placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" value="<?= set_value ("' . $_row['field_name'] . '", isset ($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : set_value ("' . $_row['field_name'] . '")); ?>" pattern="[0-9]" onkeypress="return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 0" ' . $this->_formAddEditConfigInputAtributos . ' />';
 
                             elseif ($_param_formAddEditField['form_add_edit_field_type'] == 'number-decimal'):
 
-                                $this->_formAddEditConfigInput = '<input type="text" name="' . $_row['field_name'] . '" class="form-control ' . ((!empty($_param_formAddEditField['form_add_edit_field_mask'])) ? 'j-mask-' . $_row['field_name'] : '') . '" placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" value="<?=set_value("' . $_row['field_name'] . '",isset($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : set_value("' . $_row['field_name'] . '"));?>" onkeypress="return (event.charCode >= 48 && event.charCode <= 57) ||  event.charCode == 44 || event.charCode == 0 " ' . $this->_formAddEditConfigInputAtributos . ' />';
+                                $this->_formAddEditConfigInput = '<input type="text" name="' . $_row['field_name'] . '" class="form-control ' . ((!empty($_param_formAddEditField['form_add_edit_field_mask'])) ? 'j-mask-' . $_row['field_name'] : '') . '" placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" value="<?= set_value ("' . $_row['field_name'] . '", isset ($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : set_value ("' . $_row['field_name'] . '")); ?>" onkeypress="return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 44 || event.charCode == 0" ' . $this->_formAddEditConfigInputAtributos . ' />';
                                 $this->_formAddConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = str_replace(",",".",str_replace(".","",$_dados["' . $_row['field_name'] . '"]));';
                                 if ($_row['primary_key'] == 0):
                                     $this->_formEditConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = str_replace(",",".",str_replace(".","",$_dados["' . $_row['field_name'] . '"]));';
@@ -2249,7 +2287,7 @@ class ProjectbuildCrud extends MY_Controller {
 
                             elseif ($_param_formAddEditField['form_add_edit_field_type'] == 'moeda'):
 
-                                $this->_formAddEditConfigInput = '<input type="text" name="' . $_row['field_name'] . '" class="form-control j-mask-moeda-ptbr" placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" value="<?=set_value("' . $_row['field_name'] . '",isset($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : set_value("' . $_row['field_name'] . '"));?>" onkeypress="return (event.charCode >= 48 && event.charCode <= 57) ||  event.charCode == 44 || event.charCode == 0 " ' . $this->_formAddEditConfigInputAtributos . ' />';
+                                $this->_formAddEditConfigInput = '<input type="text" name="' . $_row['field_name'] . '" class="form-control j-mask-moeda-ptbr" placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" value="<?= set_value ("' . $_row['field_name'] . '", isset ($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : set_value ("' . $_row['field_name'] . '")); ?>" onkeypress="return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 44 || event.charCode == 0" ' . $this->_formAddEditConfigInputAtributos . ' />';
                                 $this->_formAddConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = str_replace(",",".",str_replace(".","",$_dados["' . $_row['field_name'] . '"]));';
                                 if ($_row['primary_key'] == 0):
                                     $this->_formEditConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = str_replace(",",".",str_replace(".","",$_dados["' . $_row['field_name'] . '"]));';
@@ -2257,11 +2295,11 @@ class ProjectbuildCrud extends MY_Controller {
 
                             elseif ($_param_formAddEditField['form_add_edit_field_type'] == 'email'):
 
-                                $this->_formAddEditConfigInput = '<input type="text" name="' . $_row['field_name'] . '" class="form-control" placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" value="<?=set_value("' . $_row['field_name'] . '",isset($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : set_value("' . $_row['field_name'] . '"));?>" ' . $this->_formAddEditConfigInputAtributos . ' />';
+                                $this->_formAddEditConfigInput = '<input type="text" name="' . $_row['field_name'] . '" class="form-control" placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" value="<?= set_value ("' . $_row['field_name'] . '", isset ($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : set_value ("' . $_row['field_name'] . '")); ?>" ' . $this->_formAddEditConfigInputAtributos . ' />';
 
                             elseif ($_param_formAddEditField['form_add_edit_field_type'] == 'senha'):
 
-                                $this->_formAddEditConfigInput = '<input type="password" name="' . $_row['field_name'] . '" class="form-control" placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" value="<?=set_value("' . $_row['field_name'] . '",isset($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : set_value("' . $_row['field_name'] . '"));?>" ' . $this->_formAddEditConfigInputAtributos . ' />';
+                                $this->_formAddEditConfigInput = '<input type="password" name="' . $_row['field_name'] . '" class="form-control" placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" value="<?= set_value ("' . $_row['field_name'] . '", isset ($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : set_value ("' . $_row['field_name'] . '")); ?>" ' . $this->_formAddEditConfigInputAtributos . ' />';
 
                             elseif ($_param_formAddEditField['form_add_edit_field_type'] == 'upload-imagem'):
 
@@ -2269,20 +2307,20 @@ class ProjectbuildCrud extends MY_Controller {
 
                                 $this->task['multiUploadImagem'] = ((!empty($_param_formAddEditField['form_add_edit_active_multi_upload_imagem']) && $_param_formAddEditField['form_add_edit_active_multi_upload_imagem'] == 'on') ? 1 : 0);
 
-                                /* $this->_formAddEditConfigInput = '<input type="file" name="' . $_row['field_name'] . '" class="form-control-file margin-bottom-10" placeholder="" value="<?= set_value("' . $_row['field_name'] . '", isset($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : set_value("' . $_row['field_name'] . '")); ?>"  />'; */
+                                /* $this->_formAddEditConfigInput = '<input type="file" name="' . $_row['field_name'] . '" class="form-control-file margin-bottom-10" placeholder="" value="<?= set_value ("' . $_row['field_name'] . '", isset ($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : set_value ("' . $_row['field_name'] . '")); ?>"  />'; */
 
 
                                 if ($this->task['multiUploadImagem']) {
 
 
-                                    $this->_formAddEditConfigInput = '<input type="file" name="' . $_row['field_name'] . '[]" class="form-control-file margin-bottom-10" placeholder="" value="<?= set_value("' . $_row['field_name'] . '", isset($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : set_value("' . $_row['field_name'] . '")); ?>" accept="' . $_fileExtension . '"  multiple/>' . PHP_EOL
-                                            . '<?php if ($this->uri->segment(2) == "edit"): ?>' . PHP_EOL
+                                    $this->_formAddEditConfigInput = '<input type="file" name="' . $_row['field_name'] . '[]" class="form-control-file margin-bottom-10" placeholder="" value="<?= set_value ("' . $_row['field_name'] . '", isset ($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : set_value ("' . $_row['field_name'] . '")); ?>" accept="' . $_fileExtension . '"  multiple/>' . PHP_EOL
+                                            . '<?php if ($this->uri->segment (2) == "edit"): ?>' . PHP_EOL
                                             . ''
-                                            . '     <?php $images = json_decode($dados->' . $_row['field_name'] . '); ?>' . PHP_EOL
-                                            . '     <?php $galleryID = mc_random_number(); ?>' . PHP_EOL
+                                            . '     <?php $images = json_decode ($dados->' . $_row['field_name'] . '); ?>' . PHP_EOL
+                                            . '     <?php $galleryID = mc_random_number (); ?>' . PHP_EOL
                                             . ''
                                             . '     <?php foreach ($images as $image): ?>' . PHP_EOL
-                                            . '         <?php $_linkImg = base_url() . ___CONF_UPLOAD_DIR___ . ___CONF_UPLOAD_IMAGE_DIR___ . "' . $_param_formAddEditField['form_add_edit_field_upload_imagem_folder'] . '/" . $image; ?>'
+                                            . '         <?php $_linkImg = base_url () . ___CONF_UPLOAD_DIR___ . ___CONF_UPLOAD_IMAGE_DIR___ . "' . $_param_formAddEditField['form_add_edit_field_upload_imagem_folder'] . '/" . $image; ?>'
                                             . ''
                                             . '         <div class="pull-left margin-bottom-5 margin-right-10">' . PHP_EOL
                                             . '             <a class="" href="<?= $_linkImg; ?>" rel="lightbox[\' <?= $galleryID ?> \']">' . PHP_EOL
@@ -2290,7 +2328,7 @@ class ProjectbuildCrud extends MY_Controller {
                                             . '             </a>' . PHP_EOL
                                             . '             <div class="text-right text-normal mouse-cursor-pointer margin-right-5 j-btn-del-image" style="font-size:0.8em" data-image="<?= $image; ?>" data-id="<?= $dados->id; ?>">Excluir Imagem<i class="fa fa-trash text-normal margin-left-5"></i></div>' . PHP_EOL
                                             . '         </div>' . PHP_EOL
-                                            . '     <?php endforeach; ?>' . PHP_EOL
+                                            . '     <?php endforeach ; ?>' . PHP_EOL
                                             . ''
                                             . '<?php else: ?>' . PHP_EOL
                                             . ''
@@ -2355,11 +2393,11 @@ class ProjectbuildCrud extends MY_Controller {
                                     /**/
                                 } else {
 
-                                    $this->_formAddEditConfigInput = '<input type="file" name="' . $_row['field_name'] . '" class="form-control-file margin-bottom-10" placeholder="" value="<?= set_value("' . $_row['field_name'] . '", isset($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : set_value("' . $_row['field_name'] . '")); ?>" accept="' . $_fileExtension . '"  />' . PHP_EOL
-                                            . '<?php if ($this->uri->segment(2) == "edit"): ?>' . PHP_EOL
-                                            . '     <div class="col-xs-12 col-sm-12 col-md-3 col-lg-2"><?= mc_image_thumb_modal($dados->' . $_row['field_name'] . ',"' . $_param_formAddEditField['form_add_edit_field_upload_imagem_folder'] . '"); ?></div>' . PHP_EOL
-                                            /* . '     <div class="btn-ver-imagem margin-top-5 margin-bottom-5" style="font-size: 0.8em"><i class="fa fa-fw fa-camera"></i> <?= anchor(___CONF_UPLOAD_DIR___ . ___CONF_UPLOAD_IMAGE_DIR___ . "' . $_param_formAddEditField['form_add_edit_field_upload_imagem_folder'] . ($_param_formAddEditField['form_add_edit_field_upload_imagem_folder'] ? DIRECTORY_SEPARATOR : '') . '" . set_value("imagem_nome", isset($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : set_value("' . $_row['field_name'] . '")), "xxxxVer Imagem", "data-lightbox=\'' . $_row['field_name'] . '\'"); ?></div>' . PHP_EOL */
-                                            . '     <input type="hidden" name="' . $_row['field_name'] . '" value="<?= $dados->' . $_row['field_name'] . ';?>">' . PHP_EOL
+                                    $this->_formAddEditConfigInput = '<input type="file" name="' . $_row['field_name'] . '" class="form-control-file margin-bottom-10" placeholder="" value="<?= set_value("' . $_row['field_name'] . '", isset ($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : set_value ("' . $_row['field_name'] . '")); ?>" accept="' . $_fileExtension . '"  />' . PHP_EOL
+                                            . '<?php if ($this->uri->segment (2) == "edit"): ?>' . PHP_EOL
+                                            . '     <div class="col-xs-12 col-sm-12 col-md-3 col-lg-2"><?= mc_image_thumb_modal ($dados->' . $_row['field_name'] . ', "' . $_param_formAddEditField['form_add_edit_field_upload_imagem_folder'] . '"); ?></div>' . PHP_EOL
+                                            /* . '     <div class="btn-ver-imagem margin-top-5 margin-bottom-5" style="font-size: 0.8em"><i class="fa fa-fw fa-camera"></i> <?= anchor (___CONF_UPLOAD_DIR___ . ___CONF_UPLOAD_IMAGE_DIR___ . "' . $_param_formAddEditField['form_add_edit_field_upload_imagem_folder'] . ($_param_formAddEditField['form_add_edit_field_upload_imagem_folder'] ? DIRECTORY_SEPARATOR : '') . '" . set_value ("imagem_nome", isset ($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : set_value ("' . $_row['field_name'] . '")), "xxxxVer Imagem", "data-lightbox=\'' . $_row['field_name'] . '\'"); ?></div>' . PHP_EOL */
+                                            . '     <input type="hidden" name="' . $_row['field_name'] . '" value="<?= $dados->' . $_row['field_name'] . '; ?>">' . PHP_EOL
                                             . '     ' . PHP_EOL
                                             . '<?php else: ?>' . PHP_EOL
                                             . '     ' . PHP_EOL
@@ -2424,10 +2462,10 @@ class ProjectbuildCrud extends MY_Controller {
 
                                 $_fileExtension = '.' . str_replace('|', ',.', $_param_formAddEditField['form_add_edit_field_upload_arquivo_extensao_permitida']);
 
-                                $this->_formAddEditConfigInput = '<input type="file" name="' . $_row['field_name'] . '" class="form-control-file margin-bottom-10" placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" value="<?=set_value("' . $_row['field_name'] . '",isset($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : set_value("' . $_row['field_name'] . '"));?>" ' . $this->_formAddEditConfigInputAtributos . ' accept="' . $_fileExtension . '" />' . PHP_EOL
-                                        . '<?php if ($this->uri->segment(2) == "edit"): ?>' . PHP_EOL
-                                        . '     <input type="hidden" name="' . $_row['field_name'] . '" value="<?= $dados->' . $_row['field_name'] . ';?>" />' . PHP_EOL
-                                        . '     <div id="" class=""><?= mc_file_link_download($dados->' . $_row['field_name'] . ',"' . $_param_formAddEditField['form_add_edit_field_upload_arquivo_folder'] . '"); ?></div>' . PHP_EOL
+                                $this->_formAddEditConfigInput = '<input type="file" name="' . $_row['field_name'] . '" class="form-control-file margin-bottom-10" placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" value="<?= set_value ("' . $_row['field_name'] . '", isset ($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : set_value ("' . $_row['field_name'] . '")); ?>" ' . $this->_formAddEditConfigInputAtributos . ' accept="' . $_fileExtension . '" />' . PHP_EOL
+                                        . '<?php if ($this->uri->segment (2) == "edit"): ?>' . PHP_EOL
+                                        . '     <input type="hidden" name="' . $_row['field_name'] . '" value="<?= $dados->' . $_row['field_name'] . '; ?>" />' . PHP_EOL
+                                        . '     <div id="" class=""><?= mc_file_link_download ($dados->' . $_row['field_name'] . ', "' . $_param_formAddEditField['form_add_edit_field_upload_arquivo_folder'] . '"); ?></div>' . PHP_EOL
                                         . '<?php else: ?>' . PHP_EOL
                                         . '     ' . PHP_EOL
                                         . '     ' . PHP_EOL
@@ -2465,12 +2503,12 @@ class ProjectbuildCrud extends MY_Controller {
 
                                 foreach ($_selectValue as $_selectValue_value):
                                     $_s = explode('|', $_selectValue_value);
-                                    $this->_formAddEditConfigInput .= '<option value="' . $_s[0] . '" <?= (set_value("' . $_row['field_name'] . '",!empty($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : set_value("' . $_row['field_name'] . '"))=="' . $_s[0] . '") ? "selected" : null ;?> />' . $_s[1] . '</option>' . PHP_EOL;
+                                    $this->_formAddEditConfigInput .= '<option value="' . $_s[0] . '" <?= (set_value ("' . $_row['field_name'] . '", !empty ($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : set_value ("' . $_row['field_name'] . '")) == "' . $_s[0] . '") ? "selected" : null; ?> />' . $_s[1] . '</option>' . PHP_EOL;
                                 endforeach;
 
                                 $_s = '<p class="margin-bottom-0">' . PHP_EOL;
                                 $_s .= '<select name="' . $_row['field_name'] . '" class="form-control select2" data-placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" ' . $this->_formAddEditConfigInputAtributos . ' style="width:100%;"/>' . PHP_EOL;
-                                $_s .= '<option value=""/></option>' . PHP_EOL;
+                                $_s .= '<option value= ""/></option>' . PHP_EOL;
                                 $_s .= $this->_formAddEditConfigInput;
                                 $_s .= '</select>' . PHP_EOL;
                                 $_s .= '</p>' . PHP_EOL;
@@ -2488,8 +2526,9 @@ class ProjectbuildCrud extends MY_Controller {
                                     if ($_query):
 
                                         $_r .= '<p style="margin-bottom: 0">' . PHP_EOL;
-                                        $_r .= "<?php" . PHP_EOL;
-                                        $_r .= "\$_results_" . $_row['field_name'] . " = \$this->db->query(\"" . $_param_formAddEditField['form_add_edit_field_value_select_dinamic'] . "\");" . PHP_EOL;
+                                        $_r .= "<?php
+                            " . PHP_EOL;
+                                        $_r .= "\$_results_" . $_row['field_name'] . " = \$this->db->query (\"" . $_param_formAddEditField['form_add_edit_field_value_select_dinamic'] . "\");" . PHP_EOL;
                                         $_r .= "\$_last_query_" . $_row['field_name'] . " = strtolower(\$this->db->last_query());" . PHP_EOL;
                                         $_r .= "\$_options_" . $_row['field_name'] . " = \$_results_" . $_row['field_name'] . "->result_array();" . PHP_EOL;
                                         $_r .= "\$_options_" . $_row['field_name'] . " = \$_options_" . $_row['field_name'] . "[0];" . PHP_EOL;
@@ -3389,8 +3428,7 @@ class ProjectbuildCrud extends MY_Controller {
                     /*
                      * GET CODE EDITOR METODOS PHP CONTROLLER
                      */
-                    $_where_getCode_ControllerMetodosPHP = array(
-                        'proj_build_id' => $this->_project_id,
+                    $_where_getCode_ControllerMetodosPHP = array('proj_build_id' => $this->_project_id,
                         'code_type' => 'evento-php',
                     );
                     $this->db->order_by('code_screen DESC');
@@ -3436,9 +3474,7 @@ class ProjectbuildCrud extends MY_Controller {
                      * GET CODE EDITOR METODOS PHP CONTROLLER
                      */
                     $_where_getCode_ControllerMetodosPHP = array(
-                        'proj_build_id' => $this->_project_id,
-                        'code_type' => 'metodo-php',
-                    );
+                        'proj_build_id' => $this->_project_id, 'code_type' => 'metodo-php',);
                     $_query_getCode_ControllerMetodosPHP = $this->db->get_where('proj_build_codeeditor', $_where_getCode_ControllerMetodosPHP)->result();
                     foreach ($_query_getCode_ControllerMetodosPHP as $_row_getCode_ControllerMetodosPHP):
                         if (!empty(trim($_row_getCode_ControllerMetodosPHP->code_script))):
@@ -3463,6 +3499,8 @@ class ProjectbuildCrud extends MY_Controller {
                             $this->_controller_metodos_php .= "}" . PHP_EOL;
                             $this->_controller_metodos_php .= "/* END METODO PHP - " . $_row_getCode_ControllerMetodosPHP->code_screen . ' */' . PHP_EOL . PHP_EOL;
                         endif;
+
+
                     endforeach;
                     /* END GET CODE EDITOR METODOS PHP CONTROLLER */
 
@@ -3471,8 +3509,7 @@ class ProjectbuildCrud extends MY_Controller {
                      */
                     $_where_getCode_ModelsMetodosPHP = array(
                         'proj_build_id' => $this->_project_id,
-                        'code_type' => 'model-php',
-                    );
+                        'code_type' => 'model-php',);
                     $_query_getCode_ModelsMetodosPHP = $this->db->get_where('proj_build_codeeditor', $_where_getCode_ModelsMetodosPHP)->result();
                     foreach ($_query_getCode_ModelsMetodosPHP as $_row_getCode_ModelsMetodosPHP):
                         if (!empty(trim($_row_getCode_ModelsMetodosPHP->code_script))):
@@ -3506,10 +3543,10 @@ class ProjectbuildCrud extends MY_Controller {
                      * GET CODE EDITOR ON RECORD EXPORT
                      */
                     $_where_getCode_onRecordExport = array(
-                        'proj_build_id' => $this->_project_id,
-                        'code_type' => 'onrecordexport',
+                        'proj_build_id' =>
+                        $this->_project_id, 'code_type' => 'onrecordexport',
                     );
-                    $_query_getCode_onRecordExport = $this->db->get_where('proj_build_codeeditor', $_where_getCode_onRecordExport)->result();
+                    $_query_getCode_onRecordExport = $this->db->get_where(' proj_build_codeeditor', $_where_getCode_onRecordExport)->result();
                     foreach ($_query_getCode_onRecordExport as $_row_getCode_onRecordExport):
                         if (!empty(trim($_row_getCode_onRecordExport->code_script))):
                             $this->_exportCodeEditorOnRecord .= "/* ON RECORD EXPORT */" . PHP_EOL;
@@ -3560,9 +3597,8 @@ class ProjectbuildCrud extends MY_Controller {
                      * GET CODE EDITOR FORM EDIT
                      */
                     $_where_getCode_FormAddEdit = array(
-                        'proj_build_id' => $this->_project_id,
-                        'code_screen' => 'formedit',
-                    );
+                        'proj_build_id' => $this->_project_id, 'code_screen' => 'formedit',);
+
                     $_query_getCode_FormAddEdit = $this->db->get_where('proj_build_codeeditor', $_where_getCode_FormAddEdit)->result();
                     foreach ($_query_getCode_FormAddEdit as $_row_getCode_FormAddEdit):
                         if ($_row_getCode_FormAddEdit->code_type == 'css' && !empty(trim($_row_getCode_FormAddEdit->code_script))):
@@ -3601,7 +3637,7 @@ class ProjectbuildCrud extends MY_Controller {
                 endif;
 
             else:
-                set_mensagem_trigger_notifi('Um ERRO Inesperável Ocorreu ao gerar FORM ADD/EDIT.', 'error');
+                set_mensagem_trigger_notifi('Um ERRO Inesperado Ocorreu ao gerar FORM ADD/EDIT.', 'error');
                 redirect(site_url('projectbuildcrud'));
                 exit;
             endif;
@@ -3633,7 +3669,7 @@ class ProjectbuildCrud extends MY_Controller {
              */
             echo '<div class="callout callout-success">
                 Gerando Grid List...
-                </div>';
+                 </div>';
             $this->ger_gridList();
 
             /*
@@ -3683,8 +3719,8 @@ class ProjectbuildCrud extends MY_Controller {
         $this->_dadosController = str_replace('{{created-time}}', date('H:i') . ((date('H') > 11) ? 'PM' : 'AM'), $this->_dadosController);
         $this->_dadosController = str_replace('{{author-name}}', $this->session->userdata('user_login')['user_nome'], $this->_dadosController);
         $this->_dadosController = str_replace('{{author-email}}', $this->session->userdata('user_login')['user_email'], $this->_dadosController);
-
-        $this->_dadosController = str_replace('{{class-name}}', $this->_app_nome, $this->_dadosController);
+        $this->_dadosController = str_replace(
+                '{{class-name}}', $this->_app_nome, $this->_dadosController);
 
         $this->_dadosController = str_replace('{{titulo-app}}', $this->_appTitulo, $this->_dadosController);
 
@@ -3785,7 +3821,8 @@ class ProjectbuildCrud extends MY_Controller {
         $this->_dadosController = str_replace('{{created-date}}', date('d/m/Y'), $this->_dadosController);
         $this->_dadosController = str_replace('{{created-time}}', date('H:i') . ((date('H') > 11) ? 'PM' : 'AM'), $this->_dadosController);
         $this->_dadosController = str_replace('{{author-name}}', $this->session->userdata('user_login')['user_nome'], $this->_dadosController);
-        $this->_dadosController = str_replace('{{author-email}}', $this->session->userdata('user_login')['user_email'], $this->_dadosController);
+        $this->_dadosController = str_replace('{{author-email}}', $this->session->userdata('user_login')[
+                'user_email'], $this->_dadosController);
 
         $this->_dadosController = str_replace('{{titulo-app}}', $this->_appTitulo, $this->_dadosController);
 
@@ -3801,7 +3838,8 @@ class ProjectbuildCrud extends MY_Controller {
          * GET CODE EDITOR BLANK CODE
          */
         $_where_getCode_Blank = array(
-            'proj_build_id' => $this->_project_id,
+            'proj_build_id' => $this
+            ->_project_id,
             'code_type' => 'blank',
         );
         $this->db->order_by('code_screen DESC');
@@ -3837,8 +3875,7 @@ class ProjectbuildCrud extends MY_Controller {
          */
         $_where_getCode_ModelsMetodosPHP = array(
             'proj_build_id' => $this->_project_id,
-            'code_type' => 'model-php',
-        );
+            'code_type' => 'model-php',);
         $_query_getCode_ModelsMetodosPHP = $this->db->get_where('proj_build_codeeditor', $_where_getCode_ModelsMetodosPHP)->result();
         foreach ($_query_getCode_ModelsMetodosPHP as $_row_getCode_ModelsMetodosPHP):
             if (!empty(trim($_row_getCode_ModelsMetodosPHP->code_script))):
@@ -3876,7 +3913,7 @@ class ProjectbuildCrud extends MY_Controller {
          * FAZ AS SUBSTITUIÇÕES DOS MARCADORES PELOS CÓDIGOS GERADOS
          */
         $this->_dadosController = str_replace('{{created-date}}', date('d/m/Y'), $this->_dadosController);
-        $this->_dadosController = str_replace('{{created-time}}', date('H:i') . ((date('H') > 11) ? 'PM' : 'AM'), $this->_dadosController);
+        $this->_dadosController = str_replace('{{created-time}}', date('H:i') . ((date('H') > 11) ? 'PM' : 'AM' ), $this->_dadosController);
         $this->_dadosController = str_replace('{{author-name}}', $this->session->userdata('user_login')['user_nome'], $this->_dadosController);
         $this->_dadosController = str_replace('{{author-email}}', $this->session->userdata('user_login')['user_email'], $this->_dadosController);
 
@@ -3947,7 +3984,7 @@ class ProjectbuildCrud extends MY_Controller {
         /* END MÉTODOS */
 
         /* CAMPOS VIRTUAIS DA GRIDLIST */
-        $this->_dadosController = str_replace('{{controller-virtual-field}}', ((count($this->_gridListVirtualFieldsTable) > 0) ? "'" . implode("','", $this->_gridListVirtualFieldsTable) . "'" : ''), $this->_dadosController);
+        $this->_dadosController = str_replace('{{controller-virtual-field}}', ( (count($this->_gridListVirtualFieldsTable) > 0) ? "'" . implode("','", $this->_gridListVirtualFieldsTable) . "'" : ''), $this->_dadosController);
         /* END CAMPOS VIRTUAIS DA GRIDLIST */
 
         /* EXPORT REPORT */
@@ -3982,6 +4019,7 @@ class ProjectbuildCrud extends MY_Controller {
 
         foreach ($_template as $_row):
             $this->_dadosModel .= $_row;
+
         endforeach;
 
         /*
@@ -4017,6 +4055,8 @@ class ProjectbuildCrud extends MY_Controller {
 
         foreach ($_dados as $_row):
             $this->_dadosView .= $_row;
+
+
         endforeach;
 
         /*
@@ -4245,7 +4285,7 @@ class ProjectbuildCrud extends MY_Controller {
         $this->_formEditFields = str_replace('hidden-formedit', 'hidden', $this->_formEditFields);
 
         $this->_dadosFormEdit = str_replace('{{created-date}}', date('d/m/Y'), $this->_dadosFormEdit);
-        $this->_dadosFormEdit = str_replace('{{created-time}}', date('H:i') . ((date('H') > 11) ? 'PM' : 'AM'), $this->_dadosFormEdit);
+        $this->_dadosFormEdit = str_replace('{{created-time}}', date('H:i') . ((date('H') > 11) ? 'PM' : 'AM' ), $this->_dadosFormEdit);
         $this->_dadosFormEdit = str_replace('{{author-name}}', $this->session->userdata('user_login')['user_nome'], $this->_dadosFormEdit);
         $this->_dadosFormEdit = str_replace('{{author-email}}', $this->session->userdata('user_login')['user_email'], $this->_dadosFormEdit);
 
@@ -4341,4 +4381,8 @@ class ProjectbuildCrud extends MY_Controller {
     /* END private function ger_formAdd() */
 }
 
-/* END class */
+/* END class */     
+
+            
+
+                     

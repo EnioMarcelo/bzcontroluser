@@ -12,6 +12,20 @@ class MY_Form_validation extends CI_Form_validation {
     public $CI;
 
     /**
+     * clear_field_data
+     * 
+     * @return $this
+     */
+    public function clear_field_data() {
+
+        $_POST = array();
+        $this->_field_data = array();
+        return $this;
+    }
+
+    /* END function clear_field_data() */
+
+    /**
      * is_unique
      *
      * Check if the input value doesn't already exist

@@ -62,6 +62,25 @@
         <link href="<?= base_url('assets'); ?>/dist/css/skins/_all-skins.min.css<?= '?' . date('YmdHis'); ?>" rel="stylesheet" type="text/css"/>
         <!--bootstrap-wysihtml5-->
         <link href="<?= base_url('assets'); ?>/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css<?= '?' . date('YmdHis'); ?>" rel="stylesheet" type="text/css"/>
+
+
+        <?php
+        /**
+         * EXTERNAL CSS FILE
+         */
+        if (!empty($external_css)) {
+            echo "<!-- EXTERNAL CSS FILE -->" . PHP_EOL;
+
+            foreach ($external_css as $css):
+                echo "<link rel='stylesheet' href='" . $css . "'>" . PHP_EOL;
+            endforeach;
+
+            echo "<!-- END EXTERNAL CSS FILE -->" . PHP_EOL;
+        }
+        /* EXTERNAL CSS FILE */
+        ?>
+
+
         <!-- BOOT BUZA -->
         <link href="<?= base_url('assets'); ?>/css/boot-buza.css<?= '?' . date('YmdHis'); ?>" rel="stylesheet" type="text/css" />
         <!-- CSS DEFAULT MASTER PAGE IFRAME -->
@@ -141,6 +160,23 @@
         <!--CKEDITOR-->
         <script src="<?= base_url(); ?>/assets/plugins/ckeditorFull/ckeditor.js<?= '?v=' . date('YmdHis'); ?>" type="text/javascript"></script>
         <script src="<?= base_url(); ?>/assets/plugins/ckeditorFull/config.js<?= '?v=' . date('YmdHis'); ?>" type="text/javascript"></script>
+
+
+        <?php
+        /**
+         * EXTERNAL JS FILE
+         */
+        if (!empty($external_js)) {
+            echo "<!-- EXTERNAL JS FILE -->" . PHP_EOL;
+
+            foreach ($external_js as $js):
+                echo "<script src='" . $js . "' type=\"text/javascript\">" . PHP_EOL;
+            endforeach;
+
+            echo "<!-- END EXTERNAL JS FILE -->" . PHP_EOL;
+        }
+        /* EXTERNAL JS FILE */
+        ?>
 
 
         <!--COMMON JS-->
