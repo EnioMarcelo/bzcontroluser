@@ -36,6 +36,12 @@
                     </a>
                 <?php endif; ?>
 
+                <?php if ($_methodCalendar): ?>
+                    <a href='<?= site_url($this->router->fetch_class() . '/calendar' . '?' . bz_app_parametros_url()); ?>' class='btn btn-sm btn-warning btn-show-modal-aguarde margin-left-5' name='btn-calendar' value='btn-calendar'>
+                        <span class='glyphicon glyphicon-calendar'></span> Calendário
+                    </a>
+                <?php endif; ?>
+
 
             </div>
         </div>

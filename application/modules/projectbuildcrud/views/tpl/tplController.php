@@ -12,6 +12,9 @@
     
     /* EXPORT REPORT*/
     protected $_exportReport = false;
+    
+    /* METHOD CALENDAR */
+    protected $_methodCalendar = false;
 
     /* function  __construct() */
   	public function __construct() {
@@ -46,12 +49,17 @@
 
     /* function index() */
     public function index() {
+        
+      $this->session->set_flashdata('btn_voltar_link', site_url($this->router->fetch_class()) . '?' . bz_app_parametros_url());
 
       /* CARREGA OS REGISTROS COM PAGINAÇÃO */
       $this->dados['_result'] = $this->get_paginacao();
       
       /* EXPORT REPORT */
       $this->dados['_exportReport'] = $this->_exportReport;
+      
+      /* METHOD CALENDAR */
+      $this->dados['_methodCalendar'] = $this->_methodCalendar;
 
       
       /* TEMPLATE QUE SERÁ USADO PELO MÓDULO DO SISTEMA */

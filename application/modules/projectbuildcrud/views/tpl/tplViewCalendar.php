@@ -17,7 +17,7 @@
     <ol class="breadcrumb">
         <li><a href="<?= site_url('dashboard'); ?>" target="_top" class="active btn-show-modal-aguarde"><i class="fa fa-dashboard"></i>Dashboard</a></li>
         <li class=""><a href="<?= site_url($this->router->fetch_class()); ?>" class="btn-show-modal-aguarde"><i class="<?= $_font_icon; ?>"></i><?= $_titulo_app; ?></a></li>
-        <li class="active"><i class="fa fa-calendar margin-right-5"></i>Calendário</li>
+        <li class="active"><a href="<?= site_url($this->router->fetch_class() . '/calendar'); ?>" class="btn-show-modal-aguarde"><i class="fa fa-calendar"></i>Calendário</a></li>
     </ol>
 </section>
 <!-- END BREADCUMBS -->
@@ -30,7 +30,7 @@
 
 <div class="col-md-12">
     <div class="box box-primary">                                
-        <div class="box-body">
+        <div class="box-body" style="padding-left:0">
             <!-- THE CALENDAR -->
             <div id="calendar"></div>
         </div><!-- /.box-body -->
@@ -40,16 +40,26 @@
 <script type="text/javascript">
     $(function () {
 
-        setTimeout(refreatCalendar, 10000);
+        /* TIME REFRESH CALENDAR */
+        var _timeRefresCalendar = {{calendar-time-refresh-screen}};
 
-        function refreatCalendar() {
+        if (_timeRefresCalendar > 0) {
+            
+            _timeRefresCalendar = _timeRefresCalendar * 1000;
+            
+            setTimeout(refreatCalendar, _timeRefresCalendar);
 
-            $('#calendar').fullCalendar('rerenderEvents');
-            $('#calendar').fullCalendar('refetchEvents');
+            function refreatCalendar() {
 
-            setTimeout(refreatCalendar, 10000);
+                $('#calendar').fullCalendar('rerenderEvents');
+                $('#calendar').fullCalendar('refetchEvents');
 
+                setTimeout(refreatCalendar, _timeRefresCalendar);
+
+            }
         }
+        /* END TIME REFRESH CALENDAR */
+
 
         /* initialize the calendar
          -----------------------------------------------------------------*/
@@ -66,7 +76,7 @@
                 right: 'month,agendaWeek,agendaDay',
                 timeFormat: {
                     agenda: 'H(:mm)' //h:mm{ - h:mm}'
-                }
+                },
 
             },
             buttonText: {//This is to add icons to the visible buttons
@@ -84,19 +94,20 @@
                 type: 'json',
                 data: {<?= $this->security->get_csrf_token_name(); ?>: '<?= $this->security->get_csrf_hash(); ?>'},
                 failure: function () {
-                    alert('there was an error while fetching events!');
+                    alert('ocorreu um erro ao buscar os eventos!');
                 }
             },
+            
             timeFormat: 'H(:mm)',
             axisFormat: 'H(:mm)',
+            lang: 'pt-br',
             editable: true,
+            eventLimit: true,
             dayClick: function (date, jsEvent, view) {
-                console.log('--> ' + date.format());
-                window.location.href = "cadcliente/add";
+                window.location.href = "<?= $this->router->fetch_class(); ?>/add";
             },
             eventClick: function (info) {
-                console.log('-->' + info.id);
-                console.log('-->' + info.start);
+                window.location.href = "<?= $this->router->fetch_class(); ?>/edit/" + info.id;
             },
             eventRender: function (eventObj, $el) {
 

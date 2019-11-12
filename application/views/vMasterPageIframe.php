@@ -72,7 +72,7 @@
             echo "<!-- EXTERNAL CSS FILE -->" . PHP_EOL;
 
             foreach ($external_css as $css):
-                echo "<link rel='stylesheet' href='" . $css . "'>" . PHP_EOL;
+                echo "<link rel='stylesheet' href='" . $css . '?' . date('YmdHis') . "' rel=\"stylesheet\" type=\"text/css\"/>" . PHP_EOL;
             endforeach;
 
             echo "<!-- END EXTERNAL CSS FILE -->" . PHP_EOL;
@@ -170,7 +170,7 @@
             echo "<!-- EXTERNAL JS FILE -->" . PHP_EOL;
 
             foreach ($external_js as $js):
-                echo "<script src='" . $js . "' type=\"text/javascript\">" . PHP_EOL;
+                echo "<script src='" . $js . '?v=' . date('YmdHis') . "' type=\"text/javascript\"></script>" . PHP_EOL;
             endforeach;
 
             echo "<!-- END EXTERNAL JS FILE -->" . PHP_EOL;

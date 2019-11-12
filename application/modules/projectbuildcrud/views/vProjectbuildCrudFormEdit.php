@@ -535,14 +535,30 @@
                                                                 foreach ($_fields_table_formAddEdit['_result'] as $_tableFieldName):
                                                                     $_calendarTableFieldName[$_tableFieldName['field_name']] = $_tableFieldName['field_name'];
                                                                 endforeach;
-                                                                
                                                                 ?>
 
-                                                                <div class="form-group">
-                                                                    <label>
-                                                                        <input type="checkbox" name="calendarCheckboxAtivar" class="flat-green" <?= (!empty($_dadosCalendarInputs->calendarCheckboxAtivar) ? 'checked' : (set_value('calendarCheckboxAtivar') ? 'checked' : '')); ?>/>
-                                                                        Ativar Calendário
-                                                                    </label>
+                                                                <div class="row">
+
+                                                                    <div class="col-md-6">
+                                                                        <div class="form-group">
+                                                                            <label>
+                                                                                <input type="checkbox" name="calendarCheckboxAtivar" class="flat-green" <?= (!empty($_dadosCalendarInputs->calendarCheckboxAtivar) ? 'checked' : (set_value('calendarCheckboxAtivar') ? 'checked' : '')); ?>/>
+                                                                                Ativar Calendário
+                                                                            </label>
+                                                                        </div>
+                                                                    </div>    
+
+                                                                    <div class="col-md-6">
+                                                                        <div class="form-group">
+                                                                            <label>
+                                                                                Recarregar Tela
+                                                                                <input type="number" name="calendarInputTimeRefresh" class="form-group" min="0" value="<?=(!empty($_dadosCalendarInputs->calendarInputTimeRefresh) ? $_dadosCalendarInputs->calendarInputTimeRefresh : (set_value('calendarInputTimeRefresh') ? set_value('calendarInputTimeRefresh') : ''));?>" />
+                                                                            </label>
+                                                                        </div>
+
+                                                                    </div>
+
+
                                                                 </div>
 
 
@@ -559,7 +575,7 @@
                                                                         <div class="form-group">
                                                                             <?php $_error = form_error("calendarInputTitulo", "<small class='text-danger col-xs-12 bz-input-error'>", "</small>"); ?>
                                                                             <label for="calendarInputTitulo">Título</label>
-                                                                            <?= form_dropdown('calendarInputTitulo', $_calendarTableFieldName, (!empty($_dadosCalendarInputs->calendarInputTitulo) ? $_dadosCalendarInputs->calendarInputTitulo : ( set_value('calendarInputTitulo') ? set_value('calendarInputTitulo') : '') ), 'id="calendarInputTitulo" class="form-control"'); ?>
+                                                                            <?= form_dropdown('calendarInputTitulo', $_calendarTableFieldName, (!empty($_dadosCalendarInputs->calendarInputTitulo) ? $_dadosCalendarInputs->calendarInputTitulo : ( set_value('calendarInputTitulo') ? set_value('calendarInputTitulo') : '')), 'id="calendarInputTitulo" class="form-control"'); ?>
                                                                             <?= $_error; ?>
                                                                         </div>
 
@@ -567,7 +583,7 @@
                                                                         <div class="form-group">
                                                                             <?php $_error = form_error("calendarInputDataStart", "<small class='text-danger col-xs-12 bz-input-error'>", "</small>"); ?>
                                                                             <label for="calendarInputDataStart">Data Início</label>
-                                                                            <?= form_dropdown('calendarInputDataStart', $_calendarTableFieldName, (!empty($_dadosCalendarInputs->calendarInputDataStart) ? $_dadosCalendarInputs->calendarInputDataStart : ( set_value('calendarInputDataStart') ? set_value('calendarInputDataStart') : '') ), 'id="calendarInputDataStart" class="form-control"'); ?>
+                                                                            <?= form_dropdown('calendarInputDataStart', $_calendarTableFieldName, (!empty($_dadosCalendarInputs->calendarInputDataStart) ? $_dadosCalendarInputs->calendarInputDataStart : ( set_value('calendarInputDataStart') ? set_value('calendarInputDataStart') : '')), 'id="calendarInputDataStart" class="form-control"'); ?>
                                                                             <?= $_error; ?>
                                                                         </div>
 
@@ -582,14 +598,14 @@
                                                                         <div class="form-group">
                                                                             <?php $_error = form_error("calendarInputDescricao", "<small class='text-danger col-xs-12 bz-input-error'>", "</small>"); ?>
                                                                             <label for="calendarInputDescricao">Descrição</label>
-                                                                            <?= form_dropdown('calendarInputDescricao', $_calendarTableFieldName, (!empty($_dadosCalendarInputs->calendarInputDescricao) ? $_dadosCalendarInputs->calendarInputDescricao : ( set_value('calendarInputDescricao') ? set_value('calendarInputDescricao') : '') ), 'id="calendarInputDescricao" class="form-control"'); ?>
+                                                                            <?= form_dropdown('calendarInputDescricao', $_calendarTableFieldName, (!empty($_dadosCalendarInputs->calendarInputDescricao) ? $_dadosCalendarInputs->calendarInputDescricao : ( set_value('calendarInputDescricao') ? set_value('calendarInputDescricao') : '')), 'id="calendarInputDescricao" class="form-control"'); ?>
                                                                             <?= $_error; ?>
                                                                         </div>
 
                                                                         <div class="form-group">
                                                                             <?php $_error = form_error("calendarInputDataEnd", "<small class='text-danger col-xs-12 bz-input-error'>", "</small>"); ?>
                                                                             <label for="calendarInputDataEnd">Data Final</label>
-                                                                            <?= form_dropdown('calendarInputDataEnd', $_calendarTableFieldName, (!empty($_dadosCalendarInputs->calendarInputDataEnd) ? $_dadosCalendarInputs->calendarInputDataEnd : ( set_value('calendarInputDataEnd') ? set_value('calendarInputDataEnd') : '') ), 'id="calendarInputDataEnd" class="form-control"'); ?>
+                                                                            <?= form_dropdown('calendarInputDataEnd', $_calendarTableFieldName, (!empty($_dadosCalendarInputs->calendarInputDataEnd) ? $_dadosCalendarInputs->calendarInputDataEnd : ( set_value('calendarInputDataEnd') ? set_value('calendarInputDataEnd') : '')), 'id="calendarInputDataEnd" class="form-control"'); ?>
                                                                             <?= $_error; ?>
                                                                         </div>
 

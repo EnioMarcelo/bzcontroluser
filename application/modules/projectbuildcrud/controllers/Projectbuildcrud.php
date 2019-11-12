@@ -3964,28 +3964,6 @@ class ProjectbuildCrud extends MY_Controller {
 
         $this->_dadosController = str_replace('{{form-edit-where-update-fields}}', $this->_formEditWhereUpdateFields, $this->_dadosController);
 
-        /* MÉTODOS */
-
-        //EXPORT REPORT
-        if (!empty($this->_gridListHeaderTableExport)) {
-            $this->_controller_onScriptinit .= '/* EXPORT REPORT */' . PHP_EOL;
-            $this->_controller_onScriptinit .= '$this->_exportReport = true;' . PHP_EOL . PHP_EOL;
-        }
-
-        $this->_dadosController = str_replace('{{controller-metodos-php}}', $this->_controller_metodos_php, $this->_dadosController);
-        $this->_dadosController = str_replace('{{controller-onScriptInit}}', $this->_controller_onScriptinit, $this->_dadosController);
-        $this->_dadosController = str_replace('{{controller-onBeforeInsert}}', $this->_controller_onBeforeInsert, $this->_dadosController);
-        $this->_dadosController = str_replace('{{controller-onAfterInsert}}', $this->_controller_onAfterInsert, $this->_dadosController);
-        $this->_dadosController = str_replace('{{controller-onBeforeUpdate}}', $this->_controller_onBeforeUpdate, $this->_dadosController);
-        $this->_dadosController = str_replace('{{controller-onAfterUpdate}}', $this->_controller_onAfterUpdate, $this->_dadosController);
-        $this->_dadosController = str_replace('{{controller-onBeforeDelete}}', $this->_controller_onBeforeDelete, $this->_dadosController);
-        $this->_dadosController = str_replace('{{controller_DeleteFileFunction}}', $this->_controller_DeleteFileFunction, $this->_dadosController);
-        $this->_dadosController = str_replace('{{controller-onAfterDelete}}', $this->_controller_onAfterDelete, $this->_dadosController);
-        $this->_dadosController = str_replace('{{controller-onScriptInitExport}}', $this->_controller_onScriptInitExport, $this->_dadosController);
-        $this->_dadosController = str_replace('{{controller-onScriptBeforeExport}}', $this->_controller_onScriptBeforeExport, $this->_dadosController);
-        $this->_dadosController = str_replace('{{controller-onScriptAfterExport}}', $this->_controller_onScriptAfterExport, $this->_dadosController);
-        $this->_dadosController = str_replace('{{controller-onScriptEndExport}}', $this->_controller_onScriptEndExport, $this->_dadosController);
-        /* END MÉTODOS */
 
         /* CAMPOS VIRTUAIS DA GRIDLIST */
         $this->_dadosController = str_replace('{{controller-virtual-field}}', ( (count($this->_gridListVirtualFieldsTable) > 0) ? "'" . implode("','", $this->_gridListVirtualFieldsTable) . "'" : ''), $this->_dadosController);
@@ -4012,7 +3990,6 @@ class ProjectbuildCrud extends MY_Controller {
          */
         if (!empty($this->_appCalendarInputs->calendarCheckboxAtivar) && $this->_appCalendarInputs->calendarCheckboxAtivar == 'on') {
 
-
             /**
              *  IMPORTA O TEMPLATE CONTROLLER DO CALENDAR 
              */
@@ -4023,14 +4000,25 @@ class ProjectbuildCrud extends MY_Controller {
                 $this->_dadosControllerCalendar .= $_row;
             endforeach;
 
-
-
             /*
              * FAZ AS SUBSTITUIÇÕES DOS MARCADORES PELOS CÓDIGOS GERADOS
              */
             $this->_dadosController = str_replace('{{calendar-view-app}}', '$this->dados[\'_view_app_calendar\'] = \'v' . $this->_app_nome . 'Calendar\';', $this->_dadosController);
             $this->_dadosController = str_replace('{{calendar-controller}}', $this->_dadosControllerCalendar, $this->_dadosController);
 
+            /* CALENDAR EVENTS */
+            $this->_dadosController = str_replace('{{calendar-input-title}}', $this->_appCalendarInputs->calendarInputTitulo, $this->_dadosController);
+            $this->_dadosController = str_replace('{{calendar-input-description}}', $this->_appCalendarInputs->calendarInputDescricao, $this->_dadosController);
+            $this->_dadosController = str_replace('{{calendar-input-date-start}}', $this->_appCalendarInputs->calendarInputDataStart, $this->_dadosController);
+            $this->_dadosController = str_replace('{{calendar-input-date-end}}', $this->_appCalendarInputs->calendarInputDataEnd, $this->_dadosController);
+            $this->_dadosController = str_replace('{{calendar-input-id}}', 'id', $this->_dadosController);
+            /* END CALENDAR EVENTS */
+
+            /* METHOD CALENDAR */
+            $this->_controller_onScriptinit .= '/* METHOD CALENDAR */' . PHP_EOL;
+            $this->_controller_onScriptinit .= '$this->_methodCalendar = true;' . PHP_EOL . PHP_EOL;
+
+            
 
             /* ############################################################################################################################################################ */
 
@@ -4044,8 +4032,7 @@ class ProjectbuildCrud extends MY_Controller {
             foreach ($_template as $_row):
                 $this->_dadosViewCalendar .= $_row;
             endforeach;
-
-
+            
             /*
              * FAZ AS SUBSTITUIÇÕES DOS MARCADORES PELOS CÓDIGOS GERADOS
              */
@@ -4053,7 +4040,13 @@ class ProjectbuildCrud extends MY_Controller {
             $this->_dadosViewCalendar = str_replace('{{created-time}}', date('H:i') . ((date('H') > 11) ? 'PM' : 'AM' ), $this->_dadosViewCalendar);
             $this->_dadosViewCalendar = str_replace('{{author-name}}', $this->session->userdata('user_login')['user_nome'], $this->_dadosViewCalendar);
             $this->_dadosViewCalendar = str_replace('{{author-email}}', $this->session->userdata('user_login')['user_email'], $this->_dadosViewCalendar);
-
+            
+            /* TIME REFESH SCREEN CALENDAR */
+            if ($this->_appCalendarInputs->calendarInputTimeRefresh > 0) {
+                $this->_dadosViewCalendar = str_replace('{{calendar-time-refresh-screen}}', ($this->_appCalendarInputs->calendarInputTimeRefresh ? $this->_appCalendarInputs->calendarInputTimeRefresh : 0), $this->_dadosViewCalendar);
+            } else {
+                $this->_dadosViewCalendar = str_replace('{{calendar-time-refresh-screen}}', '0', $this->_dadosViewCalendar);
+            }
 
             /* GERA O ARQUIVO view DO CALENDAR */
             write_file($this->_directory . '/views/v' . $this->_app_nome . 'Calendar.php', bz_removeEmptyLines($this->_dadosViewCalendar));
@@ -4064,7 +4057,7 @@ class ProjectbuildCrud extends MY_Controller {
 
 
             /**/
-        }else {
+        } else {
             $this->_dadosController = str_replace('{{calendar-view-app}}', '', $this->_dadosController);
             $this->_dadosController = str_replace('{{calendar-controller}}', '', $this->_dadosController);
 
@@ -4082,9 +4075,34 @@ class ProjectbuildCrud extends MY_Controller {
 
 
 
+        /* EXPORT REPORT */
+        if (!empty($this->_gridListHeaderTableExport)) {
+            $this->_controller_onScriptinit .= '/* EXPORT REPORT */' . PHP_EOL;
+            $this->_controller_onScriptinit .= '$this->_exportReport = true;' . PHP_EOL . PHP_EOL;
+        }
+
+
+        /* MÉTODOS */
+        $this->_dadosController = str_replace('{{controller-metodos-php}}', $this->_controller_metodos_php, $this->_dadosController);
+        $this->_dadosController = str_replace('{{controller-onScriptInit}}', $this->_controller_onScriptinit, $this->_dadosController);
+        $this->_dadosController = str_replace('{{controller-onBeforeInsert}}', $this->_controller_onBeforeInsert, $this->_dadosController);
+        $this->_dadosController = str_replace('{{controller-onAfterInsert}}', $this->_controller_onAfterInsert, $this->_dadosController);
+        $this->_dadosController = str_replace('{{controller-onBeforeUpdate}}', $this->_controller_onBeforeUpdate, $this->_dadosController);
+        $this->_dadosController = str_replace('{{controller-onAfterUpdate}}', $this->_controller_onAfterUpdate, $this->_dadosController);
+        $this->_dadosController = str_replace('{{controller-onBeforeDelete}}', $this->_controller_onBeforeDelete, $this->_dadosController);
+        $this->_dadosController = str_replace('{{controller_DeleteFileFunction}}', $this->_controller_DeleteFileFunction, $this->_dadosController);
+        $this->_dadosController = str_replace('{{controller-onAfterDelete}}', $this->_controller_onAfterDelete, $this->_dadosController);
+        $this->_dadosController = str_replace('{{controller-onScriptInitExport}}', $this->_controller_onScriptInitExport, $this->_dadosController);
+        $this->_dadosController = str_replace('{{controller-onScriptBeforeExport}}', $this->_controller_onScriptBeforeExport, $this->_dadosController);
+        $this->_dadosController = str_replace('{{controller-onScriptAfterExport}}', $this->_controller_onScriptAfterExport, $this->_dadosController);
+        $this->_dadosController = str_replace('{{controller-onScriptEndExport}}', $this->_controller_onScriptEndExport, $this->_dadosController);
+        /* END MÉTODOS */
+
+
         /* GERA O ARQUIVO controller DA APLICAÇÃO */
         write_file($this->_directory . '/controllers/' . $this->_app_nome . '.php', bz_removeEmptyLines($this->_dadosController));
         /* END GERA O ARQUIVO controller DA APLICAÇÃO */
+
 
         $this->_dadosController = '';
         $this->_dadosControllerCalendar = '';

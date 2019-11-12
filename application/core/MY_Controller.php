@@ -211,15 +211,16 @@ class MY_Controller extends MX_Controller {
         endif;
 
         if ($this->session->flashdata('btn_voltar_link')):
-            if (empty($this->session->flashdata('btn_voltar_origem'))):
-                $this->session->set_flashdata('btn_voltar_link', site_url($this->router->fetch_class()) . '?' . bz_app_parametros_url());
-            else:
+            
+//                $this->session->set_flashdata('btn_voltar_link', site_url($this->router->fetch_class()) . '?' . bz_app_parametros_url());
+            
                 $this->session->keep_flashdata('btn_voltar_link');
-            endif;
+            
         else:
             $this->session->set_flashdata('btn_voltar_link', site_url($this->router->fetch_class()) . '?' . bz_app_parametros_url());
             $this->session->set_flashdata('btn_voltar_origem', '');
         endif;
+        
     }
 
 }
