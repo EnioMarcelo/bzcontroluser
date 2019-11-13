@@ -1983,3 +1983,31 @@ function bz_removeEmptyLines($string) {
 
     return $string;
 }
+
+/**
+ * 
+ * CARREGA UM TEMPLATE
+ *
+ * @param string $_pathTemplate - Caminho Relativo onde está o template
+ * @param array $_dados         - Dados do template
+ *
+ */
+function bz_load_view_template($bzPathTemplate, $bzDados = array()) {
+
+    if (empty($bzPathTemplate)) {
+        return false;
+    }
+
+    if ($bzDados) {
+        extract($bzDados);
+    }
+
+    /**
+     * IMPORTA O TEMPLATE
+     */
+    if (file_exists($bzPathTemplate)) {
+        include FCPATH . $bzPathTemplate;
+    } else {
+        echo "Template <b>$bzPathTemplate</b> não existe.";
+    }
+}
