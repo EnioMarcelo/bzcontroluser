@@ -1,5 +1,3 @@
-!application/*/.htaccess
-
 application/cache/*
 !application/cache/index.html
 !application/cache/.htaccess
@@ -8,6 +6,13 @@ application/cache/*
 application/logs/*
 !application/logs/index.html
 !application/logs/.htaccess
+
+
+
+application/modules/config/config.php
+application/modules/config/config_email.php
+application/modules/config/database.php
+
 
 
 application/modules/*
@@ -34,7 +39,7 @@ user_guide_src/build/*
 user_guide_src/cilexer/build/*
 user_guide_src/cilexer/dist/*
 user_guide_src/cilexer/pycilexer.egg-info/*
-/vendor/
+
 
 
 captcha/*
@@ -72,3 +77,4 @@ Thumbs.db
 *.sublime-project
 /tests/tests/
 /tests/results/
+/assets/site/

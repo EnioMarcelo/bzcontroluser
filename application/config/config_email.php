@@ -13,10 +13,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
   |
   |
  */
-$config['CONF_EMAIL_SMTP_USER'] = '';
-$config['CONF_EMAIL_SMTP_PASS'] = '';
-$config['CONF_EMAIL_FROM_EMAIL'] = 'no-reply@seu-dominio-aqui.com';
-$config['CONF_EMAIL_SMTP_HOST'] = '';
+$config['CONF_EMAIL_SMTP_USER'] = 'apikey';
+$config['CONF_EMAIL_SMTP_PASS'] = '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';
+$config['CONF_EMAIL_FROM_EMAIL'] = 'no-reply@eniomarcelo.com.br';
+$config['CONF_EMAIL_SMTP_HOST'] = 'smtp.sendgrid.net';
 //
 $config['CONF_EMAIL_SMTP_PORT'] = 587;
 $config['CONF_EMAIL_SMTP_PROTOCOL'] = 'smtp';

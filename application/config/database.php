@@ -75,11 +75,11 @@ $active_group = 'default';
 $query_builder = TRUE;
 
 $db['default'] = array(
-    'dsn' => 'mysql:host=127.0.0.1;dbname=SEU-DB',
+    'dsn' => 'mysql:host=127.0.0.1;dbname=admin-mdb',
     'hostname' => '127.0.0.1',
-    'username' => '',
-    'password' => '',
-    'database' => 'SEU-DB',
+    'username' => 'root',
+    'password' => '123456',
+    'database' => 'admin-mdb',
     'dbdriver' => 'pdo',
     'dbprefix' => '',
     'pconnect' => FALSE,
