@@ -37,7 +37,7 @@
 
 
   <!-- OPEN FORM -->
-  <?= {{form-addedit-input-form-open}}(site_url($this->router->fetch_class() . '/edit/'. $dados->{{primary_key_field}} . '?' . bz_app_parametros_url()), 'id="IdFormEDIT_'.$this->router->fetch_class().'" name="formEDIT_'.$this->router->fetch_class().'" role="form" ' ); ?>
+  <?= {{form-addedit-input-form-open}}($this->router->fetch_class() . '/edit/'. $dados->{{primary_key_field}} . '?' . bz_app_parametros_url(), 'id="IdFormEDIT_'.$this->router->fetch_class().'" name="formEDIT_'.$this->router->fetch_class().'" role="form" ' ); ?>
 
   <div class="row hide-reload-screen">
 

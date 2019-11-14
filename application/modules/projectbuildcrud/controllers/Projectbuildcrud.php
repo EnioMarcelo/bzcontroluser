@@ -1746,7 +1746,12 @@ class ProjectbuildCrud extends MY_Controller {
 
                         /* CAMPOS PARA FILTRAGEM DOS DADOS */
                         if ($_param_gridListField['grid_list_search'] == 'on' && (empty($_param_gridListField['grid_list_field_type']) || $_param_gridListField['grid_list_field_type'] != 'virtual')):
-                            $this->_gridListSearchFields .= $_row['field_name'] . ', ';
+                            if ($this->_gridListSearchFields) {
+                                $this->_gridListSearchFields .= ',' . $_row['field_name'];
+                            } else {
+                                $this->_gridListSearchFields .= $_row['field_name'];
+                            }
+
                         endif;
                         /* END CAMPOS PARA FILTRAGEM DOS DADOS */
 
@@ -1967,7 +1972,6 @@ class ProjectbuildCrud extends MY_Controller {
                     /**
                      * FIELDS SEARCH PARA FILTRAGEM
                      */
-                    $this->_gridListSearchFields = substr($this->_gridListSearchFields, 0, -1);
                     if ($this->_gridListSearchFields) {
                         $this->_gridListSearchFields = "if (\$this->input->get('search', TRUE)):
                         \$_dados_pag['search'] = array('_concat_fields' => '" . $this->_gridListSearchFields . "', '_string' => \$this->input->get('search', TRUE));
@@ -4018,7 +4022,7 @@ class ProjectbuildCrud extends MY_Controller {
             $this->_controller_onScriptinit .= '/* METHOD CALENDAR */' . PHP_EOL;
             $this->_controller_onScriptinit .= '$this->_methodCalendar = true;' . PHP_EOL . PHP_EOL;
 
-            
+
 
             /* ############################################################################################################################################################ */
 
@@ -4032,7 +4036,7 @@ class ProjectbuildCrud extends MY_Controller {
             foreach ($_template as $_row):
                 $this->_dadosViewCalendar .= $_row;
             endforeach;
-            
+
             /*
              * FAZ AS SUBSTITUIÇÕES DOS MARCADORES PELOS CÓDIGOS GERADOS
              */
@@ -4040,7 +4044,7 @@ class ProjectbuildCrud extends MY_Controller {
             $this->_dadosViewCalendar = str_replace('{{created-time}}', date('H:i') . ((date('H') > 11) ? 'PM' : 'AM' ), $this->_dadosViewCalendar);
             $this->_dadosViewCalendar = str_replace('{{author-name}}', $this->session->userdata('user_login')['user_nome'], $this->_dadosViewCalendar);
             $this->_dadosViewCalendar = str_replace('{{author-email}}', $this->session->userdata('user_login')['user_email'], $this->_dadosViewCalendar);
-            
+
             /* TIME REFESH SCREEN CALENDAR */
             if ($this->_appCalendarInputs->calendarInputTimeRefresh > 0) {
                 $this->_dadosViewCalendar = str_replace('{{calendar-time-refresh-screen}}', ($this->_appCalendarInputs->calendarInputTimeRefresh ? $this->_appCalendarInputs->calendarInputTimeRefresh : 0), $this->_dadosViewCalendar);

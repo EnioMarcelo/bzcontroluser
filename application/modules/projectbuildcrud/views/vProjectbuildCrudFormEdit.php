@@ -28,7 +28,7 @@
 <?= get_mensagem(); ?>
 
 
-<?= form_open(site_url($this->router->fetch_class() . '/edit/' . $dados->id . '?' . bz_app_parametros_url()), 'role="form"'); ?>
+<?= form_open($this->router->fetch_class() . '/edit/' . $dados->id . '?' . bz_app_parametros_url(), 'role="form"'); ?>
 
 <!--BUTTON FIXED GERAR APP-->
 <div class="input-group-btn text-right fixa hide" style="z-index:100;" >

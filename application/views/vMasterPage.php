@@ -19,69 +19,69 @@
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
 
         <!-- Theme style iCheck-->
-        <link href="<?= base_url('assets'); ?>/plugins/iCheck/all.css<?= '?' . date('YmdHis'); ?>" rel="stylesheet" type="text/css" />
+        <link href="<?= base_url('assets'); ?>/plugins/iCheck/all.css" rel="stylesheet" type="text/css" />
         <!-- Toaster CSS -->
-        <link href="<?= base_url('assets'); ?>/css/jquery.toast.css<?= '?' . date('YmdHis'); ?>" rel="stylesheet" type="text/css"/>
+        <link href="<?= base_url('assets'); ?>/css/jquery.toast.css" rel="stylesheet" type="text/css"/>
         <!-- Stick de Mensagens - NOTIFIT -->
-        <link href="<?= base_url('assets'); ?>/css/notifIt.css<?= '?' . date('YmdHis'); ?>" rel="stylesheet" type="text/css"/>
+        <link href="<?= base_url('assets'); ?>/css/notifIt.css" rel="stylesheet" type="text/css"/>
         <!-- Stick de Mensagens - NICE - http://demo.hackandphp.com/jquery-nice-notify-notification-messages/ -->
-        <link href="<?= base_url('assets'); ?>/css/jquery.nice.css<?= '?' . date('YmdHis'); ?>" rel="stylesheet" type="text/css"/>
+        <link href="<?= base_url('assets'); ?>/css/jquery.nice.css" rel="stylesheet" type="text/css"/>
         <!-- Stick de Mensagens trigger notify -->
-        <link href="<?= base_url('assets'); ?>/css/trigger_notify.css<?= '?' . date('YmdHis'); ?>" rel="stylesheet" type="text/css"/>
+        <link href="<?= base_url('assets'); ?>/css/trigger_notify.css" rel="stylesheet" type="text/css"/>
         <!-- Bootstrap 3.3.4 -->
-        <link href="<?= base_url('assets'); ?>/bootstrap/css/bootstrap.min.css<?= '?' . date('YmdHis'); ?>" rel="stylesheet" type="text/css" />
+        <link href="<?= base_url('assets'); ?>/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
         <!-- Font Awesome Icons -->
-        <link href="<?= base_url('assets'); ?>/font/font-awesome.min.css<?= '?' . date('YmdHis'); ?>" rel="stylesheet" type="text/css"/>
+        <link href="<?= base_url('assets'); ?>/font/font-awesome.min.css" rel="stylesheet" type="text/css"/>
         <!-- Ionicons -->
-        <link href="<?= base_url('assets'); ?>/dist/css/ionicons.min.css<?= '?' . date('YmdHis'); ?>" rel="stylesheet" type="text/css" />
+        <link href="<?= base_url('assets'); ?>/dist/css/ionicons.min.css" rel="stylesheet" type="text/css" />
         <!-- Theme style -->
-        <link href="<?= base_url('assets'); ?>/dist/css/AdminLTE.BZ.min.css<?= '?' . date('YmdHis'); ?>" rel="stylesheet" type="text/css"/>
+        <link href="<?= base_url('assets'); ?>/dist/css/AdminLTE.BZ.min.css" rel="stylesheet" type="text/css"/>
         <!-- AdminLTE Skins. We have chosen the skin-blue for this starter
               page. However, you can choose any other skin. Make sure you
               apply the skin class to the body tag so the changes take effect.
         -->
-        <link href="<?= base_url('assets'); ?>/dist/css/skins/_all-skins.min.css<?= '?' . date('YmdHis'); ?>" rel="stylesheet" type="text/css"/>
+        <link href="<?= base_url('assets'); ?>/dist/css/skins/_all-skins.min.css" rel="stylesheet" type="text/css"/>
 
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
         <!--[if lt IE 9]>
-        <script src="<?= base_url('assets'); ?>/dist/js/html5shiv.min.js<?= '?v=' . date('YmdHis'); ?>"></script>
-        <script src="<?= base_url('assets'); ?>/dist/js/respond.min.js<?= '?v=' . date('YmdHis'); ?>"></script>
+        <script src="<?= base_url('assets'); ?>/dist/js/html5shiv.min.js"></script>
+        <script src="<?= base_url('assets'); ?>/dist/js/respond.min.js"></script>
         <![endif]-->
 
         <!-- CUSTOM MASTERPAGE -->
-        <link href="<?= base_url('assets'); ?>/css/custom-masterPage.css<?= '?' . date('YmdHis'); ?>" rel="stylesheet" type="text/css" />
+        <link href="<?= base_url('assets'); ?>/css/custom-masterPage.css" rel="stylesheet" type="text/css" />
 
         <!-- BOOT BUZA -->
-        <link href="<?= base_url('assets'); ?>/css/boot-buza.css<?= '?' . date('YmdHis'); ?>" rel="stylesheet" type="text/css" />
+        <link href="<?= base_url('assets'); ?>/css/boot-buza.css" rel="stylesheet" type="text/css" />
 
 
         <!-- REQUIRED JS SCRIPTS -->
 
         <!-- jQuery 2.1.4 -->
-        <script src="<?= base_url('assets'); ?>/plugins/jQuery/jQuery-2.1.4.min.js<?= '?v=' . date('YmdHis'); ?>"></script>
+        <script src="<?= base_url('assets'); ?>/plugins/jQuery/jQuery-2.1.4.min.js"></script>
         <!-- Bootstrap 3.3.2 JS -->
-        <script src="<?= base_url('assets'); ?>/bootstrap/js/bootstrap.min.js<?= '?v=' . date('YmdHis'); ?>" type="text/javascript"></script>
+        <script src="<?= base_url('assets'); ?>/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
         <!-- slimScroll -->
-        <script src="<?= base_url('assets'); ?>/plugins/slimScroll/jquery.slimscroll.min.js<?= '?v=' . date('YmdHis'); ?>" type="text/javascript"></script>
+        <script src="<?= base_url('assets'); ?>/plugins/slimScroll/jquery.slimscroll.min.js" type="text/javascript"></script>
         <!-- iCheck 1.0.1 -->
-        <script src="<?= base_url('assets'); ?>/plugins/iCheck/icheck.min.js<?= '?v=' . date('YmdHis'); ?>" type="text/javascript"></script>
+        <script src="<?= base_url('assets'); ?>/plugins/iCheck/icheck.min.js" type="text/javascript"></script>
         <!-- AdminLTE App -->
-        <script src="<?= base_url('assets'); ?>/dist/js/app.min.js<?= '?v=' . date('YmdHis'); ?>" type="text/javascript"></script>
+        <script src="<?= base_url('assets'); ?>/dist/js/app.min.js" type="text/javascript"></script>
         <!-- Toaster JS -->
-        <script src="<?= base_url('assets'); ?>/js/jquery.toast.js<?= '?v=' . date('YmdHis'); ?>" type="text/javascript"></script>
+        <script src="<?= base_url('assets'); ?>/js/jquery.toast.js" type="text/javascript"></script>
         <!-- SweetAlert JS -->
-        <script src="<?= base_url('assets'); ?>/js/jquery.sweetalert.min.js<?= '?v=' . date('YmdHis'); ?>" type="text/javascript"></script>
+        <script src="<?= base_url('assets'); ?>/js/jquery.sweetalert.min.js" type="text/javascript"></script>
         <!-- Stick de Mensagens - NOTIFIT -->
-        <script src="<?= base_url('assets'); ?>/js/notifIt.js<?= '?v=' . date('YmdHis'); ?>" type="text/javascript"></script>
+        <script src="<?= base_url('assets'); ?>/js/notifIt.js" type="text/javascript"></script>
         <!-- NOTIFIT MENSAGENS-->
-        <script src="<?= base_url('assets'); ?>/js/notifit-mensagens.js<?= '?v=' . date('YmdHis'); ?>" type="text/javascript"></script>
+        <script src="<?= base_url('assets'); ?>/js/notifit-mensagens.js" type="text/javascript"></script>
         <!-- NICE MENSAGENS-->
-        <script src="<?= base_url('assets'); ?>/js/jquery.nice.js<?= '?v=' . date('YmdHis'); ?>" type="text/javascript"></script>
+        <script src="<?= base_url('assets'); ?>/js/jquery.nice.js" type="text/javascript"></script>
         <!-- Stick de Mensagens trigger notify -->
-        <script src="<?= base_url('assets'); ?>/js/Jquery.trigger_notify.js<?= '?v=' . date('YmdHis'); ?>" type="text/javascript"></script>
+        <script src="<?= base_url('assets'); ?>/js/Jquery.trigger_notify.js" type="text/javascript"></script>
         <!--COMMON JS-->
-        <script src="<?= base_url('assets'); ?>/js/common-js.js<?= '?v=' . date('YmdHis'); ?>" type="text/javascript"></script>
+        <script src="<?= base_url('assets'); ?>/js/common-js.js" type="text/javascript"></script>
 
         <!-- ROTINAS JQUERY/JAVASCRIPT -->
         <?php $this->load->view('js/common-js-MasterPage'); ?>
