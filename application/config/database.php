@@ -71,15 +71,22 @@ defined('BASEPATH') OR exit('No direct script access allowed');
   | The $query_builder variables lets you determine whether or not to load
   | the query builder class.
  */
+
+$_hostname = '127.0.0.1';
+$_username = 'root';
+$_password = '123456';
+$_database = 'admin-mdb';
+
+
 $active_group = 'default';
 $query_builder = TRUE;
 
 $db['default'] = array(
-    'dsn' => 'mysql:host=127.0.0.1;dbname=admin-mdb',
-    'hostname' => '127.0.0.1',
-    'username' => 'root',
-    'password' => '123456',
-    'database' => 'admin-mdb',
+    'dsn' => 'mysql:host=127.0.0.1;dbname=' . $_database,
+    'hostname' => $_hostname,
+    'username' => $_username,
+    'password' => $_password,
+    'database' => $_database,
     'dbdriver' => 'pdo',
     'dbprefix' => '',
     'pconnect' => FALSE,
