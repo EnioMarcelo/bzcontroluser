@@ -36,7 +36,7 @@ class Apps extends MY_Controller {
 
 
     public function index() {
-
+        $this->session->set_flashdata('btn_voltar_link', site_url($this->router->fetch_class()) . '?' . bz_app_parametros_url());
         /*
          * GRAVA A DESCRIÇÃO DOS GRUPOS QUE O APP PERTENCE PARA UTILIZAR NA FILTRAGEM DA PAGINAÇÃO E FILTRAGEM DE GRID/LIST
          */

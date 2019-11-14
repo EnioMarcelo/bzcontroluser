@@ -25,7 +25,7 @@
 
 <?= get_mensagem(); ?>
 
-<?= form_open(site_url($this->router->fetch_class() . '/codeeditor/' . $_dados_projeto->id . '/' . $_parametros['code_screen'] . '/' . $_parametros['code_type'] . '?' . bz_app_parametros_url()), 'id="formCodeEditor" role="form"'); ?>
+<?= form_open($this->router->fetch_class() . '/codeeditor/' . $_dados_projeto->id . '/' . $_parametros['code_screen'] . '/' . $_parametros['code_type'] . '?' . bz_app_parametros_url(), 'id="formCodeEditor" role="form"'); ?>
 
 <div class="box box-info">
 

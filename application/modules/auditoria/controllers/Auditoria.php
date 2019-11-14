@@ -23,14 +23,13 @@ class Auditoria extends MY_Controller {
          * TABELA QUE SERÁ USADO PELO MÓDULO DO SISTEMA
          */
         $this->table_name = 'sec_auditoria';
-        
     }
 
 //END function __construct()
 
 
     public function index() {
-
+        $this->session->set_flashdata('btn_voltar_link', site_url($this->router->fetch_class()) . '?' . bz_app_parametros_url());
         /*
          * CARREGA REGISTROS COM PAGINAÇÃO
          */

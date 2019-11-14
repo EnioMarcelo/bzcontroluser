@@ -36,6 +36,7 @@ class Usuarios extends MY_Controller {
 
 
     public function index() {
+        $this->session->set_flashdata('btn_voltar_link', site_url($this->router->fetch_class()) . '?' . bz_app_parametros_url());
         /*
          * CARREGA OS REGISTROS COM PAGINAÇÃO
          */

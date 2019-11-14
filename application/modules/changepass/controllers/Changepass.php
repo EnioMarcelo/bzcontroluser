@@ -26,7 +26,7 @@ class Changepass extends MY_Controller {
     }
 
     public function index() {
-
+        $this->session->set_flashdata('btn_voltar_link', site_url($this->router->fetch_class()) . '?' . bz_app_parametros_url());
         /*
          * CHECK SE USUÁRIO ESTÁ LOGADO, SE OK, REDIRECIONA PARA O PAINEL.
          */
@@ -97,11 +97,11 @@ class Changepass extends MY_Controller {
              * CHECK REQUEST REPEAT email
              */
 
-            /*if ($this->request_repeat(xss_clean($this->input->post('email', TRUE)))):
-                set_mensagem_sweetalert('Oooops!!!', 'Você já tentou este email antes.', 'warning');
-                redirect(site_url('changepass'));
-                exit;
-            endif;*/
+            /* if ($this->request_repeat(xss_clean($this->input->post('email', TRUE)))):
+              set_mensagem_sweetalert('Oooops!!!', 'Você já tentou este email antes.', 'warning');
+              redirect(site_url('changepass'));
+              exit;
+              endif; */
 
 
             /*

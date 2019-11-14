@@ -29,7 +29,7 @@
 <?= get_mensagem(); ?>
 
 
-<?= form_open(site_url($this->router->fetch_class() . '/add' . '?' . bz_app_parametros_url()), 'role="form"'); ?>
+<?= form_open($this->router->fetch_class() . '/add' . '?' . bz_app_parametros_url(), 'role="form"'); ?>
 
 <div class="row">
 

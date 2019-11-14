@@ -154,7 +154,7 @@
 
                 <div id="gridlist" class="tab-pane fade in active text-left">
 
-                    <?= form_open(site_url($this->router->fetch_class() . '/setup_gridlist'), 'id="formGridList" class="col-md-12 margin-left-0 padding-left-0 margin-right-0 padding-right-0" role="form"'); ?>
+                    <?= form_open($this->router->fetch_class() . '/setup_gridlist', 'id="formGridList" class="col-md-12 margin-left-0 padding-left-0 margin-right-0 padding-right-0" role="form"'); ?>
 
                     <input type="hidden" name="task" value="save">
                     <input type="hidden" name="projeto_id" value="">
@@ -902,7 +902,7 @@
 
                     var param = [];
                     param['title'] = 'Ocorreu um ERRO Inesperado ao Atualizar Registro, Contacte o Administrador do Sistema.';
-                    param['color'] = "success";
+                    param['color'] = "error";
                     param['timer'] = 3000;
                     triggerNotify(param);
 
