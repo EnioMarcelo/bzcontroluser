@@ -62,14 +62,14 @@
 
             <!-- BTN GERAR APLICAÇÃO-->
             <?php $_buildApp = site_url($this->router->fetch_class() . '/build_app/' . $_dados_projeto->id . '?' . bz_app_parametros_url()); ?>
-            <a class="btn btn-sm bg-purple margin-left-20" data-toggle="modal" data-target="#modalBuildApp" data-build="<?= $_buildApp; ?>" data-width="50%" data-height="350px" data-title="Gerando Aplicação">
+            <a class="btn btn-sm bg-purple margin-left-20" data-toggle="modal" data-target="#modalBuildApp" data-build="<?= strtolower($_buildApp); ?>" data-width="50%" data-height="350px" data-title="Gerando Aplicação">
                 <span class="fa fa-gears j-tooltip" data-placement="bottom" data-toggle="tooltip" data-original-title="Gerar"></span>
             </a>
             <!-- END BTN GERAR APLICAÇÃO-->
 
             <!-- BTN EXECUTAR APLICAÇÃO-->
             <?php $_buildApp = site_url($_dados_projeto->app_nome); ?>
-            <a class="btn btn-sm bg-maroon margin-left-20" data-toggle="modal" data-target="#modalBuildApp" data-build="<?= $_buildApp; ?>" data-width="90%" data-height="500px" data-title="Executando Aplicação">
+            <a class="btn btn-sm bg-maroon margin-left-20" data-toggle="modal" data-target="#modalBuildApp" data-build="<?= strtolower($_buildApp); ?>" data-width="90%" data-height="500px" data-title="Executando Aplicação">
                 <span class="fa fa-external-link-square j-tooltip" data-placement="bottom" data-toggle="tooltip" data-original-title="Executar Aplicação"></span>
             </a>
             <!-- END BTN EXECUTAR APLICAÇÃO-->

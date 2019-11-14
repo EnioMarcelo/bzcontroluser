@@ -3709,7 +3709,7 @@ class ProjectbuildCrud extends MY_Controller {
         /*
          * IMPORTA O TEMPLATE DO CONTROLLER
          */
-        $_template = file(FCPATH . 'application/modules/ProjectbuildCrud/views/tpl/tplControllerBlank.php');
+        $_template = file(FCPATH . 'application/modules/projectbuildcrud/views/tpl/tplControllerBlank.php');
         $this->_dadosController = '';
 
         foreach ($_template as $_row):
@@ -3809,9 +3809,9 @@ class ProjectbuildCrud extends MY_Controller {
          * IMPORTA O TEMPLATE DO CONTROLLER
          */
         if ($this->_templatePadrao == 'NAO') {
-            $_template = file(FCPATH . 'application/modules/ProjectbuildCrud/views/tpl/tplBlankView.php');
+            $_template = file(FCPATH . 'application/modules/projectbuildcrud/views/tpl/tplBlankView.php');
         } else {
-            $_template = file(FCPATH . 'application/modules/ProjectbuildCrud/views/tpl/tplBlankViewDefaultTemplate.php');
+            $_template = file(FCPATH . 'application/modules/projectbuildcrud/views/tpl/tplBlankViewDefaultTemplate.php');
         }
 
         $this->_dadosController = '';
@@ -3906,7 +3906,7 @@ class ProjectbuildCrud extends MY_Controller {
         /*
          * IMPORTA O TEMPLATE DO CONTROLLER
          */
-        $_template = file(FCPATH . 'application/modules/ProjectbuildCrud/views/tpl/tplController.php');
+        $_template = file(FCPATH . 'application/modules/projectbuildcrud/views/tpl/tplController.php');
         $this->_dadosController = '';
 
         foreach ($_template as $_row):
@@ -3993,7 +3993,7 @@ class ProjectbuildCrud extends MY_Controller {
             /**
              *  IMPORTA O TEMPLATE CONTROLLER DO CALENDAR 
              */
-            $_template = file(FCPATH . 'application/modules/ProjectbuildCrud/views/tpl/tplControllerCalendar.php');
+            $_template = file(FCPATH . 'application/modules/projectbuildcrud/views/tpl/tplControllerCalendar.php');
             $this->_dadosControllerCalendar = '';
 
             foreach ($_template as $_row):
@@ -4026,7 +4026,7 @@ class ProjectbuildCrud extends MY_Controller {
             /**
              *  IMPORTA O TEMPLATE VIEW DO CALENDAR 
              */
-            $_template = file(FCPATH . 'application/modules/ProjectbuildCrud/views/tpl/tplViewCalendar.php');
+            $_template = file(FCPATH . 'application/modules/projectbuildcrud/views/tpl/tplViewCalendar.php');
             $this->_dadosViewCalendar = '';
 
             foreach ($_template as $_row):
@@ -4118,7 +4118,7 @@ class ProjectbuildCrud extends MY_Controller {
         /*
          * IMPORTA O TEMPLATE DO MODEL
          */
-        $_template = file(FCPATH . 'application/modules/ProjectbuildCrud/views/tpl/tplModels.php');
+        $_template = file(FCPATH . 'application/modules/projectbuildcrud/views/tpl/tplModels.php');
         $this->_dadosModel = '';
 
         foreach ($_template as $_row):
@@ -4155,7 +4155,7 @@ class ProjectbuildCrud extends MY_Controller {
         /*
          * IMPORTA O TEMPLATE DO CONTROLLER
          */
-        $_dados = file(FCPATH . 'application/modules/ProjectbuildCrud/views/tpl/tplGridList.php');
+        $_dados = file(FCPATH . 'application/modules/projectbuildcrud/views/tpl/tplGridList.php');
 
         foreach ($_dados as $_row):
             $this->_dadosView .= $_row;
@@ -4253,7 +4253,7 @@ class ProjectbuildCrud extends MY_Controller {
         /*
          * IMPORTA O TEMPLATE DO FORM ADD
          */
-        $_template = file(FCPATH . 'application/modules/ProjectbuildCrud/views/tpl/tplFormAdd.php');
+        $_template = file(FCPATH . 'application/modules/projectbuildcrud/views/tpl/tplFormAdd.php');
         $this->_dadosFormAdd = '';
 
         foreach ($_template as $_row):
@@ -4369,7 +4369,7 @@ class ProjectbuildCrud extends MY_Controller {
         /*
          * IMPORTA O TEMPLATE DO FORM ADD
          */
-        $_template = file(FCPATH . 'application/modules/ProjectbuildCrud/views/tpl/tplFormEdit.php');
+        $_template = file(FCPATH . 'application/modules/projectbuildcrud/views/tpl/tplFormEdit.php');
         $this->_dadosFormEdit = '';
 
         foreach ($_template as $_row):
