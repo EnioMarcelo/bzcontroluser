@@ -138,7 +138,7 @@ class Changepass extends MY_Controller {
                     /*
                      * ENVIA EMAIL COM A NOVA SENHA PARA O EMAIL INFORMADO.
                      */
-                    $mensagem = '<p>Você solicitou uma nova senha, a partir de agora use a seguinte senha para ter acesso ao sistema - [ E-MAIL: <strong> ' . $dados['email'] . ' - </strong> SENHA : <strong> ' . $newpass . ' </strong> ]</p><p><b>Assim que fizer o login no sistema, troque esta senha para uma nova senha.</b></p><p><a href="' . site_url('login') . '">PARA ACESSAR O SISTEMA CLIQUE AQUI.</a></p>';
+                    $mensagem = '<p>Você solicitou uma nova senha, a partir de agora use a seguinte senha para ter acesso ao sistema - [ E-MAIL: <strong> ' . $dados['email'] . ' - </strong> SENHA : <strong> ' . $newpass . ' </strong> ]</p><p><b>Assim que fizer o login no sistema, troque esta senha para uma nova senha.</b></p><p><a href="' . site_url() . '">PARA ACESSAR O SISTEMA CLIQUE AQUI.</a></p>';
 
                     if (bz_enviar_email($dados['email'], 'Solicitação de uma nova senha de acesso - ' . $this->config->item('config_system')['CONF_NOME_SISTEMA'], $mensagem)):
                         //GRAVA AUDITORIA
