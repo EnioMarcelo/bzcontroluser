@@ -323,7 +323,7 @@ class Grupos extends MY_Controller {
                  */
                 $this->db->where('sec_grupos_id', $_id);
                 $this->dados['_apps']['_relat'] = $this->db->get('sec_grupos_has_sec_aplicativos')->result();
-                $_r = '';
+                $_r = [];
                 foreach ($this->dados['_apps']['_relat'] as $value):
 
                     $_r[] = $value->sec_aplicativos_app_name;

@@ -93,7 +93,7 @@ class Apps extends MY_Controller {
             $_POST['app_name'] = bz_limpa_string($_POST['app_name']);
 
             $this->form_validation->set_rules('app_name', '<b>NOME APP</b>', 'trim|required|min_length[3]|max_length[50]|is_unique[sec_aplicativos.app_name]');
-            $this->form_validation->set_rules('app_descricao', '<b>DESCRIÇÃO APP</b>', 'trim|required|min_length[10]|min_length[10]|max_length[250]');
+            $this->form_validation->set_rules('app_descricao', '<b>DESCRIÇÃO APP</b>', 'trim|required|min_length[5]|max_length[250]');
 
             if ($this->form_validation->run() == TRUE):
 
@@ -184,7 +184,7 @@ class Apps extends MY_Controller {
 
             if ($this->input->post('btn-editar') == 'btn-editar'):
 
-                $this->form_validation->set_rules('app_descricao', '<b>DESCRIÇÃO APP</b>', 'trim|required|min_length[10]|min_length[10]|max_length[250]');
+                $this->form_validation->set_rules('app_descricao', '<b>DESCRIÇÃO APP</b>', 'trim|required|min_length[5]|max_length[250]');
 
                 if ($this->form_validation->run() == TRUE):
 

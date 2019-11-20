@@ -69,10 +69,10 @@ class Usuarios extends MY_Controller {
             /*
              * VALIDAÇÃO DOS CAMPOS
              */
-            $this->form_validation->set_rules('nome', '<b>NOME DO USUÁRIO</b>', 'trim|required|min_length[10]|min_length[10]|max_length[250]');
+            $this->form_validation->set_rules('nome', '<b>NOME DO USUÁRIO</b>', 'trim|required|min_length[5]|max_length[250]');
             $this->form_validation->set_rules('email', '<b>EMAIL</b>', 'trim|required|valid_email|is_unique[sec_usuarios.email]|min_length[10]|min_length[10]|max_length[250]');
             $this->form_validation->set_rules('sexo', '<b>SEXO</b>', 'trim|required');
-            $this->form_validation->set_rules('grupos', '<b>GRUPOS</b>', 'callback_valid_grupos');
+//            $this->form_validation->set_rules('grupos', '<b>GRUPOS</b>', 'callback_valid_grupos');
 
             if ($this->form_validation->run() == TRUE):
 
@@ -266,9 +266,9 @@ class Usuarios extends MY_Controller {
 
             if ($this->input->post('btn-editar') == 'btn-editar'):
 
-                $this->form_validation->set_rules('nome', '<b>NOME DO USUÁRIO</b>', 'trim|required|min_length[10]|min_length[10]|max_length[250]');
+                $this->form_validation->set_rules('nome', '<b>NOME DO USUÁRIO</b>', 'trim|required|min_length[5]|max_length[250]');
                 $this->form_validation->set_rules('sexo', '<b>SEXO</b>', 'trim|required');
-                $this->form_validation->set_rules('grupos', '<b>GRUPOS</b>', 'callback_valid_grupos');
+//                $this->form_validation->set_rules('grupos', '<b>GRUPOS</b>', 'callback_valid_grupos');
 
                 if ($this->form_validation->run() == TRUE):
 
@@ -468,7 +468,7 @@ class Usuarios extends MY_Controller {
                  */
                 $this->db->where('sec_usuarios_id', $_id);
                 $this->dados['_grupos']['_relat'] = $this->db->get('sec_usuarios_has_sec_grupos')->result();
-                $_r = '';
+                $_r = [];
                 foreach ($this->dados['_grupos']['_relat'] as $value):
 
                     $_r[] = $value->sec_grupos_id;

@@ -122,7 +122,7 @@
                     <!-- GRUPOS -->
                     <?php $_error = form_error("grupos", "<small class='text-danger col-xs-12 bz-input-error'>", "</small>"); ?>
                     <div class="form-group has-feedback">
-                        <label for="grupos"><i class="fa fa-asterisk margin-right-5 text-error" style="font-size: 0.7em;"></i>Grupos</label>
+                        <label for="grupos">Grupos</label>
                         <select name="grupos[]" class="form-control select2-multiple-selection" multiple="" data-placeholder="Selecione o Grupo" style="width: 100%;" tabindex="-1" aria-hidden="true" value="<?= set_value('grupos'); ?>">
                             <?php
                             $_c = 0;

@@ -84,8 +84,7 @@
             <div class="login-box-body">
                 <p class="login-box-msg">Digite seu e-mail para receber a nova senha.</p>
 
-
-                <?= get_mensagem(); ?>
+                <?php /*echo get_mensagem();*/ ?>
 
                 <?= form_open('', ' role="form" autocomplete="off" '); ?>
 
@@ -111,7 +110,7 @@
 
                 <div class="row margin-top-30 hidden-xs hidden-sm">
                     <div class="col-md-6 margin-bottom-10">
-                        <a href="<?= site_url(); ?>" class="col-md-6 btn btn-default btn-block btn-flat"><i class="fa fa-sign-in margin-right-5" aria-hidden="true"></i>Login</a>
+                        <?= anchor('login', '<i class="fa fa-sign-in margin-right-5" aria-hidden="true"></i>Login', ['class' => 'col-md-6 btn btn-default btn-block btn-flat']); ?><br/>
                     </div><!-- /.col -->
                     <div class="col-md-6">
                         <button type="submit" class="btn btn-primary btn-block btn-flat btn-show-modal-aguarde"><i class="fa fa-lightbulb-o margin-right-5" aria-hidden="true"></i>Enviar Nova Senha</button>

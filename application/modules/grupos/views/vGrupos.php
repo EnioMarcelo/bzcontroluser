@@ -157,7 +157,7 @@
                                     endforeach;
 
                                     foreach ($_app_arr as $_arr):
-                                        if (!strpos($_app, $_arr['app_name'])):
+                                        if ( !empty($_app) && !empty($_arr['app_name']) && !strpos($_app, $_arr['app_name'])):
                                             $_app_class_inativo = ($_arr['app_ativo'] == 'N') ? "class='text-gray'" : '';
 //                                            $_app .= "<a " . $_app_class_inativo . " href='" . site_url('apps/edit/') . $_arr['app_name'] . "?btnvoltarorigem=grupos&" . bz_app_parametros_url() . "'><div class='text-left'><i class='fa fa-fw fa-check-square margin-right-5'></i>" . $_arr['app_descricao'] . '</div></a>';
                                             $_app .= "<a " . $_app_class_inativo . "><div class='text-left'><i class='fa fa-fw fa-check-square margin-right-5'></i>" . $_arr['app_descricao'] . '</div></a>';

@@ -118,7 +118,7 @@
                                  */
 
                                 $_usu = '';
-                                $_usu_arr = '';
+                                $_usu_arr = [];
 
                                 $_c = 0;
 
@@ -145,7 +145,7 @@
                                  * PREPARA A TAG DOS GRUPOS
                                  */
                                 $_grupos = '';
-                                $_grupos_arr = '';
+                                $_grupos_arr = [];
 
                                 $_c = 0;
 

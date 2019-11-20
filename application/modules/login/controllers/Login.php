@@ -11,13 +11,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Login extends MY_Controller {
 
     function __construct() {
-        parent::__construct();
+        parent::__construct(false);
 
         /**
          * DELATA OS ARQUIVOS DE IMAGEM CAPTCHA DO MÚDLO DE RECUPERAR SENHA changepass 
          */
         bz_delete_file_for_expired_lifetime('captcha');
-
 
         /*
          * SE SISTEMA ESTIVER EM MANUTENÇÃO, SERÁ REDIRCIONADO PARA TELA DE AVISO
@@ -189,14 +188,16 @@ class Login extends MY_Controller {
             $dados_auditoria['description'] = 'Saiu do Sistema';
             add_auditoria($dados_auditoria);
 
-            $this->session->unset_userdata('user_login');
 
+//            $this->session->unset_userdata('user_login');
         //set_mensagem('Logout', 'Usuário Saiu do Sistema com Sucesso.', 'fa-thumbs-o-up', 'info');
         //set_mensagem_toastr('Logout', 'Usuário Saiu do Sistema com Sucesso.', 'info', 'top-center');
 //                set_mensagem_notfit('Usuário Saiu do Sistema com Sucesso.', 'success');
 //            set_mensagem_nice('', 'Usuário Saiu do Sistema com Sucesso.', 'success', 'br');
 
         endif;
+
+        $this->session->sess_destroy();
 
         redirect(site_url(), 'refresh');
     }

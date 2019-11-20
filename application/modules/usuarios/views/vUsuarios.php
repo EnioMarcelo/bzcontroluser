@@ -121,6 +121,7 @@
 
                                 $_c = 0;
 
+
                                 if ($_qr_grupos_apps_user):
                                     foreach ($_qr_grupos_apps_user as $_r):
                                         $_grupos_arr[$_c]['grupo_id'] = $_r['grupo_id'];
@@ -136,7 +137,7 @@
 
 
                                     foreach ($_grupos_arr as $_grr):
-                                        if (!strpos($_grupos, $_grr['grupo_descricao'])):
+                                        if (!empty($_grr['grupo_descricao']) && !strpos($_grupos, $_grr['grupo_descricao'])):
                                             $_gr_class_inativo = ($_grr['grupo_ativo'] == 'N') ? "class='text-gray'" : '';
 //                                            $_grupos .= "<a " . $_gr_class_inativo . " href='" . site_url('grupos/edit/') . $_grr['grupo_id'] . "?btnvoltarorigem=usuarios&" . bz_app_parametros_url() . "'><div class='text-left'><i class='fa fa-fw fa-check-square margin-right-5'></i>" . $_grr['grupo_descricao'] . '</div></a>';
                                             $_grupos .= "<a " . $_gr_class_inativo . "><div class='text-left'><i class='fa fa-fw fa-check-square margin-right-5'></i>" . $_grr['grupo_descricao'] . '</div></a>';
@@ -145,7 +146,7 @@
 
 
                                     foreach ($_apps_arr as $_arr):
-                                        if (!strpos($_apps, $_arr['app_name'])):
+                                        if (!empty($_arr['app_name']) && !strpos($_apps, $_arr['app_name'])):
                                             $_app_class_inativo = ($_arr['app_ativo'] == 'N') ? "class='text-gray'" : '';
 //                                            $_apps .= "<a " . $_app_class_inativo . " href='" . site_url('apps/edit/') . $_arr['app_name'] . "?btnvoltarorigem=usuarios&" . bz_app_parametros_url() . "'><div class='text-left'><i class='fa fa-fw fa-check-square margin-right-5'></i>" . $_arr['app_descricao'] . '</div></a>';
                                             $_apps .= "<a " . $_app_class_inativo . "><div class='text-left'><i class='fa fa-fw fa-check-square margin-right-5'></i>" . $_arr['app_descricao'] . '</div></a>';

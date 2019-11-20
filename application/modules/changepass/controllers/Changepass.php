@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Changepass extends MY_Controller {
 
     function __construct() {
-        parent::__construct();
+        parent::__construct(false);
 
         $this->load->helper(array('captcha'));
 
@@ -138,7 +138,7 @@ class Changepass extends MY_Controller {
                     /*
                      * ENVIA EMAIL COM A NOVA SENHA PARA O EMAIL INFORMADO.
                      */
-                    $mensagem = '<p>Você solicitou uma nova senha, a partir de agora use a seguinte senha para ter acesso ao sistema - [ E-MAIL: <strong> ' . $dados['email'] . ' - </strong> SENHA : <strong> ' . $newpass . ' </strong> ]</p><p><b>Assim que fizer o login no sistema, troque esta senha para uma nova senha.</b></p><p><a href="' . site_url() . '">PARA ACESSAR O SISTEMA CLIQUE AQUI.</a></p>';
+                    $mensagem = '<p>Você solicitou uma nova senha, a partir de agora use a seguinte senha para ter acesso ao sistema - [ E-MAIL: <strong> ' . $dados['email'] . ' - </strong> SENHA : <strong> ' . $newpass . ' </strong> ]</p><p><b>Assim que fizer o login no sistema, troque esta senha para uma nova senha.</b></p><p><a href="' . site_url('login') . '">PARA ACESSAR O SISTEMA CLIQUE AQUI.</a></p>';
 
                     if (bz_enviar_email($dados['email'], 'Solicitação de uma nova senha de acesso - ' . $this->config->item('config_system')['CONF_NOME_SISTEMA'], $mensagem)):
                         //GRAVA AUDITORIA
@@ -147,6 +147,7 @@ class Changepass extends MY_Controller {
                         //set_mensagem('SUCESSO !!!', 'Sua nova senha foi enviado para o email informado.', 'fa-thumbs-up', 'success');
                         //set_mensagem_toastr('SUCESSO !!!', 'Sua nova senha foi enviado para o email informado.', 'success', 'top-center');
                         set_mensagem_sweetalert('SUCESSO', 'Sua nova senha foi enviado para o email informado.', 'success');
+                        redirect(site_url('login'));
                     else:
                         //GRAVA AUDITORIA
                         $dados_auditoria['description'] = 'Erro ao Enviar Email[ ' . $result->row()->email . ' ] Com Nova Senha';
@@ -154,6 +155,7 @@ class Changepass extends MY_Controller {
                         //set_mensagem('ERRO !!!', 'ERRO AO ENVIAR EMAIL COM SUA NOVA SENHA. AVISE O ADMINISTRADOR DO SISTEMA.', 'fa-thumbs-down', 'danger');
                         //set_mensagem_toastr('ERRO !!!', 'ERRO AO ENVIAR EMAIL COM SUA NOVA SENHA. AVISE O ADMINISTRADOR DO SISTEMA.', 'error', 'top-center');
                         set_mensagem_sweetalert('ERRO', 'ERRO AO ENVIAR EMAIL COM SUA NOVA SENHA. AVISE O ADMINISTRADOR DO SISTEMA.', 'error');
+                        redirect(site_url('login'));
                     endif;
 
                 else:
@@ -163,12 +165,14 @@ class Changepass extends MY_Controller {
                     //set_mensagem('ERRO !!!', 'ERRO AO ATUALIZAR SUA NOVA SENHA. AVISE O ADMINISTRADOR DO SISTEMA.', 'fa-thumbs-down', 'danger');
                     //set_mensagem_toastr('ERRO !!!', 'ERRO AO ATUALIZAR SUA NOVA SENHA. AVISE O ADMINISTRADOR DO SISTEMA.', 'error', 'top-center');
                     set_mensagem_sweetalert('ERRO', 'ERRO AO ATUALIZAR SUA NOVA SENHA. AVISE O ADMINISTRADOR DO SISTEMA.', 'error');
+                    redirect(site_url('login'));
                 endif;
 
             else:
                 //set_mensagem('ERRO !!!', 'Este <b>EMAIL</b> não existe ou está temporáriamente inativo neste sistema.', 'fa-thumbs-down', 'danger');
                 //set_mensagem_toastr('ERRO !!!', 'Este <b>EMAIL</b> não existe ou está temporáriamente inativo neste sistema.', 'error', 'top-center');
                 set_mensagem_sweetalert('ATENÇÃO', 'Este EMAIL não existe ou está\ntemporáriamente inativo neste sistema.', 'warning');
+                redirect(site_url('login'));
             endif;
 
         else:

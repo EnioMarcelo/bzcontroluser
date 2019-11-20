@@ -2,31 +2,18 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+
+
+$base_url = 'http://192.168.100.22:8081/codeigniter/bzcontroluser';
+$encryption_key = '5e10ba684b09d16c2f3ab83f697366b688435460';
+
+
 /*
  * HMVC
  */
 $config['modules_locations'] = array(
     APPPATH . 'modules/' => '../modules/',
 );
-
-
-/*
-  |--------------------------------------------------------------------------
-  | Not Login Check App
-  |--------------------------------------------------------------------------
-  |
-  | Apps/Programas que não precisam fazer o login para acessa-los.
-  | com o nome do app neste array, o sistema não pedirá o acesso por login e senha.
-  |
-  |
- */
-
-$config['bzNotCheckLoginApp'] = [
-    'login',
-    'changepass',
-    'manutencao'
-];
-
 
 /*
   |--------------------------------------------------------------------------
@@ -50,7 +37,7 @@ $config['bzNotCheckLoginApp'] = [
   | a PHP script and you can easily do that on your own.
   |
  */
-$config['base_url'] = 'http://192.168.100.22:8081/codeigniter/bzcontroluser';
+$config['base_url'] = $base_url;
 
 /*
   |--------------------------------------------------------------------------
@@ -351,7 +338,7 @@ $config['cache_query_string'] = FALSE;
   | https://codeigniter.com/user_guide/libraries/encryption.html
   |
  */
-$config['encryption_key'] = '5e10ba684b09d16c2f3ab83f697366b688435460';
+$config['encryption_key'] = $encryption_key;
 
 /*
   |--------------------------------------------------------------------------

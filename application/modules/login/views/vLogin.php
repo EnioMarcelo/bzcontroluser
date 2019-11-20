@@ -118,7 +118,7 @@
 
 
                 <div class="margin-top-10">
-                    <a href="<?= site_url('changepass'); ?>">Esqueci minha senha.</a><br>
+                    <?= anchor('changepass', 'Esqueci minha senha.'); ?><br/>
                 </div>
 
             </div><!-- /.login-box-body -->
