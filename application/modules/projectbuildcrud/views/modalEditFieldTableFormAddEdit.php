@@ -960,7 +960,7 @@
                     $('select[name="form_add_edit_field_type_characters"]').removeAttr('selected').val(result.form_add_edit_field_type_characters).attr('selected', true);
                     $('input[name="form_add_edit_field_min_length"]').val(result.form_add_edit_field_min_length);
                     $('input[name="form_add_edit_field_max_length"]').val(result.form_add_edit_field_max_length);
-                    $('input[name="form_add_edit_field_max_length"]').val(result.form_add_edit_field_editorhtml_ckeditor_line_height);
+                    $('input[name="form_add_edit_field_editorhtml_ckeditor_line_height"]').val(result.form_add_edit_field_editorhtml_ckeditor_line_height);
                     $('#modal-btn-edit-field-table-formaddedit').css('display', 'block');
                     /* END CARREGA CAMPOS */
 

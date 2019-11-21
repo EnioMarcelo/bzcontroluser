@@ -93,7 +93,7 @@
           /**
            * DADOS FILLABLE
            */
-          {{form-dados-fillable}}
+          {{form-add-dados-fillable}}
           /* END DADOS FILLABLE */
 
           /* GRAVA REGISTRO */
@@ -165,14 +165,16 @@
 
          $_dados = $this->input->post();
 
+         {{form-edit-convert-dados-to-database}}
+      
          unset($_dados['btn-editar']);
          {{form-edit-unset-fields}}
          {{form-edit-unset-primary-key}}
-         {{form-edit-convert-dados-to-database}}
+         
          /**
            * DADOS FILLABLE
            */
-          {{form-dados-fillable}}
+          {{form-edit-dados-fillable}}
           /* END DADOS FILLABLE */
 
          /* UPDATE REGISTRO */

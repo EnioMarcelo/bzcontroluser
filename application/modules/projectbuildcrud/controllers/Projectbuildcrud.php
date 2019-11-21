@@ -90,13 +90,13 @@ class ProjectbuildCrud extends MY_Controller {
     protected $_form_add_unset_fields = '';
     protected $_formAddConfigInputValidation = '';
     protected $_formAddConfigInputValidationAtributos = '';
-    protected $_formAddDadosFillable = '$_dadosFillable = $_dados;'
-            . '$_dados = [];' . PHP_EOL;
+    protected $_formAddDadosFillable = '$_dadosFillable = $_dados;' . '$_dados = [];' . PHP_EOL;
 // FORM EDIT
     protected $_formEditFields = '';
     protected $_form_edit_unset_fields = '';
     protected $_formEditConfigInputValidation = '';
     protected $_formEditConfigInputValidationAtributos = '';
+    protected $_formEditDadosFillable = '$_dadosFillable = $_dados;' . '$_dados = [];' . PHP_EOL;
     protected $_formEditConvertDadosToDatabase = '';
     protected $_formEditUnsetPrimaryKey = '';
     protected $_formEditWhereUpdateFields = '';
@@ -2207,14 +2207,50 @@ class ProjectbuildCrud extends MY_Controller {
                              * GERA OS TIPOS DOS CAMPOS
                              */
 
+                            // SE O CAMPO FOR READ ONLY, DESABILITA ALGUMAS FUNÇÕES
+
+                            $_geraFormAddDadosFillable = true;
+                            $_geraFormEditDadosFillable = true;
+
+                            $_enableFormAddConvertDadosToDatabase = true;
+                            $_enableFormEditConvertDadosToDatabase = true;
+
+                            if (isset($_param_formAddEditField['form_add_edit_field_read_only']) || $_param_formAddEditField['form_add_edit_field_read_only_in_form'] == 'on') {
+
+                                if ($_param_formAddEditField['form_add_edit_field_read_only_in_form'] == 'todos') {
+                                    /**/
+                                    $_geraFormAddDadosFillable = false;
+                                    $_geraFormEditDadosFillable = false;
+                                    /**/
+                                    $_enableFormAddConvertDadosToDatabase = false;
+                                    $_enableFormEditConvertDadosToDatabase = false;
+                                    /**/
+                                } elseif ($_param_formAddEditField['form_add_edit_field_read_only_in_form'] == 'formedit') {
+                                    /**/
+                                    $_geraFormEditDadosFillable = false;
+                                    /**/
+                                    $_enableFormEditConvertDadosToDatabase = false;
+                                    /**/
+                                } elseif ($_param_formAddEditField['form_add_edit_field_read_only_in_form'] == 'formadd') {
+                                    /**/
+                                    $_geraFormAddDadosFillable = false;
+                                    /**/
+                                    $_enableFormAddConvertDadosToDatabase = false;
+                                    /**/
+                                }
+                            }
+
+
                             if ($_param_formAddEditField['form_add_edit_field_type'] == 'text'):
 
                                 $this->_formAddEditConfigInput = '<input type="text" name="' . $_row['field_name'] . '" class="form-control ' . (!empty($_param_formAddEditField['form_add_edit_field_convert_letter_into']) ? $_param_formAddEditField['form_add_edit_field_convert_letter_into'] : null) . ' ' . ((!empty($_param_formAddEditField['form_add_edit_field_mask'])) ? 'j-mask-' . $_row['field_name'] : '') . ' " placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" ' . $this->_formAddEditConfigInputAtributos . ' value="<?= set_value ("' . $_row['field_name'] . '", !empty ($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : set_value ("' . $_row['field_name'] . '")); ?>" />';
 
                                 if ($_row['field_type'] == 'int'):
-                                    $this->_formAddConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = preg_replace("/[^0-9]/", "", $_dados["' . $_row['field_name'] . '"]);' . PHP_EOL;
+                                    if ($_enableFormAddConvertDadosToDatabase)
+                                        $this->_formAddConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = preg_replace("/[^0-9]/", "", $_dados["' . $_row['field_name'] . '"]);' . PHP_EOL;
                                     if ($_row['primary_key'] == 0):
-                                        $this->_formEditConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = preg_replace("/[^0-9]/", "", $_dados["' . $_row['field_name'] . '"]);' . PHP_EOL;
+                                        if ($_enableFormEditConvertDadosToDatabase)
+                                            $this->_formEditConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = preg_replace("/[^0-9]/", "", $_dados["' . $_row['field_name'] . '"]);' . PHP_EOL;
                                     endif;
                                 endif;
 
@@ -2226,8 +2262,11 @@ class ProjectbuildCrud extends MY_Controller {
 
                                 $this->_formAddEditConfigInput = '<textarea id="ckeditor-' . $_row['field_name'] . '" rows="5" name="' . $_row['field_name'] . '" class="form-control" placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" ' . $this->_formAddEditConfigInputAtributos . '/><?= set_value  ("' . $_row['field_name'] . '", isset ($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : set_value ("' . $_row['field_name'] . '")); ?></textarea>';
 
-                                $this->_formAddConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = $this->input->post("' . $_row['field_name'] . '",FALSE);';
-                                $this->_formEditConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = $this->input->post("' . $_row['field_name'] . '",FALSE);';
+                                if ($_enableFormAddConvertDadosToDatabase)
+                                    $this->_formAddConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = $this->input->post("' . $_row['field_name'] . '",FALSE);';
+
+                                if ($_enableFormEditConvertDadosToDatabase)
+                                    $this->_formEditConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = $this->input->post("' . $_row['field_name'] . '",FALSE);';
 
                                 /* FORM ADD */
                                 $this->_formAddCodeEditorJS .= "<!--" . PHP_EOL;
@@ -2263,18 +2302,24 @@ class ProjectbuildCrud extends MY_Controller {
 
                                 $this->_formAddEditConfigInput = '<input type="text" name="' . $_row['field_name'] . '" class="form-control datepicker j-mask-data-ptbr j-mask-' . $_row['field_name'] . '" placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" value="<?= set_value ("' . $_row['field_name'] . '", isset ($dados->' . $_row['field_name'] . ') ? bz_formatdata ($dados->' . $_row['field_name'] . ', "d/m/Y") : set_value ("' . $_row['field_name'] . '")); ?>" ' . $this->_formAddEditConfigInputAtributos . ' />';
                                 $this->_formAddEditConfigInputMask .= '$(".j-mask-' . $_row['field_name'] . '").mask("00/00/0000", {placeholder: "__/__/____"});' . PHP_EOL;
-                                $this->_formAddConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = bz_formatdata($_dados["' . $_row['field_name'] . '"],"Y-m-d");' . PHP_EOL;
+
+                                if ($_enableFormAddConvertDadosToDatabase)
+                                    $this->_formAddConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = bz_formatdata($_dados["' . $_row['field_name'] . '"],"Y-m-d");' . PHP_EOL;
                                 if ($_row['primary_key'] == 0):
-                                    $this->_formEditConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = bz_formatdata($_dados["' . $_row['field_name'] . '"],"Y-m-d");' . PHP_EOL;
+                                    if ($_enableFormEditConvertDadosToDatabase)
+                                        $this->_formEditConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = bz_formatdata($_dados["' . $_row['field_name'] . '"],"Y-m-d");' . PHP_EOL;
                                 endif;
 
                             elseif ($_param_formAddEditField['form_add_edit_field_type'] == 'datetime'):
 
                                 $this->_formAddEditConfigInput = '<input type="text" name="' . $_row['field_name'] . '" class="form-control datetimepicker j-mask-datahora-ptbr j-mask-' . $_row['field_name'] . '" placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" value="<?= set_value ("' . $_row['field_name'] . '", isset ($dados->' . $_row['field_name'] . ') ? bz_formatdata ($dados->' . $_row['field_name'] . ', "d/m/Y H:i:s") : set_value ("' . $_row['field_name'] . '")); ?>" ' . $this->_formAddEditConfigInputAtributos . ' />';
                                 $this->_formAddEditConfigInputMask .= '$(".j-mask-' . $_row['field_name'] . '").mask("00/00/0000 00:00", {placeholder: "__/__/____ __:__"});' . PHP_EOL;
-                                $this->_formAddConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = bz_formatdata($_dados["' . $_row['field_name'] . '"],"Y-m-d H:i:s");' . PHP_EOL;
+
+                                if ($_enableFormAddConvertDadosToDatabase)
+                                    $this->_formAddConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = bz_formatdata($_dados["' . $_row['field_name'] . '"],"Y-m-d H:i:s");' . PHP_EOL;
                                 if ($_row['primary_key'] == 0):
-                                    $this->_formEditConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = bz_formatdata($_dados["' . $_row['field_name'] . '"],"Y-m-d H:i:s");' . PHP_EOL;
+                                    if ($_enableFormEditConvertDadosToDatabase)
+                                        $this->_formEditConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = bz_formatdata($_dados["' . $_row['field_name'] . '"],"Y-m-d H:i:s");' . PHP_EOL;
                                 endif;
 
                             elseif ($_param_formAddEditField['form_add_edit_field_type'] == 'time'):
@@ -2289,17 +2334,23 @@ class ProjectbuildCrud extends MY_Controller {
                             elseif ($_param_formAddEditField['form_add_edit_field_type'] == 'number-decimal'):
 
                                 $this->_formAddEditConfigInput = '<input type="text" name="' . $_row['field_name'] . '" class="form-control ' . ((!empty($_param_formAddEditField['form_add_edit_field_mask'])) ? 'j-mask-' . $_row['field_name'] : '') . '" placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" value="<?= set_value ("' . $_row['field_name'] . '", isset ($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : set_value ("' . $_row['field_name'] . '")); ?>" onkeypress="return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 44 || event.charCode == 0" ' . $this->_formAddEditConfigInputAtributos . ' />';
-                                $this->_formAddConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = str_replace(",",".",str_replace(".","",$_dados["' . $_row['field_name'] . '"]));';
+
+                                if ($_enableFormAddConvertDadosToDatabase)
+                                    $this->_formAddConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = str_replace(",",".",str_replace(".","",$_dados["' . $_row['field_name'] . '"]));';
                                 if ($_row['primary_key'] == 0):
-                                    $this->_formEditConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = str_replace(",",".",str_replace(".","",$_dados["' . $_row['field_name'] . '"]));';
+                                    if ($_enableFormEditConvertDadosToDatabase)
+                                        $this->_formEditConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = str_replace(",",".",str_replace(".","",$_dados["' . $_row['field_name'] . '"]));';
                                 endif;
 
                             elseif ($_param_formAddEditField['form_add_edit_field_type'] == 'moeda'):
 
                                 $this->_formAddEditConfigInput = '<input type="text" name="' . $_row['field_name'] . '" class="form-control j-mask-moeda-ptbr" placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" value="<?= set_value ("' . $_row['field_name'] . '", isset ($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : set_value ("' . $_row['field_name'] . '")); ?>" onkeypress="return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 44 || event.charCode == 0" ' . $this->_formAddEditConfigInputAtributos . ' />';
-                                $this->_formAddConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = str_replace(",",".",str_replace(".","",$_dados["' . $_row['field_name'] . '"]));';
+
+                                if ($_enableFormAddConvertDadosToDatabase)
+                                    $this->_formAddConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = str_replace(",",".",str_replace(".","",$_dados["' . $_row['field_name'] . '"]));';
                                 if ($_row['primary_key'] == 0):
-                                    $this->_formEditConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = str_replace(",",".",str_replace(".","",$_dados["' . $_row['field_name'] . '"]));';
+                                    if ($_enableFormEditConvertDadosToDatabase)
+                                        $this->_formEditConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = str_replace(",",".",str_replace(".","",$_dados["' . $_row['field_name'] . '"]));';
                                 endif;
 
                             elseif ($_param_formAddEditField['form_add_edit_field_type'] == 'email'):
@@ -2344,11 +2395,13 @@ class ProjectbuildCrud extends MY_Controller {
                                             . '<?php endif; ?>' . PHP_EOL;
 
 
-                                    $this->_formAddConvertDadosToDatabase .= ""
-                                            . "if( \$this->task['uploaded_image']==TRUE && !empty(\$this->task['files_uploaded']) ):" . PHP_EOL
-                                            . "     \$_dados['" . $_row['field_name'] . "'] = json_encode(\$this->task['files_uploaded']);" . PHP_EOL
-                                            . "endif;" . PHP_EOL
-                                            . "";
+                                    if ($_enableFormAddConvertDadosToDatabase) {
+                                        $this->_formAddConvertDadosToDatabase .= ""
+                                                . "if( \$this->task['uploaded_image']==TRUE && !empty(\$this->task['files_uploaded']) ):" . PHP_EOL
+                                                . "     \$_dados['" . $_row['field_name'] . "'] = json_encode(\$this->task['files_uploaded']);" . PHP_EOL
+                                                . "endif;" . PHP_EOL
+                                                . "";
+                                    }
 
 
 
@@ -2584,9 +2637,12 @@ class ProjectbuildCrud extends MY_Controller {
                                 $_s .= '</p>' . PHP_EOL;
 
                                 $this->_formAddEditConfigInput = $_s;
-                                $this->_formAddConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = json_encode($_dados["' . $_row['field_name'] . '"]);';
+
+                                if ($_enableFormAddConvertDadosToDatabase)
+                                    $this->_formAddConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = json_encode($_dados["' . $_row['field_name'] . '"]);';
                                 if ($_row['primary_key'] == 0):
-                                    $this->_formEditConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = json_encode($_dados["' . $_row['field_name'] . '"]);';
+                                    if ($_enableFormEditConvertDadosToDatabase)
+                                        $this->_formEditConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = json_encode($_dados["' . $_row['field_name'] . '"]);';
                                 endif;
 
                             elseif ($_param_formAddEditField['form_add_edit_field_type'] == 'select-multiple-dinamic'):
@@ -2629,9 +2685,11 @@ class ProjectbuildCrud extends MY_Controller {
                                         $_r .= "?>" . PHP_EOL;
                                         $_r .= "</p>" . PHP_EOL;
 
-                                        $this->_formAddConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = json_encode($_dados["' . $_row['field_name'] . '"]);';
+                                        if ($_enableFormAddConvertDadosToDatabase)
+                                            $this->_formAddConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = json_encode($_dados["' . $_row['field_name'] . '"]);';
                                         if ($_row['primary_key'] == 0):
-                                            $this->_formEditConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = json_encode($_dados["' . $_row['field_name'] . '"]);';
+                                            if ($_enableFormEditConvertDadosToDatabase)
+                                                $this->_formEditConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = json_encode($_dados["' . $_row['field_name'] . '"]);';
                                         endif;
 
                                     endif;
@@ -2723,9 +2781,12 @@ class ProjectbuildCrud extends MY_Controller {
                                 $_r .= '<p class="margin-bottom-5">' . PHP_EOL . '<input class="flat-green" type="checkbox" name="' . $_row['field_name'] . '" value="' . $_param_formAddEditField['form_add_edit_field_value_checkbox_manual_on'] . '" <?= ($_checkbox_manual_' . $_row['field_name'] . '=="' . $_param_formAddEditField['form_add_edit_field_value_checkbox_manual_on'] . '") ? "checked" : null ;?> />' . PHP_EOL . '</p>';
 
                                 $this->_formAddEditConfigInput .= $_r;
-                                $this->_formAddConvertDadosToDatabase .= '(isset($_dados["' . $_row['field_name'] . '"])) ? ($_dados["' . $_row['field_name'] . '"] == "' . $_param_formAddEditField['form_add_edit_field_value_checkbox_manual_on'] . '") ? $_dados["' . $_row['field_name'] . '"] : "' . $_param_formAddEditField['form_add_edit_field_value_checkbox_manual_off'] . '" : "' . $_param_formAddEditField['form_add_edit_field_value_checkbox_manual_off'] . '";' . PHP_EOL;
+
+                                if ($_enableFormAddConvertDadosToDatabase)
+                                    $this->_formAddConvertDadosToDatabase .= '(isset($_dados["' . $_row['field_name'] . '"])) ? ($_dados["' . $_row['field_name'] . '"] == "' . $_param_formAddEditField['form_add_edit_field_value_checkbox_manual_on'] . '") ? $_dados["' . $_row['field_name'] . '"] : "' . $_param_formAddEditField['form_add_edit_field_value_checkbox_manual_off'] . '" : "' . $_param_formAddEditField['form_add_edit_field_value_checkbox_manual_off'] . '";' . PHP_EOL;
                                 if ($_row['primary_key'] == 0):
-                                    $this->_formEditConvertDadosToDatabase .= '(isset($_dados["' . $_row['field_name'] . '"])) ? ($_dados["' . $_row['field_name'] . '"] == "' . $_param_formAddEditField['form_add_edit_field_value_checkbox_manual_on'] . '") ? $_dados["' . $_row['field_name'] . '"] : "' . $_param_formAddEditField['form_add_edit_field_value_checkbox_manual_off'] . '" : "' . $_param_formAddEditField['form_add_edit_field_value_checkbox_manual_off'] . '";' . PHP_EOL;
+                                    if ($_enableFormEditConvertDadosToDatabase)
+                                        $this->_formEditConvertDadosToDatabase .= '(isset($_dados["' . $_row['field_name'] . '"])) ? ($_dados["' . $_row['field_name'] . '"] == "' . $_param_formAddEditField['form_add_edit_field_value_checkbox_manual_on'] . '") ? $_dados["' . $_row['field_name'] . '"] : "' . $_param_formAddEditField['form_add_edit_field_value_checkbox_manual_off'] . '" : "' . $_param_formAddEditField['form_add_edit_field_value_checkbox_manual_off'] . '";' . PHP_EOL;
                                 endif;
 
                             elseif ($_param_formAddEditField['form_add_edit_field_type'] == 'checkbox-multiple-manual'):
@@ -2752,9 +2813,12 @@ class ProjectbuildCrud extends MY_Controller {
                                 $_r .= '<p class="margin-bottom-5">' . PHP_EOL . $this->_formAddEditConfigInput . PHP_EOL . '</p>' . PHP_EOL;
 
                                 $this->_formAddEditConfigInput = $_r . PHP_EOL;
-                                $this->_formAddConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = json_encode($_dados["' . $_row['field_name'] . '"]);' . PHP_EOL;
+
+                                if ($_enableFormAddConvertDadosToDatabase)
+                                    $this->_formAddConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = json_encode($_dados["' . $_row['field_name'] . '"]);' . PHP_EOL;
                                 if ($_row['primary_key'] == 0):
-                                    $this->_formEditConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = json_encode($_dados["' . $_row['field_name'] . '"]);' . PHP_EOL;
+                                    if ($_enableFormEditConvertDadosToDatabase)
+                                        $this->_formEditConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = json_encode($_dados["' . $_row['field_name'] . '"]);' . PHP_EOL;
                                 endif;
 
                             elseif ($_param_formAddEditField['form_add_edit_field_type'] == 'checkbox-multiple-dinamic'):
@@ -2806,10 +2870,28 @@ class ProjectbuildCrud extends MY_Controller {
                                     endif;
 
                                     $this->_formAddEditConfigInput = $_r;
-                                    $this->_formAddConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = json_encode($_dados["' . $_row['field_name'] . '"]);' . PHP_EOL;
+
+                                    if ($_enableFormAddConvertDadosToDatabase)
+                                        $this->_formAddConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = json_encode($_dados["' . $_row['field_name'] . '"]);' . PHP_EOL;
                                     if ($_row['primary_key'] == 0):
-                                        $this->_formEditConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = json_encode($_dados["' . $_row['field_name'] . '"]);' . PHP_EOL;
+                                        if ($_enableFormEditConvertDadosToDatabase)
+                                            $this->_formEditConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = json_encode($_dados["' . $_row['field_name'] . '"]);' . PHP_EOL;
                                     endif;
+
+                                    /**
+                                     * SE O BOTÃO DE SOMENTE LEITURA DO CAMPO DO FORM ESTIVER LIGADO
+                                     */
+                                    if (!empty($_param_formAddEditField['form_add_edit_field_read_only']) && $_param_formAddEditField['form_add_edit_field_read_only_in_form'] == 'todos') {
+                                        
+                                    } elseif (!empty($_param_formAddEditField['form_add_edit_field_read_only']) && $_param_formAddEditField['form_add_edit_field_read_only_in_form'] == 'formadd') {
+                                        
+                                    } elseif (!empty($_param_formAddEditField['form_add_edit_field_read_only']) && $_param_formAddEditField['form_add_edit_field_read_only_in_form'] == 'formedit') {
+                                        
+                                    }
+
+
+
+
 
                                 endif;
 
@@ -3344,7 +3426,7 @@ class ProjectbuildCrud extends MY_Controller {
                                 /*
                                  * MONTA AS VALIDAÇÕES DOS CAMPOS
                                  */
-//echo 'AAA-> ' . $_row['field_name'] . ' - Required : ' . (isset($_param_formAddEditField['form_add_edit_field_required']) ? $_param_formAddEditField['form_add_edit_field_required'] : 'OFF') . ' - XX: ' . $_param_formAddEditField['form_add_edit_field_required_in_form'];
+                                //echo 'AAA-> ' . $_row['field_name'] . ' - Required : ' . (isset($_param_formAddEditField['form_add_edit_field_required']) ? $_param_formAddEditField['form_add_edit_field_required'] : 'OFF') . ' - XX: ' . $_param_formAddEditField['form_add_edit_field_required_in_form'];
 
                                 if (!empty($_param_formAddEditField['form_add_edit_field_required_in_form'])):
 
@@ -3352,9 +3434,9 @@ class ProjectbuildCrud extends MY_Controller {
 
                                         $this->_formAddConfigInputValidationAtributos = $this->_formAddEditConfigInputValidationAtributos;
 
-//echo 'FORM ADD<br><br>';
+                                    //echo 'FORM ADD<br><br>';
                                     else:
-//$this->_formAddConfigInputValidationAtributos = str_replace('required', 'add-required', $this->_formAddConfigInputValidationAtributos);
+                                    //$this->_formAddConfigInputValidationAtributos = str_replace('required', 'add-required', $this->_formAddConfigInputValidationAtributos);
                                     endif;
                                 endif;
 
@@ -3391,11 +3473,21 @@ class ProjectbuildCrud extends MY_Controller {
                             /**
                              * DADOS FILLABLE
                              */
-                            $this->_formAddDadosFillable .= 'if( !empty( $_dadosFillable["' . $_row['field_name'] . '"] ) ){' . PHP_EOL
-                                    . '     $_dados["' . $_row['field_name'] . '"] = $_dadosFillable["' . $_row['field_name'] . '"];' . PHP_EOL
-                                    . '}else{'
-                                    . '     $_dados["' . $_row['field_name'] . '"] = NULL;' . PHP_EOL
-                                    . '}' . PHP_EOL;
+                            if ($_geraFormAddDadosFillable) {
+                                $this->_formAddDadosFillable .= 'if( !empty( $_dadosFillable["' . $_row['field_name'] . '"] ) ){' . PHP_EOL
+                                        . '     $_dados["' . $_row['field_name'] . '"] = $_dadosFillable["' . $_row['field_name'] . '"];' . PHP_EOL
+                                        . '}else{'
+                                        . '     $_dados["' . $_row['field_name'] . '"] = NULL;' . PHP_EOL
+                                        . '}' . PHP_EOL;
+                            }
+
+                            if ($_geraFormEditDadosFillable) {
+                                $this->_formEditDadosFillable .= 'if( !empty( $_dadosFillable["' . $_row['field_name'] . '"] ) ){' . PHP_EOL
+                                        . '     $_dados["' . $_row['field_name'] . '"] = $_dadosFillable["' . $_row['field_name'] . '"];' . PHP_EOL
+                                        . '}else{'
+                                        . '     $_dados["' . $_row['field_name'] . '"] = NULL;' . PHP_EOL
+                                        . '}' . PHP_EOL;
+                            }
 
                         endif;
                         /* END CAMPOS QUE SERÃO MOSTRADOS NO FORM ADD/EDIT */
@@ -3942,7 +4034,8 @@ class ProjectbuildCrud extends MY_Controller {
         endif;
         $this->_dadosController = str_replace('{{form-add-convert-dados-to-database}}', $this->_formAddConvertDadosToDatabase, $this->_dadosController);
 
-        $this->_dadosController = str_replace('{{form-dados-fillable}}', $this->_formAddDadosFillable, $this->_dadosController);
+        $this->_dadosController = str_replace('{{form-add-dados-fillable}}', $this->_formAddDadosFillable, $this->_dadosController);
+        $this->_dadosController = str_replace('{{form-edit-dados-fillable}}', $this->_formEditDadosFillable, $this->_dadosController);
 
         if ($this->_formEditConvertDadosToDatabase):
             $this->_formEditConvertDadosToDatabase = '/* CONVERTE DADOS PARA GRAVAR NA TABELA */' . PHP_EOL . $this->_formEditConvertDadosToDatabase . PHP_EOL . '/* CONVERTE DADOS PARA GRAVAR NA TABELA */' . PHP_EOL;
