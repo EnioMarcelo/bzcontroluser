@@ -42,7 +42,7 @@
 
 <div class="row">
 
-    <div class="box">
+    <div class="box <?= bz_box_color(___BZ_LAYOUT_SKINCOLOR___); ?> ">
 
 
         <!-- HEADER -->
@@ -120,16 +120,18 @@
                     <?php $_c = 0; ?>
                     <?php foreach ($_result['results_paginacao'] as $_row): ?>  
 
+                        <?php $_edit = site_url($this->router->fetch_class() . '/edit/' . $_row->id . '?' . bz_app_parametros_url()); ?>
+                        <?php $_j_btn_edit = 'j-btn-edit btn-show-modal-aguarde mouse-cursor-pointer'; ?>
                         <?php $_c++; ?>  
 
                         <?php if ($_row->nivel_menu == 0) : ?>
 
-                            <tr>
+                            <tr id="<?= $_row->id; ?>" class="ClTableGridListTbodyTr" data-action="<?= $_edit; ?>">
                                 <td class="text-center"><input class="checkbox checkbox-unit flat-red text-center" type="checkbox" name="btn-delete[]" value="<?= $_row->id; ?>"></td>
                                 <td class="text-center" style="width:5px;"><?= $_c; ?></td>
                                 <td class="text-center" style="width:5px; color:#ccc"><?= $_row->id; ?></td>
-                                <td class="col-md-2"><?= ($_row->parent_id > 0) ? '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' . $_row->nome_menu : '<i class="fa fa-th-list margin-right-5"></i><b>' . $_row->nome_menu . '</b>'; ?></td>
-                                <td class="col-md-3"><?= ($_row->parent_id > 0) ? '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' . $_row->descricao_menu : '<i class="fa fa-th-list margin-right-5"></i><b>' . $_row->descricao_menu; ?></b></td>
+                                <td class="col-md-2 <?= $_j_btn_edit; ?>"><?= ($_row->parent_id > 0) ? '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' . $_row->nome_menu : '<i class="fa fa-th-list margin-right-5"></i><b>' . $_row->nome_menu . '</b>'; ?></td>
+                                <td class="col-md-3 <?= $_j_btn_edit; ?>"><?= ($_row->parent_id > 0) ? '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' . $_row->descricao_menu : '<i class="fa fa-th-list margin-right-5"></i><b>' . $_row->descricao_menu; ?></b></td>
                                 <td class="col-md-2"><?= $_row->app_name; ?></td>
                                 <td class="col-md-2 text-uppercase"><?= ($_row->parent_id == 0) ? '' : $this->read->exec('sec_menus', 'WHERE id = ' . $_row->parent_id . ' ORDER BY nome_menu')->row()->nome_menu; ?></td>
 
@@ -164,15 +166,17 @@
 
                                 <?php if ($_row_menu_filho->parent_id == $_row->id): ?>
 
+                                    <?php $_edit = site_url($this->router->fetch_class() . '/edit/' . $_row_menu_filho->id . '?' . bz_app_parametros_url()); ?>
+                                    <?php $_j_btn_edit = 'j-btn-edit btn-show-modal-aguarde mouse-cursor-pointer'; ?>
                                     <?php $_c++; ?> 
 
-                                    <tr>
+                                    <tr id="<?= $_row_menu_filho->id; ?>" class="ClTableGridListTbodyTr" data-action="<?= $_edit; ?>">
                                         <td class="text-center"><input class="checkbox checkbox-unit flat-red text-center" type="checkbox" name="btn-delete[]" value="<?= $_row_menu_filho->id; ?>"></td>
                                         <td class="text-center" style="width:5px;"><?= $_c; ?></td>
                                         <td class="text-center" style="width:5px; color:#ccc"><?= $_row_menu_filho->id; ?></td>
-                                        <td class="col-md-2"><?= ($_row_menu_filho->parent_id > 0) ? '&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-long-arrow-right margin-right-5"></i>' . $_row_menu_filho->nome_menu : $_row_menu_filho->nome_menu; ?></td>
-                                        <td class="col-md-3"><?= ($_row_menu_filho->parent_id > 0) ? '&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-long-arrow-right margin-right-5"></i>' . $_row_menu_filho->descricao_menu : $_row_menu_filho->descricao_menu; ?></td>
-                                        <td class="col-md-2"><?= $_row_menu_filho->app_name; ?></td>
+                                        <td class="col-md-2 <?= $_j_btn_edit; ?>"><?= ($_row_menu_filho->parent_id > 0) ? '&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-long-arrow-right margin-right-5"></i>' . $_row_menu_filho->nome_menu : $_row_menu_filho->nome_menu; ?></td>
+                                        <td class="col-md-3 <?= $_j_btn_edit; ?>"><?= ($_row_menu_filho->parent_id > 0) ? '&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-long-arrow-right margin-right-5"></i>' . $_row_menu_filho->descricao_menu : $_row_menu_filho->descricao_menu; ?></td>
+                                        <td class="col-md-2 <?= $_j_btn_edit; ?>"><?= $_row_menu_filho->app_name; ?></td>
                                         <td class="col-md-2 text-uppercase"><i class="fa fa-th-list margin-right-5"></i><b><?= ($_row_menu_filho->parent_id == 0) ? '' : $this->read->exec('sec_menus', 'WHERE id = ' . $_row_menu_filho->parent_id . ' ORDER BY nome_menu')->row()->nome_menu; ?></b></td>
 
 

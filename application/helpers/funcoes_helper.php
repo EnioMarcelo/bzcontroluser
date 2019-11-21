@@ -9,6 +9,30 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 /**
+ * BOX COLOR FUNCTION
+ * 
+ * @param type $color
+ */
+function bz_box_color($color) {
+    
+    $_box = 'box-';
+
+    if (mc_contains_in_string('black', $color)) {
+        return $_box . 'default';
+    } elseif (mc_contains_in_string('blue', $color)) {
+        return $_box . 'primary';
+    } elseif (mc_contains_in_string('red', $color)) {
+        return $_box . 'danger';
+    } elseif (mc_contains_in_string('yellow', $color)) {
+        return $_box . 'warning';
+    } elseif (mc_contains_in_string('green', $color)) {
+        return $_box . 'success';
+    } elseif (mc_contains_in_string('purple', $color)) {
+        return $_box . 'purple';
+    }
+}
+
+/**
  * CHECK SE USUÁRIO É SUPER ADMIN
  */
 function get_tables_system() {

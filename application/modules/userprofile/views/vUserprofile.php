@@ -13,7 +13,7 @@
 
 <section class="content-header header-dashboard" style="margin-bottom: 20px;">
     <h1>
-        <?php if (empty($_pane2changepasssactive)):; ?>
+        <?php if (empty($_pane2changepasssactive)): ?>
             <i class="fa fa-user"></i>
             Meus Dados
             <small></small>

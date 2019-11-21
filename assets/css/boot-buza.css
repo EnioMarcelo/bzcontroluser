@@ -254,6 +254,14 @@ pre{ background-color: none; border: none; border-radius: 0; border-left: 4px so
 .table>tbody>tr.clickedtr { background-color:#A3BDCE !important; }
 
 /**
+ * BOX COLOR
+ */
+.box.box-purple {
+    border-top-color: #605CA8;
+}
+
+
+/**
  * DIVERSOS
  */
 

@@ -33,7 +33,7 @@
 
 <div class="row">
 
-    <div class="box">
+    <div class="box <?= bz_box_color(___BZ_LAYOUT_SKINCOLOR___); ?>">
 
         <!-- HEADER -->
         <div class="box-header">
@@ -60,14 +60,14 @@
         </div><!-- /.box-header -->
         <!-- END HEADER -->
 
-        <div class="box-body no-padding padding-left-10 padding-right-10 padding-bottom-10 margin-top-20">
+        <div class="box-body no-padding padding-bottom-10 margin-top-5">
 
 
-            <div class="box box-primary margin-top-15">
+            <div class="box <?= bz_box_color(___BZ_LAYOUT_SKINCOLOR___); ?> margin-top-15">
                 <div class="box-header">
                 </div><!-- /.box-header -->
 
-                <div class="box-body">
+                <div class="box-body margin-left-15">
 
 
                     <div class="row">
@@ -213,7 +213,7 @@
                             <h3>Campos</h3>
                             <div class="table-responsive">          
                                 <table class="table table-striped table-bordered table-mark-row"">
-                                    <thead class="bg-primary">
+                                    <thead class="bg-<?= ___BZ_LAYOUT_SKINCOLOR___; ?>">
                                         <tr>
                                             <th class="text-center" style="width:5px;">#</th>
                                             <th class="text-center" style='width:5px;'>PK</th>

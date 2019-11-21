@@ -32,7 +32,7 @@
 
 <div class="row">
 
-    <div class="box">
+    <div class="box <?= bz_box_color(___BZ_LAYOUT_SKINCOLOR___); ?>">
 
         <!-- HEADER -->
         <div class="box-header">
@@ -67,10 +67,10 @@
         </div><!-- /.box-header -->
         <!-- END HEADER -->
 
-        <div class="box-body no-padding padding-left-10 padding-right-10 padding-bottom-10 margin-top-20">
+        <div class="box-body no-padding padding-bottom-10 margin-top-5">
 
 
-            <div class="box box-primary margin-top-15">
+            <div class="box <?= bz_box_color(___BZ_LAYOUT_SKINCOLOR___); ?> margin-top-15">
                 <div class="box-header">
                 </div><!-- /.box-header -->
 

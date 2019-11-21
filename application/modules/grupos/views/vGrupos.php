@@ -42,7 +42,7 @@
 
 <div class="row">
 
-    <div class="box">
+    <div class="box <?= bz_box_color(___BZ_LAYOUT_SKINCOLOR___); ?>">
 
 
         <!-- HEADER -->
@@ -97,13 +97,15 @@
                     <?php $_c = 0; ?>
                     <?php foreach ($_result['results_paginacao'] as $_row): ?>  
 
+                        <?php $_edit = site_url($this->router->fetch_class() . '/edit/' . $_row->id . '?' . bz_app_parametros_url()); ?>
+                        <?php $_j_btn_edit = 'j-btn-edit btn-show-modal-aguarde mouse-cursor-pointer'; ?>
                         <?php $_c++; ?>  
 
-                        <tr>
+                        <tr id="<?= $_row->id; ?>" class="ClTableGridListTbodyTr" data-action="<?= $_edit; ?>">
                             <td class="text-center"><input class="checkbox checkbox-unit flat-red text-center" type="checkbox" name="btn-delete[]" value="<?= $_row->id; ?>"></td>
                             <td class="text-center" style="width:5px;"><?= $_c; ?></td>
                             <td class="text-center" style="width:5px; color:#ccc"><?= $_row->id; ?></td>
-                            <td class="col-md-3"><?= $_row->descricao; ?>
+                            <td class="col-md-3 <?=$_j_btn_edit;?>"><?= $_row->descricao; ?>
 
                                 <?php
                                 /*

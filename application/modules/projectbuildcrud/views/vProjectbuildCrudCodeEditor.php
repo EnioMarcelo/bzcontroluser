@@ -27,7 +27,7 @@
 
 <?= form_open($this->router->fetch_class() . '/codeeditor/' . $_dados_projeto->id . '/' . $_parametros['code_screen'] . '/' . $_parametros['code_type'] . '?' . bz_app_parametros_url(), 'id="formCodeEditor" role="form"'); ?>
 
-<div class="box box-info">
+<div class="box <?= bz_box_color(___BZ_LAYOUT_SKINCOLOR___); ?>">
 
     <div class="box-header margin-top-10">
         <h3 class="box-title">Nome do Aplicativo:

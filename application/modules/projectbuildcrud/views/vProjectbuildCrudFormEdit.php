@@ -54,7 +54,7 @@
 
 <div class="row">
 
-    <div class="box">
+    <div class="box <?= bz_box_color(___BZ_LAYOUT_SKINCOLOR___); ?>">
 
         <!-- HEADER -->
         <div class="box-header">
@@ -180,14 +180,14 @@
         </div><!-- /.box-header -->
         <!-- END HEADER -->
 
-        <div class="box-body no-padding padding-left-10 padding-right-10 padding-bottom-10 margin-top-0">
+        <div class="box-body no-padding padding-bottom-10 margin-top-0">
 
             <div class="margin-top-0 padding-top-0">
                 <div class="box-header">
                 </div><!-- /.box-header -->
 
                 <!-- .box-sucess -->
-                <div class="box box-success collapsed-box">
+                <div class="box <?= bz_box_color(___BZ_LAYOUT_SKINCOLOR___); ?> collapsed-box">
                     <div class="box-header with-border">
                         <h3 class="box-title">Dados do APP</h3><p></p>
 
@@ -342,7 +342,7 @@
 
                 <!-- Table Grid List / Form Add/EDIT -->
                 <?php if ($dados->type_project == 'crud'): ?>
-                    <div class="box box-info">
+                    <div class="">
                         <div class="box-body margin-left-10">
 
                             <!--TABLE FIELDs proj_build_fields-->
@@ -525,8 +525,8 @@
                                                     <!--COLUNA DA DIREITA-->
                                                     <div class="col-md-6">
                                                         <!-- general form elements -->
-                                                        <div class="box box-primary">
-                                                            <div class="box-header with-border">
+                                                        <div class="box <?= bz_box_color(___BZ_LAYOUT_SKINCOLOR___); ?>">
+                                                            <div class="box-header with-border no-padding padding-left-20 padding-top-15">
 
                                                                 <?php
                                                                 $_dadosCalendarInputs = json_decode($dados->calendar_inputs);
@@ -552,7 +552,7 @@
                                                                         <div class="form-group">
                                                                             <label>
                                                                                 Recarregar Tela
-                                                                                <input type="number" name="calendarInputTimeRefresh" class="form-group" min="0" value="<?=(!empty($_dadosCalendarInputs->calendarInputTimeRefresh) ? $_dadosCalendarInputs->calendarInputTimeRefresh : (set_value('calendarInputTimeRefresh') ? set_value('calendarInputTimeRefresh') : ''));?>" />
+                                                                                <input type="number" name="calendarInputTimeRefresh" class="form-group" min="0" value="<?= (!empty($_dadosCalendarInputs->calendarInputTimeRefresh) ? $_dadosCalendarInputs->calendarInputTimeRefresh : (set_value('calendarInputTimeRefresh') ? set_value('calendarInputTimeRefresh') : '')); ?>" />
                                                                             </label>
                                                                         </div>
 
@@ -567,10 +567,10 @@
                                                                 </div>
                                                                 <!-- /.box-header -->
 
-                                                                <div class="box-body">
+                                                                <div class="padding-top-0">
 
                                                                     <!--COLUNA DA ESQUERDA-->
-                                                                    <div class="col-md-6">
+                                                                    <div class="col-md-6 margin-top-10">
 
                                                                         <div class="form-group">
                                                                             <?php $_error = form_error("calendarInputTitulo", "<small class='text-danger col-xs-12 bz-input-error'>", "</small>"); ?>
@@ -593,7 +593,7 @@
 
 
                                                                     <!--COLUNA DA DIREITA-->
-                                                                    <div class="col-md-6">
+                                                                    <div class="col-md-6 margin-top-10">
 
                                                                         <div class="form-group">
                                                                             <?php $_error = form_error("calendarInputDescricao", "<small class='text-danger col-xs-12 bz-input-error'>", "</small>"); ?>

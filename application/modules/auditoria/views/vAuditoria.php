@@ -30,7 +30,7 @@
 
 <div class="row">
 
-    <div class="box">
+    <div class="box <?= bz_box_color(___BZ_LAYOUT_SKINCOLOR___); ?>">
 
 
         <!-- HEADER -->

@@ -38,7 +38,7 @@
 
 <div class="row">
 
-    <div class="box">
+    <div class="box <?= bz_box_color(___BZ_LAYOUT_SKINCOLOR___); ?>">
 
 
         <!-- HEADER -->
@@ -74,7 +74,7 @@
 
 
             <!-- TABLE -->
-            <table class="table table-hover table-striped table-bordered table-mark-row">
+            <table id="IdTableGridList_<?= $this->router->fetch_class(); ?>" class='table table-hover table-striped table-bordered table-mark-row'>
                 <thead class="thead-inverse  bg-<?= ___BZ_LAYOUT_SKINCOLOR___; ?>">
                     <tr>
                         <th class="text-center" style="width:5px;"><input class="checkbox-all flat-red" type="checkbox"></th>
@@ -94,13 +94,15 @@
                     <?php $_c = 0; ?>
                     <?php foreach ($_result['results_paginacao'] as $_row): ?>  
 
+                        <?php $_edit = site_url($this->router->fetch_class() . '/edit/' . $_row->id . '?' . bz_app_parametros_url()); ?>
+                        <?php $_j_btn_edit = 'j-btn-edit btn-show-modal-aguarde mouse-cursor-pointer'; ?>
                         <?php $_c++; ?>  
 
-                        <tr>
+                        <tr id="<?= $_row->id; ?>" class="ClTableGridListTbodyTr" data-action="<?= $_edit; ?>">
                             <td class="text-center"><input class="checkbox checkbox-unit flat-red text-center" type="checkbox" name="btn-delete[]" value="<?= $_row->id; ?>"></td>
                             <td class="text-center" style="width:5px;"><?= $_c; ?></td>
                             <td class="text-center" style="width:5px; color:#ccc"><?= $_row->id; ?></td>
-                            <td class="col-md-7">
+                            <td class="col-md-7 <?=$_j_btn_edit;?>">
                                 <?= $_row->nome; ?>
 
                                 <!-- TAG GRUPOS E APPS DO USUÁRIO -->
@@ -174,7 +176,7 @@
 
                             </td>
 
-                            <td class="col-md-3"><?= $_row->email; ?></td>
+                            <td class="col-md-3 <?=$_j_btn_edit;?>"><?= $_row->email; ?></td>
 
 
                             <!-- BTN ATIVA/DESATIVA STATUS-->
