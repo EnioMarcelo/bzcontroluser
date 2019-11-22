@@ -23,6 +23,9 @@
 
         $('#modalBuildApp').on('show.bs.modal', function (event) {
 
+            $('#modal-gerando-arquivo').modal('show');
+            $('#modalBuildAppIframe').contents().find("html").remove();
+
             var _button = $(event.relatedTarget);
             var _src = _button.data('build');
             var _width = _button.data('width');
@@ -33,11 +36,15 @@
             $("#modalBuildApp .modal-dialog").css('width', _width);
             $("#modalBuildApp").find('iframe').css('height', _height);
             $("#modalBuildApp").find('iframe').attr('src', _src);
-            // $("#modalBuildApp").find('iframe').hide();
+//            $("#modalBuildApp").find('iframe').hide();
 
             $('#modalBuildAppIframe').load(function () {
-                $('#modalBuildAppIframe').contents().find(".j-btn-open-modal-fullscreen").remove();
-                // $("#modalBuildApp").find('iframe').show();
+
+                $('#modal-gerando-arquivo').modal('hide');
+
+//                $('#modalBuildAppIframe').contents().find(".j-btn-open-modal-fullscreen").remove();
+//                $("#modalBuildApp").find('iframe').show();
+
             });
 
         });
