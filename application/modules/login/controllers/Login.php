@@ -10,8 +10,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Login extends MY_Controller {
 
+    private $_sess_expiration;
+
     function __construct() {
+
         parent::__construct(false);
+
+        $this->_sess_expiration = $this->config->config['sess_expiration'];
 
         /**
          * DELATA OS ARQUIVOS DE IMAGEM CAPTCHA DO MÚDLO DE RECUPERAR SENHA changepass 
@@ -66,6 +71,12 @@ class Login extends MY_Controller {
         if (check_is_user_login()):
             redirect('dashboard');
         endif;
+
+        /**
+         * TIME THE SESSION EXPIRES
+         */
+        $this->dados['_sess_expiration'] = $this->_sess_expiration;
+
 
         /*
          * CHAMA A MASTER PAGE DO SISTEMA PASSANDO O PARÂMETRO dados

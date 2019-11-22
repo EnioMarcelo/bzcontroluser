@@ -15,6 +15,9 @@
 <html>
     <head>
         <meta charset="UTF-8">
+        <meta http-equiv="refresh" content="<?= ($_sess_expiration - 5); ?>">
+
+
         <title>ADMIN <?= bz_remove_strip_tags_content($this->config->item('config_system')['CONF_TITULO_SISTEMA']); ?>| Log in</title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
         <!-- Bootstrap 3.3.4 -->

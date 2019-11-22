@@ -106,7 +106,9 @@
                             <td class="text-center"><input class="checkbox checkbox-unit flat-red text-center" type="checkbox" name="btn-delete[]" value="<?= $_row->app_name; ?>"></td>
                             <td class="text-center" style="width:5px;"><?= $_c; ?></td>
                             <td class="col-md-3 <?= $_j_btn_edit; ?>"><?= $_row->app_name; ?></td>
-                            <td class="col-md-7 <?= $_j_btn_edit; ?>"><?= $_row->app_descricao; ?>
+                            <td class="col-md-7" data-action="<?= $_edit; ?>">
+
+                                <span class="<?= $_j_btn_edit; ?> col-md-11"><?= $_row->app_descricao; ?></span>
 
                                 <?php
                                 /*

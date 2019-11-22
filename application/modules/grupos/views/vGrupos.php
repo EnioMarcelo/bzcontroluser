@@ -105,7 +105,9 @@
                             <td class="text-center"><input class="checkbox checkbox-unit flat-red text-center" type="checkbox" name="btn-delete[]" value="<?= $_row->id; ?>"></td>
                             <td class="text-center" style="width:5px;"><?= $_c; ?></td>
                             <td class="text-center" style="width:5px; color:#ccc"><?= $_row->id; ?></td>
-                            <td class="col-md-3 <?=$_j_btn_edit;?>"><?= $_row->descricao; ?>
+                            <td class="col-md-3" data-action="<?= $_edit; ?>">
+
+                                <span class="<?= $_j_btn_edit; ?> col-md-11"><?= $_row->descricao; ?></span>
 
                                 <?php
                                 /*
@@ -159,14 +161,13 @@
                                     endforeach;
 
                                     foreach ($_app_arr as $_arr):
-                                        if ( !empty($_app) && !empty($_arr['app_name']) && !strpos($_app, $_arr['app_name'])):
+                                        if (!empty($_app) && !empty($_arr['app_name']) && !strpos($_app, $_arr['app_name'])):
                                             $_app_class_inativo = ($_arr['app_ativo'] == 'N') ? "class='text-gray'" : '';
 //                                            $_app .= "<a " . $_app_class_inativo . " href='" . site_url('apps/edit/') . $_arr['app_name'] . "?btnvoltarorigem=grupos&" . bz_app_parametros_url() . "'><div class='text-left'><i class='fa fa-fw fa-check-square margin-right-5'></i>" . $_arr['app_descricao'] . '</div></a>';
                                             $_app .= "<a " . $_app_class_inativo . "><div class='text-left'><i class='fa fa-fw fa-check-square margin-right-5'></i>" . $_arr['app_descricao'] . '</div></a>';
                                         endif;
                                     endforeach;
                                 endif;
-                                
                                 ?>
 
 

@@ -102,8 +102,8 @@
                             <td class="text-center"><input class="checkbox checkbox-unit flat-red text-center" type="checkbox" name="btn-delete[]" value="<?= $_row->id; ?>"></td>
                             <td class="text-center" style="width:5px;"><?= $_c; ?></td>
                             <td class="text-center" style="width:5px; color:#ccc"><?= $_row->id; ?></td>
-                            <td class="col-md-7 <?=$_j_btn_edit;?>">
-                                <?= $_row->nome; ?>
+                            <td class="col-md-7" data-action="<?= $_edit; ?>">
+                                <span class="<?=$_j_btn_edit;?> col-md-10"><?= $_row->nome; ?></span>
 
                                 <!-- TAG GRUPOS E APPS DO USUÁRIO -->
                                 <?php
@@ -158,6 +158,7 @@
                                 ?>
 
                                 <!-- APRESENTA A TAG DOS GRUPOS E APPS -->
+                                
                                 <?php if ($_apps): ?>
                                     <small class="label pull-right bg-aqua" style="cursor: pointer" title="<p style='font-size:1.2em'>Aplicativos</p>" data-placement="bottom" data-toggle="popover" data-content="<?= $_apps; ?>">A</small>
                                 <?php endif; ?>
