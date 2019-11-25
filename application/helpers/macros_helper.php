@@ -29,6 +29,63 @@ function mc_is_email($email) {
 
 /**
  *  ==================================================================================================================================================================
+ *      CALCULATE DATES
+ *  ==================================================================================================================================================================
+ */
+
+/**
+ * ESTA MACRO CALCULA A DIFERENÇA ENTRE DATAS, EM QUANTIDADE DE DIAS.
+ * AS DATAS DEVEM SER COMPOSTAS DE DIA, MÊS E ANO.
+ * 
+ * @param type $date1
+ * @param type $date2
+ * @return type
+ */
+function mc_calc_date_diff($date1, $date2 = NULL) {
+
+    if (empty($date2)) {
+        $date2 = date('Y-m-d');
+    }
+
+    $_date1 = new DateTime(date("Y-m-d", strtotime(implode('-', array_reverse(explode('/', $date1))))));
+    $_date2 = new DateTime(date("Y-m-d", strtotime(implode('-', array_reverse(explode('/', $date2))))));
+    $_diff = $_date1->diff($_date2)->y;
+
+    return $_diff;
+}
+
+/**
+ * ESSA MACRO CALCULA A DIFERENÇA ENTRE DOIS VALORES DO TIPO DATETIME E RETORNA O RESULTADO EM FORMATO DE HORAS.
+ * AS DATAS DEVEM SER COMPOSTAS DE DIA, MÊS, ANO, HORA, MINUTO E SEGUNDO. EX. '2015/04/15 00:00:00'
+ *
+ * @param DateTime $datatime1
+ * @param DateTime $datatime2
+ * @return type
+ */
+function mc_calc_time_diff($datatime1, $datatime2 = NULL) {
+
+    if (empty($datatime2)) {
+        $datatime2 = date('Y-m-d H:i:s');
+    }
+
+    $datatime1 = new DateTime($datatime1);
+    $datatime2 = new DateTime($datatime2);
+
+    $data1 = $datatime1->format('Y-m-d H:i:s');
+    $data2 = $datatime2->format('Y-m-d H:i:s');
+
+    $diff = $datatime1->diff($datatime2);
+    $horas = ($diff->h) + ($diff->days * 24);
+
+    if ($data1 > $data2) {
+        $horas = ($horas * -1);
+    }
+
+    return $horas;
+}
+
+/**
+ *  ==================================================================================================================================================================
  *      IMAGES
  *  ==================================================================================================================================================================
  */

@@ -77,7 +77,7 @@
             <!-- BTN SIDEBAR MACRO CASE-->
             <?php if ($_parametros['code_type'] !== 'css'): ?>
                 <a class="btn btn-sm bg-fuchsia-active margin-left-20 j-tooltip" data-toggle="control-sidebar" data-placement="bottom" data-toggle="tooltip" data-original-title="Estojo de Macros">
-                    <span class="fa fa-align-justify"></span>
+                    <span class="fa fa-code"></span>
                 </a>
             <?php endif; ?>
             <!-- END BTN SIDEBAR MACRO CASE-->

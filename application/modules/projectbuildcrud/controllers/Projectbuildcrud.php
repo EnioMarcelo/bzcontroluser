@@ -459,7 +459,7 @@ class ProjectbuildCrud extends MY_Controller {
                     $_post['field_name'] = 'vrt_' . $_post['field_name'];
                     $_post['field_type'] = 'varchar';
                     $_post['field_length'] = '255';
-                    $_post['param_gridlist'] = '{"grid_list_show":"on","grid_list_search":"no","grid_list_export":"on","grid_list_label":"' . $_post['field_name'] . '","grid_list_aligne_label":"text-left","grid_list_field_length":"10%","grid_list_field_aligne":"text-left","grid_list_field_type":"virtual"}';
+                    $_post['param_gridlist'] = '{"grid_list_show":"on","grid_list_search":"off","grid_list_export":"off","grid_list_label":"' . $_post['field_name'] . '","grid_list_aligne_label":"text-left","grid_list_field_length":"10%","grid_list_field_aligne":"text-left","grid_list_field_type":"virtual"}';
 
                     $result = $this->create->exec('proj_build_fields', $_post);
 
@@ -1768,7 +1768,7 @@ class ProjectbuildCrud extends MY_Controller {
                             endif;
                             /* END CAMPOS VIRTUAIS */
 
-                            if (strtolower($_row['field_name']) == 'ativo'):
+                            if (strtolower($_row['field_name']) == 'status_active'):
                                 $this->_gridListStatusDados = 'Y';
                             else:
                                 $_class = (!empty($_param_gridListField['grid_list_aligne_label'])) ? $_param_gridListField['grid_list_aligne_label'] : 'text-left';
@@ -1923,7 +1923,7 @@ class ProjectbuildCrud extends MY_Controller {
                         /*
                          * CAMPOS QUE SERÃO MOSTRADOS NA EXPORT
                          */
-                        if ($_param_gridListField['grid_list_export'] == 'on'):
+                        if (isset($_param_gridListField['grid_list_export']) && $_param_gridListField['grid_list_export'] == 'on'):
 
                             /* CAMPOS VIRTUAIS */
                             if (!empty($_param_gridListField['grid_list_field_type'])):
@@ -1933,7 +1933,7 @@ class ProjectbuildCrud extends MY_Controller {
                             endif;
                             /* END CAMPOS VIRTUAIS */
 
-                            if (strtolower($_row['field_name']) == 'ativo'):
+                            if (strtolower($_row['field_name']) == 'status_active'):
                                 $this->_gridListStatusDados = 'Y';
                             else:
                                 $_class = (!empty($_param_gridListField['grid_list_aligne_label'])) ? $_param_gridListField['grid_list_aligne_label'] : 'text-left';
@@ -2215,7 +2215,7 @@ class ProjectbuildCrud extends MY_Controller {
                             $_enableFormAddConvertDadosToDatabase = true;
                             $_enableFormEditConvertDadosToDatabase = true;
 
-                            if (isset($_param_formAddEditField['form_add_edit_field_read_only']) || $_param_formAddEditField['form_add_edit_field_read_only_in_form'] == 'on') {
+                            if (isset($_param_formAddEditField['form_add_edit_field_read_only']) && $_param_formAddEditField['form_add_edit_field_read_only_in_form'] == 'on') {
 
                                 if ($_param_formAddEditField['form_add_edit_field_read_only_in_form'] == 'todos') {
                                     /**/
@@ -3476,17 +3476,17 @@ class ProjectbuildCrud extends MY_Controller {
                             if ($_geraFormAddDadosFillable) {
                                 $this->_formAddDadosFillable .= 'if( !empty( $_dadosFillable["' . $_row['field_name'] . '"] ) ){' . PHP_EOL
                                         . '     $_dados["' . $_row['field_name'] . '"] = $_dadosFillable["' . $_row['field_name'] . '"];' . PHP_EOL
-                                        . '}else{'
+                                        . '}else{' . PHP_EOL
                                         . '     $_dados["' . $_row['field_name'] . '"] = NULL;' . PHP_EOL
-                                        . '}' . PHP_EOL;
+                                        . '}' . PHP_EOL . PHP_EOL;
                             }
 
                             if ($_geraFormEditDadosFillable) {
                                 $this->_formEditDadosFillable .= 'if( !empty( $_dadosFillable["' . $_row['field_name'] . '"] ) ){' . PHP_EOL
                                         . '     $_dados["' . $_row['field_name'] . '"] = $_dadosFillable["' . $_row['field_name'] . '"];' . PHP_EOL
-                                        . '}else{'
+                                        . '}else{' . PHP_EOL
                                         . '     $_dados["' . $_row['field_name'] . '"] = NULL;' . PHP_EOL
-                                        . '}' . PHP_EOL;
+                                        . '}' . PHP_EOL . PHP_EOL;
                             }
 
                         endif;

@@ -416,17 +416,24 @@
 
 
                                                             //SE O CAMPO FOR VIRTUAL HABILITA O BOTÃO DE DELETAR O CAMPO
-                                                            if (!empty($_json->grid_list_field_type) && $_json->grid_list_field_type == 'virtual'):
+                                                            if (!empty($_json->grid_list_field_type) && $_json->grid_list_field_type == 'virtual') {
                                                                 $_grid_list_field_type_trash_icon = '<small class="label margin-left-5 bg-red j-tooltip j-btn-delete-virtual-field" data-placement="bottom" data-toggle="tooltip" data-original-title="Deletar Campo" rel-field-name="' . $_row_field_table_gridlist['field_name'] . '"><i class="fa fa-fw fa-trash text-whrite"></i></small>';
-                                                            else:
+                                                            } else {
                                                                 $_grid_list_field_type_trash_icon = '';
-                                                            endif;
+                                                            }
 
                                                             echo "<tr id='" . $_row_field_table_gridlist['field_name'] . "' rel-projeto-id='" . $dados->id . "' rel-primary-key='" . $_row_field_table_gridlist['primary_key'] . "' class='j_drag_active_gridlist mouse-cursor-pointer " . $_bg_color_grid_list_show . "' />";
                                                             echo "<td class='text-center table-line-order' style='width:5px;'>" . $_c . "</td>";
                                                             echo "<td><i class='fa fa-fw {$_btn_switch_grid_list_show} j-btn-switch-list-show-field' rel-screen-type='gridlist'></i></td>";
-                                                            echo "<td><i class='fa fa-fw {$_btn_switch_grid_list_search} j-btn-switch-list-search-field' rel-screen-type='gridlist'></i></td>";
-                                                            echo "<td><i class='fa fa-fw {$_btn_switch_grid_list_export} j-btn-switch-list-export-field' rel-screen-type='gridlist'></i></td>";
+
+                                                            if (!empty($_json->grid_list_field_type) && $_json->grid_list_field_type == 'virtual') {
+                                                                echo "<td></td>";
+                                                                echo "<td></td>";
+                                                            } else {
+                                                                echo "<td><i class='fa fa-fw {$_btn_switch_grid_list_search} j-btn-switch-list-search-field' rel-screen-type='gridlist'></i></td>";
+                                                                echo "<td><i class='fa fa-fw {$_btn_switch_grid_list_export} j-btn-switch-list-export-field' rel-screen-type='gridlist'></i></td>";
+                                                            }
+
                                                             echo "<td class='text-center j_order_gridlist' style='width:5px;'><i class='fa fa-arrows'></i></td>";
                                                             echo "<td class='j_btn_modal_edit_fields_table_gridlist btn-show-modal-aguarde'>" . $_row_field_table_gridlist['field_name'] . $_grid_list_field_type_trash_icon . (($_row_field_table_gridlist['primary_key'] == 1) ? '<small class="label margin-left-5 bg-green j-tooltip" data-placement="bottom" data-toggle="tooltip" data-original-title="Chave Primária"><i class="fa fa-fw fa-key text-whrite"></i></small>' : '') . "</td>";
                                                             echo "<td class='j_btn_modal_edit_fields_table_gridlist btn-show-modal-aguarde'>" . $_row_field_table_gridlist['field_length'] . "</td>";

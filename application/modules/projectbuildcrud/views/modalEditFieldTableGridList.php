@@ -680,10 +680,12 @@
                         $('input[id="grid_list_show_off"]').filter(':radio').iCheck('check');
 
                     }
+                    
 
                     if (result.grid_list_field_type === 'virtual') {
                         $('input[id="grid_list_search_off"]').filter(':radio').iCheck('check');
                         $('#grid_list_search').hide();
+                        $('#grid_list_export').hide();
                     } else {
                         $('#grid_list_search').show();
                         if (result.grid_list_search === 'on') {
@@ -834,6 +836,7 @@
                                 $(_dataArray).each(function (i, field) {
                                     dataObj[field.name] = field.value;
                                 });
+                                
 
                                 if (dataObj['grid_list_show'] === 'off') {
 

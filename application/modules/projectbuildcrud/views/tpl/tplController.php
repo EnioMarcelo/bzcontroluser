@@ -127,8 +127,8 @@
           endif;
 
 
-        redirect($this->_redirect . '/add');
-        /* END GRAVA REGISTRO */
+          redirect($this->_redirect . '/add');
+          /* END GRAVA REGISTRO */
                 
       else:
             set_mensagem_trigger_notifi( ___MSG_ERROR_CAMPOS_OBRIGATORIOS___, 'error');
