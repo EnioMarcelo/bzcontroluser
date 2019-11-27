@@ -25,6 +25,14 @@
 
 <script>
 
+    function get_codeScript(_p) {
+        return editAreaLoader.getValue(_p);
+    }
+
+    function set_codeScript(_p, _c) {
+        return editAreaLoader.setValue(_p, _c);
+    }
+
     $(function () {
 
         $('#modalBuildApp').on('show.bs.modal', function (event) {
@@ -32,6 +40,36 @@
             $('#modalBuildApp').find("#carregando").removeClass('hidden');
 
             $('#modalBuildAppIframe').contents().find("html").remove();
+
+
+            /**
+             * SALVA CODEEDITOR
+             * https://www.cdolivet.com/editarea/
+             */
+            /**
+             * MACRO AJAX
+             */
+
+            var _codeScript = get_codeScript("codeeditor_1");
+
+            set_codeScript("codeeditor_1", _codeScript);
+
+            var _form = $("#formCodeEditor");
+            var _data = _form.serializeArray();
+            _data.push({name: 'code_script', value: _codeScript});
+            var _url = '<?= site_url() . $this->router->fetch_class() . '/codeeditor/' . $_dados_projeto->id . '/' . $_parametros['code_screen'] . '/' . $_parametros['code_type']; ?>';
+
+            $.post(_url, _data).done(function () {
+                $('#j-btn-exec-app').addClass('disabled');
+                $.post(_url, _data);
+            })
+                    .fail(function () {
+
+                    })
+                    .always(function () {
+                        $('#j-btn-exec-app').removeClass('disabled');
+                    });
+
 
 
             var _button = $(event.relatedTarget);

@@ -2,6 +2,7 @@
  *
  *	EditArea 
  * 	Developped by Christophe Dolivet
+ * 	https://www.cdolivet.com/editarea/
  *	Released under LGPL, Apache and BSD licenses (use the one you want)
  *
 ******/

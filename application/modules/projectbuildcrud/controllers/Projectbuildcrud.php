@@ -1413,7 +1413,14 @@ class ProjectbuildCrud extends MY_Controller {
             /*
              * SAVE DADOS DO EDITOR DE CÓDIGOS
              */
+
             if ($this->input->post('btn-save-code-editor')):
+//
+//                echo '<pre class="vardump">';
+//                var_dump($this->input->post());
+//                echo '</pre>';
+//                exit;
+
 
                 /*
                  * CHECK SE EXISTE O REGISTRO GRAVADO
@@ -1433,9 +1440,14 @@ class ProjectbuildCrud extends MY_Controller {
                         'code_type_method' => ($this->input->post('code_access_ajax_only') == 'on' ? 'public' : $this->input->post('code_type_method')),
                         'code_script' => base64_encode($this->input->post('code_script', false)),
                     );
-                    $this->update->exec('proj_build_codeeditor', $_data_code_editor, $_where);
+                    $_update = $this->update->exec('proj_build_codeeditor', $_data_code_editor, $_where);
 
-                    set_mensagem_trigger_notifi(strtoupper(str_replace('-', ' ', $this->input->post('code_type'))) . ' Atualizado com Sucesso.', 'success');
+                    if ($_update) {
+                        set_mensagem_trigger_notifi(strtoupper(str_replace('-', ' ', $this->input->post('code_type'))) . ' Atualizado com Sucesso.', 'success');
+                    } else {
+                        set_mensagem_trigger_notifi(strtoupper(str_replace('-', ' ', $this->input->post('code_type'))) . ' Erro ao Atualizar Registro.', 'error');
+                    }
+
 
                 else:
                     /*

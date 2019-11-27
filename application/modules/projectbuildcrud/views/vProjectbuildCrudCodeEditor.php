@@ -61,7 +61,7 @@
             <?php endif; ?>
 
             <!-- BTN SIDEBAR INPUT FILDS-->
-            <?php if ($_parametros['code_type'] == 'onrecord' || $_parametros['code_type'] == 'onrecordexport' ): ?>
+            <?php if ($_parametros['code_type'] == 'onrecord' || $_parametros['code_type'] == 'onrecordexport'): ?>
                 <a id="j-btn-control-sidebar-fields-database" class="btn btn-sm bg-black margin-left-20 j-tooltip" data-toggle="control-sidebar" data-placement="bottom" data-toggle="tooltip" data-original-title="Campos da Tabela">
                     <span class="glyphicon glyphicon-indent-left"></span>
                 </a>
@@ -86,7 +86,7 @@
 
             <!-- BTN EXECUTAR APLICAÇÃO-->
             <?php $_buildApp = site_url($_dados_projeto->app_nome); ?>
-            <a class="btn btn-sm bg-maroon margin-left-20" data-toggle="modal" data-target="#modalBuildApp" data-build="<?= strtolower($_buildApp); ?>" data-width="90%" data-height="500px" data-title="Executando Aplicação">
+            <a id="j-btn-exec-app" class="btn btn-sm bg-maroon margin-left-20" data-toggle="modal" data-target="#modalBuildApp" data-build="<?= strtolower($_buildApp); ?>" data-width="90%" data-height="500px" data-title="Executando Aplicação">
                 <span class="fa fa-external-link-square j-tooltip" data-placement="bottom" data-toggle="tooltip" data-original-title="Executar Aplicação"></span>
             </a>
             <!-- END BTN EXECUTAR APLICAÇÃO-->
@@ -145,6 +145,8 @@
         <input type="hidden" name="proj_build_id" value="<?= $_dados_projeto->id; ?>">
         <input type="hidden" name="code_screen" value="<?= $_parametros['code_screen']; ?>">
         <input type="hidden" name="code_type" value="<?= $_parametros['code_type']; ?>">
+        <input type="hidden" name="btn-save-code-editor" value="btn-save-code-editor">
+        <input type="hidden" name="csrf_token" value="<?= $this->security->get_csrf_hash(); ?>">
 
         <textarea id="codeeditor_1"  class="col-xs-12" name="code_script" rows="30" width=="100%" autofocus /><?= (($_parametros['code_script']) ? base64_decode($_parametros['code_script']) : null); ?></textarea>
 
@@ -297,17 +299,6 @@
          * END BTN OPEN SIDE MENU
          * ############################################################################################################################################################
          */
-
-
-
-
-
-
-
-
-
-
-
 
 
     });//END function

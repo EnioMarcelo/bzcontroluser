@@ -146,10 +146,6 @@
             <!-- jQuery tab content -->
             <div class="tab-pane active" id="control-sidebar-jquery-tab" style="margin-top:-15px;">
 
-                <!--                <h4 class='control-sidebar-heading'>
-                                    <spam>jQuery</spam>
-                                </h4>-->
-
                 <ul class="list-unstyled clearfix" style="margin-top:-10px">
                     <li style="float:left; width: 100%; padding: 0px;">
 
@@ -173,7 +169,6 @@
                             <?php endif; ?>
                         </ul>
 
-
                     </li>
                 </ul>
             </div>
@@ -189,7 +184,7 @@
                         <ul class="list-unstyled">
                             <?php foreach ($_fields_table as $_field): ?>
                                 <li class="hover">
-                                    <button type="button" style="margin: 0; padding: 0; " class="btn btn-defaultx btn-block margin-bottom-3 j-btn-sidebar-database-insert" data-toggle="control-sidebar" data-clipboard-message="Código copiado com sucesso, CTRL+V para colar no editor." data-clipboard-text="{{<?= $_field['field_name']; ?>}}">{{<?= $_field['field_name']; ?>}}</button>
+                                    <button type="button" style="margin: 0; padding: 0; " class="btn btn-defaultx btn-block margin-bottom-3 j-btn-sidebar-database-insert" data-toggle="control-sidebar" data-clipboard-message="Código copiado com sucesso, CTRL+V para colar no editor." data-clipboard-text="{{<?= $_field['field_name']; ?>}}"><?= $_field['field_name']; ?></button>
                                 </li>
                             <?php endforeach; ?>
                         </ul>
