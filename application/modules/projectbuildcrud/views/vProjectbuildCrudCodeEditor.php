@@ -60,6 +60,23 @@
                 </button>
             <?php endif; ?>
 
+            <!-- BTN SIDEBAR INPUT FILDS-->
+            <?php if ($_parametros['code_type'] == 'onrecord' || $_parametros['code_type'] == 'onrecordexport' ): ?>
+                <a id="j-btn-control-sidebar-fields-database" class="btn btn-sm bg-black margin-left-20 j-tooltip" data-toggle="control-sidebar" data-placement="bottom" data-toggle="tooltip" data-original-title="Campos da Tabela">
+                    <span class="glyphicon glyphicon-indent-left"></span>
+                </a>
+            <?php endif; ?>
+            <!-- END BTN SIDEBAR INPUT FIELDS-->
+
+
+            <!-- BTN SIDEBAR MACRO CASE-->
+            <?php if ($_parametros['code_type'] !== 'css'): ?>
+                <a id="j-btn-control-sidebar-macros" class="btn btn-sm bg-fuchsia-active margin-left-20 j-tooltip" data-toggle="control-sidebar" data-placement="bottom" data-toggle="tooltip" data-original-title="Estojo de Macros">
+                    <span class="fa fa-code"></span>
+                </a>
+            <?php endif; ?>
+            <!-- END BTN SIDEBAR MACRO CASE-->
+
             <!-- BTN GERAR APLICAÇÃO-->
             <?php $_buildApp = site_url($this->router->fetch_class() . '/build_app/' . $_dados_projeto->id . '?' . bz_app_parametros_url()); ?>
             <a class="btn btn-sm bg-purple margin-left-20" data-toggle="modal" data-target="#modalBuildApp" data-build="<?= strtolower($_buildApp); ?>" data-width="50%" data-height="350px" data-title="Gerando Aplicação">
@@ -73,14 +90,6 @@
                 <span class="fa fa-external-link-square j-tooltip" data-placement="bottom" data-toggle="tooltip" data-original-title="Executar Aplicação"></span>
             </a>
             <!-- END BTN EXECUTAR APLICAÇÃO-->
-
-            <!-- BTN SIDEBAR MACRO CASE-->
-            <?php if ($_parametros['code_type'] !== 'css'): ?>
-                <a class="btn btn-sm bg-fuchsia-active margin-left-20 j-tooltip" data-toggle="control-sidebar" data-placement="bottom" data-toggle="tooltip" data-original-title="Estojo de Macros">
-                    <span class="fa fa-code"></span>
-                </a>
-            <?php endif; ?>
-            <!-- END BTN SIDEBAR MACRO CASE-->
 
         </div>
 
@@ -143,15 +152,17 @@
 
 </div>
 
-
-
 <?= form_close(); ?>
-
 
 <script>
 
     $(function () {
 
+        /**
+         * ############################################################################################################################################################
+         * BTN DEL CODE EDITOR
+         * ############################################################################################################################################################
+         */
         $("#btn-del-code-editor").on("click", function (e) {
 
             var t = '';
@@ -181,20 +192,34 @@
                         }
                     });
 
-        });//END ("#btn-del-code-editor")
+        });
+        /**
+         *
+         * END ("#btn-del-code-editor")
+         * ############################################################################################################################################################
+         */
 
 
         /**
+         * ############################################################################################################################################################
          * BTN ON CHANGE EXECUTE BTN code_type_method TO SAVE
+         * ############################################################################################################################################################
          */
         $('#code_type_method').on('change', function (e) {
             e.preventDefault();
             $('#btn-save-code-editor').trigger("click");
         });
-        /* END BTN ON CHANGE EXECUTE BTN code_type_method TO SAVE */
+        /**
+         *
+         * END BTN ON CHANGE EXECUTE BTN code_type_method TO SAVE
+         * ############################################################################################################################################################
+         */
+
 
         /**
+         * ############################################################################################################################################################
          * BTN ON CHANGE EXECUTE BTN code_access_ajax_only TO SAVE
+         * ############################################################################################################################################################
          */
         $('#code_access_ajax_only').on('ifChecked', function (e) {
             e.preventDefault();
@@ -208,7 +233,81 @@
             $(this).filter(':radio').iCheck('uncheck');
             $('#btn-save-code-editor').trigger("click");
         });
-        /* END BTN ON CHANGE EXECUTE BTN code_access_ajax_only TO SAVE */
+        /**
+         * END BTN ON CHANGE EXECUTE BTN code_access_ajax_only TO SAVE
+         * ############################################################################################################################################################
+         */
+        /* 
+         
+         /**
+         * ############################################################################################################################################################
+         * BTN OPEN SIDE MENU 
+         * ############################################################################################################################################################
+         */
+<?php if ($_parametros['code_type'] !== 'jquery'): ?>
+
+            /* BTN OPEN SIDE MENU FIELDS DATABASE */
+            $('#j-btn-control-sidebar-fields-database').on('click', function () {
+                $('#title-sidebar-tabs').html('Campos');
+
+                $('#control-sidebar-fields-table-tab').removeClass('hidden');
+                $('a[href="#control-sidebar-fields-table-tab"]').parent().removeClass('hidden');
+
+                $('#control-sidebar-database-tab').addClass('hidden');
+                $('a[href="#control-sidebar-database-tab"]').parent().addClass('hidden');
+
+                $('#control-sidebar-modelo-tab').addClass('hidden');
+                $('a[href="#control-sidebar-modelo-tab"]').parent().addClass('hidden');
+
+                $('#control-sidebar-diversos-tab').addClass('hidden');
+                $('a[href="#control-sidebar-diversos-tab"]').parent().addClass('hidden');
+
+                $('.control-sidebar').find('.active').removeClass('active');
+                $('a[href="#control-sidebar-fields-table-tab"]').parent().addClass('active');
+                $('#control-sidebar-fields-table-tab').addClass('active');
+
+            });
+            /* END BTN OPEN SIDE MENU FIELDS DATABASE */
+
+            /* BTN OPEN SIDE MENU MACROS */
+            $('#j-btn-control-sidebar-macros').on('click', function () {
+                $('#title-sidebar-tabs').html('Macros');
+
+                $('#control-sidebar-fields-table-tab').addClass('hidden');
+                $('a[href="#control-sidebar-fields-table-tab"]').parent().addClass('hidden');
+
+                $('#control-sidebar-database-tab').removeClass('hidden');
+                $('a[href="#control-sidebar-database-tab"]').parent().removeClass('hidden');
+
+                $('#control-sidebar-modelo-tab').removeClass('hidden');
+                $('a[href="#control-sidebar-modelo-tab"]').parent().removeClass('hidden');
+
+                $('#control-sidebar-diversos-tab').removeClass('hidden');
+                $('a[href="#control-sidebar-diversos-tab"]').parent().removeClass('hidden');
+
+                $('.control-sidebar').find('.active').removeClass('active');
+                $('a[href="#control-sidebar-database-tab"]').parent().addClass('active');
+                $('#control-sidebar-database-tab').addClass('active');
+
+            });
+            /* END BTN OPEN SIDE MENU MACROS */
+
+<?php endif; ?>
+        /**
+         * END BTN OPEN SIDE MENU
+         * ############################################################################################################################################################
+         */
+
+
+
+
+
+
+
+
+
+
+
 
 
     });//END function
@@ -219,9 +318,8 @@
 </script>
 
 
-
-
 <?php $this->load->view('modalBuildApp'); ?>
 
 
 <?php $this->load->view('sidebarCaseMacros'); ?>
+

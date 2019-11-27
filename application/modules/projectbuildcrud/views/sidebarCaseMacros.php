@@ -1,7 +1,7 @@
 <!--SIDEBAR CASE MACROS-->
 
 <aside class="control-sidebar control-sidebar-light" style="position: fixed; max-height: 100%; overflow: auto; padding-bottom: 50px;">
-    <div id="" class="" style="margin-top:-50px; text-align: center;"><h4>Macros <?= ($_parametros['code_type'] == 'jquery') ? 'jQuery' : ''; ?></h4></div>
+    <div id="" class="" style="margin-top:-50px; text-align: center;"><h4 id="title-sidebar-tabs">Macros <?= ($_parametros['code_type'] == 'jquery') ? 'jQuery' : ''; ?></h4></div>
 
     <ul class="nav nav-tabs nav-justified control-sidebar-tabs">
         <?php if ($_parametros['code_type'] !== 'jquery'): ?>
@@ -10,6 +10,10 @@
             <li><a href="#control-sidebar-diversos-tab" data-toggle="tab"><i class="fa fa-puzzle-piece"></i></a></li>
         <?php elseif ($_parametros['code_type'] == 'jquery'): ?>
             <li class="active"><a href="#control-sidebar-jquery-tab" data-toggle="tab"><i class="">jQuery</i></a></li>
+        <?php endif; ?>
+
+        <?php if ($_parametros['code_type'] == 'onrecord' || $_parametros['code_type'] == 'onrecordexport'): ?>
+            <li><a href="#control-sidebar-fields-table-tab" data-toggle="tab"><i class="glyphicon glyphicon-indent-left"></i></a></li>
         <?php endif; ?>
         <li><a><span class="fa fa-close j-tooltip mouse-cursor-pointer" data-toggle="control-sidebar" data-placement="bottom" data-toggle="tooltip" data-original-title="Fechar"></span></a></li>
 
@@ -112,14 +116,14 @@
 
                         <ul class="list-unstyled">
 
-                            <li><button type="button" class="btn btn-default btn-block margin-bottom-3 j-btn-sidebar-database-insert" data-toggle="control-sidebar" data-clipboard-message="Código copiado com sucesso, CTRL+V para colar no editor." data-clipboard-text="<?= base64_decode(___MACRO_DIVERSOS_LIMIT_CHARS___); ?>">String Limit Chars</button></li>
-                            <li><button type="button" class="btn btn-default btn-block margin-bottom-3 j-btn-sidebar-database-insert" data-toggle="control-sidebar" data-clipboard-message="Código copiado com sucesso, CTRL+V para colar no editor." data-clipboard-text="<?= base64_decode(___MACRO_DIVERSOS_LIMIT_WORDS___); ?>">String Limit Words</button></li>
+                            <li><button type="button" class="btn btn-default btn-block margin-bottom-3 j-btn-sidebar-database-insert" data-toggle="control-sidebar" data-clipboard-message="Código copiado com sucesso, CTRL+V para colar no editor." data-clipboard-text="<?= base64_decode(___MACRO_DIVERSOS_FARMAT_DATE___); ?>">Formata Data</button></li>
                             <li><button type="button" class="btn btn-default btn-block margin-bottom-3 j-btn-sidebar-database-insert" data-toggle="control-sidebar" data-clipboard-message="Código copiado com sucesso, CTRL+V para colar no editor." data-clipboard-text="<?= base64_decode(___MACRO_DIVERSOS_MONTH_DATE___); ?>">Mês de uma Data</button></li>
                             <li><button type="button" class="btn btn-default btn-block margin-bottom-3 j-btn-sidebar-database-insert" data-toggle="control-sidebar" data-clipboard-message="Código copiado com sucesso, CTRL+V para colar no editor." data-clipboard-text="<?= base64_decode(___MACRO_DIVERSOS_CALC_DATE_DIFF___); ?>">Diferença entre datas</button></li>
                             <li><button type="button" class="btn btn-default btn-block margin-bottom-3 j-btn-sidebar-database-insert" data-toggle="control-sidebar" data-clipboard-message="Código copiado com sucesso, CTRL+V para colar no editor." data-clipboard-text="<?= base64_decode(___MACRO_DIVERSOS_CALC_TIME_DIFF___); ?>">Diferença entre horas</button></li>
                             <li><button type="button" class="btn btn-default btn-block margin-bottom-3 j-btn-sidebar-database-insert" data-toggle="control-sidebar" data-clipboard-message="Código copiado com sucesso, CTRL+V para colar no editor." data-clipboard-text="<?= base64_decode(___MACRO_DIVERSOS_EXTENSIVE_VALUE___); ?>">Valor por Extenso</button></li>
-                            <li><button type="button" class="btn btn-default btn-block margin-bottom-3 j-btn-sidebar-database-insert" data-toggle="control-sidebar" data-clipboard-message="Código copiado com sucesso, CTRL+V para colar no editor." data-clipboard-text="<?= base64_decode(___MACRO_DIVERSOS_FARMAT_DATE___); ?>">Formata Data</button></li>
                             <li><button type="button" class="btn btn-default btn-block margin-bottom-3 j-btn-sidebar-database-insert" data-toggle="control-sidebar" data-clipboard-message="Código copiado com sucesso, CTRL+V para colar no editor." data-clipboard-text="<?= base64_decode(___MACRO_DIVERSOS_CONTAINS_STRING___); ?>">Contém na String</button></li>
+                            <li><button type="button" class="btn btn-default btn-block margin-bottom-3 j-btn-sidebar-database-insert" data-toggle="control-sidebar" data-clipboard-message="Código copiado com sucesso, CTRL+V para colar no editor." data-clipboard-text="<?= base64_decode(___MACRO_DIVERSOS_LIMIT_CHARS___); ?>">String Limit Chars</button></li>
+                            <li><button type="button" class="btn btn-default btn-block margin-bottom-3 j-btn-sidebar-database-insert" data-toggle="control-sidebar" data-clipboard-message="Código copiado com sucesso, CTRL+V para colar no editor." data-clipboard-text="<?= base64_decode(___MACRO_DIVERSOS_LIMIT_WORDS___); ?>">String Limit Words</button></li>
                             <li><button type="button" class="btn btn-default btn-block margin-bottom-3 j-btn-sidebar-database-insert" data-toggle="control-sidebar" data-clipboard-message="Código copiado com sucesso, CTRL+V para colar no editor." data-clipboard-text="<?= base64_decode(___MACRO_DIVERSOS_FORMAT_MOEDA___); ?>">Formatação de Moeda</button></li>
                             <li><button type="button" class="btn btn-default btn-block margin-bottom-3 j-btn-sidebar-database-insert" data-toggle="control-sidebar" data-clipboard-message="Código copiado com sucesso, CTRL+V para colar no editor." data-clipboard-text="<?= base64_decode(___MACRO_DIVERSOS_RANDOM_STRING___); ?>">String Randômica</button></li>
                             <li><button type="button" class="btn btn-default btn-block margin-bottom-3 j-btn-sidebar-database-insert" data-toggle="control-sidebar" data-clipboard-message="Código copiado com sucesso, CTRL+V para colar no editor." data-clipboard-text="<?= base64_decode(___MACRO_DIVERSOS_FILL_STRING___); ?>">Preenche String</button></li>
@@ -166,7 +170,7 @@
                             <!--FORM ADD/EDIT-->
                             <?php if (mc_slug($_parametros['code_screen_title']) == 'form-add' || mc_slug($_parametros['code_screen_title']) == 'form-edit'): ?>
                                 <li><button type="button" class="btn btn-default btn-block margin-bottom-3 j-btn-sidebar-database-insert" data-toggle="control-sidebar" data-clipboard-message="Código copiado com sucesso, CTRL+V para colar no editor." data-clipboard-text="<?= base64_decode(___MACRO_JS_BUTTONS_FORM_ADD_EDIT___); ?>">Buttons Form Add/Edit</button></li>
-                                <?php endif; ?>
+                            <?php endif; ?>
                         </ul>
 
 
@@ -177,7 +181,23 @@
 
         <?php endif; ?>
 
+        <?php if ($_parametros['code_type'] == 'onrecord' || $_parametros['code_type'] == 'onrecordexport'): ?>
 
+            <div class="tab-pane" id="control-sidebar-fields-table-tab" style="margin-top:-15px;">
+                <ul class="list-unstyled clearfix" style="margin-top:20px">
+                    <li style="float:left; width: 100%; padding: 0px;">
+                        <ul class="list-unstyled">
+                            <?php foreach ($_fields_table as $_field): ?>
+                                <li class="hover">
+                                    <button type="button" style="margin: 0; padding: 0; " class="btn btn-defaultx btn-block margin-bottom-3 j-btn-sidebar-database-insert" data-toggle="control-sidebar" data-clipboard-message="Código copiado com sucesso, CTRL+V para colar no editor." data-clipboard-text="{{<?= $_field['field_name']; ?>}}">{{<?= $_field['field_name']; ?>}}</button>
+                                </li>
+                            <?php endforeach; ?>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+
+        <?php endif; ?>
 
 
     </div><!-- /.tab-pane -->
@@ -185,6 +205,26 @@
 
 
 </aside>
+
+
+
+
+<style>
+
+    li.hover>button{
+        background: #f4f4f5;
+    }
+
+    li.hover>button:hover{
+        background: #357FA9;
+        color: white !important;
+    }
+
+    li.hover>button:active{
+        background: #76B3D3;
+    }
+
+</style>
 
 
 

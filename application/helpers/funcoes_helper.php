@@ -14,7 +14,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @param type $color
  */
 function bz_box_color($color) {
-    
+
     $_box = 'box-';
 
     if (mc_contains_in_string('black', $color)) {
@@ -33,7 +33,7 @@ function bz_box_color($color) {
 }
 
 /**
- * CHECK SE USUÁRIO É SUPER ADMIN
+ * GET TABELAS DO SISTEMA
  */
 function get_tables_system() {
 
@@ -53,6 +53,34 @@ function get_tables_system() {
 }
 
 //END get_tables_system()
+
+/**
+ * GET FIELDS GRIDLIST TABLE PROJECT
+ * 
+ * @param type $_table
+ * @return type
+ */
+function get_fields_gridlist_project($_id) {
+    $CI = & get_instance();
+
+    $_fields = $CI->db->from('proj_build_fields')->where(array('proj_build_id' => $_id, 'screen_type' => 'gridlist'))->order_by('order_field_gridlist')->get()->result();
+
+    $_row[] = array();
+    $_c = 0;
+
+    foreach ($_fields as $_field):
+
+        $_row[$_c]['field_name'] = $_field->field_name;
+        $_row[$_c]['csrf_token'] = $CI->security->get_csrf_hash();
+
+        $_c++;
+
+    endforeach;
+
+    return $_row;
+}
+
+//END get_fields_gridlist_project($_table);
 
 /**
  * CHECK SE USUÁRIO É SUPER ADMIN

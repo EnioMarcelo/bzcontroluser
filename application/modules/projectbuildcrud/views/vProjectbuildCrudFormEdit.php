@@ -428,12 +428,11 @@
 
                                                             if (!empty($_json->grid_list_field_type) && $_json->grid_list_field_type == 'virtual') {
                                                                 echo "<td></td>";
-                                                                echo "<td></td>";
                                                             } else {
                                                                 echo "<td><i class='fa fa-fw {$_btn_switch_grid_list_search} j-btn-switch-list-search-field' rel-screen-type='gridlist'></i></td>";
-                                                                echo "<td><i class='fa fa-fw {$_btn_switch_grid_list_export} j-btn-switch-list-export-field' rel-screen-type='gridlist'></i></td>";
                                                             }
 
+                                                            echo "<td><i class='fa fa-fw {$_btn_switch_grid_list_export} j-btn-switch-list-export-field' rel-screen-type='gridlist'></i></td>";
                                                             echo "<td class='text-center j_order_gridlist' style='width:5px;'><i class='fa fa-arrows'></i></td>";
                                                             echo "<td class='j_btn_modal_edit_fields_table_gridlist btn-show-modal-aguarde'>" . $_row_field_table_gridlist['field_name'] . $_grid_list_field_type_trash_icon . (($_row_field_table_gridlist['primary_key'] == 1) ? '<small class="label margin-left-5 bg-green j-tooltip" data-placement="bottom" data-toggle="tooltip" data-original-title="Chave Primária"><i class="fa fa-fw fa-key text-whrite"></i></small>' : '') . "</td>";
                                                             echo "<td class='j_btn_modal_edit_fields_table_gridlist btn-show-modal-aguarde'>" . $_row_field_table_gridlist['field_length'] . "</td>";
@@ -1297,7 +1296,7 @@
                 }
 
                 var _xmodel = _modelphp.replace(/[^A-Za-z0-9_]+/g, '');
-                _url = _url + '/model_' + _xmodel + '/model-php';
+                _url = _url + '/' + _xmodel + '/model-php';
                 window.location = _url;
 
             });

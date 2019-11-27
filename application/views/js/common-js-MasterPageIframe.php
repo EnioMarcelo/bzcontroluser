@@ -569,6 +569,9 @@
         $('.j-mask-hora-ptbr').mask('00:00');
         /** DATA E HORA PT BR **/
         $('.j-mask-datahora-ptbr').mask('00/00/0000 00:00');
+        
+        
+        
     });
     /*
      * BOTÃO DELETA REGISTROS

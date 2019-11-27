@@ -21,7 +21,7 @@
   		parent::__construct();
 
       /* LOAD MODEL */
-      $this->load->model('{{app-nome}}_model', 'm', TRUE);
+      $this->load->model('{{app-nome}}_model', 'model', TRUE);
       
 
       /* TÍTULO DA APLICAÇÃO */

@@ -527,6 +527,22 @@ function mc_send_mail($para, $assunto, $mensagem, $formato = 'html') {
  */
 
 /**
+ * MACRO QUE FORMATA STRING PARA CPF OU CNPJ
+ * 
+ * @param type $value
+ * @return type
+ */
+function mc_format_cpf_cnpj($value) {
+    $cnpj_cpf = preg_replace("/\D/", '', $value);
+
+    if (strlen($cnpj_cpf) === 11) {
+        return preg_replace("/(\d{3})(\d{3})(\d{3})(\d{2})/", "\$1.\$2.\$3-\$4", $cnpj_cpf);
+    }
+
+    return preg_replace("/(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/", "\$1.\$2.\$3/\$4-\$5", $cnpj_cpf);
+}
+
+/**
  * MACRO REDIRECT PAGE
  * 
  * @param string $_redirectApp      Nome do APP para onde deverá ser redirecionado

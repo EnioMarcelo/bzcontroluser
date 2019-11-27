@@ -1540,6 +1540,19 @@ class ProjectbuildCrud extends MY_Controller {
 
         endif;
 
+
+//        echo '<pre class="vardump">';
+//        var_dump( $this->dados['_dados_projeto'] );
+//        echo '</pre>';
+//        exit;
+
+
+        /**
+         * GET FIELDS TABLE
+         */
+        $this->dados['_fields_table'] = get_fields_gridlist_project($this->dados['_dados_projeto']->id);
+
+
         /*
          * TEMPLATE QUE SERÁ USADO PELO MÓDULO DO SISTEMA
          */
@@ -2353,6 +2366,51 @@ class ProjectbuildCrud extends MY_Controller {
                                         $this->_formEditConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = str_replace(",",".",str_replace(".","",$_dados["' . $_row['field_name'] . '"]));';
                                 endif;
 
+                            elseif ($_param_formAddEditField['form_add_edit_field_type'] == 'doc-cpf'):
+
+                                /* MONTA O CAMPO */
+                                $this->_formAddEditConfigInput = '<input type="text" name="' . $_row['field_name'] . '" class="form-control j-mask-' . $_row['field_name'] . '" value="<?= set_value ("' . $_row['field_name'] . '", !empty ($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : set_value ("' . $_row['field_name'] . '")); ?>" ' . $this->_formAddEditConfigInputAtributos . ' />';
+                                $this->_formAddEditConfigInputMask .= '$(".j-mask-' . $_row['field_name'] . '").mask("000.000.000-00", {placeholder: "000.000.000-00"});' . PHP_EOL;
+
+                                /* CONVERTE DADOS TO DB */
+                                $this->_formAddConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = str_replace([".","-"], "", $_dados["' . $_row['field_name'] . '"]);' . PHP_EOL;
+                                $this->_formEditConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = str_replace([".","-"], "", $_dados["' . $_row['field_name'] . '"]);' . PHP_EOL;
+
+                                /* VALIDAÇÃO */
+                                if (empty($this->_formAddEditConfigInputValidationAtributos)):
+                                    $this->_formAddEditConfigInputValidationAtributos .= 'valid_cpf';
+                                else:
+                                    $this->_formAddEditConfigInputValidationAtributos .= '|valid_cpf';
+                                endif;
+
+
+
+
+
+
+
+                            elseif ($_param_formAddEditField['form_add_edit_field_type'] == 'doc-cnpj'):
+
+                                /* MONTA O CAMPO */
+                                $this->_formAddEditConfigInput = '<input type="text" name="' . $_row['field_name'] . '" class="form-control j-mask-' . $_row['field_name'] . '" value="<?= set_value ("' . $_row['field_name'] . '", !empty ($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : set_value ("' . $_row['field_name'] . '")); ?>" ' . $this->_formAddEditConfigInputAtributos . ' />';
+                                $this->_formAddEditConfigInputMask .= '$(".j-mask-' . $_row['field_name'] . '").mask("00.000.000/0000-00", {placeholder: "00.000.000/0000-00"});' . PHP_EOL;
+
+                                /* CONVERTE DADOS TO DB */
+                                $this->_formAddConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = str_replace([".","-","/"], "", $_dados["' . $_row['field_name'] . '"]);' . PHP_EOL;
+                                $this->_formEditConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = str_replace([".","-","/"], "", $_dados["' . $_row['field_name'] . '"]);' . PHP_EOL;
+
+                                /* VALIDAÇÃO */
+                                if (empty($this->_formAddEditConfigInputValidationAtributos)):
+                                    $this->_formAddEditConfigInputValidationAtributos .= 'valid_cnpj';
+                                else:
+                                    $this->_formAddEditConfigInputValidationAtributos .= '|valid_cnpj';
+                                endif;
+
+
+
+
+
+
                             elseif ($_param_formAddEditField['form_add_edit_field_type'] == 'email'):
 
                                 $this->_formAddEditConfigInput = '<input type="text" name="' . $_row['field_name'] . '" class="form-control" placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" value="<?= set_value ("' . $_row['field_name'] . '", isset ($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : set_value ("' . $_row['field_name'] . '")); ?>" ' . $this->_formAddEditConfigInputAtributos . ' />';
@@ -2949,13 +3007,13 @@ class ProjectbuildCrud extends MY_Controller {
 
 //VALDATION ATRIBUTO UPEPRCASE / LOWERCASE
                                 if (isset($_param_formAddEditField['form_add_edit_field_convert_letter_into'])):
-                                    if ($_param_formAddEditField['form_add_edit_field_convert_letter_into'] == 'uppercase'):
+                                    if ($_param_formAddEditField['form_add_edit_field_convert_letter_into'] == 'text-uppercase'):
                                         if (empty($this->_formAddEditConfigInputValidationAtributos)):
                                             $this->_formAddEditConfigInputValidationAtributos .= 'strtoupper';
                                         else:
                                             $this->_formAddEditConfigInputValidationAtributos .= '|strtoupper';
                                         endif;
-                                    elseif ($_param_formAddEditField['form_add_edit_field_convert_letter_into'] == 'lowercase'):
+                                    elseif ($_param_formAddEditField['form_add_edit_field_convert_letter_into'] == 'text-lowercase'):
                                         if (empty($this->_formAddEditConfigInputValidationAtributos)):
                                             $this->_formAddEditConfigInputValidationAtributos .= 'strtolower';
                                         else:
@@ -4072,6 +4130,13 @@ class ProjectbuildCrud extends MY_Controller {
         $this->_dadosController = str_replace("<?= ", "'.", $this->_dadosController);
         $this->_dadosController = str_replace("; ?>", ".'", $this->_dadosController);
 
+
+        /**
+         * FAZ A TRATAMENTO DE $this->_exportCodeEditorOnRecord
+         */
+        $this->_exportCodeEditorOnRecord = str_replace('{{', '$_row["', $this->_exportCodeEditorOnRecord);
+        $this->_exportCodeEditorOnRecord = str_replace('}}', '"]', $this->_exportCodeEditorOnRecord);
+
         $this->_dadosController = str_replace('{{export-on-record}}', $this->_exportCodeEditorOnRecord, $this->_dadosController);
 
         /* END EXPORT REPORT */
@@ -4257,6 +4322,12 @@ class ProjectbuildCrud extends MY_Controller {
         foreach ($_dados as $_row):
             $this->_dadosView .= $_row;
         endforeach;
+
+        /**
+         * FAZ A TRATAMENTO DE $this->_gridListCodeEditorOnRecord
+         */
+        $this->_gridListCodeEditorOnRecord = str_replace('{{', '$_row["', $this->_gridListCodeEditorOnRecord);
+        $this->_gridListCodeEditorOnRecord = str_replace('}}', '"]', $this->_gridListCodeEditorOnRecord);
 
         /*
          * FAZ AS SUBSTITUIÇÕES DOS MARCADORES PELOS CÓDIGOS GERADOS
