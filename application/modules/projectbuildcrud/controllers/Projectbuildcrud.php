@@ -1377,7 +1377,7 @@ class ProjectbuildCrud extends MY_Controller {
         /*
          * CHECK SE EXISTE
          */
-        if (($_code_type == 'metodo-php' || 'model-php' || $_code_type == 'evento-php') && !empty($_idProjeto)):
+        if (($_code_type == 'metodo-php' || 'model-php' || $_code_type == 'evento-php' || $_code_type == 'blank') && !empty($_idProjeto)):
 
             $this->dados['_parametros']['code_screen_title'] = ' [' . $_code_screen . ' ($_p = null)]';
 

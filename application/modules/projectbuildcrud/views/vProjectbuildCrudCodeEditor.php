@@ -146,7 +146,6 @@
         <input type="hidden" name="code_screen" value="<?= $_parametros['code_screen']; ?>">
         <input type="hidden" name="code_type" value="<?= $_parametros['code_type']; ?>">
         <input type="hidden" name="btn-save-code-editor" value="btn-save-code-editor">
-        <input type="hidden" name="csrf_token" value="<?= $this->security->get_csrf_hash(); ?>">
 
         <textarea id="codeeditor_1"  class="col-xs-12" name="code_script" rows="30" width=="100%" autofocus /><?= (($_parametros['code_script']) ? base64_decode($_parametros['code_script']) : null); ?></textarea>
 

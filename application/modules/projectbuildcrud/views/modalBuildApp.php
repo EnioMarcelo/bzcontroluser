@@ -33,6 +33,18 @@
         return editAreaLoader.setValue(_p, _c);
     }
 
+    function post_codeeditor(_url, _data) {
+        $.post(_url, _data).done(function () {
+            $('#j-btn-exec-app').addClass('disabled');
+        })
+                .fail(function () {
+
+                })
+                .always(function () {
+                    $('#j-btn-exec-app').removeClass('disabled');
+                });
+    }
+
     $(function () {
 
         $('#modalBuildApp').on('show.bs.modal', function (event) {
@@ -41,36 +53,76 @@
 
             $('#modalBuildAppIframe').contents().find("html").remove();
 
-
-            /**
-             * SALVA CODEEDITOR
-             * https://www.cdolivet.com/editarea/
-             */
-            /**
-             * MACRO AJAX
-             */
+            var _csrfName = '<?php echo $this->security->get_csrf_token_name(); ?>';
+            var _csrfHash = '<?php echo $this->security->get_csrf_hash(); ?>';
 
             var _codeScript = get_codeScript("codeeditor_1");
-
             set_codeScript("codeeditor_1", _codeScript);
 
-            var _form = $("#formCodeEditor");
-            var _data = _form.serializeArray();
-            _data.push({name: 'code_script', value: _codeScript});
-            var _url = '<?= site_url() . $this->router->fetch_class() . '/codeeditor/' . $_dados_projeto->id . '/' . $_parametros['code_screen'] . '/' . $_parametros['code_type']; ?>';
+            /**
+             * ========================================================================================================================================================== 
+             * 
+             * SALVA CODEEDITOR
+             * https://www.cdolivet.com/editarea/
+             *
+             * MACRO AJAX
+             * 
+             */
 
-            $.post(_url, _data).done(function () {
-                $('#j-btn-exec-app').addClass('disabled');
-                $.post(_url, _data);
-            })
-                    .fail(function () {
-
-                    })
-                    .always(function () {
-                        $('#j-btn-exec-app').removeClass('disabled');
-                    });
+            console.clear();
 
 
+
+
+
+            if ($('*[data-codeeditor="blank"]').length) {
+
+                var _projetoId = $("input[name='id']").val();
+                var _codeScreen = $("input[name='type_project']").val();
+                var _codeType = $("input[name='type_project']").val();
+
+                var _data = [];
+                _data.push({name: 'btn-save-code-editor', value: 'btn-save-code-editor'});
+
+                _data.push({name: 'code_script', value: _codeScript});
+                _data.push({name: _csrfName, value: _csrfHash});
+
+                _data.push({name: 'proj_build_id', value: _projetoId});
+                _data.push({name: 'code_screen', value: _codeScreen});
+                _data.push({name: 'code_type', value: _codeType});
+
+
+                var _url = '<?= site_url() . $this->router->fetch_class(); ?>/codeeditor/' + _projetoId + '/' + _codeScreen + '/' + _codeType;
+
+                post_codeeditor(_url, _data);
+
+                console.log(_data);
+                console.log(_url);
+
+            }
+
+
+
+            if ($('#formCodeEditor').length) {
+
+                var _form = $("#formCodeEditor");
+                var _data = _form.serializeArray();
+
+                _data.push({name: 'code_script', value: _codeScript});
+                _data.push({name: _csrfName, value: _csrfHash});
+
+                var _projetoId = $("input[name='proj_build_id']").val();
+                var _codeScreen = $("input[name='code_screen']").val();
+                var _codeType = $("input[name='code_type']").val();
+                var _url = '<?= site_url() . $this->router->fetch_class(); ?>/codeeditor/' + _projetoId + '/' + _codeScreen + '/' + _codeType;
+
+                post_codeeditor(_url, _data);
+
+            }
+            /* 
+             * END SALVA CODEEDITOR 
+             * ==========================================================================================================================================================
+             * */
 
             var _button = $(event.relatedTarget);
             var _src = _button.data('build');

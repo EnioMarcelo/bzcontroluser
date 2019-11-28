@@ -1997,7 +1997,7 @@ function bz_remove_http($url = '') {
  * Get either a Gravatar URL or complete image tag for a specified email address.
  *
  * @param string $email The email address
- * @param string $s Size in pixels, defaults to 80px [ 1 - 2048 ]
+ * @param integer $s Size in pixels, defaults to 80px [ 1 - 2048 ]
  * @param string $d Default imageset to use [ 404 | mp | identicon | monsterid | wavatar ]
  * @param string $r Maximum rating (inclusive) [ g | pg | r | x ]
  * @param boole $img True to return a complete IMG tag False for just the URL
@@ -2038,13 +2038,13 @@ function bz_removeEmptyLines($string) {
 
 /**
  * 
- * CARREGA UM TEMPLATE
+ * MACRO QUE CARREGA UM TEMPLATE
  *
  * @param string $_pathTemplate - Caminho Relativo onde está o template
  * @param array $_dados         - Dados do template
  *
  */
-function bz_load_view_template($bzPathTemplate, $bzDados = array()) {
+function mc_load_view_template($bzPathTemplate, $bzDados = array()) {
 
     if (empty($bzPathTemplate)) {
         return false;

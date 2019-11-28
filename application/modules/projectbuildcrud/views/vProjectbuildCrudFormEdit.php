@@ -157,7 +157,11 @@
                         <!-- BTN GERAR APLICAÇÃO-->
                         <?php $_buildApp = site_url($this->router->fetch_class() . '/build_app/' . $dados->id . '?' . bz_app_parametros_url()); ?>
                         <a class="btn btn-sm bg-purple margin-left-20" data-toggle="modal" data-target="#modalBuildApp" data-build="<?= strtolower($_buildApp); ?>" data-width="50%" data-height="350px" data-title="Gerando Aplicação">
-                            <span class="fa fa-gears j-tooltip" data-placement="bottom" data-toggle="tooltip" data-original-title="Gerar"></span>
+                            <?php if ($dados->type_project == 'blank'): ?>
+                                <span class="fa fa-gears j-tooltip" data-placement="bottom" data-toggle="tooltip" data-original-title="Gerar" data-codeeditor="blank"></span>
+                            <?php else: ?>
+                                <span class="fa fa-gears j-tooltip" data-placement="bottom" data-toggle="tooltip" data-original-title="Gerar" data-codeeditor=""></span>
+                            <?php endif; ?>
                         </a>
                         <!-- END BTN GERAR APLICAÇÃO-->
 
