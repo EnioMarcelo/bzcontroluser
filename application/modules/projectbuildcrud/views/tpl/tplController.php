@@ -74,7 +74,7 @@
     /* function add() */
     public function add(){
 
-      if ($this->input->post() && $this->input->post('btn-salvar') == 'btn-salvar'):
+      if ($this->input->post() && $this->input->post('btn-salvar') == 'btn-salvar'){
 
 
         /* VALIDAÇÃO DOS DADOS */
@@ -83,7 +83,7 @@
 
         {{controller-onBeforeInsert}}
 
-        if ($this->form_validation->run() == true ):
+        if ($this->form_validation->run() == true ){
 
           $_dados = $this->input->post();
 
@@ -98,15 +98,15 @@
 
           /* GRAVA REGISTRO */
           $result = $this->create->exec($this->table_formaddedit_name, $_dados);
-          if ($this->db->trans_status() === FALSE):
+          if ($this->db->trans_status() === FALSE){
             $this->db->trans_rollback();
             echo 'Erro ao inserir Dados... SQL: ' . $this->db->set($dados)->get_compiled_insert($this->table_formaddedit_name);
             exit;
-          else:
+          }else{
             $this->db->trans_commit();
-          endif;
+          }
 
-          if ($result):
+          if ($result){
 
             /* GRAVA AUDITORIA */
             $dados_auditoria['creator'] = 'user';
@@ -121,20 +121,20 @@
 
             {{controller-onAfterInsert}}
 
-          else:
+          }else{
             echo 'Erro ao inserir Dados... SQL: ' . $this->db->set($dados)->get_compiled_insert($this->table_formaddedit_name);
             exit;
-          endif;
+          }
 
 
           redirect($this->_redirect . '/add');
           /* END GRAVA REGISTRO */
                 
-      else:
+      }else{
             set_mensagem_trigger_notifi( ___MSG_ERROR_CAMPOS_OBRIGATORIOS___, 'error');
-      endif;
+      }
 
-    endif;
+    }
 
 
 
@@ -153,7 +153,7 @@
   public function edit($_id = null){
 
     /* SE $_id FOR INFORMADO E A VALIDAÇÃO DOS DADOS FOR true, ENTÃO SERÁ FEITO O UPDATE DOS DADOS */
-    if ($this->input->post() && $this->input->post('btn-editar') == 'btn-editar'):
+    if ($this->input->post() && $this->input->post('btn-editar') == 'btn-editar'){
 
       /* VALIDAÇÃO DOS DADOS */
       {{edit-validation}}
@@ -161,7 +161,7 @@
 
       {{controller-onBeforeUpdate}}
 
-      if ($this->form_validation->run() == true ):
+      if ($this->form_validation->run() == true ){
 
          $_dados = $this->input->post();
 
@@ -182,15 +182,15 @@
          $_where_update = {{form-edit-where-update-fields}}
          $_result_update = $this->update->exec($this->table_formaddedit_name, $_dados, $_where_update);
 
-         if ($this->db->trans_status() === FALSE):
+         if ($this->db->trans_status() === FALSE){
           $this->db->trans_rollback();
           echo 'Erro ao atualizar Dados... SQL: ' . $this->db->set($dados)->get_compiled_insert($this->table_formaddedit_name);
           exit;
-      else:
+      }else{
           $this->db->trans_commit();
-      endif;
+      }
 
-      if ($_result_update):
+      if ($_result_update){
 
           /* GRAVA AUDITORIA */
           $dados_auditoria['creator'] = 'user';
@@ -203,35 +203,35 @@
 
           {{controller-onAfterUpdate}}
 
-      else:
+      }else{
           echo 'Erro ao inserir Dados... SQL: ' . $this->db->set($dados)->get_compiled_insert($this->table_formaddedit_name);
           exit;
-      endif;
+      }
       /* END UPDATE REGISTRO */
-  else:
+  }else{
       set_mensagem_trigger_notifi( ___MSG_ERROR_CAMPOS_OBRIGATORIOS___, 'error');
-  endif;
+  }
 
-endif;
+}
 
 
 /* GET DADOS PARA CARREGAR O FORM DE EDIT */
-if ($_id):
+if ($_id){
 
   /* GET DADOS */
   $_where = 'WHERE {{primary_key_field}} = "' . $_id . '" LIMIT 1';
   $_result = $this->read->exec($this->table_formaddedit_name, $_where);
 
-  if ($_result->result()):
+  if ($_result->result()){
     $this->dados['dados'] = $_result->row();
-  else:
+  }else{
     set_mensagem_trigger_notifi(___MSG_ERROR_SELECT_UPDATE_REGISTRO___, 'error');
     redirect($this->_redirect_parametros_url);
-  endif;
+  }
 
-else:
+}else{
   redirect($this->_redirect_parametros_url);
-endif;
+}
 /* END GET DADOS PARA CARREGAR O FORM DE EDIT */
 
 /* TEMPLATE QUE SERÁ USADO PELO MÓDULO DO SISTEMA */
@@ -255,7 +255,7 @@ public function del(){
 
  {{controller-onBeforeDelete}}
 
- if ($this->form_validation->run() == TRUE):
+ if ($this->form_validation->run() == TRUE){
 
   $_dados = $this->input->post('dadosdel', TRUE);
   $_dados = explode(',', $_dados);
@@ -265,23 +265,23 @@ public function del(){
   /* DELETA OS REGISTROS */
   $this->db->where_in('{{primary_key_field}}', $_dados);
   $this->db->delete($this->table_formaddedit_name);
-  if ($this->db->trans_status() === FALSE):
+  if ($this->db->trans_status() === FALSE){
     $this->db->trans_rollback();
     echo 'Erro ao inserir Dados... SQL: ' . $this->db->set($dados)->get_compiled_insert($this->table_formaddedit_name);
     exit;
-  else:
+  }else{
     $this->db->trans_commit();
-  endif;
+  }
 
 
-  if ($this->db->affected_rows()):
-    if (count($_dados) > 1):
+  if ($this->db->affected_rows()){
+    if (count($_dados) > 1){
       set_mensagem_trigger_notifi(str_replace('Registro Deletado', 'Registros Deletados', ___MSG_DEL_REGISTRO___), 'success');
       $dados_auditoria['description'] = str_replace('Registro Deletado', 'Registros Deletados', ___MSG_AUDITORIA_DEL_SUCCESS___);
-    else:
+    }else{
       set_mensagem_trigger_notifi(___MSG_DEL_REGISTRO___, 'success');
       $dados_auditoria['description'] = ___MSG_AUDITORIA_DEL_SUCCESS___;
-    endif;
+    }
 
     /* GRAVA AUDITORIA */
     $dados_auditoria['creator'] = 'user';
@@ -291,13 +291,13 @@ public function del(){
 
     {{controller-onAfterDelete}}
 
-  else:
+  }else{
     set_mensagem_trigger_notifi(___MSG_ERROR_DEL_REGISTRO___, 'error');
-  endif;
+  }
 
-else:
+}else{
   set_mensagem_trigger_notifi('',___MSG_ERROR_DE_VALIDACAO___, 'error');
-endif;
+}
 
 exit;
 }
@@ -368,7 +368,7 @@ exit;
         $_class_tr = '';
         $_style_tr = '';
 
-        foreach ($this->export['_dados']['results_paginacao_array'] as $_key => $_row):
+        foreach ($this->export['_dados']['results_paginacao_array'] as $_key => $_row){
 
             $_c++;
             $_line++;
@@ -427,7 +427,7 @@ exit;
             }
             
 
-        endforeach;
+        }
         
         if ($_line <= 43) {
             $_line = 0;
@@ -548,14 +548,14 @@ private function get_paginacao() {
   $_result_pag = bz_paginacao($_dados_pag);
 
   $_y = [{{controller-virtual-field}}];
-  if($_y):
+  if($_y){
     $_z = $_result_pag['results_paginacao_array'];
-    foreach ($_y as $_y_key => $_y_row):
-      foreach ($_z as $_z_key => $_z_row):
+    foreach ($_y as $_y_key => $_y_row){
+      foreach ($_z as $_z_key => $_z_row){
           $_result_pag['results_paginacao_array'][$_z_key][$_y_row] = '';
-      endforeach;
-    endforeach;
-  endif;
+      }
+    }
+  }
 
   return $_result_pag;
 }

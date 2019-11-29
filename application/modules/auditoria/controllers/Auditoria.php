@@ -56,9 +56,9 @@ class Auditoria extends MY_Controller {
          * DADOS PARA PAGINAÇÃO
          */
         $_dados_pag['table'] = $this->table_name;
-        if ($this->input->get('search', TRUE)):
+        if ($this->input->get('search', TRUE)) {
             $_dados_pag['search'] = array('_concat_fields' => 'inserted_date, username, application, method, creator, ip_user, action, description, last_query, user_agent', '_string' => $this->input->get('search', TRUE));
-        endif;
+        }
         $_dados_pag['filter'] = $_filter;
         $_dados_pag['order_by'] = 'inserted_date DESC';
         $_dados_pag['programa'] = $this->router->fetch_class();

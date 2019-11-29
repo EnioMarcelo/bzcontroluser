@@ -42,7 +42,7 @@ class Apps extends MY_Controller {
          */
         $_r = $this->db->get($this->table_name)->result_array();
 
-        foreach ($_r as $key => $_value):
+        foreach ($_r as $key => $_value) {
 
             $_app_name = $_value['app_name'];
 
@@ -52,15 +52,14 @@ class Apps extends MY_Controller {
             $_rg = $this->db->get('sec_grupos')->result_array();
 
             $_g = '';
-            foreach ($_rg as $row):
+            foreach ($_rg as $row) {
                 $_g .= '|' . $row['descricao'];
-            endforeach;
+            }
 
             $this->db->reset_query();
             $this->db->where('app_name', $_app_name);
             $this->db->update($this->table_name, array('grupo_descricao' => $_g));
-
-        endforeach;
+        }
         /*
          * END GRAVA A DESCRIÇÃO DOS GRUPOS QUE O APP PERTENCE PARA UTILIZAR NA FILTRAGEM DA PAGINAÇÃO E FILTRAGEM DE GRID/LIST
          */
@@ -86,7 +85,7 @@ class Apps extends MY_Controller {
      */
     public function add() {
 
-        if ($this->input->post()) :
+        if ($this->input->post()) {
 
 
             //Somente Letras/Números e Underlines
@@ -95,22 +94,22 @@ class Apps extends MY_Controller {
             $this->form_validation->set_rules('app_name', '<b>NOME APP</b>', 'trim|required|min_length[3]|max_length[50]|is_unique[sec_aplicativos.app_name]');
             $this->form_validation->set_rules('app_descricao', '<b>DESCRIÇÃO APP</b>', 'trim|required|min_length[5]|max_length[250]');
 
-            if ($this->form_validation->run() == TRUE):
+            if ($this->form_validation->run() == TRUE) {
 
                 $_dados = $this->input->post();
 
                 unset($_dados['btn-salvar']);
                 unset($_dados['task']);
 
-                if (isset($_dados['app_ativo'])):
-                    if ($_dados['app_ativo'] == 'on'):
+                if (isset($_dados['app_ativo'])) {
+                    if ($_dados['app_ativo'] == 'on') {
                         $_dados['app_ativo'] = 'Y';
-                    else:
+                    } else {
                         $_dados['app_ativo'] = 'N';
-                    endif;
-                else:
+                    }
+                } else {
                     $_dados['app_ativo'] = 'N';
-                endif;
+                }
 
 
                 /**
@@ -142,7 +141,7 @@ class Apps extends MY_Controller {
                  */
                 $result = $this->create->exec($this->table_name, $_dados);
 
-                if ($result):
+                if ($result) {
 
                     //GRAVA AUDITORIA
                     $dados_auditoria['creator'] = 'user';
@@ -152,17 +151,14 @@ class Apps extends MY_Controller {
                     add_auditoria($dados_auditoria);
 
                     set_mensagem_trigger_notifi(___MSG_ADD_REGISTRO___, 'success');
-
-                else:
+                } else {
                     echo 'Erro ao inserir Dados... SQL: ' . $this->db->set($dados)->get_compiled_insert($this->table_name);
                     exit;
-                endif;
+                }
 
                 redirect($this->_redirect . '/add');
-
-            endif;
-
-        endif;
+            }
+        }
 
 
         /*
@@ -180,13 +176,13 @@ class Apps extends MY_Controller {
 
     public function edit() {
 
-        if ($this->input->post()):
+        if ($this->input->post()) {
 
-            if ($this->input->post('btn-editar') == 'btn-editar'):
+            if ($this->input->post('btn-editar') == 'btn-editar') {
 
                 $this->form_validation->set_rules('app_descricao', '<b>DESCRIÇÃO APP</b>', 'trim|required|min_length[5]|max_length[250]');
 
-                if ($this->form_validation->run() == TRUE):
+                if ($this->form_validation->run() == TRUE) {
 
                     unset($_POST['btn-editar']);
                     unset($_POST['task']);
@@ -196,15 +192,15 @@ class Apps extends MY_Controller {
                      */
                     $_dados = $this->input->post();
 
-                    if (isset($_dados['app_ativo'])):
-                        if ($_dados['app_ativo'] == 'on'):
+                    if (isset($_dados['app_ativo'])) {
+                        if ($_dados['app_ativo'] == 'on') {
                             $_dados['app_ativo'] = 'Y';
-                        else:
+                        } else {
                             $_dados['app_ativo'] = 'N';
-                        endif;
-                    else:
+                        }
+                    } else {
                         $_dados['app_ativo'] = 'N';
-                    endif;
+                    }
 
                     /**
                      * DADOS FILLABLE
@@ -232,7 +228,7 @@ class Apps extends MY_Controller {
 
                     $_where = 'WHERE app_name = "' . $this->input->post('app_name') . '"';
 
-                    if ($this->update->exec($this->table_name, $_dados, $_where)):
+                    if ($this->update->exec($this->table_name, $_dados, $_where)) {
                         //GRAVA AUDITORIA
                         $dados_auditoria['creator'] = 'user';
                         $dados_auditoria['action'] = 'edit';
@@ -242,8 +238,7 @@ class Apps extends MY_Controller {
 
                         //set_mensagem_toastr('<i class="fa fa-fw fa-thumbs-o-up" style="font-size: 1.5em"></i>', _MSG_UPDATE_REGISTRO_, 'success', 'top-center');
                         set_mensagem_trigger_notifi(___MSG_UPDATE_REGISTRO___, 'success');
-
-                    else:
+                    } else {
                         //GRAVA AUDITORIA
                         $dados_auditoria['creator'] = 'system';
                         $dados_auditoria['action'] = 'error edit';
@@ -253,18 +248,14 @@ class Apps extends MY_Controller {
 
                         //set_mensagem_toastr('<i class="fa fa-fw fa-thumbs-o-up" style="font-size: 1.5em"></i>', _MSG_ERROR_UPDATE_REGISTRO_, 'error', 'top-center');
                         set_mensagem_trigger_notifi(___MSG_ERROR_UPDATE_REGISTRO___, 'error');
-
-                    endif;
-
-                endif;
-
-            endif;
-
-        endif;
+                    }
+                }
+            }
+        }
 
         $_id = $this->uri->segment(3);
 
-        if ($_id):
+        if ($_id) {
 
             /*
              * BUSCA OS DADOS DO APP
@@ -272,20 +263,17 @@ class Apps extends MY_Controller {
             $_where = 'WHERE app_name = "' . $_id . '" LIMIT 1';
             $_result = $this->read->exec($this->table_name, $_where);
 
-            if ($_result->result()):
+            if ($_result->result()) {
 
                 $this->dados['dados'] = $_result->row();
-
-
-            else:
+            } else {
                 //set_mensagem_toastr('<i class="fa fa-fw fa-thumbs-o-up" style="font-size: 1.5em"></i>', _MSG_ERROR_SELECT_UPDATE_REGISTRO_, 'error', 'top-center');
                 set_mensagem_trigger_notifi(___MSG_ERROR_SELECT_UPDATE_REGISTRO___, 'error');
                 redirect($this->_redirect_parametros_url);
-            endif;
-
-        else:
+            }
+        } else {
             redirect($this->_redirect_parametros_url);
-        endif;
+        }
 
         /*
          * TEMPLATE QUE SERÁ USADO PELO MÓDULO DO SISTEMA
@@ -310,7 +298,7 @@ class Apps extends MY_Controller {
         $this->form_validation->set_rules('btndel', '<b>BTN Del</b>', 'trim|required');
         $this->form_validation->set_rules('dadosdel', '<b>REGISTROS DEL</b>', 'trim|required');
 
-        if ($this->form_validation->run() == TRUE):
+        if ($this->form_validation->run() == TRUE) {
 
             $_dados = $this->input->post('dadosdel', TRUE);
             $_dados = explode(',', $_dados);
@@ -318,34 +306,30 @@ class Apps extends MY_Controller {
             $this->db->where_in('app_name', $_dados);
             $this->db->delete($this->table_name);
 
-            if ($this->db->affected_rows()):
-                if (count($_dados) > 1):
+            if ($this->db->affected_rows()) {
+                if (count($_dados) > 1) {
                     //set_mensagem_toastr('<i class="fa fa-fw fa-thumbs-o-up" style="font-size: 1.5em"></i>', str_replace('Registro Deletado', 'Registros Deletados', _MSG_DEL_REGISTRO_), 'success', 'top-center');
                     set_mensagem_trigger_notifi(str_replace('Registro Deletado', 'Registros Deletados', ___MSG_DEL_REGISTRO___), 'success');
                     $dados_auditoria['description'] = str_replace('Registro Deletado', 'Registros Deletados', ___MSG_AUDITORIA_DEL_SUCCESS___);
-                else:
+                } else {
                     //set_mensagem_toastr('<i class="fa fa-fw fa-thumbs-o-up" style="font-size: 1.5em"></i>', _MSG_DEL_REGISTRO_, 'success', 'top-center');
                     set_mensagem_trigger_notifi(___MSG_DEL_REGISTRO___, 'success');
                     $dados_auditoria['description'] = ___MSG_AUDITORIA_DEL_SUCCESS___;
-                endif;
+                }
 
                 //GRAVA AUDITORIA
                 $dados_auditoria['creator'] = 'user';
                 $dados_auditoria['action'] = 'del';
                 $dados_auditoria['last_query'] = $this->db->last_query();
                 add_auditoria($dados_auditoria);
-
-            else:
+            } else {
                 //set_mensagem_toastr('<i class="fa fa-fw fa-thumbs-o-up" style="font-size: 1.5em"></i>', _MSG_ERROR_DEL_REGISTRO_, 'error', 'top-center');
                 set_mensagem_trigger_notifi(___MSG_ERROR_DEL_REGISTRO___, 'error');
-            endif;
-
-
-
-        else:
+            }
+        } else {
             //set_mensagem_toastr('<i class="fa fa-fw fa-thumbs-o-up" style="font-size: 1.5em"></i>', _MSG_ERROR_DE_VALIDACAO_, 'error', 'top-center');
             set_mensagem_trigger_notifi(___MSG_ERROR_DE_VALIDACAO___, 'error');
-        endif;
+        }
 
         exit;
     }
@@ -360,7 +344,7 @@ class Apps extends MY_Controller {
 
         $_id = $this->uri->segment(3);
 
-        if ($_id):
+        if ($_id) {
 
             /*
              * BUSCA O USUÁRIO NO SISTEMA PARA CONSULTAR SE ESTÁ ATIVO OU INATIVO NO SISTEMA
@@ -368,7 +352,7 @@ class Apps extends MY_Controller {
             $_where = 'WHERE app_name = "' . $_id . '" LIMIT 1';
             $_result = $this->read->exec($this->table_name, $_where);
 
-            if ($_result->result()):
+            if ($_result->result()) {
 
                 /*
                  * GRAVA ALTERAÇÃO DO STATUS DO APP
@@ -377,7 +361,7 @@ class Apps extends MY_Controller {
                 $dados['app_name'] = $_result->row()->app_name;
                 $_where = 'WHERE app_name = "' . $_result->row()->app_name . '"';
 
-                if ($this->update->exec($this->table_name, $dados, $_where)):
+                if ($this->update->exec($this->table_name, $dados, $_where)) {
                     //GRAVA AUDITORIA
                     $dados_auditoria['creator'] = 'user';
                     $dados_auditoria['action'] = 'status change';
@@ -387,7 +371,7 @@ class Apps extends MY_Controller {
 
                     //set_mensagem_toastr('<i class="fa fa-fw fa-thumbs-o-up" style="font-size: 1.5em"></i>', _MSG_STATUS_REGISTRO_, 'success', 'top-center');
                     set_mensagem_trigger_notifi(___MSG_STATUS_REGISTRO___, 'success');
-                else:
+                } else {
                     //GRAVA AUDITORIA
                     $dados_auditoria['creator'] = 'system';
                     $dados_auditoria['action'] = 'error status change';
@@ -397,8 +381,8 @@ class Apps extends MY_Controller {
 
                     //set_mensagem_toastr('<i class="fa fa-fw fa-thumbs-o-up" style="font-size: 1.5em"></i>', _MSG_ERROR_STATUS_REGISTRO_, 'error', 'top-center');
                     set_mensagem_trigger_notifi(___MSG_ERROR_STATUS_REGISTRO___, 'error');
-                endif;
-            else:
+                }
+            } else {
                 //GRAVA AUDITORIA
                 $dados_auditoria['creator'] = 'system';
                 $dados_auditoria['action'] = 'error status change';
@@ -408,7 +392,7 @@ class Apps extends MY_Controller {
 
                 //set_mensagem_toastr('<i class="fa fa-fw fa-thumbs-o-up" style="font-size: 1.5em"></i>', _MSG_NOT_FIND_REGISTRO_, 'warning', 'top-center');
                 set_mensagem_trigger_notifi(___MSG_NOT_FIND_REGISTRO___, 'warning');
-            endif;
+            }
 
 
             /*
@@ -416,8 +400,7 @@ class Apps extends MY_Controller {
              */
             $_result_paginacao = $this->get_paginacao();
             redirect($this->_redirect_parametros_url);
-
-        endif;
+        }
     }
 
 //END public function status()           
@@ -435,9 +418,9 @@ class Apps extends MY_Controller {
          * DADOS PARA PAGINAÇÃO
          */
         $_dados_pag['table'] = $this->table_name;
-        if ($this->input->get('search', TRUE)):
+        if ($this->input->get('search', TRUE)) {
             $_dados_pag['search'] = array('_concat_fields' => 'app_name, app_descricao, app_ativo, app_name, grupo_descricao', '_string' => $this->input->get('search', TRUE));
-        endif;
+        }
         $_dados_pag['filter'] = $_filter;
         $_dados_pag['order_by'] = 'app_name';
         $_dados_pag['programa'] = $this->router->fetch_class();

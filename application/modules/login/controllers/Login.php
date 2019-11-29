@@ -26,10 +26,10 @@ class Login extends MY_Controller {
         /*
          * SE SISTEMA ESTIVER EM MANUTENÇÃO, SERÁ REDIRCIONADO PARA TELA DE AVISO
          */
-        if ($this->session->tempdata('manutencao') == 'Y'):
+        if ($this->session->tempdata('manutencao') == 'Y') {
             redirect('manutencao', 'refresh');
             exit;
-        endif;
+        }
 
 
         /*
@@ -52,14 +52,13 @@ class Login extends MY_Controller {
             $this->form_validation->set_rules('email', '<b>Email</b>', 'trim|required|valid_email|xss_clean');
             $this->form_validation->set_rules('senha', '<b>Senha</b>', 'trim|required|min_length[6]|xss_clean');
 
-            if ($this->form_validation->run() == TRUE):
+            if ($this->form_validation->run() == TRUE) {
 
                 $_POST['email'] = xss_clean($this->input->post('email', TRUE));
                 $_POST['senha'] = do_hash(xss_clean($this->input->post('senha', TRUE)), 'md5');
 
                 $this->login();
-
-            endif;
+            }
         }
     }
 
@@ -68,9 +67,9 @@ class Login extends MY_Controller {
         /*
          * CHECK SE USUÁRIO ESTÁ LOGADO, SE OK, REDIRECIONA PARA O PAINEL.
          */
-        if (check_is_user_login()):
+        if (check_is_user_login()) {
             redirect('dashboard');
-        endif;
+        }
 
         /**
          * TIME THE SESSION EXPIRES
@@ -92,10 +91,10 @@ class Login extends MY_Controller {
 
         $result = $this->db->get_where('ci_sessions', array('(timestamp+' . $this->config->item('sess_expiration') . ') <=' => time()));
 
-        if ($result->num_rows() > 0):
+        if ($result->num_rows() > 0) {
             $termosDB = "WHERE (timestamp+" . $this->config->item('sess_expiration') . ") <= " . time();
             $this->delete->exec('ci_sessions', $termosDB);
-        endif;
+        }
     }
 
     /*
@@ -113,35 +112,34 @@ class Login extends MY_Controller {
 
 
         //CHECK MULTIPLOS LOGINS
-        if ($result->result()):
-            if (get_setting('multiplos_logins') == 'NAO'):
-                if ($result->row()->super_admin == 'N'):
+        if ($result->result()) {
+            if (get_setting('multiplos_logins') == 'NAO') {
+                if ($result->row()->super_admin == 'N') {
 
                     //CHECK SE EXISTE USUÁRIO LOGADO, SE EXISTIR REDIRECIONA PARA AVISO DE ERRO E NÃO DEIXA ENTRAR NO SISTEMA
                     $result_multiplo_login = $this->read->exec('ci_sessions', 'WHERE data LIKE "%' . $this->input->post('email', TRUE) . '%"');
 
-                    if ($result_multiplo_login->result()):
+                    if ($result_multiplo_login->result()) {
                         $this->session->unset_userdata('user_login');
 //                        set_mensagem_toastr('ATENÇÃO', 'Usuário já está logado no sistema.', 'warning', 'top-center');
                         set_mensagem_trigger_notifi('ATENÇÃO... Usuário já está logado no sistema.', 'warning');
                         redirect('login', 'refresh');
                         exit;
-                    endif;
-
-                endif;
-            endif;
-        endif;
+                    }
+                }
+            }
+        }
 
 
         //GRAVA A DATA E HORA DO ÚLTIMO LOGIN
-        if ($result->result()):
+        if ($result->result()) {
             $_ultimoLogin = $result->row()->ultimo_login;
             $this->update->exec($this->table_name, array('ultimo_login' => date('Y-m-d H:i:s')), $termosDB);
-        endif;
+        }
 
 
         //CARREGA A SESSÃO DO USUÁRIO COM OS DADOS
-        if ($result->result()):
+        if ($result->result()) {
             $session_data = array(
                 'user_nome' => $result->row()->nome,
                 'user_sexo' => $result->row()->sexo,
@@ -167,8 +165,7 @@ class Login extends MY_Controller {
             set_mensagem_trigger_notifi('Login Efetuado com Sucesso.', 'success');
 
             redirect(site_url('dashboard'), 'refresh');
-
-        else:
+        } else {
             //GRAVA AUDITORIA
             $dados_auditoria['creator'] = 'user';
             $dados_auditoria['action'] = 'login';
@@ -181,8 +178,7 @@ class Login extends MY_Controller {
             set_mensagem_sweetalert('Erro ao efetuar o Login', 'Email ou Senha não conferem.', 'error');
 
             redirect(site_url(), 'refresh');
-
-        endif;
+        }
     }
 
     /*
@@ -191,7 +187,7 @@ class Login extends MY_Controller {
 
     public function logout() {
 
-        if (isset($this->session->userdata['user_login'])):
+        if (isset($this->session->userdata['user_login'])) {
 
             //GRAVA AUDITORIA
             $dados_auditoria['creator'] = 'user';
@@ -201,12 +197,11 @@ class Login extends MY_Controller {
 
 
 //            $this->session->unset_userdata('user_login');
-        //set_mensagem('Logout', 'Usuário Saiu do Sistema com Sucesso.', 'fa-thumbs-o-up', 'info');
-        //set_mensagem_toastr('Logout', 'Usuário Saiu do Sistema com Sucesso.', 'info', 'top-center');
+            //set_mensagem('Logout', 'Usuário Saiu do Sistema com Sucesso.', 'fa-thumbs-o-up', 'info');
+            //set_mensagem_toastr('Logout', 'Usuário Saiu do Sistema com Sucesso.', 'info', 'top-center');
 //                set_mensagem_notfit('Usuário Saiu do Sistema com Sucesso.', 'success');
 //            set_mensagem_nice('', 'Usuário Saiu do Sistema com Sucesso.', 'success', 'br');
-
-        endif;
+        }
 
         $this->session->sess_destroy();
 
@@ -220,11 +215,11 @@ class Login extends MY_Controller {
 //        $dados['nome'] = 'Teste NEW 2';
 //        $dados['dados'] = 'TESTE NEW INSERT';
 //        $result = $this->create->exec($this->table_name, $dados) ;
-//        if ($result):
+//        if ($result){
 //            echo 'OK INSERT...';
-//        else:
+//        }else{
 //            echo 'Erro ao inserir Dados...';
-//        endif;
+//        }
 
 
 
@@ -233,11 +228,11 @@ class Login extends MY_Controller {
      */
 //        $termosDB = "WHERE id = 10";
 //
-//        if ($this->delete->exec($this->table_name, $termosDB)):
+//        if ($this->delete->exec($this->table_name, $termosDB)){
 //            echo 'Deletado OK...';
-//        else:
+//        }else{
 //            echo 'Erro ao Deletar...';
-//        endif;
+//        }
 
 
 
@@ -251,11 +246,11 @@ class Login extends MY_Controller {
 //        $dados['dados'] = '1 2 23 34 4  zzzzzzzz';
 //        $termosDB = 'WHERE id = 20';
 //
-//        if ($this->update->exec($this->table_name, $dados, $termosDB)):
+//        if ($this->update->exec($this->table_name, $dados, $termosDB)){
 //            echo 'Atualizado OK...';
-//        else:
+//        }else{
 //            echo 'Erro ao Atualizar...';
-//        endif;
+//        }
 
 
 
@@ -270,18 +265,18 @@ class Login extends MY_Controller {
 //        
 //        $result = $this->read->exec($this->table_name, $termosDB) ;
 //        
-//        if ($result->result()):
+//        if ($result->result()){
 ////            echo 'Leitura OK...<hr><pre>';
 ////            var_dump($result->result_object());
 ////            echo '</pre>';
 //            
-////            foreach ($result->result_object() as $value):
+////            foreach ($result->result_object() as $value){
 ////                echo '<hr>ID : ' . $value->id . ' - NOME : ' . $value->nome;
-////            endforeach;
+////            }
 //            
 //            echo '--> ' . count($result->result_object()) ;
 //            
-//        else:
+//        }else{
 //            echo 'Nenhum Registro Encontrado...';
-//        endif;
+//        }
 }

@@ -15,13 +15,13 @@ class Userprofile extends MY_Controller {
 
         $_task = $this->input->get('task');
 
-        if ($_task == 'changepass'):
+        if ($_task == 'changepass') {
             $this->dados['_pane1changepasssactive'] = '';
             $this->dados['_pane2changepasssactive'] = 'Y';
-        else:
+        } else {
             $this->dados['_pane1changepasssactive'] = 'Y';
             $this->dados['_pane2changepasssactive'] = '';
-        endif;
+        }
 
         /*
          * TABELA QUE SERÁ USADO PELO MÓDULO DO SISTEMA
@@ -38,13 +38,13 @@ class Userprofile extends MY_Controller {
                 $this->form_validation->set_rules('nome', '<b>Nome</b>', 'trim|required|min_length[10]|max_length[250]|xss_clean');
                 $this->form_validation->set_rules('sexo', '<b>Sexo</b>', 'trim|required|xss_clean');
 
-                if ($this->form_validation->run() == TRUE):
+                if ($this->form_validation->run() == TRUE) {
 
                     $this->save_user();
-                else:
+                } else {
                     set_mensagem_trigger_notifi(___MSG_ERROR_DE_VALIDACAO___, 'error');
-                endif;
-            }elseif ($this->input->post('task') == 'user_change_pass') {
+                }
+            } elseif ($this->input->post('task') == 'user_change_pass') {
 
                 $this->dados['_pane1changepasssactive'] = '';
                 $this->dados['_pane2changepasssactive'] = 'Y';
@@ -52,13 +52,13 @@ class Userprofile extends MY_Controller {
                 /*
                  * FAZ A VALIDAÇÃO DOS CAMPOS DO FORMULÁRIO.
                  */
-                //$this->form_validation->set_message('matches', 'O Campo %s está diferente do campo %s.');
+//$this->form_validation->set_message('matches', 'O Campo %s está diferente do campo %s.');
                 $this->form_validation->set_rules('email', '<b>Email</b>', 'trim|required|min_length[10]|max_length[250]|xss_clean');
                 $this->form_validation->set_rules('senha_atual', '<b>Senha Atual</b>', 'trim|required|min_length[6]|max_length[20]');
                 $this->form_validation->set_rules('nova_senha', '<b>Nova Senha</b>', 'trim|required|min_length[6]|strtolower|xss_clean');
                 $this->form_validation->set_rules('confirme_nova_senha', '<b>Confirme Nova Senha</b>', 'trim|required|min_length[6]|strtolower|xss_clean|matches[nova_senha]');
 
-                if ($this->form_validation->run() == TRUE):
+                if ($this->form_validation->run() == TRUE) {
 
                     $_POST['email'] = xss_clean($this->input->post('email', TRUE));
                     $_POST['senha_atual'] = do_hash(xss_clean($this->input->post('senha_atual', TRUE)), 'md5');
@@ -66,33 +66,31 @@ class Userprofile extends MY_Controller {
                     $_POST['confirme_nova_senha'] = do_hash(xss_clean($this->input->post('confirme_nova_senha', TRUE)), 'md5');
 
 
-                    if (!$this->check_senha_atual()):
-                        //set_mensagem('Erro', 'Senha Atual Não Confere.', 'fa-thumbs-o-down', 'danger');
-                        //set_mensagem_toastr('Erro', 'Senha Atual Não Confere.', 'error', 'top-center');
+                    if (!$this->check_senha_atual()) {
+//set_mensagem('Erro', 'Senha Atual Não Confere.', 'fa-thumbs-o-down', 'danger');
+//set_mensagem_toastr('Erro', 'Senha Atual Não Confere.', 'error', 'top-center');
                         set_mensagem_sweetalert('Erro', 'Senha Atual Não Confere.', 'error');
                         redirect(site_url('userprofile'), 'refresh');
                         exit;
-                    endif;
+                    }
 
 
-                    if ($this->change_pass_user()):
-                        //set_mensagem('Sucesso', 'Sua Senha foi Alterada com Sucesso.', 'fa-thumbs-o-up', 'success');
-                        //set_mensagem_toastr('Sucesso', 'Senha Alterada com Sucesso.', 'success', 'top-center');
-                        //set_mensagem_sweetalert('Sucesso', 'Senha Alterada com Sucesso.', 'success');
+                    if ($this->change_pass_user()) {
+//set_mensagem('Sucesso', 'Sua Senha foi Alterada com Sucesso.', 'fa-thumbs-o-up', 'success');
+//set_mensagem_toastr('Sucesso', 'Senha Alterada com Sucesso.', 'success', 'top-center');
+//set_mensagem_sweetalert('Sucesso', 'Senha Alterada com Sucesso.', 'success');
                         set_mensagem_trigger_notifi('Senha Alterada com Sucesso.', 'success');
-
-                    else:
-                        //set_mensagem('Erro', 'Erro ao Alterar sua Senha.', 'fa-thumbs-o-down', 'danger');
-                        //set_mensagem_toastr('Erro', 'Erro ao Alterar sua Senha.', 'error');
+                    } else {
+//set_mensagem('Erro', 'Erro ao Alterar sua Senha.', 'fa-thumbs-o-down', 'danger');
+//set_mensagem_toastr('Erro', 'Erro ao Alterar sua Senha.', 'error');
                         set_mensagem_trigger_notifi('Erro ao Alterar sua Senha.', 'error');
-                    endif;
-
-                else:
-                    //set_mensagem('Erro', 'Erro ao Alterar sua Senha.', 'fa-thumbs-o-down', 'danger');
-                    //set_mensagem_toastr('Erro', 'Erro ao Alterar sua Senha.', 'error');
+                    }
+                } else {
+//set_mensagem('Erro', 'Erro ao Alterar sua Senha.', 'fa-thumbs-o-down', 'danger');
+//set_mensagem_toastr('Erro', 'Erro ao Alterar sua Senha.', 'error');
                     set_mensagem_trigger_notifi(___MSG_ERROR_DE_VALIDACAO___, 'error');
-                endif;
-            }else {
+                }
+            } else {
                 set_mensagem_trigger_notifi(___MSG_ERROR_DE_VALIDACAO___, 'error');
             }
         }
@@ -111,13 +109,12 @@ class Userprofile extends MY_Controller {
 
         $result = $this->read->exec($this->table_name, $termosDB)->row();
 
-        if ($result):
+        if ($result) {
 
             unset($result->senha);
 
             $this->dados['_dados_usuario'] = $result;
-
-        endif;
+        }
 
         /*
          * TEMPLATE QUE SERÁ USADO PELO MÓDULO DO SISTEMA
@@ -126,7 +123,7 @@ class Userprofile extends MY_Controller {
         $this->load->view('vMasterPageIframe', $this->dados);
     }
 
-    //END function index()
+//END function index()
 
     /*
      * SAVE USER DADOS
@@ -156,16 +153,16 @@ class Userprofile extends MY_Controller {
         $result = $this->update->exec($this->table_name, $_dados, $termosDB);
 
         if ($result) {
-            //GRAVA AUDITORIA
+//GRAVA AUDITORIA
             $dados_auditoria['creator'] = 'user';
             $dados_auditoria['action'] = 'update user';
             $dados_auditoria['description'] = 'Dados do Usuário Atualizados com Sucesso';
             $dados_auditoria['last_query'] = $this->db->last_query();
             add_auditoria($dados_auditoria);
 
-            //set_mensagem('Sucesso', 'Dados Atualizados com Sucesso.', 'fa-thumbs-o-up', 'success');
-            //set_mensagem_toastr('Sucesso', 'Dados Atualizados com Sucesso.', 'success', 'top-center');
-            //set_mensagem_sweetalert('Sucesso', 'Dados Atualizados com Sucesso.', 'success');
+//set_mensagem('Sucesso', 'Dados Atualizados com Sucesso.', 'fa-thumbs-o-up', 'success');
+//set_mensagem_toastr('Sucesso', 'Dados Atualizados com Sucesso.', 'success', 'top-center');
+//set_mensagem_sweetalert('Sucesso', 'Dados Atualizados com Sucesso.', 'success');
             set_mensagem_trigger_notifi(___MSG_UPDATE_REGISTRO___, 'success');
         }
     }
@@ -182,7 +179,7 @@ class Userprofile extends MY_Controller {
 
         if ($result) {
 
-            //GRAVA AUDITORIA
+//GRAVA AUDITORIA
             $dados_auditoria['creator'] = 'user';
             $dados_auditoria['action'] = 'change pass';
             $dados_auditoria['description'] = 'Fez Alteração de Senha pelo Sistema';

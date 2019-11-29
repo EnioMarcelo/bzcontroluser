@@ -189,12 +189,11 @@ function mc_image_thumb_modal($_image_name, $_image_folder = NULL, $_type = 'sin
         $_IDgallery = mc_random_number();
         $_count = 0;
 
-        foreach ($_images as $_image):
+        foreach ($_images as $_image) {
             $_count++;
             $_url_imagem = base_url(___CONF_UPLOAD_DIR___ . ___CONF_UPLOAD_IMAGE_DIR___ . $_image_folder) . ($_image_folder ? DIRECTORY_SEPARATOR . $_image : $_image);
             $_gallery .= '<a class="' . ($_count == 1 ? '' : 'hide') . ' thumbnail" href="' . $_url_imagem . '" rel="lightbox[' . $_IDgallery . ']"><img src="' . $_url_imagem . '" title="' . $_image . '"></a>' . PHP_EOL;
-
-        endforeach;
+        }
 
         return $_gallery;
         /**/
@@ -281,9 +280,9 @@ function mc_change_values_case_array(array $array, $case = CASE_LOWER) {
  */
 function mc_exclude_column_array(array $array, array $fields) {
 
-    foreach ($fields as $field):
+    foreach ($fields as $field) {
         $array = bz_queryResultExcludeCol($array, $field);
-    endforeach;
+    }
 
     return $array;
 }

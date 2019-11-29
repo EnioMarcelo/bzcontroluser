@@ -32,7 +32,7 @@ class Grupos extends MY_Controller {
         $this->table_name = 'sec_grupos';
     }
 
-    // END function __construct()
+// END function __construct()
 
 
     public function index() {
@@ -63,12 +63,12 @@ class Grupos extends MY_Controller {
          */
         $this->dados['_apps']['_result'] = $this->read->exec('sec_aplicativos', 'ORDER BY app_descricao')->result();
 
-        if ($this->input->post()) :
+        if ($this->input->post()) {
 
             $this->form_validation->set_rules('descricao', '<b>NOME DO GRUPO</b>', 'trim|required|min_length[3]|max_length[250]');
             $this->form_validation->set_rules('apps', '<b>APLICATIVOS</b>', 'callback_valid_apps');
 
-            if ($this->form_validation->run() == TRUE):
+            if ($this->form_validation->run() == TRUE) {
 
                 $_dados = $this->input->post();
 
@@ -78,15 +78,15 @@ class Grupos extends MY_Controller {
                 unset($_dados['task']);
                 unset($_dados['apps']);
 
-                if (isset($_dados['ativo'])):
-                    if ($_dados['ativo'] == 'on'):
+                if (isset($_dados['ativo'])) {
+                    if ($_dados['ativo'] == 'on') {
                         $_dados['ativo'] = 'Y';
-                    else:
+                    } else {
                         $_dados['ativo'] = 'N';
-                    endif;
-                else:
+                    }
+                } else {
                     $_dados['ativo'] = 'N';
-                endif;
+                }
 
 
                 /**
@@ -115,9 +115,9 @@ class Grupos extends MY_Controller {
                  */
                 $result = $this->create->exec($this->table_name, $_dados);
 
-                if ($result):
+                if ($result) {
 
-                    //GRAVA AUDITORIA
+                    /* GRAVA AUDITORIA */
                     $dados_auditoria['creator'] = 'user';
                     $dados_auditoria['action'] = 'add';
                     $dados_auditoria['description'] = ___MSG_AUDITORIA_ADD_SUCCESS___;
@@ -134,10 +134,10 @@ class Grupos extends MY_Controller {
                     $_last_id_add_grupo = $result['last_id_add'];
                     $_app_name = '';
                     $this->db->trans_start();
-                    foreach ($_apps as $_value):
+                    foreach ($_apps as $_value) {
                         $this->db->insert('sec_grupos_has_sec_aplicativos', array('sec_grupos_id' => $_last_id_add_grupo, 'sec_aplicativos_app_name' => $_value));
                         $_app_name .= '|' . $_value;
-                    endforeach;
+                    }
 
                     /*
                      * GRAVA OS NOMES DOS APPS QUE O GRUPO TEM RELACIONADO A ELES PARA UTILIZAR NA FILTRAGEM DA PAGINAÇÃO E FILTRAGEM DE GRID/LIST
@@ -151,19 +151,16 @@ class Grupos extends MY_Controller {
 
                     $this->db->trans_complete();
 
-                    //set_mensagem_toastr('<i class="fa fa-fw fa-thumbs-o-up" style="font-size: 1.5em"></i>', _MSG_ADD_REGISTRO_, 'success', 'top-center');
+//set_mensagem_toastr('<i class="fa fa-fw fa-thumbs-o-up" style="font-size: 1.5em"></i>', _MSG_ADD_REGISTRO_, 'success', 'top-center');
                     set_mensagem_trigger_notifi(___MSG_ADD_REGISTRO___, 'success');
-
-                else:
+                } else {
                     echo 'Erro ao inserir Dados... SQL: ' . $this->db->set($dados)->get_compiled_insert($this->table_name);
                     exit;
-                endif;
+                }
 
                 redirect($this->_redirect . '/add');
-
-            endif;
-
-        endif;
+            }
+        }
 
 
         /*
@@ -186,14 +183,14 @@ class Grupos extends MY_Controller {
          */
         $this->dados['_apps']['_result'] = $this->read->exec('sec_aplicativos', 'ORDER BY app_descricao')->result();
 
-        if ($this->input->post()):
+        if ($this->input->post()) {
 
-            if ($this->input->post('btn-editar') == 'btn-editar'):
+            if ($this->input->post('btn-editar') == 'btn-editar') {
 
                 $this->form_validation->set_rules('descricao', '<b>NOME DO GRUPO</b>', 'trim|required|min_length[3]|max_length[250]');
                 $this->form_validation->set_rules('apps', '<b>APLICATIVOS</b>', 'callback_valid_apps');
 
-                if ($this->form_validation->run() == TRUE):
+                if ($this->form_validation->run() == TRUE) {
 
                     $_dados = $this->input->post();
 
@@ -206,15 +203,15 @@ class Grupos extends MY_Controller {
                     /*
                      * GRAVA ALTERAÇÃO DOS DADOS DO GRUPO
                      */
-                    if (isset($_dados['ativo'])):
-                        if ($_dados['ativo'] == 'on'):
+                    if (isset($_dados['ativo'])) {
+                        if ($_dados['ativo'] == 'on') {
                             $_dados['ativo'] = 'Y';
-                        else:
+                        } else {
                             $_dados['ativo'] = 'N';
-                        endif;
-                    else:
+                        }
+                    } else {
                         $_dados['ativo'] = 'N';
-                    endif;
+                    }
 
 
                     /**
@@ -239,9 +236,9 @@ class Grupos extends MY_Controller {
 
                     $_where = 'WHERE id = "' . $this->input->post('id') . '"';
 
-                    if ($this->update->exec($this->table_name, $_dados, $_where)):
+                    if ($this->update->exec($this->table_name, $_dados, $_where)) {
 
-                        //GRAVA AUDITORIA
+//GRAVA AUDITORIA
                         $dados_auditoria['creator'] = 'user';
                         $dados_auditoria['action'] = 'edit';
                         $dados_auditoria['description'] = ___MSG_AUDITORIA_UPDATE_SUCCESS___;
@@ -265,10 +262,10 @@ class Grupos extends MY_Controller {
                         $this->db->reset_query();
                         $this->db->trans_start();
                         $_app_name = '';
-                        foreach ($_apps as $_value):
+                        foreach ($_apps as $_value) {
                             $this->db->replace('sec_grupos_has_sec_aplicativos', array('sec_grupos_id' => $this->input->post('id'), 'sec_aplicativos_app_name' => $_value));
                             $_app_name .= '|' . $_value;
-                        endforeach;
+                        }
 
                         /*
                          * GRAVA OS NOMES DOS APPS QUE O GRUPO TEM RELACIONADO A ELES PARA UTILIZAR NA FILTRAGEM DA PAGINAÇÃO E FILTRAGEM DE GRID/LIST
@@ -282,32 +279,26 @@ class Grupos extends MY_Controller {
 
                         $this->db->trans_complete();
 
-                        //set_mensagem_toastr('<i class="fa fa-fw fa-thumbs-o-up" style="font-size: 1.5em"></i>', _MSG_UPDATE_REGISTRO_, 'success', 'top-center');
+//set_mensagem_toastr('<i class="fa fa-fw fa-thumbs-o-up" style="font-size: 1.5em"></i>', _MSG_UPDATE_REGISTRO_, 'success', 'top-center');
                         set_mensagem_trigger_notifi(___MSG_UPDATE_REGISTRO___, 'success');
-
-                    else:
-                        //GRAVA AUDITORIA
+                    } else {
+//GRAVA AUDITORIA
                         $dados_auditoria['creator'] = 'system';
                         $dados_auditoria['action'] = 'error edit';
                         $dados_auditoria['description'] = ___MSG_AUDITORIA_UPDATE_ERROR___;
                         $dados_auditoria['last_query'] = $this->db->last_query();
                         add_auditoria($dados_auditoria);
 
-                        //set_mensagem_toastr('<i class="fa fa-fw fa-thumbs-o-down" style="font-size: 1.5em"></i>', _MSG_ERROR_UPDATE_REGISTRO_, 'error', 'top-center');
+//set_mensagem_toastr('<i class="fa fa-fw fa-thumbs-o-down" style="font-size: 1.5em"></i>', _MSG_ERROR_UPDATE_REGISTRO_, 'error', 'top-center');
                         set_mensagem_trigger_notifi(___MSG_ERROR_UPDATE_REGISTRO___, 'error');
-
-
-                    endif;
-
-                endif;
-
-            endif;
-
-        endif;
+                    }
+                }
+            }
+        }
 
         $_id = $this->uri->segment(3);
 
-        if ($_id):
+        if ($_id) {
 
             /*
              * BUSCA OS DADOS
@@ -315,7 +306,7 @@ class Grupos extends MY_Controller {
             $_where = 'WHERE id = "' . $_id . '" LIMIT 1';
             $_result = $this->read->exec($this->table_name, $_where);
 
-            if ($_result->result()):
+            if ($_result->result()) {
                 $this->dados['dados'] = $_result->row();
 
                 /**
@@ -324,22 +315,19 @@ class Grupos extends MY_Controller {
                 $this->db->where('sec_grupos_id', $_id);
                 $this->dados['_apps']['_relat'] = $this->db->get('sec_grupos_has_sec_aplicativos')->result();
                 $_r = [];
-                foreach ($this->dados['_apps']['_relat'] as $value):
+                foreach ($this->dados['_apps']['_relat'] as $value) {
 
                     $_r[] = $value->sec_aplicativos_app_name;
-
-                endforeach;
+                }
                 $this->dados['_apps']['_relat'] = $_r;
-
-            else:
-                //set_mensagem_toastr('<i class="fa fa-fw fa-thumbs-o-down" style="font-size: 1.5em"></i>', _MSG_ERROR_SELECT_UPDATE_REGISTRO_, 'error', 'top-center');
+            } else {
+//set_mensagem_toastr('<i class="fa fa-fw fa-thumbs-o-down" style="font-size: 1.5em"></i>', _MSG_ERROR_SELECT_UPDATE_REGISTRO_, 'error', 'top-center');
                 set_mensagem_trigger_notifi(___MSG_ERROR_SELECT_UPDATE_REGISTRO___, 'error');
                 redirect($this->_redirect_parametros_url);
-            endif;
-
-        else:
+            }
+        } else {
             redirect($this->_redirect_parametros_url);
-        endif;
+        }
 
         /*
          * TEMPLATE QUE SERÁ USADO PELO MÓDULO DO SISTEMA
@@ -366,7 +354,7 @@ class Grupos extends MY_Controller {
         $this->form_validation->set_rules('dadosdel', '<b>REGISTROS DEL</b>', 'trim|required');
 
 
-        if ($this->form_validation->run() == TRUE):
+        if ($this->form_validation->run() == TRUE) {
 
             $_dados = $this->input->post('dadosdel', TRUE);
             $_dados = explode(',', $_dados);
@@ -376,7 +364,7 @@ class Grupos extends MY_Controller {
              */
             $_qr = $this->db->where_in('sec_grupos_id', $_dados);
             $_qr = $this->db->get('sec_usuarios_has_sec_grupos');
-            if ($_qr->result()):
+            if ($_qr->result()) {
 
                 $dados_auditoria['creator'] = 'user';
                 $dados_auditoria['action'] = 'del';
@@ -387,7 +375,7 @@ class Grupos extends MY_Controller {
                 set_mensagem_sweetalert('ATENÇÃO', ___MSG_NOT_DELETE_RELAT_REGISTRO___ . '\n' . 'Existe um relacionamento com a tabela sec_usuarios.', 'warning');
 
                 exit;
-            endif;
+            }
             /*
              * END CHECK RELACIONAMENTO DA TABELA sec_grupos COM sec_usuarios
              */
@@ -400,32 +388,30 @@ class Grupos extends MY_Controller {
             $this->db->delete($this->table_name);
 
 
-            if ($this->db->affected_rows()):
-                if (count($_dados) > 1):
-                    //set_mensagem_toastr('<i class="fa fa-fw fa-thumbs-o-up" style="font-size: 1.5em"></i>', str_replace('Registro Deletado', 'Registros Deletados', _MSG_DEL_REGISTRO_), 'success', 'top-center');
+            if ($this->db->affected_rows()) {
+                if (count($_dados) > 1) {
+//set_mensagem_toastr('<i class="fa fa-fw fa-thumbs-o-up" style="font-size: 1.5em"></i>', str_replace('Registro Deletado', 'Registros Deletados', _MSG_DEL_REGISTRO_), 'success', 'top-center');
                     set_mensagem_trigger_notifi(str_replace('Registro Deletado', 'Registros Deletados', ___MSG_DEL_REGISTRO___), 'success');
                     $dados_auditoria['description'] = str_replace('Registro Deletado', 'Registros Deletados', ___MSG_AUDITORIA_DEL_SUCCESS___);
-                else:
-                    //set_mensagem_toastr('<i class="fa fa-fw fa-thumbs-o-up" style="font-size: 1.5em"></i>', _MSG_DEL_REGISTRO_, 'success', 'top-center');
+                } else {
+//set_mensagem_toastr('<i class="fa fa-fw fa-thumbs-o-up" style="font-size: 1.5em"></i>', _MSG_DEL_REGISTRO_, 'success', 'top-center');
                     set_mensagem_trigger_notifi(___MSG_DEL_REGISTRO___, 'success');
                     $dados_auditoria['description'] = ___MSG_AUDITORIA_DEL_SUCCESS___;
-                endif;
+                }
 
-                //GRAVA AUDITORIA
+//GRAVA AUDITORIA
                 $dados_auditoria['creator'] = 'user';
                 $dados_auditoria['action'] = 'del';
                 $dados_auditoria['last_query'] = $this->db->last_query();
                 add_auditoria($dados_auditoria);
-
-            else:
-                //set_mensagem_toastr('<i class="fa fa-fw fa-thumbs-o-down" style="font-size: 1.5em"></i>', _MSG_ERROR_DEL_REGISTRO_, 'error', 'top-center');
+            } else {
+//set_mensagem_toastr('<i class="fa fa-fw fa-thumbs-o-down" style="font-size: 1.5em"></i>', _MSG_ERROR_DEL_REGISTRO_, 'error', 'top-center');
                 set_mensagem_trigger_notifi(___MSG_ERROR_DEL_REGISTRO___, 'error');
-            endif;
-
-        else:
-            //set_mensagem_toastr('<i class="fa fa-fw fa-thumbs-o-down" style="font-size: 1.5em"></i>', _MSG_ERROR_DE_VALIDACAO_, 'error', 'top-center');
+            }
+        } else {
+//set_mensagem_toastr('<i class="fa fa-fw fa-thumbs-o-down" style="font-size: 1.5em"></i>', _MSG_ERROR_DE_VALIDACAO_, 'error', 'top-center');
             set_mensagem_trigger_notifi(___MSG_ERROR_DE_VALIDACAO___, 'error');
-        endif;
+        }
 
         exit;
     }
@@ -442,7 +428,7 @@ class Grupos extends MY_Controller {
 
         $_id = $this->uri->segment(3);
 
-        if ($_id):
+        if ($_id) {
 
             /*
              * BUSCA O USUÁRIO NO SISTEMA PARA CONSULTAR SE ESTÁ ATIVO OU INATIVO NO SISTEMA
@@ -450,7 +436,7 @@ class Grupos extends MY_Controller {
             $_where = 'WHERE id = "' . $_id . '" LIMIT 1';
             $_result = $this->read->exec($this->table_name, $_where);
 
-            if ($_result->result()):
+            if ($_result->result()) {
 
                 /*
                  * GRAVA ALTERAÇÃO DO STATUS
@@ -459,41 +445,38 @@ class Grupos extends MY_Controller {
                 $dados['id'] = $_result->row()->id;
                 $_where = 'WHERE id = "' . $_result->row()->id . '"';
 
-                if ($this->update->exec($this->table_name, $dados, $_where)):
-                    //GRAVA AUDITORIA
+                if ($this->update->exec($this->table_name, $dados, $_where)) {
+//GRAVA AUDITORIA
                     $dados_auditoria['creator'] = 'user';
                     $dados_auditoria['action'] = 'status change';
                     $dados_auditoria['description'] = ___MSG_AUDITORIA_STATUS_REGISTRO_SUCCESS___;
                     $dados_auditoria['last_query'] = $this->db->last_query();
                     add_auditoria($dados_auditoria);
 
-                    //set_mensagem_toastr('<i class="fa fa-fw fa-thumbs-o-up" style="font-size: 1.5em"></i>', _MSG_STATUS_REGISTRO_, 'success', 'top-center');
+//set_mensagem_toastr('<i class="fa fa-fw fa-thumbs-o-up" style="font-size: 1.5em"></i>', _MSG_STATUS_REGISTRO_, 'success', 'top-center');
                     set_mensagem_trigger_notifi(___MSG_STATUS_REGISTRO___, 'success');
-
-                else:
-                    //GRAVA AUDITORIA
+                } else {
+//GRAVA AUDITORIA
                     $dados_auditoria['creator'] = 'system';
                     $dados_auditoria['action'] = 'error status change';
                     $dados_auditoria['description'] = ___MSG_AUDITORIA_STATUS_REGISTRO_ERROR___;
                     $dados_auditoria['last_query'] = $this->db->last_query();
                     add_auditoria($dados_auditoria);
 
-                    //set_mensagem_toastr('<i class="fa fa-fw fa-thumbs-o-down" style="font-size: 1.5em"></i>', _MSG_ERROR_STATUS_REGISTRO_, 'error', 'top-center');
+//set_mensagem_toastr('<i class="fa fa-fw fa-thumbs-o-down" style="font-size: 1.5em"></i>', _MSG_ERROR_STATUS_REGISTRO_, 'error', 'top-center');
                     set_mensagem_trigger_notifi(___MSG_ERROR_STATUS_REGISTRO___, 'error');
-
-                endif;
-            else:
-                //GRAVA AUDITORIA
+                }
+            } else {
+//GRAVA AUDITORIA
                 $dados_auditoria['creator'] = 'system';
                 $dados_auditoria['action'] = 'error status change';
                 $dados_auditoria['description'] = ___MSG_AUDITORIA_NOT_FIND_REGISTRO___;
                 $dados_auditoria['last_query'] = $this->db->last_query();
                 add_auditoria($dados_auditoria);
 
-                //set_mensagem_toastr('ATENÇÃO', _MSG_NOT_FIND_REGISTRO_, 'warning', 'top-center');
+//set_mensagem_toastr('ATENÇÃO', _MSG_NOT_FIND_REGISTRO_, 'warning', 'top-center');
                 set_mensagem_trigger_notifi(___MSG_NOT_FIND_REGISTRO___, 'warning');
-
-            endif;
+            }
 
 
             /*
@@ -501,8 +484,7 @@ class Grupos extends MY_Controller {
              */
             $_result_paginacao = $this->get_paginacao();
             redirect($this->_redirect_parametros_url);
-
-        endif;
+        }
     }
 
 //END public function status()           
@@ -515,9 +497,9 @@ class Grupos extends MY_Controller {
         $p = $this->input->post('apps');
         $r = $result = count($p);
 
-        if ($r > 0):
+        if ($r > 0) {
             return true;
-        endif;
+        }
 
         $this->form_validation->set_message('valid_apps', 'O campo {field} é obrigatório.');
         return false;
@@ -539,9 +521,9 @@ class Grupos extends MY_Controller {
          * DADOS PARA PAGINAÇÃO
          */
         $_dados_pag['table'] = $this->table_name;
-        if ($this->input->get('search', TRUE)):
+        if ($this->input->get('search', TRUE)) {
             $_dados_pag['search'] = array('_concat_fields' => 'descricao, ativo, id, app_name', '_string' => $this->input->get('search', TRUE));
-        endif;
+        }
         $_dados_pag['filter'] = $_filter;
         $_dados_pag['order_by'] = 'descricao';
         $_dados_pag['programa'] = $this->router->fetch_class();

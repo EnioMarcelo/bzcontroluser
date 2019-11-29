@@ -47,45 +47,43 @@ class MY_Model extends CI_Model {
         /*
          * VERIFICA SE EXISTE OS CAMPOS NA TABELA. SE NÃO EXISTIR, SERÃO CRIADOS.
          */
-        if ($table_name):
+        if ($table_name) {
 
             $table_name = str_replace('vw_', '', $table_name);
 
             $this->load->dbforge();
 
-            if (in_array($table_name, $this->notTableCreatFields) == 0):
+            if (in_array($table_name, $this->notTableCreatFields) == 0) {
 
-                if ($this->db->field_exists('created', $table_name) == 0):
+                if ($this->db->field_exists('created', $table_name) == 0) {
                     $fields = array(
                         'created' => array('type' => 'DATETIME')
                     );
                     $this->dbforge->add_column($table_name, $fields);
-                endif;
+                }
 
-                if ($this->db->field_exists('user_created', $table_name) == 0):
+                if ($this->db->field_exists('user_created', $table_name) == 0) {
                     $fields = array(
                         'user_created' => array('type' => 'VARCHAR', 'constraint' => '250')
                     );
                     $this->dbforge->add_column($table_name, $fields);
-                endif;
+                }
 
-                if ($this->db->field_exists('updated', $table_name) == 0):
+                if ($this->db->field_exists('updated', $table_name) == 0) {
                     $fields = array(
                         'updated' => array('type' => 'DATETIME')
                     );
                     $this->dbforge->add_column($table_name, $fields);
-                endif;
+                }
 
-                if ($this->db->field_exists('user_updated', $table_name) == 0):
+                if ($this->db->field_exists('user_updated', $table_name) == 0) {
                     $fields = array(
                         'user_updated' => array('type' => 'VARCHAR', 'constraint' => '250')
                     );
                     $this->dbforge->add_column($table_name, $fields);
-                endif;
-
-            endif;
-
-        endif;
+                }
+            }
+        }
     }
 
     //END function default_fields()

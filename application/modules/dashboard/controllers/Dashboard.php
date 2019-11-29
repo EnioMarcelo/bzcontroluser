@@ -14,7 +14,7 @@ class Dashboard extends MY_Controller {
 
     function __construct() {
         parent::__construct();
-    
+
         /**
          * CARREGA OS MENUS QUE O USUÁRIO LOGADO TEM ACESSO
          */
@@ -25,32 +25,28 @@ class Dashboard extends MY_Controller {
         $_m = [];
         $_menu = [];
 
-        foreach ($_r->result_array() as $key => $menu):
+        foreach ($_r->result_array() as $key => $menu) {
 
             $_s = $this->read->exec('sec_menus', 'WHERE (parent_id > 0) AND ativo = "Y" AND parent_id = ' . $menu['id'] . ' AND app_name IN ("' . implode('","', $_apps_user) . '") ORDER BY nome_menu')->result_array();
             if ($_s) {
                 $_m[$menu['nome_menu']][] = $_s;
             }
+        }
 
-        endforeach;
-
-        foreach ($_m as $key => $value) :
+        foreach ($_m as $key => $value) {
 
             $_menu[$key] = [];
 
-            foreach ($value as $row):
-                foreach ($row as $resultKey => $result):
+            foreach ($value as $row) {
+                foreach ($row as $resultKey => $result) {
 
                     $_menu[$key][$resultKey]['nome_menu'] = $result['nome_menu'];
                     $_menu[$key][$resultKey]['app'] = $result['app_name'];
                     $_menu[$key][$resultKey]['icon'] = $result['menu_icon'];
                     $_menu[$key][$resultKey]['id_menu_pai'] = $result['parent_id'];
-
-                endforeach;
-
-            endforeach;
-
-        endforeach;
+                }
+            }
+        }
 
         $this->menuUsuario = $_menu;
 
@@ -88,15 +84,14 @@ class Dashboard extends MY_Controller {
         bz_check_is_ajax_request();
 
 
-        if (check_is_user_super_admin()):
+        if (check_is_user_super_admin()) {
 
             $acao = $this->input->get_post('acao', TRUE);
 
-            if ($acao == 'get-form-settings'):
+            if ($acao == 'get-form-settings') {
 
-            //echo settingsConfig();
-
-            elseif ($acao == 'add-form-settings'):
+                //echo settingsConfig();
+            } elseif ($acao == 'add-form-settings') {
 
                 $settings = elements(array('multiplos_logins', 'em_manutencao'), $this->input->post());
 
@@ -108,7 +103,7 @@ class Dashboard extends MY_Controller {
                 $settings['sidebar_collapsed'] = ($this->input->post('sidebar_collapsed', TRUE) == 'on') ? 'SIM' : 'NAO';
                 $settings['layout_skin'] = $this->input->post('layout_skin', TRUE)[0];
 
-                foreach ($settings as $nome_config => $valor_config):
+                foreach ($settings as $nome_config => $valor_config) {
                     set_setting($nome_config, $valor_config);
                     //GRAVA AUDITORIA
 
@@ -117,19 +112,17 @@ class Dashboard extends MY_Controller {
                     $dados_auditoria['description'] = 'Confirgurações Gerais Atualizados com Sucesso';
                     $dados_auditoria['last_query'] = $this->db->last_query();
                     add_auditoria($dados_auditoria);
-                endforeach;
+                }
 //                set_mensagem_sweetalert('SUCESSO !!!', 'Configurações Gerais Alterado com Sucesso.', 'success');
                 set_mensagem_trigger_notifi('Configurações Gerais Alterado com Sucesso.', 'success');
                 echo 'OK';
                 exit;
-
-            else:
+            } else {
                 echo 'ERROACAO';
-            endif;
-
-        else:
+            }
+        } else {
             echo 'NOTADMIN';
-        endif;
+        }
     }
 
 }

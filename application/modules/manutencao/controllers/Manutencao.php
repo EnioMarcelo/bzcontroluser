@@ -19,16 +19,16 @@ class Manutencao extends MY_Controller {
         /*
          * CHECK SE USUÁRIO ESTÁ LOGADO, SE OK, REDIRECIONA PARA O PAINEL.
          */
-        if (check_is_user_login()):
+        if (check_is_user_login()) {
             redirect('dashboard');
-        endif;
-        
+        }
+
         /*
          * CHECK SE SISTEMA ESTÁ REALMENTE EM MANUTENÇÃO
          */
-        if (!check_system_is_manutencao()):
+        if (!check_system_is_manutencao()) {
             redirect('login');
-        endif;
+        }
 
         /*
          * CHAMA A MASTER PAGE DO SISTEMA PASSANDO O PARÂMETRO dados

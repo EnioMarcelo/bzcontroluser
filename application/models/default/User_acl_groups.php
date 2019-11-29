@@ -27,7 +27,7 @@ class User_acl_groups extends MY_model {
 
     function _get_acl_user($_p = array()) {
 
-        if (is_array($_p)):
+        if (is_array($_p)) {
 
             $this->db->select('u.id as usuario_id, u.nome as usuario_nome, u.email as usuario_email, u.ativo as usuario_ativo, '
                     . 'g.id as grupo_id, g.ativo as grupo_ativo, g.descricao as grupo_descricao, '
@@ -35,19 +35,15 @@ class User_acl_groups extends MY_model {
 
             $this->db->from('sec_usuarios u');
 
-            if ($_p['key_filter'] == 'by_user_id'):
+            if ($_p['key_filter'] == 'by_user_id') {
                 $this->db->where('u.id', $_p['string_filter']);
-
-            elseif ($_p['key_filter'] == 'by_user_email'):
+            } elseif ($_p['key_filter'] == 'by_user_email') {
                 $this->db->where('u.email', $_p['string_filter']);
-
-            elseif ($_p['key_filter'] == 'by_grupo_id'):
+            } elseif ($_p['key_filter'] == 'by_grupo_id') {
                 $this->db->where('g.id', $_p['string_filter']);
-
-            elseif ($_p['key_filter'] == 'by_app_name'):
+            } elseif ($_p['key_filter'] == 'by_app_name') {
                 $this->db->where('a.app_name', $_p['string_filter']);
-
-            endif;
+            }
 
             $this->db->order_by('u.nome, g.descricao, a.app_descricao');
 
@@ -59,9 +55,9 @@ class User_acl_groups extends MY_model {
             $_query = $this->db->get()->result_array();
 
             return $_query;
-        else:
+        } else {
             return false;
-        endif;
+        }
     }
 
 //END bz_get_acl_user()
@@ -84,7 +80,7 @@ class User_acl_groups extends MY_model {
         $this->db->join('sec_aplicativos', 'sec_aplicativos.app_name = sec_grupos_has_sec_aplicativos.sec_aplicativos_app_name', 'inner');
 
         $this->db->order_by('sec_usuarios.nome');
-        
+
         $this->db->where('sec_usuarios.email', $_email);
 
         $query = $this->db->get();

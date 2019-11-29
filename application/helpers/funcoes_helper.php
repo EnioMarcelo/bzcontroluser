@@ -41,13 +41,12 @@ function get_tables_system() {
 
     $_tabelas = $CI->db->list_tables();
 
-    foreach ($_tabelas as $key => $row):
+    foreach ($_tabelas as $key => $row) {
 
-        if (strpos($row, 'sec_') !== false || strpos($row, '_sessions') !== false || strpos($row, 'proj_build') !== false) :
+        if (strpos($row, 'sec_') !== false || strpos($row, '_sessions') !== false || strpos($row, 'proj_build') !== false) {
             unset($_tabelas[$key]);
-        endif;
-
-    endforeach;
+        }
+    }
 
     return $_tabelas;
 }
@@ -68,14 +67,13 @@ function get_fields_gridlist_project($_id) {
     $_row[] = array();
     $_c = 0;
 
-    foreach ($_fields as $_field):
+    foreach ($_fields as $_field) {
 
         $_row[$_c]['field_name'] = $_field->field_name;
         $_row[$_c]['csrf_token'] = $CI->security->get_csrf_hash();
 
         $_c++;
-
-    endforeach;
+    }
 
     return $_row;
 }
@@ -89,11 +87,11 @@ function check_is_user_super_admin() {
 
     $CI = & get_instance();
 
-    if ($CI->session->userdata('user_login')['user_super_admin'] == 'Y'):
+    if ($CI->session->userdata('user_login')['user_super_admin'] == 'Y') {
         return true;
-    else:
+    } else {
         return false;
-    endif;
+    }
 }
 
 //END check_is_user_super_admin()
@@ -115,11 +113,11 @@ function check_is_user_login() {
 function check_system_is_manutencao() {
     $CI = & get_instance();
 
-    if (get_setting('em_manutencao') == 'SIM'):
+    if (get_setting('em_manutencao') == 'SIM') {
         return true;
-    else:
+    } else {
         return false;
-    endif;
+    }
 }
 
 //END check_system_is_manutencao()
@@ -171,9 +169,9 @@ function set_mensagem_trigger_notifi($mensagem = 'Sua mensagem aqui.', $tipo = '
  */
 function set_mensagem_nice($titulo = NULL, $mensagem = NULL, $tipo = 'info', $position = 'br', $duration = 3200) {
     $CI = & get_instance();
-    if (empty($mensagem)):
+    if (empty($mensagem)) {
         return false;
-    endif;
+    }
 
     $_tipo = '.';
 
@@ -212,9 +210,9 @@ function set_mensagem_nice($titulo = NULL, $mensagem = NULL, $tipo = 'info', $po
  */
 function set_mensagem_notfit($mensagem = NULL, $tipo = 'info') {
     $CI = & get_instance();
-    if (empty($mensagem) or empty($tipo)):
+    if (empty($mensagem) or empty($tipo)) {
         return false;
-    endif;
+    }
 
     $result = "<script>
         notfit_msg_" . $tipo . "('" . $mensagem . "');
@@ -239,9 +237,9 @@ function set_mensagem_notfit($mensagem = NULL, $tipo = 'info') {
  */
 function set_mensagem_sweetalert($titulo = NULL, $mensagem = NULL, $tipo = 'info') {
     $CI = & get_instance();
-    if (empty($mensagem) or empty($titulo) or empty($tipo)):
+    if (empty($mensagem) or empty($titulo) or empty($tipo)) {
         return false;
-    endif;
+    }
 
     $result = "<script>
         swal('" . $titulo . "', '" . $mensagem . "', '" . $tipo . "');
@@ -263,9 +261,9 @@ function set_mensagem_sweetalert($titulo = NULL, $mensagem = NULL, $tipo = 'info
  */
 function set_mensagem_toastr($titulo = NULL, $mensagem = NULL, $tipo = 'info', $position = 'top-right') {
     $CI = & get_instance();
-    if (empty($mensagem) or empty($titulo) or empty($tipo)):
+    if (empty($mensagem) or empty($titulo) or empty($tipo)) {
         return false;
-    endif;
+    }
 
     if ($tipo == 'info') {
         $_loaderBg = '#29a7d8';
@@ -307,9 +305,9 @@ function set_mensagem_toastr($titulo = NULL, $mensagem = NULL, $tipo = 'info', $
  */
 function set_mensagem($titulo = NULL, $mensagem = NULL, $fa_icon = 'fa-times', $tipo = NULL) {
     $CI = & get_instance();
-    if (empty($mensagem) or empty($tipo)):
+    if (empty($mensagem) or empty($tipo)) {
         return false;
-    endif;
+    }
 
     $result = '<div class="alert alert-' . $tipo . '" role="alert">';
     $result .= '     <button type="button" class="close" data-dismiss="alert" aria-label="Close">';
@@ -337,11 +335,11 @@ function set_mensagem($titulo = NULL, $mensagem = NULL, $fa_icon = 'fa-times', $
 function get_mensagem() {
     $CI = & get_instance();
 
-    if ($CI->session->flashdata('mensagem_sistema')):
+    if ($CI->session->flashdata('mensagem_sistema')) {
         $result = $CI->session->flashdata('mensagem_sistema');
         $CI->session->unset_userdata('mensagem_sistema');
         return $result;
-    endif;
+    }
 }
 
 //END get_mensagem()
@@ -353,9 +351,9 @@ function bz_check_is_ajax_request() {
 
     $CI = & get_instance();
 
-    if (!$CI->input->is_ajax_request()):
+    if (!$CI->input->is_ajax_request()) {
         exit('<pre>eingang verboten.</pre><pre>unauthorized access.</pre><pre>acesso não permitido.</pre>');
-    endif;
+    }
 }
 
 //END bz_check_is_ajax_request()
@@ -383,11 +381,11 @@ function bz_enviar_email($para, $assunto, $mensagem, $formato = 'html') {
             strlen($CI->config->item('config_email')['CONF_EMAIL_SMTP_HOST']) > 0 AND
             strlen($CI->config->item('config_email')['CONF_EMAIL_SMTP_USER']) > 0 AND
             strlen($CI->config->item('config_email')['CONF_EMAIL_SMTP_PASS']) > 0 AND
-            strlen($CI->config->item('config_email')['CONF_EMAIL_FROM_EMAIL']) > 0):
+            strlen($CI->config->item('config_email')['CONF_EMAIL_FROM_EMAIL']) > 0) {
         $servidor_email = true;
-    endif;
+    }
     /**/
-    if ($servidor_email):
+    if ($servidor_email) {
         $config['mailtype'] = $formato;
         $config['protocol'] = $CI->config->item('config_email')['CONF_EMAIL_SMTP_PROTOCOL'];
         $config['smtp_host'] = $CI->config->item('config_email')['CONF_EMAIL_SMTP_HOST'];
@@ -405,26 +403,25 @@ function bz_enviar_email($para, $assunto, $mensagem, $formato = 'html') {
         if ($CI->config->item('config_email')['CONF_EMAIL_SMTP_VALIDATION']) {
             $config['validation'] = $CI->config->item('config_email')['CONF_EMAIL_SMTP_VALIDATION'];
         }
-
-    endif;
+    }
 
     $CI->email->initialize($config);
 
-    if (!$servidor_email):
+    if (!$servidor_email) {
         exit('DADOS INCOMPLETOS DA CONTA DO USUÁRIO DO EMAIL. FAVOR VERIFICAR AS VARIÁVEIS CONSTANTES DO SERVIDOR DO EMAIL.');
-    endif;
+    }
 
     $CI->email->from($CI->config->item('config_email')['CONF_EMAIL_FROM_EMAIL']);
     $CI->email->to($para);
     $CI->email->subject($assunto);
     $CI->email->message($mensagem);
-    if ($CI->email->send()):
+    if ($CI->email->send()) {
         return TRUE;
-    else:
-        //echo show_error($CI->email->print_debugger());
+    } else {
+//echo show_error($CI->email->print_debugger());
 //        echo '<hr>ERRO AO ENVIAR EMAIL.';
         return FALSE;
-    endif;
+    }
 }
 
 //END bz_enviar_email()
@@ -466,40 +463,36 @@ function bz_find_in_multiarray($elem, $array) {
  */
 function bz_filter_array($_p = array()) {
 
-    if (array($_p)):
+    if (array($_p)) {
 
         $_array = $_p['array'];
         $_new_array = array();
 
-        foreach ($_array as $_key => $_data):
+        foreach ($_array as $_key => $_data) {
 
             if (isset($_data[$_p['field']])) {
 
 
-                if (!empty($_p['like_value']) && $_p['like_value'] == 'Y'):
+                if (!empty($_p['like_value']) && $_p['like_value'] == 'Y') {
 
-                    if (stristr($_data[$_p['field']], $_p['value'])) :
+                    if (stristr($_data[$_p['field']], $_p['value'])) {
                         $_new_array[] = $_data;
-                    else:
+                    } else {
                         unset($_array[$_key]);
-                    endif;
+                    }
+                } else {
 
-                else:
-
-                    if ($_data[$_p['field']] != $_p['value']):
+                    if ($_data[$_p['field']] != $_p['value']) {
                         unset($_array[$_key]);
-                    else:
+                    } else {
                         $_new_array[] = $_data;
-                    endif;
-
-                endif;
+                    }
+                }
             }
-
-        endforeach;
+        }
 
         return $_new_array;
-
-    endif;
+    }
 }
 
 //END function bz_filter_array();
@@ -532,9 +525,9 @@ function mc_random_number($chars_min = 6, $chars_max = 6, $use_upper_case = fals
     for ($i = 0; $i < $length; $i++) {
         $current_letter = $use_upper_case ? (mt_rand(0, 1) ? strtoupper($selection[(mt_rand() % strlen($selection))]) : $selection[(mt_rand() % strlen($selection))]) : $selection[(mt_rand() % strlen($selection))];
 
-        if ($use_upper_case):
+        if ($use_upper_case) {
             $current_letter = strtoupper($current_letter);
-        endif;
+        }
 
         $_string .= $current_letter;
     }
@@ -551,13 +544,13 @@ function bz_app_parametros_url() {
 
     $CI = & get_instance();
 
-    if (strrchr($_SERVER['REQUEST_URI'], "?")):
+    if (strrchr($_SERVER['REQUEST_URI'], "?")) {
         $pos = strpos($_SERVER['REQUEST_URI'], '?') + 1;
         $param = substr($_SERVER['REQUEST_URI'], $pos);
         return $param;
-    else:
+    } else {
         return false;
-    endif;
+    }
 }
 
 //END bz_current_url()
@@ -590,13 +583,12 @@ function ger_select_input($name, $table, $field, $pk, $selected = "") {
 
     $select .= "<option value=''>Selecione...</option>";
 
-    foreach ($data as $d):
+    foreach ($data as $d) {
 
         $select .= "<option value='" . $d->$pk . "'";
         $select .= $selected == $d->$pk ? " selected='selected'" : "";
         $select .= ">" . strtoupper($d->$field) . "</option>";
-
-    endforeach;
+    }
 
     $select .= "</select>";
 
@@ -615,11 +607,11 @@ function ger_select_input($name, $table, $field, $pk, $selected = "") {
 function bz_converteMoedaBrasil($get_valor, $decimal = 2, $cifrao = null) {
     $valor = number_format($get_valor, $decimal, ',', '.');
 
-    if ($cifrao):
+    if ($cifrao) {
         return $cifrao . $valor; //retorna o valor formatado para gravar no banco
-    else:
+    } else {
         return $valor; //retorna o valor formatado para gravar no banco
-    endif;
+    }
 }
 
 //END bz_converteMoedaBrasil()
@@ -636,11 +628,11 @@ function bz_converteMoedaAmericana($get_valor, $decimal = 2, $cifrao = null) {
     $replace = array('', '.');
     $valor = str_replace($source, $replace, $get_valor);
 
-    if ($cifrao):
+    if ($cifrao) {
         return $cifrao . $valor; //retorna o valor formatado para gravar no banco
-    else:
+    } else {
         return $valor; //retorna o valor formatado para gravar no banco
-    endif;
+    }
 }
 
 //END bz_converteMoedaAmericana()
@@ -677,13 +669,13 @@ function mc_fill_string($string = '', $orientacao = "LEFT", $caracter = "*", $qu
     $quantidade = ( $quantidade - $tamanhoString ) + 3;
     $retorno = $string;
 
-    if ($orientacao == 'LEFT'):
+    if ($orientacao == 'LEFT') {
         return str_pad($retorno, $quantidade, $caracter, STR_PAD_LEFT);
-    elseif ($orientacao == 'RIGHT'):
+    } elseif ($orientacao == 'RIGHT') {
         return str_pad($retorno, $quantidade, $caracter);
-    elseif ($orientacao == 'BOTH'):
+    } elseif ($orientacao == 'BOTH') {
         return str_pad($retorno, $quantidade, $caracter, STR_PAD_BOTH);
-    endif;
+    }
 }
 
 //END mc_fill_string()
@@ -698,9 +690,9 @@ function mc_fill_string($string = '', $orientacao = "LEFT", $caracter = "*", $qu
  */
 function bz_queryResultExcludeCol($_query_result = array(), $_ColumnExclude = NULL) {
 
-    foreach ($_query_result as $key => $value):
+    foreach ($_query_result as $key => $value) {
         unset($_query_result[$key][$_ColumnExclude]);
-    endforeach;
+    }
 
     return $_query_result;
 }
@@ -762,25 +754,24 @@ function bz_paginacao($param = array()) {
     $_programa = (isset($param['programa'])) ? $param['programa'] : $CI->router->fetch_class();
 
 
-    if ($_filter):
+    if ($_filter) {
         $CI->db->like($_filter);
-    endif;
+    }
 
-    if (!empty($_where) || !empty($_search)):
+    if (!empty($_where) || !empty($_search)) {
 
-        if (!empty($_where)):
+        if (!empty($_where)) {
             $CI->db->where($_where);
-        endif;
+        }
 
-        if (!empty($_or_where)):
+        if (!empty($_or_where)) {
             $CI->db->or_where($_or_where);
-        endif;
+        }
 
-        if (!empty($_search)):
+        if (!empty($_search)) {
             $CI->db->where("CONCAT_WS('|'," . $_search['_concat_fields'] . ") LIKE '%" . $_search['_string'] . "%'", NULL, FALSE);
-        endif;
-
-    endif;
+        }
+    }
 
     /* COUNT QUANTIDADE DE REGISTROS NA TABELA */
     $_total_row = $CI->db->get($_tabela)->num_rows();
@@ -801,11 +792,11 @@ function bz_paginacao($param = array()) {
 
     $_num_links = ceil($_total_row / $_per_page) - 1;
 
-    if ($_current_page > $_num_links):
+    if ($_current_page > $_num_links) {
         $_current_page = $_num_links;
-    elseif ($_current_page < 0):
+    } elseif ($_current_page < 0) {
         $_current_page = 0;
-    endif;
+    }
 
     $config = array();
 
@@ -855,36 +846,35 @@ function bz_paginacao($param = array()) {
 
 
     /* WHERE GLOBAL DO CONTROLLER PAI - MY_CONTROLLER */
-    if (!empty($CI->where)):
+    if (!empty($CI->where)) {
         $CI->db->where($CI->where);
-    endif;
+    }
     /* END WHERE GLOBAL DO CONTROLLER PAI - MY_CONTROLLER */
 
 
-    if (!empty($_where) || !empty($_search)):
+    if (!empty($_where) || !empty($_search)) {
 
-        if (!empty($_where)):
+        if (!empty($_where)) {
             $CI->db->where($_where);
-        endif;
+        }
 
-        if (!empty($_or_where)):
+        if (!empty($_or_where)) {
             $CI->db->or_where($_or_where);
-        endif;
+        }
 
-        if (!empty($_search['_string'])):
+        if (!empty($_search['_string'])) {
             $CI->db->where("CONCAT_WS('|'," . $_search['_concat_fields'] . ") LIKE '%" . $_search['_string'] . "%'", NULL, FALSE);
-        endif;
+        }
+    }
 
-    endif;
-
-    if (!empty($_filter)):
+    if (!empty($_filter)) {
         $CI->db->like($_filter);
-    endif;
+    }
 
 
-    if (isset($param['order_by'])):
+    if (isset($param['order_by'])) {
         $CI->db->order_by($param['order_by']);
-    endif;
+    }
 
     $CI->db->limit(abs($_per_page), abs($_per_page * $_current_page));
 
@@ -897,9 +887,9 @@ function bz_paginacao($param = array()) {
     $_mostrando_de = ($_per_page * $_current_page) + 1;
     $_mostrando_ate = $_per_page * ($_current_page + 1);
 
-    if ($_mostrando_ate > $_total_row):
+    if ($_mostrando_ate > $_total_row) {
         $_mostrando_ate = $_total_row;
-    endif;
+    }
 
     $data["dados_paginacao"] = 'Mostrando de ' . (($_total_row > 0) ? $_mostrando_de : 0) . ' até ' . $_mostrando_ate . ' de ' . $_total_row . ' registros';
     $data["paginacao_total_paginas"] = ($_current_page + 1);
@@ -928,7 +918,7 @@ function bz_delete_file_for_expired_lifetime($_source_dir, $_minutes = 1) {
     $_diretoryMap = directory_map(FCPATH . $_source_dir, 1);
     $_diretoryMap = array_diff($_diretoryMap, ['.', '..', 'index.html']);
 
-    foreach ($_diretoryMap as $file):
+    foreach ($_diretoryMap as $file) {
 
         $_fileTTL = filemtime(FCPATH . $_source_dir . '/' . $file) + (60 * $_minutes);
         $_fileDel = FCPATH . $_source_dir . '/' . $file;
@@ -938,8 +928,7 @@ function bz_delete_file_for_expired_lifetime($_source_dir, $_minutes = 1) {
                 unlink($_fileDel);
             }
         }
-
-    endforeach;
+    }
 
     return;
 }
@@ -1029,46 +1018,44 @@ function bz_get_client_ip() {
 function set_setting($nome, $valor = '') {
     $CI = & get_instance();
     $CI->load->model('settings_model', 'settings');
-    if ($CI->settings->get_bynome($nome)->num_rows() == 1):
-        if (trim($valor) == ''):
+    if ($CI->settings->get_bynome($nome)->num_rows() == 1) {
+        if (trim($valor) == '') {
             $CI->settings->do_delete(array('nome_config' => $nome), FALSE);
-        else:
+        } else {
             $dados = array(
                 'nome_config' => $nome,
                 'valor_config' => $valor
             );
             $CI->settings->do_update($dados, array('nome_config' => $nome), FALSE);
-
-        endif;
-
-    else:
+        }
+    } else {
         $dados = array(
             'nome_config' => $nome,
             'valor_config' => $valor
         );
         $CI->settings->do_insert($dados, FALSE);
-    endif;
+    }
 }
 
 /*
  * Retorna uma config do BD
  *
  * Exemplo:
- * if (get_setting('time_zone')):
+ * if (get_setting('time_zone')){
  *       date_default_timezone_set(get_setting('time_zone'));
- *   endif;
+ *   }
  */
 
 function get_setting($nome) {
     $CI = & get_instance();
     $CI->load->model('settings_model', 'settings');
     $setting = $CI->settings->get_bynome($nome);
-    if ($setting->num_rows() == 1):
+    if ($setting->num_rows() == 1) {
         $setting = $setting->row();
         return $setting->valor_config;
-    else:
+    } else {
         return NULL;
-    endif;
+    }
 }
 
 //END get_setting()
@@ -1086,7 +1073,7 @@ function settingsConfig($_p) {
     /*
      * FORM Configurações Gerais - Carrega.
      */
-    if ($_p == 'gerais'):
+    if ($_p == 'gerais') {
 
         /*
          * Campo Time Zone da Aplicação
@@ -1094,11 +1081,11 @@ function settingsConfig($_p) {
         $CI->db->where('nome_config', 'time_zone');
         $CI->db->limit(1);
         $time_zone = $CI->db->get('sec_settings')->row();
-        if ($time_zone):
+        if ($time_zone) {
             $time_zone = ($time_zone->valor_config) ? $time_zone->valor_config : '';
-        else:
+        } else {
             $time_zone = '';
-        endif;
+        }
         $dadosForm .= '
             <div class="form-group">
             <label class="control-sidebar-subheading">
@@ -1120,11 +1107,11 @@ function settingsConfig($_p) {
         $CI->db->where('nome_config', 'em_manutencao');
         $CI->db->limit(1);
         $em_manutencao = $CI->db->get('sec_settings')->row();
-        if ($em_manutencao):
+        if ($em_manutencao) {
             $em_manutencao = ($em_manutencao->valor_config == 'SIM') ? 'checked' : '';
-        else:
+        } else {
             $em_manutencao = '';
-        endif;
+        }
         $dadosForm .= '
             <div class="form-group">
             <label class="control-sidebar-subheading">
@@ -1144,11 +1131,11 @@ function settingsConfig($_p) {
         $CI->db->where('nome_config', 'multiplos_logins');
         $CI->db->limit(1);
         $multiplos_logins = $CI->db->get('sec_settings')->row();
-        if ($multiplos_logins):
+        if ($multiplos_logins) {
             $multiplos_logins = ($multiplos_logins->valor_config == 'SIM') ? 'checked' : '';
-        else:
+        } else {
             $multiplos_logins = '';
-        endif;
+        }
         $dadosForm .= '
             <div class="form-group">
             <label class="control-sidebar-subheading">
@@ -1169,11 +1156,11 @@ function settingsConfig($_p) {
         $CI->db->where('nome_config', 'time_render');
         $CI->db->limit(1);
         $time_render = $CI->db->get('sec_settings')->row();
-        if ($time_render):
+        if ($time_render) {
             $time_render = ($time_render->valor_config == 'SIM') ? 'checked' : '';
-        else:
+        } else {
             $time_render = '';
-        endif;
+        }
         $dadosForm .= '
             <div class="form-group">
             <label class="control-sidebar-subheading">
@@ -1194,11 +1181,11 @@ function settingsConfig($_p) {
         $CI->db->where('nome_config', 'debug_mode');
         $CI->db->limit(1);
         $debug_mode = $CI->db->get('sec_settings')->row();
-        if ($debug_mode):
+        if ($debug_mode) {
             $debug_mode = ($debug_mode->valor_config == 'SIM') ? 'checked' : '';
-        else:
+        } else {
             $debug_mode = '';
-        endif;
+        }
         $dadosForm .= '
             <div class="form-group">
             <label class="control-sidebar-subheading">
@@ -1211,8 +1198,7 @@ function settingsConfig($_p) {
             </div>
             ';
 //END Campo Modo Debug da Aplicação
-
-    endif;
+    }
     /*
      * END FORM Configurações Gerais - Carrega.
      */
@@ -1225,7 +1211,7 @@ function settingsConfig($_p) {
     /*
      * FORM DE SKINS
      */
-    if ($_p == 'skins'):
+    if ($_p == 'skins') {
         $CI->db->where('nome_config', 'layout_skin');
         $CI->db->limit(1);
         $layout_skin = $CI->db->get('sec_settings')->row();
@@ -1356,7 +1342,7 @@ function settingsConfig($_p) {
         </ul>            
         ';
 //END SKINS
-    endif;
+    }
     /*
      * END FORM DE SKINS
      */
@@ -1369,7 +1355,7 @@ function settingsConfig($_p) {
     /*
      * FORM Configurações de Layout do Sistema
      */
-    if ($_p == 'other-config'):
+    if ($_p == 'other-config') {
 
 
         /*
@@ -1378,11 +1364,11 @@ function settingsConfig($_p) {
         $CI->db->where('nome_config', 'sidebar_collapsed');
         $CI->db->limit(1);
         $sidebarCollapse = $CI->db->get('sec_settings')->row();
-        if ($sidebarCollapse):
+        if ($sidebarCollapse) {
             $sidebarCollapse = ($sidebarCollapse->valor_config == 'SIM') ? 'checked' : '';
-        else:
+        } else {
             $sidebarCollapse = '';
-        endif;
+        }
         $dadosForm .= '
             <div class="form-group">
             <label class="control-sidebar-subheading">
@@ -1395,8 +1381,7 @@ function settingsConfig($_p) {
             </div>
             ';
 //END Campos Configurações Sistema
-
-    endif;
+    }
     /*
      * END FORM Configurações de Layout do Sistema
      */
@@ -1418,9 +1403,9 @@ function add_auditoria($dados = array()) {
 
     $CI = & get_instance();
 
-    if (!is_array($dados)):
+    if (!is_array($dados)) {
         return FALSE;
-    endif;
+    }
 
     if (empty($dados['creator'])) {
         $dados['creator'] = 'user';
@@ -1433,16 +1418,16 @@ function add_auditoria($dados = array()) {
     $dados['ip_user'] = $CI->input->ip_address();
     $dados['user_agent'] = getAgentUser(true);
 
-    if ($CI->session->has_userdata('user_login')):
+    if ($CI->session->has_userdata('user_login')) {
         $dados['username'] = $CI->session->userdata('user_login')['user_nome'] . ' - ' . $CI->session->userdata('user_login')['user_email'];
-    endif;
+    }
 
     $dados['application'] = $CI->router->fetch_class();
     $dados['method'] = $CI->router->fetch_method();
 
-    if (isset($dados['last_query'])):
+    if (isset($dados['last_query'])) {
         $dados['last_query'] = str_replace("'", '"', $dados['last_query']);
-    endif;
+    }
 
 
     $result = $CI->create->exec('sec_auditoria', $dados);
@@ -1463,15 +1448,14 @@ function bz_renamedir($dir, $file) {
 
     $_dateTime = time();
 
-    if (is_dir($dir . $file)):
+    if (is_dir($dir . $file)) {
 
-        if (rename($dir . $file, $dir . 'DELETE-' . $file . '-' . $_dateTime)):
+        if (rename($dir . $file, $dir . 'DELETE-' . $file . '-' . $_dateTime)) {
             return true;
-        else:
+        } else {
             return false;
-        endif;
-
-    endif;
+        }
+    }
 }
 
 //END function bz_renamedir()
@@ -1505,11 +1489,11 @@ function getAgentUser($auditoria = FALSE) {
     }
 
 
-    if (!$auditoria):
+    if (!$auditoria) {
         return '<br><br> <b>IP:</b> ' . $CI->input->ip_address() . ' <b>- Data/Hora:</b> ' . date('d/m/Y H:i:s') . 'Hs. <b>- Navegador:</b> ' . $agent . ' <b>- Sistema Operacional:</b> ' . $CI->agent->platform();
-    else:
+    } else {
         return 'Navegador: ' . $agent . ' - Sistema Operacional: ' . $CI->agent->platform();
-    endif;
+    }
 }
 
 //END getAgentUser()
@@ -1526,18 +1510,18 @@ function getAgentUser($auditoria = FALSE) {
 
 function mc_month_date($data = null, $extenso = FALSE) {
 
-    if ($data != NULL):
+    if ($data != NULL) {
         $data = bz_formatdata($data, 'Y-m-d');
         $mes = date("m", strtotime($data));
-        if ($extenso == TRUE):
+        if ($extenso == TRUE) {
             $mes_extenso = array('01' => 'JANEIRO', '02' => 'FEVEREIRO', '03' => 'MARÇO', '04' => 'ABRIL', '05' => 'MAIO', '06' => 'JUNHO', '07' => 'JULHO', '08' => 'AGOSTO', '09' => 'SETEMBRO', '10' => 'OUTUBRO', '11' => 'NOVEMBRO', '12' => 'DEZEMBRO');
             return $mes_extenso[$mes];
-        else:
+        } else {
             return $mes;
-        endif;
-    else:
+        }
+    } else {
         return false;
-    endif;
+    }
 }
 
 //END mc_month_date()
@@ -1554,16 +1538,16 @@ function mc_month_date($data = null, $extenso = FALSE) {
  */
 
 function mc_cut_word_string($string = NULL, $palavras = 50, $decodifica_html = TRUE, $remove_tags = TRUE) {
-    if ($string != NULL):
+    if ($string != NULL) {
         if ($decodifica_html)
             $string = to_html($string);
         if ($remove_tags)
             $string = strip_tags($string);
         $retorno = word_limiter($string, $palavras);
         return $retorno;
-    else:
+    }else {
         return FALSE;
-    endif;
+    }
 }
 
 //END mc_cut_word_string() MACRO CORTA PALAVRAS DE UMA STRING
@@ -1766,14 +1750,14 @@ function bz_modal($_p = []) {
  */
 function bz_remove_strip_tags_content($string) {
 
-    // ----- remove HTML TAGs ----- 
+// ----- remove HTML TAGs ----- 
     $string = preg_replace('/<[^>]*>/', ' ', $string);
 
-    // ----- remove control characters ----- 
+// ----- remove control characters ----- 
     $string = str_replace("\r", '', $string);    // --- replace with empty space
     $string = str_replace("\n", ' ', $string);   // --- replace with space
     $string = str_replace("\t", ' ', $string);   // --- replace with space
-    // ----- remove multiple spaces ----- 
+// ----- remove multiple spaces ----- 
     $string = trim(preg_replace('/ {2,}/', ' ', $string));
 
     return $string;
@@ -1897,7 +1881,7 @@ function bz_delete_file($_file_name, $_file_path) {
  * @return boolean
  */
 function bz_createFolder($p, $mask = 0777) {
-    // Get the CodeIgniter super object ENIO
+// Get the CodeIgniter super object ENIO
     $CI = &get_instance();
 
     if (empty($p)) {
@@ -1912,14 +1896,13 @@ function bz_createFolder($p, $mask = 0777) {
             $_i = '';
             $_data = ___DEFAULT_FILE_INDEX_CONTENT___;
 
-            foreach ($paths as $path):
+            foreach ($paths as $path) {
                 $_i .= $path . '/';
 
                 if (strpos($_i, str_replace('/', '', ___CONF_UPLOAD_DIR___))) {
                     write_file($_i . 'index.html', base64_decode($_data));
                 }
-
-            endforeach;
+            }
         }
     }
 }
@@ -1935,12 +1918,12 @@ function bz_createFolder($p, $mask = 0777) {
  * @return string
  */
 function bz_thumb($absPathFileOrg, $fullname, $width, $height, $relatPathThumbDest = '/assets/cache/thumb') {
-    // Path to image thumbnail in your root
+// Path to image thumbnail in your root
     $dir = $absPathFileOrg . '/';
     $url = base_url() . $absPathFileOrg;
-    // Get the CodeIgniter super object
+// Get the CodeIgniter super object
     $CI = &get_instance();
-    // get src file's extension and file name
+// get src file's extension and file name
     $extension = pathinfo($fullname, PATHINFO_EXTENSION);
     $filename = pathinfo($fullname, PATHINFO_FILENAME);
     $image_org = bz_absolute_path() . $dir . $filename . "." . $extension;
@@ -1953,10 +1936,10 @@ function bz_thumb($absPathFileOrg, $fullname, $width, $height, $relatPathThumbDe
     bz_createFolder($relatPathThumbDest);
 
     if (!file_exists($image_thumb)) {
-        // LOAD LIBRARY
+// LOAD LIBRARY
         $CI->load->library('image_lib');
 
-        // CONFIGURE IMAGE LIBRARY
+// CONFIGURE IMAGE LIBRARY
         $config['source_image'] = $image_org;
         $config['new_image'] = $image_thumb;
         $config['x_axis'] = '10';

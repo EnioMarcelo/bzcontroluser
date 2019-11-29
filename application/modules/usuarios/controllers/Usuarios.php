@@ -32,7 +32,7 @@ class Usuarios extends MY_Controller {
         $this->table_name = 'sec_usuarios';
     }
 
-    // END function __construct()
+// END function __construct()
 
 
     public function index() {
@@ -49,7 +49,7 @@ class Usuarios extends MY_Controller {
         $this->load->view('vMasterPageIframe', $this->dados);
     }
 
-    // END function index()
+// END function index()
 
 
     /*
@@ -64,7 +64,7 @@ class Usuarios extends MY_Controller {
         $this->dados['_grupos']['_result'] = $this->read->exec('sec_grupos', 'ORDER BY descricao')->result();
 
 
-        if ($this->input->post()) :
+        if ($this->input->post()) {
 
             /*
              * VALIDAÇÃO DOS CAMPOS
@@ -74,7 +74,7 @@ class Usuarios extends MY_Controller {
             $this->form_validation->set_rules('sexo', '<b>SEXO</b>', 'trim|required');
 //            $this->form_validation->set_rules('grupos', '<b>GRUPOS</b>', 'callback_valid_grupos');
 
-            if ($this->form_validation->run() == TRUE):
+            if ($this->form_validation->run() == TRUE) {
 
                 $_dados = $this->input->post();
 
@@ -85,26 +85,26 @@ class Usuarios extends MY_Controller {
                 unset($_dados['grupos']);
 
 
-                if (isset($_dados['super_admin'])):
-                    if ($_dados['super_admin'] == 'on'):
+                if (isset($_dados['super_admin'])) {
+                    if ($_dados['super_admin'] == 'on') {
                         $_dados['super_admin'] = 'Y';
-                    else:
+                    } else {
                         $_dados['super_admin'] = 'N';
-                    endif;
-                else:
+                    }
+                } else {
                     $_dados['super_admin'] = 'N';
-                endif;
+                }
 
 
-                if (isset($_dados['ativo'])):
-                    if ($_dados['ativo'] == 'on'):
+                if (isset($_dados['ativo'])) {
+                    if ($_dados['ativo'] == 'on') {
                         $_dados['ativo'] = 'Y';
-                    else:
+                    } else {
                         $_dados['ativo'] = 'N';
-                    endif;
-                else:
+                    }
+                } else {
                     $_dados['ativo'] = 'N';
-                endif;
+                }
 
                 /*
                  * GERA UMA SENHA RANDOMINCA
@@ -161,9 +161,9 @@ class Usuarios extends MY_Controller {
                  */
                 $result = $this->create->exec($this->table_name, $_dados);
 
-                if ($result):
+                if ($result) {
 
-                    //GRAVA AUDITORIA
+//GRAVA AUDITORIA
                     $dados_auditoria['creator'] = 'user';
                     $dados_auditoria['action'] = 'add';
                     $dados_auditoria['description'] = ___MSG_AUDITORIA_ADD_SUCCESS___;
@@ -178,9 +178,9 @@ class Usuarios extends MY_Controller {
                      */
                     $_last_id_add_usuario = $result['last_id_add'];
                     $this->db->trans_start();
-                    foreach ($_grupos as $_value):
+                    foreach ($_grupos as $_value) {
                         $this->db->insert('sec_usuarios_has_sec_grupos', array('sec_usuarios_id' => $_last_id_add_usuario, 'sec_grupos_id' => $_value));
-                    endforeach;
+                    }
                     $this->db->trans_complete();
 
                     /*
@@ -190,17 +190,16 @@ class Usuarios extends MY_Controller {
 
                     $_a = '';
                     $_g = '';
-                    foreach ($_acl_user as $value):
+                    foreach ($_acl_user as $value) {
 
-                        if (strpos($_a, $value['app_name']) == false):
+                        if (strpos($_a, $value['app_name']) == false) {
                             $_a .= '|' . $value['app_name'];
-                        endif;
+                        }
 
-                        if (strpos($_g, $value['grupo_descricao']) == false):
+                        if (strpos($_g, $value['grupo_descricao']) == false) {
                             $_g .= '|' . $value['grupo_descricao'];
-                        endif;
-
-                    endforeach;
+                        }
+                    }
 
                     $this->db->reset_query();
                     $this->db->set('app_name', $_a);
@@ -213,7 +212,7 @@ class Usuarios extends MY_Controller {
 
 
 
-                    //GRAVA AUDITORIA
+//GRAVA AUDITORIA
                     $this->db->reset_query();
                     $this->db->where('sec_usuarios_id', $_last_id_add_usuario);
                     $_r = $this->db->get('sec_usuarios_has_sec_grupos');
@@ -224,21 +223,18 @@ class Usuarios extends MY_Controller {
                     add_auditoria($dados_auditoria);
 
 
-                    //set_mensagem_toastr('<i class="fa fa-fw fa-thumbs-o-up" style="font-size: 1.5em"></i>', _MSG_ADD_REGISTRO_, 'success', 'top-center');
-                    //set_mensagem_trigger_notifi(_MSG_ADD_REGISTRO_, 'success');
-                    //set_mensagem_toastr('<i class="fa fa-fw fa-thumbs-o-up" style="font-size: 1.5em"></i>', _MSG_ADD_REGISTRO_, 'success', 'top-center');
+//set_mensagem_toastr('<i class="fa fa-fw fa-thumbs-o-up" style="font-size: 1.5em"></i>', _MSG_ADD_REGISTRO_, 'success', 'top-center');
+//set_mensagem_trigger_notifi(_MSG_ADD_REGISTRO_, 'success');
+//set_mensagem_toastr('<i class="fa fa-fw fa-thumbs-o-up" style="font-size: 1.5em"></i>', _MSG_ADD_REGISTRO_, 'success', 'top-center');
                     set_mensagem_sweetalert('SUCESSO', 'Usuário Cadastrado com Sucesso\n\nLogin: ' . $_dados['email'] . ' - Senha: ' . $_senha, 'success');
-
-                else:
+                } else {
                     echo 'Erro ao inserir Dados... SQL: ' . $this->db->set($dados)->get_compiled_insert($this->table_name);
                     exit;
-                endif;
+                }
 
                 redirect($this->_redirect . '/add');
-
-            endif;
-
-        endif;
+            }
+        }
 
 
         /*
@@ -248,7 +244,7 @@ class Usuarios extends MY_Controller {
         $this->load->view('vMasterPageIframe', $this->dados);
     }
 
-    // END public function add()    
+// END public function add()    
 
 
     /*
@@ -262,15 +258,15 @@ class Usuarios extends MY_Controller {
          */
         $this->dados['_grupos']['_result'] = $this->read->exec('sec_grupos', 'ORDER BY descricao')->result();
 
-        if ($this->input->post()):
+        if ($this->input->post()) {
 
-            if ($this->input->post('btn-editar') == 'btn-editar'):
+            if ($this->input->post('btn-editar') == 'btn-editar') {
 
                 $this->form_validation->set_rules('nome', '<b>NOME DO USUÁRIO</b>', 'trim|required|min_length[5]|max_length[250]');
                 $this->form_validation->set_rules('sexo', '<b>SEXO</b>', 'trim|required');
 //                $this->form_validation->set_rules('grupos', '<b>GRUPOS</b>', 'callback_valid_grupos');
 
-                if ($this->form_validation->run() == TRUE):
+                if ($this->form_validation->run() == TRUE) {
 
                     $_dados = $this->input->post();
 
@@ -287,39 +283,39 @@ class Usuarios extends MY_Controller {
                      * GRAVA ALTERAÇÃO DOS DADOS DO GRUPO
                      */
 
-                    if (isset($_dados['super_admin'])):
-                        if ($_dados['super_admin'] == 'on'):
+                    if (isset($_dados['super_admin'])) {
+                        if ($_dados['super_admin'] == 'on') {
                             $_dados['super_admin'] = 'Y';
-                        else:
+                        } else {
                             $_dados['super_admin'] = 'N';
-                        endif;
-                    else:
+                        }
+                    } else {
                         $_dados['super_admin'] = 'N';
-                    endif;
+                    }
 
 
-                    if (isset($_dados['ativo'])):
-                        if ($_dados['ativo'] == 'on'):
+                    if (isset($_dados['ativo'])) {
+                        if ($_dados['ativo'] == 'on') {
                             $_dados['ativo'] = 'Y';
-                        else:
+                        } else {
                             $_dados['ativo'] = 'N';
-                        endif;
-                    else:
+                        }
+                    } else {
                         $_dados['ativo'] = 'N';
-                    endif;
+                    }
 
 
                     /*
                      * SE O USUÁRIO FOR O USUÁRIO CORRENTE/LOGADO DO SISTEMA, ELE NÃO PODERÁ PERDER O STATUS DE SUPER ADMIN NEM SER DESATIVADO DO SISTEMA
                      */
-                    if ($this->current_super_admin($this->input->post('id')) == FALSE):
+                    if ($this->current_super_admin($this->input->post('id')) == FALSE) {
                         $_dados['super_admin'] = 'Y';
                         $_dados['ativo'] = 'Y';
-                    endif;
+                    }
                     /*
                      * END SE O USUÁRIO FOR O USUÁRIO CORRENTE/LOGADO DO SISTEMA, ELE NÃO PODERÁ PERDER O STATUS DE SUPER ADMIN NEM SER DESATIVADO DO SISTEMA
                      */
-                    
+
 
                     /**
                      * DADOS FILLABLE
@@ -358,9 +354,9 @@ class Usuarios extends MY_Controller {
 
                     $_where = 'WHERE id = "' . $this->input->post('id') . '"';
 
-                    if ($this->update->exec($this->table_name, $_dados, $_where)):
+                    if ($this->update->exec($this->table_name, $_dados, $_where)) {
 
-                        //GRAVA AUDITORIA
+//GRAVA AUDITORIA
                         $dados_auditoria['creator'] = 'user';
                         $dados_auditoria['action'] = 'edit';
                         $dados_auditoria['description'] = ___MSG_AUDITORIA_UPDATE_SUCCESS___;
@@ -382,15 +378,15 @@ class Usuarios extends MY_Controller {
                         /* GRAVA OS REGISTRO NOVOS */
                         $this->db->trans_start();
                         $this->db->reset_query();
-                        foreach ($_grupos as $_value):
+                        foreach ($_grupos as $_value) {
                             $this->db->replace('sec_usuarios_has_sec_grupos', array('sec_usuarios_id' => $this->input->post('id'), 'sec_grupos_id' => $_value));
-                        endforeach;
+                        }
                         $this->db->trans_complete();
 
                         $this->db->reset_query();
                         $this->db->where('sec_usuarios_id', $this->input->post('id'));
                         $_r = $this->db->get('sec_usuarios_has_sec_grupos');
-                        //GRAVA AUDITORIA
+//GRAVA AUDITORIA
                         $dados_auditoria['creator'] = 'user';
                         $dados_auditoria['action'] = 'update acl groups';
                         $dados_auditoria['description'] = 'ACL Grupo de Acesso';
@@ -406,17 +402,16 @@ class Usuarios extends MY_Controller {
 
                         $_a = '';
                         $_g = '';
-                        foreach ($_acl_user as $value):
+                        foreach ($_acl_user as $value) {
 
-                            if (strpos($_a, $value['app_name']) == false):
+                            if (strpos($_a, $value['app_name']) == false) {
                                 $_a .= '|' . $value['app_name'];
-                            endif;
+                            }
 
-                            if (strpos($_g, $value['grupo_descricao']) == false):
+                            if (strpos($_g, $value['grupo_descricao']) == false) {
                                 $_g .= '|' . $value['grupo_descricao'];
-                            endif;
-
-                        endforeach;
+                            }
+                        }
 
                         $this->db->reset_query();
                         $this->db->set('app_name', $_a);
@@ -429,30 +424,24 @@ class Usuarios extends MY_Controller {
 
 
                         set_mensagem_trigger_notifi(___MSG_UPDATE_REGISTRO___, 'success');
-
-                    else:
-                        //GRAVA AUDITORIA
+                    } else {
+//GRAVA AUDITORIA
                         $dados_auditoria['creator'] = 'system';
                         $dados_auditoria['action'] = 'error edit';
                         $dados_auditoria['description'] = ___MSG_AUDITORIA_UPDATE_ERROR___;
                         $dados_auditoria['last_query'] = $this->db->last_query();
                         add_auditoria($dados_auditoria);
 
-                        //set_mensagem_toastr('<i class="fa fa-fw fa-thumbs-o-down" style="font-size: 1.5em"></i>', _MSG_ERROR_UPDATE_REGISTRO_, 'error', 'top-center');
+//set_mensagem_toastr('<i class="fa fa-fw fa-thumbs-o-down" style="font-size: 1.5em"></i>', _MSG_ERROR_UPDATE_REGISTRO_, 'error', 'top-center');
                         set_mensagem_trigger_notifi(___MSG_ERROR_UPDATE_REGISTRO___, 'error');
-
-
-                    endif;
-
-                endif;
-
-            endif;
-
-        endif;
+                    }
+                }
+            }
+        }
 
         $_id = $this->uri->segment(3);
 
-        if ($_id):
+        if ($_id) {
 
             /*
              * BUSCA OS DADOS
@@ -460,7 +449,7 @@ class Usuarios extends MY_Controller {
             $_where = 'WHERE id = "' . $_id . '" LIMIT 1';
             $_result = $this->read->exec($this->table_name, $_where);
 
-            if ($_result->result()):
+            if ($_result->result()) {
                 $this->dados['dados'] = $_result->row();
 
                 /**
@@ -469,21 +458,19 @@ class Usuarios extends MY_Controller {
                 $this->db->where('sec_usuarios_id', $_id);
                 $this->dados['_grupos']['_relat'] = $this->db->get('sec_usuarios_has_sec_grupos')->result();
                 $_r = [];
-                foreach ($this->dados['_grupos']['_relat'] as $value):
+                foreach ($this->dados['_grupos']['_relat'] as $value) {
 
                     $_r[] = $value->sec_grupos_id;
-
-                endforeach;
+                }
                 $this->dados['_grupos']['_relat'] = $_r;
-            else:
-                //set_mensagem_toastr('<i class="fa fa-fw fa-thumbs-o-down" style="font-size: 1.5em"></i>', _MSG_ERROR_SELECT_UPDATE_REGISTRO_, 'error', 'top-center');
+            } else {
+//set_mensagem_toastr('<i class="fa fa-fw fa-thumbs-o-down" style="font-size: 1.5em"></i>', _MSG_ERROR_SELECT_UPDATE_REGISTRO_, 'error', 'top-center');
                 set_mensagem_trigger_notifi(___MSG_ERROR_SELECT_UPDATE_REGISTRO___, 'error');
                 redirect($this->_redirect_parametros_url);
-            endif;
-
-        else:
+            }
+        } else {
             redirect($this->_redirect_parametros_url);
-        endif;
+        }
 
         /*
          * TEMPLATE QUE SERÁ USADO PELO MÓDULO DO SISTEMA
@@ -492,7 +479,7 @@ class Usuarios extends MY_Controller {
         $this->load->view('vMasterPageIframe', $this->dados);
     }
 
-    // END public function edit()
+// END public function edit()
 
 
     /*
@@ -510,7 +497,7 @@ class Usuarios extends MY_Controller {
         $this->form_validation->set_rules('dadosdel', '<b>REGISTROS DEL</b>', 'trim|required');
 
 
-        if ($this->form_validation->run() == TRUE):
+        if ($this->form_validation->run() == TRUE) {
 
             $_dados = $this->input->post('dadosdel', TRUE);
             $_dados = explode(',', $_dados);
@@ -519,12 +506,12 @@ class Usuarios extends MY_Controller {
             /*
              * SE O USUÁRIO FOR O USUÁRIO CORRENTE/LOGADO DO SISTEMA, ELE NÃO PODERÁ SER DELETADO
              */
-            foreach ($_dados as $_vId):
-                if ($this->current_super_admin($_vId) == FALSE):
+            foreach ($_dados as $_vId) {
+                if ($this->current_super_admin($_vId) == FALSE) {
                     set_mensagem_trigger_notifi('Este USUÁRIO [ ID:' . $_vId . ' ] não pode ser DELETADO.', 'warning');
                     return false;
-                endif;
-            endforeach;
+                }
+            }
             /*
              * END SE O USUÁRIO FOR O USUÁRIO CORRENTE/LOGADO DO SISTEMA, ELE NÃO PODERÁ SER DELETADO
              */
@@ -538,37 +525,35 @@ class Usuarios extends MY_Controller {
             $this->db->delete($this->table_name);
 
 
-            if ($this->db->affected_rows()):
-                if (count($_dados) > 1):
-                    //set_mensagem_toastr('<i class="fa fa-fw fa-thumbs-o-up" style="font-size: 1.5em"></i>', str_replace('Registro Deletado', 'Registros Deletados', _MSG_DEL_REGISTRO_), 'success', 'top-center');
+            if ($this->db->affected_rows()) {
+                if (count($_dados) > 1) {
+//set_mensagem_toastr('<i class="fa fa-fw fa-thumbs-o-up" style="font-size: 1.5em"></i>', str_replace('Registro Deletado', 'Registros Deletados', _MSG_DEL_REGISTRO_), 'success', 'top-center');
                     set_mensagem_trigger_notifi(str_replace('Registro Deletado', 'Registros Deletados', ___MSG_DEL_REGISTRO___), 'success');
                     $dados_auditoria['description'] = str_replace('Registro Deletado', 'Registros Deletados', ___MSG_AUDITORIA_DEL_SUCCESS___);
-                else:
-                    //set_mensagem_toastr('<i class="fa fa-fw fa-thumbs-o-up" style="font-size: 1.5em"></i>', _MSG_DEL_REGISTRO_, 'success', 'top-center');
+                } else {
+//set_mensagem_toastr('<i class="fa fa-fw fa-thumbs-o-up" style="font-size: 1.5em"></i>', _MSG_DEL_REGISTRO_, 'success', 'top-center');
                     set_mensagem_trigger_notifi(___MSG_DEL_REGISTRO___, 'success');
                     $dados_auditoria['description'] = ___MSG_AUDITORIA_DEL_SUCCESS___;
-                endif;
+                }
 
-                //GRAVA AUDITORIA
+//GRAVA AUDITORIA
                 $dados_auditoria['creator'] = 'user';
                 $dados_auditoria['action'] = 'del';
                 $dados_auditoria['last_query'] = $this->db->last_query();
                 add_auditoria($dados_auditoria);
-
-            else:
-                //set_mensagem_toastr('<i class="fa fa-fw fa-thumbs-o-down" style="font-size: 1.5em"></i>', _MSG_ERROR_DEL_REGISTRO_, 'error', 'top-center');
+            } else {
+//set_mensagem_toastr('<i class="fa fa-fw fa-thumbs-o-down" style="font-size: 1.5em"></i>', _MSG_ERROR_DEL_REGISTRO_, 'error', 'top-center');
                 set_mensagem_trigger_notifi(___MSG_ERROR_DEL_REGISTRO___, 'error');
-            endif;
-
-        else:
-            //set_mensagem_toastr('<i class="fa fa-fw fa-thumbs-o-down" style="font-size: 1.5em"></i>', _MSG_ERROR_DE_VALIDACAO_, 'error', 'top-center');
+            }
+        } else {
+//set_mensagem_toastr('<i class="fa fa-fw fa-thumbs-o-down" style="font-size: 1.5em"></i>', _MSG_ERROR_DE_VALIDACAO_, 'error', 'top-center');
             set_mensagem_trigger_notifi(___MSG_ERROR_DE_VALIDACAO___, 'error');
-        endif;
+        }
 
         exit;
     }
 
-    //END public function del()
+//END public function del()
 
 
     /*
@@ -580,12 +565,12 @@ class Usuarios extends MY_Controller {
 
         $_id = $this->uri->segment(3);
 
-        if ($_id):
+        if ($_id) {
 
             /*
              * SE O USUÁRIO FOR O USUÁRIO CORRENTE/LOGADO DO SISTEMA, ELE NÃO PODERÁ SER DESATIVADO
              */
-            if ($this->current_super_admin($_id) == FALSE):
+            if ($this->current_super_admin($_id) == FALSE) {
                 set_mensagem_trigger_notifi('Este USUÁRIO [ ID:' . $_id . ' ] não pode ser DESATIVADO.', 'warning');
 
                 /*
@@ -595,8 +580,7 @@ class Usuarios extends MY_Controller {
                 redirect($this->_redirect_parametros_url);
 
                 return false;
-
-            endif;
+            }
             /*
              * END SE O USUÁRIO FOR O USUÁRIO CORRENTE/LOGADO DO SISTEMA, ELE NÃO PODERÁ SER DESATIVADO
              */
@@ -608,7 +592,7 @@ class Usuarios extends MY_Controller {
             $_where = 'WHERE id = "' . $_id . '" LIMIT 1';
             $_result = $this->read->exec($this->table_name, $_where);
 
-            if ($_result->result()):
+            if ($_result->result()) {
 
                 /*
                  * GRAVA ALTERAÇÃO DO STATUS
@@ -617,41 +601,38 @@ class Usuarios extends MY_Controller {
                 $dados['id'] = $_result->row()->id;
                 $_where = 'WHERE id = "' . $_result->row()->id . '"';
 
-                if ($this->update->exec($this->table_name, $dados, $_where)):
-                    //GRAVA AUDITORIA
+                if ($this->update->exec($this->table_name, $dados, $_where)) {
+//GRAVA AUDITORIA
                     $dados_auditoria['creator'] = 'user';
                     $dados_auditoria['action'] = 'status change';
                     $dados_auditoria['description'] = ___MSG_AUDITORIA_STATUS_REGISTRO_SUCCESS___;
                     $dados_auditoria['last_query'] = $this->db->last_query();
                     add_auditoria($dados_auditoria);
 
-                    //set_mensagem_toastr('<i class="fa fa-fw fa-thumbs-o-up" style="font-size: 1.5em"></i>', _MSG_STATUS_REGISTRO_, 'success', 'top-center');
+//set_mensagem_toastr('<i class="fa fa-fw fa-thumbs-o-up" style="font-size: 1.5em"></i>', _MSG_STATUS_REGISTRO_, 'success', 'top-center');
                     set_mensagem_trigger_notifi(___MSG_STATUS_REGISTRO___, 'success');
-
-                else:
-                    //GRAVA AUDITORIA
+                } else {
+//GRAVA AUDITORIA
                     $dados_auditoria['creator'] = 'system';
                     $dados_auditoria['action'] = 'error status change';
                     $dados_auditoria['description'] = ___MSG_AUDITORIA_STATUS_REGISTRO_ERROR___;
                     $dados_auditoria['last_query'] = $this->db->last_query();
                     add_auditoria($dados_auditoria);
 
-                    //set_mensagem_toastr('<i class="fa fa-fw fa-thumbs-o-down" style="font-size: 1.5em"></i>', _MSG_ERROR_STATUS_REGISTRO_, 'error', 'top-center');
+//set_mensagem_toastr('<i class="fa fa-fw fa-thumbs-o-down" style="font-size: 1.5em"></i>', _MSG_ERROR_STATUS_REGISTRO_, 'error', 'top-center');
                     set_mensagem_trigger_notifi(___MSG_ERROR_STATUS_REGISTRO___, 'error');
-
-                endif;
-            else:
-                //GRAVA AUDITORIA
+                }
+            } else {
+//GRAVA AUDITORIA
                 $dados_auditoria['creator'] = 'system';
                 $dados_auditoria['action'] = 'error status change';
                 $dados_auditoria['description'] = ___MSG_AUDITORIA_NOT_FIND_REGISTRO___;
                 $dados_auditoria['last_query'] = $this->db->last_query();
                 add_auditoria($dados_auditoria);
 
-                //set_mensagem_toastr('ATENÇÃO', _MSG_NOT_FIND_REGISTRO_, 'warning', 'top-center');
+//set_mensagem_toastr('ATENÇÃO', _MSG_NOT_FIND_REGISTRO_, 'warning', 'top-center');
                 set_mensagem_trigger_notifi(___MSG_NOT_FIND_REGISTRO___, 'warning');
-
-            endif;
+            }
 
 
             /*
@@ -659,11 +640,10 @@ class Usuarios extends MY_Controller {
              */
             $_result_paginacao = $this->get_paginacao();
             redirect($this->_redirect_parametros_url);
-
-        endif;
+        }
     }
 
-    //END public function status()      
+//END public function status()      
 
 
     /*
@@ -674,15 +654,15 @@ class Usuarios extends MY_Controller {
         $p = $this->input->post('grupos');
         $r = $result = count($p);
 
-        if ($r > 0):
+        if ($r > 0) {
             return true;
-        endif;
+        }
 
         $this->form_validation->set_message('valid_grupos', 'O campo {field} é obrigatório.');
         return false;
     }
 
-    // END public function valid_grupos()
+// END public function valid_grupos()
 
 
     /*
@@ -693,7 +673,7 @@ class Usuarios extends MY_Controller {
 
         $_r = array('success' => 'false');
 
-        if ($_POST && $_POST['task'] == 'poweroffuser') :
+        if ($_POST && $_POST['task'] == 'poweroffuser') {
 
             $_id = $this->input->post('id');
             $_email = $this->input->post('email');
@@ -701,19 +681,19 @@ class Usuarios extends MY_Controller {
 
             $_r = '';
 
-            if ($this->session->userdata('user_login')['user_email'] == $_email):
+            if ($this->session->userdata('user_login')['user_email'] == $_email) {
                 $_r = array('notpoweroff' => 'true', 'csrf_token' => $this->security->get_csrf_hash());
                 echo json_encode($_r);
                 exit;
-            else:
+            } else {
 
 
                 $this->db->like('data', $_email);
                 $this->db->delete('ci_sessions');
 
-                if ($this->db->affected_rows()):
+                if ($this->db->affected_rows()) {
 
-                    //GRAVA AUDITORIA
+//GRAVA AUDITORIA
                     $dados_auditoria['creator'] = 'user';
                     $dados_auditoria['action'] = 'poweroff user';
                     $dados_auditoria['description'] = "Usuário: {$_nome} - Email: {$_email}, Desconectado do Sistema pelo ADMIN.";
@@ -723,19 +703,16 @@ class Usuarios extends MY_Controller {
                     $_r = array('success' => 'true', 'csrf_token' => $this->security->get_csrf_hash());
                     echo json_encode($_r);
                     exit;
-
-                endif;
-
-            endif;
-
-        endif;
+                }
+            }
+        }
 
         echo json_encode($_r);
 
         exit;
     }
 
-    // END public function poweroff()
+// END public function poweroff()
 
 
     /*
@@ -763,25 +740,23 @@ class Usuarios extends MY_Controller {
             $_where = 'WHERE id = ' . $_id . ' AND email = "' . $_email . '" LIMIT 1';
             $_result = $this->read->exec($this->table_name, $_where);
 
-            if ($_result->result()):
+            if ($_result->result()) {
 
-                // ALTERA A SENHA DO USUÁRIO
+// ALTERA A SENHA DO USUÁRIO
 
                 $_dados['senha'] = $_pass;
 
-                if ($this->update->exec($this->table_name, $_dados, $_where)):
+                if ($this->update->exec($this->table_name, $_dados, $_where)) {
 
                     $_r = array('success' => 'true', 'csrf_token' => $this->security->get_csrf_hash());
 
-                    //GRAVA AUDITORIA
+//GRAVA AUDITORIA
                     $dados_auditoria['creator'] = 'user';
                     $dados_auditoria['action'] = 'change pass admin';
                     $dados_auditoria['description'] = 'Alteração de Senha feito pelo Admin';
                     add_auditoria($dados_auditoria);
-
-                endif;
-
-            endif;
+                }
+            }
         }
 
         echo json_encode($_r);
@@ -789,7 +764,7 @@ class Usuarios extends MY_Controller {
         exit;
     }
 
-    // END public function changepass()
+// END public function changepass()
 
 
     /*
@@ -806,9 +781,9 @@ class Usuarios extends MY_Controller {
          * DADOS PARA PAGINAÇÃO
          */
         $_dados_pag['table'] = $this->table_name;
-        if ($this->input->get('search', TRUE)):
+        if ($this->input->get('search', TRUE)) {
             $_dados_pag['search'] = array('_concat_fields' => 'nome, email, super_admin, ativo, id, app_name, grupo_descricao', '_string' => $this->input->get('search', TRUE));
-        endif;
+        }
         $_dados_pag['filter'] = $_filter;
         $_dados_pag['order_by'] = 'nome';
         $_dados_pag['programa'] = $this->router->fetch_class();
@@ -819,7 +794,7 @@ class Usuarios extends MY_Controller {
         return $_result_pag;
     }
 
-    // END private function get_paginacao()       
+// END private function get_paginacao()       
 
 
     /*
@@ -830,22 +805,21 @@ class Usuarios extends MY_Controller {
         $_where = 'WHERE id = "' . $_id . '"';
         $_result = $this->read->exec($this->table_name, $_where)->row();
 
-        if ($_result):
+        if ($_result) {
 
             $user_data_email = $this->session->userdata('user_login')['user_email'];
 
-            if ($_result->email == $user_data_email):
+            if ($_result->email == $user_data_email) {
                 return FALSE;
-            else:
+            } else {
                 return TRUE;
-            endif;
-
-        else:
+            }
+        } else {
             return FALSE;
-        endif;
+        }
     }
 
-    // END private function current_super_admin()
+// END private function current_super_admin()
 }
 
 //END class 

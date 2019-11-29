@@ -30,9 +30,9 @@ class Changepass extends MY_Controller {
         /*
          * CHECK SE USUÁRIO ESTÁ LOGADO, SE OK, REDIRECIONA PARA O PAINEL.
          */
-        if (check_is_user_login()):
+        if (check_is_user_login()) {
             redirect('dashboard');
-        endif;
+        }
 
         /*
          * CREATE CAPTCHA
@@ -91,17 +91,17 @@ class Changepass extends MY_Controller {
         $this->form_validation->set_rules('email', '<b>Email</b>', 'trim|required|valid_email');
         $this->form_validation->set_rules('captcha', '<b>Captcha</b>', 'trim|required|callback__validate_captcha');
 
-        if ($this->form_validation->run() == TRUE):
+        if ($this->form_validation->run() == TRUE) {
 
             /*
              * CHECK REQUEST REPEAT email
              */
 
-            /* if ($this->request_repeat(xss_clean($this->input->post('email', TRUE)))):
+            /* if ($this->request_repeat(xss_clean($this->input->post('email', TRUE)))){
               set_mensagem_sweetalert('Oooops!!!', 'Você já tentou este email antes.', 'warning');
               redirect(site_url('changepass'));
               exit;
-              endif; */
+              } */
 
 
             /*
@@ -111,7 +111,7 @@ class Changepass extends MY_Controller {
             $termosDB = 'WHERE email = "' . xss_clean($this->input->post('email', TRUE)) . '" AND ativo = "Y" LIMIT 1';
             $result = $this->read->exec($this->table_name, $termosDB);
 
-            if ($result->result()):
+            if ($result->result()) {
                 /*
                  * GERA UM NOVA SENHA PARA O USUÁRIO.
                  */
@@ -127,7 +127,7 @@ class Changepass extends MY_Controller {
                 $dados['senha'] = $newpassMD5;
                 $termosDB = 'WHERE email = "' . $result->row()->email . '"';
 
-                if ($this->update->exec($this->table_name, $dados, $termosDB)):
+                if ($this->update->exec($this->table_name, $dados, $termosDB)) {
 
                     //GRAVA AUDITORIA
                     $dados_auditoria['creator'] = 'user';
@@ -140,7 +140,7 @@ class Changepass extends MY_Controller {
                      */
                     $mensagem = '<p>Você solicitou uma nova senha, a partir de agora use a seguinte senha para ter acesso ao sistema - [ E-MAIL: <strong> ' . $dados['email'] . ' - </strong> SENHA : <strong> ' . $newpass . ' </strong> ]</p><p><b>Assim que fizer o login no sistema, troque esta senha para uma nova senha.</b></p><p><a href="' . site_url() . '">PARA ACESSAR O SISTEMA CLIQUE AQUI.</a></p>';
 
-                    if (bz_enviar_email($dados['email'], 'Solicitação de uma nova senha de acesso - ' . $this->config->item('config_system')['CONF_NOME_SISTEMA'], $mensagem)):
+                    if (bz_enviar_email($dados['email'], 'Solicitação de uma nova senha de acesso - ' . $this->config->item('config_system')['CONF_NOME_SISTEMA'], $mensagem)) {
                         //GRAVA AUDITORIA
                         $dados_auditoria['description'] = 'Nova Senha Enviada para o Email[ ' . $result->row()->email . ' ]';
                         add_auditoria($dados_auditoria);
@@ -148,7 +148,7 @@ class Changepass extends MY_Controller {
                         //set_mensagem_toastr('SUCESSO !!!', 'Sua nova senha foi enviado para o email informado.', 'success', 'top-center');
                         set_mensagem_sweetalert('SUCESSO', 'Sua nova senha foi enviado para o email informado.', 'success');
                         redirect(site_url('login'));
-                    else:
+                    } else {
                         //GRAVA AUDITORIA
                         $dados_auditoria['description'] = 'Erro ao Enviar Email[ ' . $result->row()->email . ' ] Com Nova Senha';
                         add_auditoria($dados_auditoria);
@@ -156,9 +156,8 @@ class Changepass extends MY_Controller {
                         //set_mensagem_toastr('ERRO !!!', 'ERRO AO ENVIAR EMAIL COM SUA NOVA SENHA. AVISE O ADMINISTRADOR DO SISTEMA.', 'error', 'top-center');
                         set_mensagem_sweetalert('ERRO', 'ERRO AO ENVIAR EMAIL COM SUA NOVA SENHA. AVISE O ADMINISTRADOR DO SISTEMA.', 'error');
                         redirect(site_url('login'));
-                    endif;
-
-                else:
+                    }
+                } else {
                     //GRAVA AUDITORIA
                     $dados_auditoria['description'] = 'Erro ao Atualizar Nova Senha Tabela';
                     add_auditoria($dados_auditoria);
@@ -166,22 +165,20 @@ class Changepass extends MY_Controller {
                     //set_mensagem_toastr('ERRO !!!', 'ERRO AO ATUALIZAR SUA NOVA SENHA. AVISE O ADMINISTRADOR DO SISTEMA.', 'error', 'top-center');
                     set_mensagem_sweetalert('ERRO', 'ERRO AO ATUALIZAR SUA NOVA SENHA. AVISE O ADMINISTRADOR DO SISTEMA.', 'error');
                     redirect(site_url('login'));
-                endif;
-
-            else:
+                }
+            } else {
                 //set_mensagem('ERRO !!!', 'Este <b>EMAIL</b> não existe ou está temporáriamente inativo neste sistema.', 'fa-thumbs-down', 'danger');
                 //set_mensagem_toastr('ERRO !!!', 'Este <b>EMAIL</b> não existe ou está temporáriamente inativo neste sistema.', 'error', 'top-center');
                 set_mensagem_sweetalert('ATENÇÃO', 'Este EMAIL não existe ou está\ntemporáriamente inativo neste sistema.', 'warning');
                 redirect(site_url('login'));
-            endif;
-
-        else:
-        /* $mensagem = validation_errors();
-          set_mensagem('Erro Validação !!!', $mensagem, 'fa-thumbs-down', 'danger');
-          echo get_mensagem();
-         * 
-         */
-        endif;
+            }
+        } else {
+            /* $mensagem = validation_errors();
+              set_mensagem('Erro Validação !!!', $mensagem, 'fa-thumbs-down', 'danger');
+              echo get_mensagem();
+             * 
+             */
+        }
     }
 
     /*
@@ -223,10 +220,10 @@ class Changepass extends MY_Controller {
 
     protected function request_repeat($email) {
 
-        if (!empty($this->session->userdata('changepassemail')) && $this->session->userdata('changepassemail') == $email):
+        if (!empty($this->session->userdata('changepassemail')) && $this->session->userdata('changepassemail') == $email) {
             return true;
             exit;
-        endif;
+        }
 
         $this->session->set_userdata('changepassemail', $email);
         return false;
