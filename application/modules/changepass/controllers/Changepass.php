@@ -116,7 +116,8 @@ class Changepass extends MY_Controller {
                  * GERA UM NOVA SENHA PARA O USUÁRIO.
                  */
                 $newpass = substr(str_shuffle('qwertyuiopasdfghjklzxcvbnm0123456789'), 0, 6);
-                $newpassMD5 = do_hash($newpass, 'md5');
+//                $newpassHASH = do_hash($newpass, 'md5');
+                $newpassHASH = password_hash($newpass, PASSWORD_DEFAULT);
 
                 /*
                  * GRAVA A NOVA SENHA NA TABELA usuarios
@@ -124,12 +125,12 @@ class Changepass extends MY_Controller {
                 $termosDB = array();
                 $dados = array();
                 $dados['email'] = $result->row()->email;
-                $dados['senha'] = $newpassMD5;
+                $dados['senha'] = $newpassHASH;
                 $termosDB = 'WHERE email = "' . $result->row()->email . '"';
 
                 if ($this->update->exec($this->table_name, $dados, $termosDB)) {
 
-                    //GRAVA AUDITORIA
+                    /* GRAVA AUDITORIA */
                     $dados_auditoria['creator'] = 'user';
                     $dados_auditoria['action'] = 'change pass';
                     $dados_auditoria['description'] = 'O email[ ' . $result->row()->email . ' ] Solicitou Alteração de Senha';
@@ -141,34 +142,26 @@ class Changepass extends MY_Controller {
                     $mensagem = '<p>Você solicitou uma nova senha, a partir de agora use a seguinte senha para ter acesso ao sistema - [ E-MAIL: <strong> ' . $dados['email'] . ' - </strong> SENHA : <strong> ' . $newpass . ' </strong> ]</p><p><b>Assim que fizer o login no sistema, troque esta senha para uma nova senha.</b></p><p><a href="' . site_url() . '">PARA ACESSAR O SISTEMA CLIQUE AQUI.</a></p>';
 
                     if (bz_enviar_email($dados['email'], 'Solicitação de uma nova senha de acesso - ' . $this->config->item('config_system')['CONF_NOME_SISTEMA'], $mensagem)) {
-                        //GRAVA AUDITORIA
+                        /* GRAVA AUDITORIA */
                         $dados_auditoria['description'] = 'Nova Senha Enviada para o Email[ ' . $result->row()->email . ' ]';
                         add_auditoria($dados_auditoria);
-                        //set_mensagem('SUCESSO !!!', 'Sua nova senha foi enviado para o email informado.', 'fa-thumbs-up', 'success');
-                        //set_mensagem_toastr('SUCESSO !!!', 'Sua nova senha foi enviado para o email informado.', 'success', 'top-center');
                         set_mensagem_sweetalert('SUCESSO', 'Sua nova senha foi enviado para o email informado.', 'success');
                         redirect(site_url('login'));
                     } else {
-                        //GRAVA AUDITORIA
+                        /* GRAVA AUDITORIA */
                         $dados_auditoria['description'] = 'Erro ao Enviar Email[ ' . $result->row()->email . ' ] Com Nova Senha';
                         add_auditoria($dados_auditoria);
-                        //set_mensagem('ERRO !!!', 'ERRO AO ENVIAR EMAIL COM SUA NOVA SENHA. AVISE O ADMINISTRADOR DO SISTEMA.', 'fa-thumbs-down', 'danger');
-                        //set_mensagem_toastr('ERRO !!!', 'ERRO AO ENVIAR EMAIL COM SUA NOVA SENHA. AVISE O ADMINISTRADOR DO SISTEMA.', 'error', 'top-center');
                         set_mensagem_sweetalert('ERRO', 'ERRO AO ENVIAR EMAIL COM SUA NOVA SENHA. AVISE O ADMINISTRADOR DO SISTEMA.', 'error');
                         redirect(site_url('login'));
                     }
                 } else {
-                    //GRAVA AUDITORIA
+                    /* GRAVA AUDITORIA */
                     $dados_auditoria['description'] = 'Erro ao Atualizar Nova Senha Tabela';
                     add_auditoria($dados_auditoria);
-                    //set_mensagem('ERRO !!!', 'ERRO AO ATUALIZAR SUA NOVA SENHA. AVISE O ADMINISTRADOR DO SISTEMA.', 'fa-thumbs-down', 'danger');
-                    //set_mensagem_toastr('ERRO !!!', 'ERRO AO ATUALIZAR SUA NOVA SENHA. AVISE O ADMINISTRADOR DO SISTEMA.', 'error', 'top-center');
                     set_mensagem_sweetalert('ERRO', 'ERRO AO ATUALIZAR SUA NOVA SENHA. AVISE O ADMINISTRADOR DO SISTEMA.', 'error');
                     redirect(site_url('login'));
                 }
             } else {
-                //set_mensagem('ERRO !!!', 'Este <b>EMAIL</b> não existe ou está temporáriamente inativo neste sistema.', 'fa-thumbs-down', 'danger');
-                //set_mensagem_toastr('ERRO !!!', 'Este <b>EMAIL</b> não existe ou está temporáriamente inativo neste sistema.', 'error', 'top-center');
                 set_mensagem_sweetalert('ATENÇÃO', 'Este EMAIL não existe ou está\ntemporáriamente inativo neste sistema.', 'warning');
                 redirect(site_url('login'));
             }
@@ -186,7 +179,6 @@ class Changepass extends MY_Controller {
      */
 
     public function _validate_captcha() {
-
 
         if ($this->session->userdata('user_login')) {
             $this->form_validation->set_message('_validate_captcha', 'O código <b>CAPTCHA</a> expirou. Recarregue a tela e tente novamente.');

@@ -55,9 +55,9 @@ class Login extends MY_Controller {
             if ($this->form_validation->run() == TRUE) {
 
                 $_POST['email'] = xss_clean($this->input->post('email', TRUE));
-                $_POST['senha'] = do_hash(xss_clean($this->input->post('senha', TRUE)), 'md5');
+                $_POST['senha'] = xss_clean($this->input->post('senha', TRUE));
 
-                $this->login();
+                $this->login($_POST['email'], $_POST['senha']);
             }
         }
     }
@@ -101,18 +101,24 @@ class Login extends MY_Controller {
      * FAZ A AUTENTICAÇÃO DO USUÁRIO NO SISTEMA
      */
 
-    private function login() {
+    private function login($_email, $_senha) {
+
+        $_is_login = false;
 
         /*
          * VERIFICA OS DADOS DO USUÁRIO DIGITADOS NA TELA DE LOGIN, SE FOR VERDADEIRO AUTORIZA O ACESSO AO SISTEMA.
          */
         $termosDB = array();
-        $termosDB = 'WHERE email = "' . $this->input->post('email', TRUE) . '" AND senha = "' . $this->input->post('senha', TRUE) . '" AND ativo = "Y" ';
+        $termosDB = 'WHERE email = "' . $_email . '" AND ativo = "Y" LIMIT 1';
         $result = $this->read->exec($this->table_name, $termosDB);
+
+        if (password_verify($_senha, $result->row()->senha)) {
+            $_is_login = true;
+        }
 
 
         //CHECK MULTIPLOS LOGINS
-        if ($result->result()) {
+        if ($_is_login) {
             if (get_setting('multiplos_logins') == 'NAO') {
                 if ($result->row()->super_admin == 'N') {
 
@@ -121,7 +127,6 @@ class Login extends MY_Controller {
 
                     if ($result_multiplo_login->result()) {
                         $this->session->unset_userdata('user_login');
-//                        set_mensagem_toastr('ATENÇÃO', 'Usuário já está logado no sistema.', 'warning', 'top-center');
                         set_mensagem_trigger_notifi('ATENÇÃO... Usuário já está logado no sistema.', 'warning');
                         redirect('login', 'refresh');
                         exit;
@@ -132,14 +137,14 @@ class Login extends MY_Controller {
 
 
         //GRAVA A DATA E HORA DO ÚLTIMO LOGIN
-        if ($result->result()) {
+        if ($_is_login) {
             $_ultimoLogin = $result->row()->ultimo_login;
             $this->update->exec($this->table_name, array('ultimo_login' => date('Y-m-d H:i:s')), $termosDB);
         }
 
 
         //CARREGA A SESSÃO DO USUÁRIO COM OS DADOS
-        if ($result->result()) {
+        if ($_is_login) {
             $session_data = array(
                 'user_nome' => $result->row()->nome,
                 'user_sexo' => $result->row()->sexo,
@@ -153,7 +158,7 @@ class Login extends MY_Controller {
             //GERA A SESSÃO DO USUÁRIO
             $this->session->set_userdata('user_login', $session_data);
 
-            //GRAVA AUDITORIA
+            /* GRAVA AUDITORIA */
             $dados_auditoria['creator'] = 'user';
             $dados_auditoria['action'] = 'login';
             $dados_auditoria['description'] = 'Entrou no Sistema';
@@ -166,7 +171,7 @@ class Login extends MY_Controller {
 
             redirect(site_url('dashboard'), 'refresh');
         } else {
-            //GRAVA AUDITORIA
+            /* GRAVA AUDITORIA */
             $dados_auditoria['creator'] = 'user';
             $dados_auditoria['action'] = 'login';
             $dados_auditoria['description'] = 'Erro ao Efetuar o Login, Email ou Senha não Conferem. Email[ ' . $this->input->post('email', TRUE) . ' ]';
@@ -189,18 +194,11 @@ class Login extends MY_Controller {
 
         if (isset($this->session->userdata['user_login'])) {
 
-            //GRAVA AUDITORIA
+            /* GRAVA AUDITORIA */
             $dados_auditoria['creator'] = 'user';
             $dados_auditoria['action'] = 'logout';
             $dados_auditoria['description'] = 'Saiu do Sistema';
             add_auditoria($dados_auditoria);
-
-
-//            $this->session->unset_userdata('user_login');
-            //set_mensagem('Logout', 'Usuário Saiu do Sistema com Sucesso.', 'fa-thumbs-o-up', 'info');
-            //set_mensagem_toastr('Logout', 'Usuário Saiu do Sistema com Sucesso.', 'info', 'top-center');
-//                set_mensagem_notfit('Usuário Saiu do Sistema com Sucesso.', 'success');
-//            set_mensagem_nice('', 'Usuário Saiu do Sistema com Sucesso.', 'success', 'br');
         }
 
         $this->session->sess_destroy();
@@ -208,75 +206,4 @@ class Login extends MY_Controller {
         redirect(site_url(), 'refresh');
     }
 
-    /*
-     * Insert Dados
-     */
-//        $dados = array();
-//        $dados['nome'] = 'Teste NEW 2';
-//        $dados['dados'] = 'TESTE NEW INSERT';
-//        $result = $this->create->exec($this->table_name, $dados) ;
-//        if ($result){
-//            echo 'OK INSERT...';
-//        }else{
-//            echo 'Erro ao inserir Dados...';
-//        }
-
-
-
-    /*
-     * Delete Dados
-     */
-//        $termosDB = "WHERE id = 10";
-//
-//        if ($this->delete->exec($this->table_name, $termosDB)){
-//            echo 'Deletado OK...';
-//        }else{
-//            echo 'Erro ao Deletar...';
-//        }
-
-
-
-    /*
-     * Update Dados
-     */
-//        $termosDB = array();
-//        $dados = array();
-//        
-//        $dados['nome'] = 'zzzzzzzzzzz';
-//        $dados['dados'] = '1 2 23 34 4  zzzzzzzz';
-//        $termosDB = 'WHERE id = 20';
-//
-//        if ($this->update->exec($this->table_name, $dados, $termosDB)){
-//            echo 'Atualizado OK...';
-//        }else{
-//            echo 'Erro ao Atualizar...';
-//        }
-
-
-
-
-
-    /*
-     * Read Dados
-     */
-//        $termosDB = array();
-//        
-//        $termosDB = 'WHERE nome LIKE "%teste%"';
-//        
-//        $result = $this->read->exec($this->table_name, $termosDB) ;
-//        
-//        if ($result->result()){
-////            echo 'Leitura OK...<hr><pre>';
-////            var_dump($result->result_object());
-////            echo '</pre>';
-//            
-////            foreach ($result->result_object() as $value){
-////                echo '<hr>ID : ' . $value->id . ' - NOME : ' . $value->nome;
-////            }
-//            
-//            echo '--> ' . count($result->result_object()) ;
-//            
-//        }else{
-//            echo 'Nenhum Registro Encontrado...';
-//        }
 }

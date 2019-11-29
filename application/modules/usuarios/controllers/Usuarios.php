@@ -110,7 +110,7 @@ class Usuarios extends MY_Controller {
                  * GERA UMA SENHA RANDOMINCA
                  */
                 $_senha = mc_random_number(6, 6, false, true, true);
-                $_dados['senha'] = md5($_senha);
+                $_dados['senha'] = password_hash($_senha, PASSWORD_DEFAULT);
 
                 /**
                  * DADOS FILLABLE
@@ -163,7 +163,7 @@ class Usuarios extends MY_Controller {
 
                 if ($result) {
 
-//GRAVA AUDITORIA
+                    /* GRAVA AUDITORIA */
                     $dados_auditoria['creator'] = 'user';
                     $dados_auditoria['action'] = 'add';
                     $dados_auditoria['description'] = ___MSG_AUDITORIA_ADD_SUCCESS___;
@@ -212,7 +212,7 @@ class Usuarios extends MY_Controller {
 
 
 
-//GRAVA AUDITORIA
+                    /* GRAVA AUDITORIA */
                     $this->db->reset_query();
                     $this->db->where('sec_usuarios_id', $_last_id_add_usuario);
                     $_r = $this->db->get('sec_usuarios_has_sec_grupos');
@@ -222,10 +222,6 @@ class Usuarios extends MY_Controller {
                     $dados_auditoria['last_query'] = print_r($_r->result(), true);
                     add_auditoria($dados_auditoria);
 
-
-//set_mensagem_toastr('<i class="fa fa-fw fa-thumbs-o-up" style="font-size: 1.5em"></i>', _MSG_ADD_REGISTRO_, 'success', 'top-center');
-//set_mensagem_trigger_notifi(_MSG_ADD_REGISTRO_, 'success');
-//set_mensagem_toastr('<i class="fa fa-fw fa-thumbs-o-up" style="font-size: 1.5em"></i>', _MSG_ADD_REGISTRO_, 'success', 'top-center');
                     set_mensagem_sweetalert('SUCESSO', 'Usuário Cadastrado com Sucesso\n\nLogin: ' . $_dados['email'] . ' - Senha: ' . $_senha, 'success');
                 } else {
                     echo 'Erro ao inserir Dados... SQL: ' . $this->db->set($dados)->get_compiled_insert($this->table_name);
@@ -356,7 +352,7 @@ class Usuarios extends MY_Controller {
 
                     if ($this->update->exec($this->table_name, $_dados, $_where)) {
 
-//GRAVA AUDITORIA
+                        /* GRAVA AUDITORIA */
                         $dados_auditoria['creator'] = 'user';
                         $dados_auditoria['action'] = 'edit';
                         $dados_auditoria['description'] = ___MSG_AUDITORIA_UPDATE_SUCCESS___;
@@ -386,7 +382,7 @@ class Usuarios extends MY_Controller {
                         $this->db->reset_query();
                         $this->db->where('sec_usuarios_id', $this->input->post('id'));
                         $_r = $this->db->get('sec_usuarios_has_sec_grupos');
-//GRAVA AUDITORIA
+                        /* GRAVA AUDITORIA */
                         $dados_auditoria['creator'] = 'user';
                         $dados_auditoria['action'] = 'update acl groups';
                         $dados_auditoria['description'] = 'ACL Grupo de Acesso';
@@ -425,7 +421,7 @@ class Usuarios extends MY_Controller {
 
                         set_mensagem_trigger_notifi(___MSG_UPDATE_REGISTRO___, 'success');
                     } else {
-//GRAVA AUDITORIA
+                        /* GRAVA AUDITORIA */
                         $dados_auditoria['creator'] = 'system';
                         $dados_auditoria['action'] = 'error edit';
                         $dados_auditoria['description'] = ___MSG_AUDITORIA_UPDATE_ERROR___;
@@ -536,7 +532,7 @@ class Usuarios extends MY_Controller {
                     $dados_auditoria['description'] = ___MSG_AUDITORIA_DEL_SUCCESS___;
                 }
 
-//GRAVA AUDITORIA
+                /* GRAVA AUDITORIA */
                 $dados_auditoria['creator'] = 'user';
                 $dados_auditoria['action'] = 'del';
                 $dados_auditoria['last_query'] = $this->db->last_query();
@@ -602,7 +598,7 @@ class Usuarios extends MY_Controller {
                 $_where = 'WHERE id = "' . $_result->row()->id . '"';
 
                 if ($this->update->exec($this->table_name, $dados, $_where)) {
-//GRAVA AUDITORIA
+                    /* GRAVA AUDITORIA */
                     $dados_auditoria['creator'] = 'user';
                     $dados_auditoria['action'] = 'status change';
                     $dados_auditoria['description'] = ___MSG_AUDITORIA_STATUS_REGISTRO_SUCCESS___;
@@ -612,7 +608,7 @@ class Usuarios extends MY_Controller {
 //set_mensagem_toastr('<i class="fa fa-fw fa-thumbs-o-up" style="font-size: 1.5em"></i>', _MSG_STATUS_REGISTRO_, 'success', 'top-center');
                     set_mensagem_trigger_notifi(___MSG_STATUS_REGISTRO___, 'success');
                 } else {
-//GRAVA AUDITORIA
+                    /* GRAVA AUDITORIA */
                     $dados_auditoria['creator'] = 'system';
                     $dados_auditoria['action'] = 'error status change';
                     $dados_auditoria['description'] = ___MSG_AUDITORIA_STATUS_REGISTRO_ERROR___;
@@ -623,7 +619,7 @@ class Usuarios extends MY_Controller {
                     set_mensagem_trigger_notifi(___MSG_ERROR_STATUS_REGISTRO___, 'error');
                 }
             } else {
-//GRAVA AUDITORIA
+                /* GRAVA AUDITORIA */
                 $dados_auditoria['creator'] = 'system';
                 $dados_auditoria['action'] = 'error status change';
                 $dados_auditoria['description'] = ___MSG_AUDITORIA_NOT_FIND_REGISTRO___;
@@ -693,7 +689,7 @@ class Usuarios extends MY_Controller {
 
                 if ($this->db->affected_rows()) {
 
-//GRAVA AUDITORIA
+                    /* GRAVA AUDITORIA */
                     $dados_auditoria['creator'] = 'user';
                     $dados_auditoria['action'] = 'poweroff user';
                     $dados_auditoria['description'] = "Usuário: {$_nome} - Email: {$_email}, Desconectado do Sistema pelo ADMIN.";
@@ -732,7 +728,7 @@ class Usuarios extends MY_Controller {
 
             $_id = $this->input->post('id');
             $_email = $this->input->post('email');
-            $_pass = $this->input->post('pass');
+            $_pass = password_hash($this->input->post('pass'), PASSWORD_DEFAULT);
 
             /*
              * BUSCA OS DADOS
@@ -750,7 +746,7 @@ class Usuarios extends MY_Controller {
 
                     $_r = array('success' => 'true', 'csrf_token' => $this->security->get_csrf_hash());
 
-//GRAVA AUDITORIA
+                    /* GRAVA AUDITORIA */
                     $dados_auditoria['creator'] = 'user';
                     $dados_auditoria['action'] = 'change pass admin';
                     $dados_auditoria['description'] = 'Alteração de Senha feito pelo Admin';

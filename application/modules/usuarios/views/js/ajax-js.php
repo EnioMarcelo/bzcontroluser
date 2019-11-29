@@ -48,14 +48,12 @@
                     return false;
                 }
 
-                _xpass = $.md5(_pass);
-
 
                 var _dados = {
                     [csrfName]: csrfHash,
                     id: _id,
                     email: _email,
-                    pass: _xpass,
+                    pass: _pass,
                     task: 'changepass'
                 };
 

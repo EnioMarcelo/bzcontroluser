@@ -61,33 +61,24 @@ class Userprofile extends MY_Controller {
                 if ($this->form_validation->run() == TRUE) {
 
                     $_POST['email'] = xss_clean($this->input->post('email', TRUE));
-                    $_POST['senha_atual'] = do_hash(xss_clean($this->input->post('senha_atual', TRUE)), 'md5');
-                    $_POST['nova_senha'] = do_hash(xss_clean($this->input->post('nova_senha', TRUE)), 'md5');
-                    $_POST['confirme_nova_senha'] = do_hash(xss_clean($this->input->post('confirme_nova_senha', TRUE)), 'md5');
+                    $_POST['senha_atual'] = $this->input->post('senha_atual', TRUE);
 
-
-                    if (!$this->check_senha_atual()) {
-//set_mensagem('Erro', 'Senha Atual Não Confere.', 'fa-thumbs-o-down', 'danger');
-//set_mensagem_toastr('Erro', 'Senha Atual Não Confere.', 'error', 'top-center');
+                    if (!$this->check_senha_atual($_POST['email'], $_POST['senha_atual'])) {
                         set_mensagem_sweetalert('Erro', 'Senha Atual Não Confere.', 'error');
                         redirect(site_url('userprofile'), 'refresh');
                         exit;
                     }
 
 
-                    if ($this->change_pass_user()) {
-//set_mensagem('Sucesso', 'Sua Senha foi Alterada com Sucesso.', 'fa-thumbs-o-up', 'success');
-//set_mensagem_toastr('Sucesso', 'Senha Alterada com Sucesso.', 'success', 'top-center');
-//set_mensagem_sweetalert('Sucesso', 'Senha Alterada com Sucesso.', 'success');
+                    if ($this->change_pass_user($_POST['email'], $_POST['confirme_nova_senha'])) {
+
                         set_mensagem_trigger_notifi('Senha Alterada com Sucesso.', 'success');
                     } else {
-//set_mensagem('Erro', 'Erro ao Alterar sua Senha.', 'fa-thumbs-o-down', 'danger');
-//set_mensagem_toastr('Erro', 'Erro ao Alterar sua Senha.', 'error');
+
                         set_mensagem_trigger_notifi('Erro ao Alterar sua Senha.', 'error');
                     }
                 } else {
-//set_mensagem('Erro', 'Erro ao Alterar sua Senha.', 'fa-thumbs-o-down', 'danger');
-//set_mensagem_toastr('Erro', 'Erro ao Alterar sua Senha.', 'error');
+
                     set_mensagem_trigger_notifi(___MSG_ERROR_DE_VALIDACAO___, 'error');
                 }
             } else {
@@ -96,8 +87,7 @@ class Userprofile extends MY_Controller {
         }
     }
 
-//END function __construct()
-
+    /* END function __construct() */
 
     public function index() {
 
@@ -123,7 +113,7 @@ class Userprofile extends MY_Controller {
         $this->load->view('vMasterPageIframe', $this->dados);
     }
 
-//END function index()
+    /* END function index() */
 
     /*
      * SAVE USER DADOS
@@ -153,33 +143,29 @@ class Userprofile extends MY_Controller {
         $result = $this->update->exec($this->table_name, $_dados, $termosDB);
 
         if ($result) {
-//GRAVA AUDITORIA
+            /* GRAVA AUDITORIA */
             $dados_auditoria['creator'] = 'user';
             $dados_auditoria['action'] = 'update user';
             $dados_auditoria['description'] = 'Dados do Usuário Atualizados com Sucesso';
             $dados_auditoria['last_query'] = $this->db->last_query();
             add_auditoria($dados_auditoria);
-
-//set_mensagem('Sucesso', 'Dados Atualizados com Sucesso.', 'fa-thumbs-o-up', 'success');
-//set_mensagem_toastr('Sucesso', 'Dados Atualizados com Sucesso.', 'success', 'top-center');
-//set_mensagem_sweetalert('Sucesso', 'Dados Atualizados com Sucesso.', 'success');
             set_mensagem_trigger_notifi(___MSG_UPDATE_REGISTRO___, 'success');
         }
     }
 
-//END function save_user()
+    /* END function save_user() */
 
-    private function change_pass_user() {
+    private function change_pass_user($_email, $_senha) {
 
-        $_dados['senha'] = $this->input->post('nova_senha', TRUE);
+        $_senha = password_hash($_senha, PASSWORD_DEFAULT);
 
-        $termosDB = 'WHERE email = "' . $this->input->post('email', TRUE) . '" AND senha = "' . $this->input->post('senha_atual', TRUE) . '" AND ativo = "Y" ';
+        $termosDB = 'WHERE email = "' . $_email . '" AND ativo = "Y" ';
 
-        $result = $this->update->exec($this->table_name, $_dados, $termosDB);
+        $result = $this->update->exec($this->table_name, ['email' => $_email, 'senha' => $_senha], $termosDB);
 
         if ($result) {
 
-//GRAVA AUDITORIA
+            /* GRAVA AUDITORIA */
             $dados_auditoria['creator'] = 'user';
             $dados_auditoria['action'] = 'change pass';
             $dados_auditoria['description'] = 'Fez Alteração de Senha pelo Sistema';
@@ -191,27 +177,24 @@ class Userprofile extends MY_Controller {
         }
     }
 
-//END function change_pass_user()
+    /* END function change_pass_user() */
 
+    private function check_senha_atual($_email, $_senha) {
 
-
-
-    private function check_senha_atual() {
-
-        $termosDB = 'WHERE email = "' . $this->input->post('email', TRUE) . '" AND senha = "' . xss_clean($this->input->post('senha_atual', TRUE)) . '" AND ativo = "Y" ';
+        $termosDB = 'WHERE email = "' . $_email . '" AND ativo = "Y" LIMIT 1';
         $result = $this->read->exec($this->table_name, $termosDB);
 
-        if ($result->result()) {
+        if (password_verify($_senha, $result->row()->senha)) {
             return true;
         } else {
             return false;
         }
     }
 
-//END function check_senha_arual()
+    /* END function check_senha_arual() */
 }
 
-//END class ClassName
+/* END class ClassName */
 
 
 
