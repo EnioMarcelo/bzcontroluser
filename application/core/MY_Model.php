@@ -25,8 +25,7 @@ class MY_Model extends CI_Model {
         'sec_auditoria',
         'sec_settings',
         'sec_usuarios_has_sec_grupos',
-        'sec_grupos_has_sec_aplicativos',
-        'proj_build_fields'
+        'sec_grupos_has_sec_aplicativos'
     );
 
     // END TABELAS QUE NÃO PRECISAM QUE TENHA OS default_fields
@@ -55,32 +54,43 @@ class MY_Model extends CI_Model {
 
             if (in_array($table_name, $this->notTableCreatFields) == 0) {
 
-                if ($this->db->field_exists('created', $table_name) == 0) {
+                if ($this->db->field_exists('created_at', $table_name) == 0) {
                     $fields = array(
-                        'created' => array('type' => 'DATETIME')
+                        'created_at' => array('type' => 'DATETIME')
                     );
                     $this->dbforge->add_column($table_name, $fields);
                 }
 
-                if ($this->db->field_exists('user_created', $table_name) == 0) {
+                if ($this->db->field_exists('user_created_at', $table_name) == 0) {
                     $fields = array(
-                        'user_created' => array('type' => 'VARCHAR', 'constraint' => '250')
+                        'user_created_at' => array('type' => 'VARCHAR', 'constraint' => '250')
                     );
                     $this->dbforge->add_column($table_name, $fields);
                 }
 
-                if ($this->db->field_exists('updated', $table_name) == 0) {
+                if ($this->db->field_exists('updated_at', $table_name) == 0) {
                     $fields = array(
-                        'updated' => array('type' => 'DATETIME')
+                        'updated_at' => array('type' => 'DATETIME')
                     );
                     $this->dbforge->add_column($table_name, $fields);
                 }
 
-                if ($this->db->field_exists('user_updated', $table_name) == 0) {
+                if ($this->db->field_exists('user_updated_at', $table_name) == 0) {
                     $fields = array(
-                        'user_updated' => array('type' => 'VARCHAR', 'constraint' => '250')
+                        'user_updated_at' => array('type' => 'VARCHAR', 'constraint' => '250')
                     );
                     $this->dbforge->add_column($table_name, $fields);
+                }
+
+
+
+                if (mc_contains_in_string('proj_build', $table_name) || mc_contains_in_string('sec_', $table_name)) {
+                    if ($this->db->field_exists('created', $table_name)) {
+                        $_columns = ['created', 'user_created', 'updated', 'user_updated'];
+                        foreach ($_columns as $_column):
+                            $this->dbforge->drop_column($table_name, $_column);
+                        endforeach;
+                    }
                 }
             }
         }

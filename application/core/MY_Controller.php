@@ -93,7 +93,7 @@ class MY_Controller extends MX_Controller {
              */
             if (!check_is_user_login() && $_security) {
 
-                //GRAVA AUDITORIA
+                /* GRAVA AUDITORIA */
                 $dados_auditoria['description'] = 'Acesso não Permitido';
                 add_auditoria($dados_auditoria);
 
@@ -149,7 +149,7 @@ class MY_Controller extends MX_Controller {
                  */
 
                 if (!in_array($this->router->fetch_class(), $_acl_users_access_modules)) {
-                    //GRAVA AUDITORIA
+                    /* GRAVA AUDITORIA */
                     $dados_auditoria['description'] = 'Usuário não tem Permissão para Acessar';
                     add_auditoria($dados_auditoria);
 
@@ -166,7 +166,7 @@ class MY_Controller extends MX_Controller {
                         if ($_r[0]['app_name'] == $this->router->fetch_class() && $_r[0]['app_ativo'] == 'Y' && $_r[0]['grupo_ativo'] == 'Y') {
                             
                         } else {
-                            //GRAVA AUDITORIA
+                            /* GRAVA AUDITORIA */
                             $dados_auditoria['description'] = 'Aplicativo sem Permissão para Acessar. GRUPO ou APP INATIVO.';
                             add_auditoria($dados_auditoria);
 
@@ -182,7 +182,7 @@ class MY_Controller extends MX_Controller {
              */
         }
 
-        //GRAVA AUDITORIA
+        /* GRAVA AUDITORIA */
         if ($this->saveAuditoria) {
             //add_auditoria($dados_auditoria);
         }

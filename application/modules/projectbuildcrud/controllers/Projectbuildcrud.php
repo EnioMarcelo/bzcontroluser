@@ -909,19 +909,17 @@ class ProjectbuildCrud extends MY_Controller {
                     $this->db->delete('sec_aplicativos');
 
                     if ($this->db->affected_rows()) {
-//GRAVA AUDITORIA
+                        /* GRAVA AUDITORIA */
                         $dados_auditoria['creator'] = 'user';
                         $dados_auditoria['action'] = 'del';
                         $dados_auditoria['last_query'] = $this->db->last_query();
                         add_auditoria($dados_auditoria);
                     }
                 } else {
-//set_mensagem_toastr('<i class = "fa fa-fw fa-thumbs-o-down" style = "font-size: 1.5em"></i>', _MSG_ERROR_DEL_REGISTRO_, 'error', 'top-center');
                     set_mensagem_trigger_notifi(___MSG_ERROR_DEL_REGISTRO___, 'error');
                 }
             }
         } else {
-//set_mensagem_toastr('<i class = "fa fa-fw fa-thumbs-o-down" style = "font-size: 1.5em"></i>', _MSG_ERROR_DE_VALIDACAO_, 'error', 'top-center');
             set_mensagem_trigger_notifi(___MSG_ERROR_DE_VALIDACAO___, 'error');
         }
 
@@ -1021,7 +1019,7 @@ class ProjectbuildCrud extends MY_Controller {
 
                     $_dados = json_decode($_r_param_gridlist, true);
                     $_dados['grid_list_search'] = $this->input->post('grid_list_search');
-                    $_grid_list_show = $_dados['grid_list_show'];
+//                    $_grid_list_show = $_dados['grid_list_show'];
                     $_dados = json_encode($_dados, JSON_UNESCAPED_UNICODE);
 
                     /* if ($_grid_list_show == 'off') {
@@ -1030,11 +1028,16 @@ class ProjectbuildCrud extends MY_Controller {
                       exit;
                       } */
 
-                    $this->db->set('param_gridlist', $_dados);
-                    $this->db->where('proj_build_id', $this->input->post('project_id'));
-                    $this->db->where('field_name', $this->input->post('field_name'));
-                    $this->db->where('screen_type', $this->input->post('screen_type'));
-                    $_response['update'] = $this->db->update('proj_build_fields');
+                    /* $this->db->set('param_gridlist', $_dados);
+                      $this->db->where('proj_build_id', $this->input->post('project_id'));
+                      $this->db->where('field_name', $this->input->post('field_name'));
+                      $this->db->where('screen_type', $this->input->post('screen_type'));
+                      $_response['update'] = $this->db->update('proj_build_fields'); */
+
+
+                    $_where = "WHERE proj_build_id = " . $this->input->post('project_id') . " AND field_name = '" . $this->input->post('field_name') . "' AND screen_type = '" . $this->input->post('screen_type') . "'";
+                    $_response['update'] = $this->update->exec('proj_build_fields', ['param_gridlist' => $_dados], $_where);
+
 
                     $_response['message'] = 'SAVE-SWITCH-OK';
                     echo json_encode($_response);
@@ -1075,7 +1078,7 @@ class ProjectbuildCrud extends MY_Controller {
 
                     $_dados = json_decode($_r_param_gridlist, true);
                     $_dados['grid_list_export'] = $this->input->post('grid_list_export');
-                    $_grid_list_show = $_dados['grid_list_show'];
+//                    $_grid_list_show = $_dados['grid_list_show'];
                     $_dados = json_encode($_dados, JSON_UNESCAPED_UNICODE);
 
                     /* if ($_grid_list_show == 'off') {
@@ -1084,11 +1087,14 @@ class ProjectbuildCrud extends MY_Controller {
                       exit;
                       } */
 
-                    $this->db->set('param_gridlist', $_dados);
-                    $this->db->where('proj_build_id', $this->input->post('project_id'));
-                    $this->db->where('field_name', $this->input->post('field_name'));
-                    $this->db->where('screen_type', $this->input->post('screen_type'));
-                    $_response['update'] = $this->db->update('proj_build_fields');
+//                    $this->db->set('param_gridlist', $_dados);
+//                    $this->db->where('proj_build_id', $this->input->post('project_id'));
+//                    $this->db->where('field_name', $this->input->post('field_name'));
+//                    $this->db->where('screen_type', $this->input->post('screen_type'));
+//                    $_response['update'] = $this->db->update('proj_build_fields');
+
+                    $_where = "WHERE proj_build_id = " . $this->input->post('project_id') . " AND field_name = '" . $this->input->post('field_name') . "' AND screen_type = '" . $this->input->post('screen_type') . "'";
+                    $_response['update'] = $this->update->exec('proj_build_fields', ['param_gridlist' => $_dados], $_where);
 
                     $_response['message'] = 'SAVE-SWITCH-OK';
                     echo json_encode($_response);
@@ -1138,11 +1144,14 @@ class ProjectbuildCrud extends MY_Controller {
 
                     $_dados = json_encode($_dados, JSON_UNESCAPED_UNICODE);
 
-                    $this->db->set('param_gridlist', $_dados);
-                    $this->db->where('proj_build_id', $this->input->post('project_id'));
-                    $this->db->where('field_name', $this->input->post('field_name'));
-                    $this->db->where('screen_type', $this->input->post('screen_type'));
-                    $_response['update'] = $this->db->update('proj_build_fields');
+//                    $this->db->set('param_gridlist', $_dados);
+//                    $this->db->where('proj_build_id', $this->input->post('project_id'));
+//                    $this->db->where('field_name', $this->input->post('field_name'));
+//                    $this->db->where('screen_type', $this->input->post('screen_type'));
+//                    $_response['update'] = $this->db->update('proj_build_fields');
+
+                    $_where = "WHERE proj_build_id = " . $this->input->post('project_id') . " AND field_name = '" . $this->input->post('field_name') . "' AND screen_type = '" . $this->input->post('screen_type') . "'";
+                    $_response['update'] = $this->update->exec('proj_build_fields', ['param_gridlist' => $_dados], $_where);
 
                     $_response['message'] = 'SAVE-SWITCH-OK';
 
@@ -1154,11 +1163,14 @@ class ProjectbuildCrud extends MY_Controller {
                     $_dados['form_add_edit_field_show'] = $this->input->post('grid_list_show');
                     $_dados = json_encode($_dados, JSON_UNESCAPED_UNICODE);
 
-                    $this->db->set('param_formaddedit', $_dados);
-                    $this->db->where('proj_build_id', $this->input->post('project_id'));
-                    $this->db->where('field_name', $this->input->post('field_name'));
-                    $this->db->where('screen_type', $this->input->post('screen_type'));
-                    $_response['update'] = $this->db->update('proj_build_fields');
+//                    $this->db->set('param_formaddedit', $_dados);
+//                    $this->db->where('proj_build_id', $this->input->post('project_id'));
+//                    $this->db->where('field_name', $this->input->post('field_name'));
+//                    $this->db->where('screen_type', $this->input->post('screen_type'));
+//                    $_response['update'] = $this->db->update('proj_build_fields');
+
+                    $_where = "WHERE proj_build_id = " . $this->input->post('project_id') . " AND field_name = '" . $this->input->post('field_name') . "' AND screen_type = '" . $this->input->post('screen_type') . "'";
+                    $_response['update'] = $this->update->exec('proj_build_fields', ['param_gridlist' => $_dados], $_where);
 
                     $_response['message'] = 'SAVE-SWITCH-OK';
 
@@ -1281,7 +1293,7 @@ class ProjectbuildCrud extends MY_Controller {
 //END private function save_fields_project()
 
     /*
-     * GRAVA OS DADOS DO FORM DE CONFIGURAÇÃO POUP DA GRID LIST
+     * GET FIELDS TABLE
      */
 
     public function ajax_get_fields_table() {

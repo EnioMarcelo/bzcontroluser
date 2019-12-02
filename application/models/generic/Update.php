@@ -28,8 +28,8 @@ class Update extends MY_model {
         if ($table_name != NULL && $dados != NULL && $termos != NULL):
 
             if (in_array($table_name, $this->notTableCreatFields) == 0):
-                $dados['updated'] = date('Y-m-d H:i:s');
-                $dados['user_updated'] = $this->session->userdata('user_login')['user_nome'] . ' - ' . $this->session->userdata('user_login')['user_email'];
+                $dados['updated_at'] = date('Y-m-d H:i:s');
+                $dados['user_updated_at'] = $this->session->userdata('user_login')['user_nome'] . ' - ' . $this->session->userdata('user_login')['user_email'];
             endif;
 
             $result = $this->read->exec($table_name, $termos);

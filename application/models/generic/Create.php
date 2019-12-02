@@ -29,8 +29,8 @@ class Create extends MY_model {
         if ($table_name != NULL && $dados != NULL) :
 
             if (in_array($table_name, $this->notTableCreatFields) == 0) :
-                $dados['created'] = date('Y-m-d H:i:s');
-                $dados['user_created'] = $this->session->userdata('user_login')['user_nome'] . ' - ' . $this->session->userdata('user_login')['user_email'];
+                $dados['created_at'] = date('Y-m-d H:i:s');
+                $dados['user_created_at'] = $this->session->userdata('user_login')['user_nome'] . ' - ' . $this->session->userdata('user_login')['user_email'];
             endif;
 
             $fields = implode(", ", array_keys($dados));

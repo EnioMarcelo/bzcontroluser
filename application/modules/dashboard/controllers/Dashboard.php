@@ -105,7 +105,7 @@ class Dashboard extends MY_Controller {
 
                 foreach ($settings as $nome_config => $valor_config) {
                     set_setting($nome_config, $valor_config);
-                    //GRAVA AUDITORIA
+                    /* GRAVA AUDITORIA */
 
                     $dados_auditoria['creator'] = 'user';
                     $dados_auditoria['action'] = 'update settings';

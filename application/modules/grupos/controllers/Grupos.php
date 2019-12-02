@@ -238,7 +238,7 @@ class Grupos extends MY_Controller {
 
                     if ($this->update->exec($this->table_name, $_dados, $_where)) {
 
-//GRAVA AUDITORIA
+/* GRAVA AUDITORIA */
                         $dados_auditoria['creator'] = 'user';
                         $dados_auditoria['action'] = 'edit';
                         $dados_auditoria['description'] = ___MSG_AUDITORIA_UPDATE_SUCCESS___;
@@ -282,7 +282,7 @@ class Grupos extends MY_Controller {
 //set_mensagem_toastr('<i class="fa fa-fw fa-thumbs-o-up" style="font-size: 1.5em"></i>', _MSG_UPDATE_REGISTRO_, 'success', 'top-center');
                         set_mensagem_trigger_notifi(___MSG_UPDATE_REGISTRO___, 'success');
                     } else {
-//GRAVA AUDITORIA
+/* GRAVA AUDITORIA */
                         $dados_auditoria['creator'] = 'system';
                         $dados_auditoria['action'] = 'error edit';
                         $dados_auditoria['description'] = ___MSG_AUDITORIA_UPDATE_ERROR___;
@@ -399,7 +399,7 @@ class Grupos extends MY_Controller {
                     $dados_auditoria['description'] = ___MSG_AUDITORIA_DEL_SUCCESS___;
                 }
 
-//GRAVA AUDITORIA
+/* GRAVA AUDITORIA */
                 $dados_auditoria['creator'] = 'user';
                 $dados_auditoria['action'] = 'del';
                 $dados_auditoria['last_query'] = $this->db->last_query();
@@ -446,7 +446,7 @@ class Grupos extends MY_Controller {
                 $_where = 'WHERE id = "' . $_result->row()->id . '"';
 
                 if ($this->update->exec($this->table_name, $dados, $_where)) {
-//GRAVA AUDITORIA
+/* GRAVA AUDITORIA */
                     $dados_auditoria['creator'] = 'user';
                     $dados_auditoria['action'] = 'status change';
                     $dados_auditoria['description'] = ___MSG_AUDITORIA_STATUS_REGISTRO_SUCCESS___;
@@ -456,7 +456,7 @@ class Grupos extends MY_Controller {
 //set_mensagem_toastr('<i class="fa fa-fw fa-thumbs-o-up" style="font-size: 1.5em"></i>', _MSG_STATUS_REGISTRO_, 'success', 'top-center');
                     set_mensagem_trigger_notifi(___MSG_STATUS_REGISTRO___, 'success');
                 } else {
-//GRAVA AUDITORIA
+/* GRAVA AUDITORIA */
                     $dados_auditoria['creator'] = 'system';
                     $dados_auditoria['action'] = 'error status change';
                     $dados_auditoria['description'] = ___MSG_AUDITORIA_STATUS_REGISTRO_ERROR___;
@@ -467,7 +467,7 @@ class Grupos extends MY_Controller {
                     set_mensagem_trigger_notifi(___MSG_ERROR_STATUS_REGISTRO___, 'error');
                 }
             } else {
-//GRAVA AUDITORIA
+/* GRAVA AUDITORIA */
                 $dados_auditoria['creator'] = 'system';
                 $dados_auditoria['action'] = 'error status change';
                 $dados_auditoria['description'] = ___MSG_AUDITORIA_NOT_FIND_REGISTRO___;

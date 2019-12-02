@@ -19,7 +19,7 @@ class Checktimesession extends MX_Controller {
 
         if (!check_is_user_login()) {
 
-            //GRAVA AUDITORIA
+            /* GRAVA AUDITORIA */
             $dados_auditoria['creator'] = 'system';
             $dados_auditoria['action'] = 'logout';
             $dados_auditoria['description'] = 'Sessão Expirou, Logout Automático';
