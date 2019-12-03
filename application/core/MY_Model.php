@@ -82,6 +82,20 @@ class MY_Model extends CI_Model {
                     $this->dbforge->add_column($table_name, $fields);
                 }
 
+                if ($this->db->field_exists('deleted_at', $table_name) == 0) {
+                    $fields = array(
+                        'deleted_at' => array('type' => 'DATETIME')
+                    );
+                    $this->dbforge->add_column($table_name, $fields);
+                }
+
+                if ($this->db->field_exists('user_deleted_at', $table_name) == 0) {
+                    $fields = array(
+                        'user_deleted_at' => array('type' => 'VARCHAR', 'constraint' => '250')
+                    );
+                    $this->dbforge->add_column($table_name, $fields);
+                }
+
 
 
                 if (mc_contains_in_string('proj_build', $table_name) || mc_contains_in_string('sec_', $table_name)) {

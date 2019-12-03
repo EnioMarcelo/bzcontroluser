@@ -412,7 +412,7 @@ function mc_alert($titulo = NULL, $mensagem = NULL, $fa_icon = 'fa-times', $tipo
  */
 function mc_findAllDataDB($_dataBaseName, $_orderBY = NULL) {
     $CI = & get_instance();
-    return $CI->m->findAll($_dataBaseName, $_orderBY);
+    return $CI->model->findAll($_dataBaseName, $_orderBY);
 }
 
 /* END function mc_findAllDataDB() */
@@ -426,7 +426,7 @@ function mc_findAllDataDB($_dataBaseName, $_orderBY = NULL) {
  */
 function mc_findByIdDataDB($_dataBaseName, $_id) {
     $CI = & get_instance();
-    return $CI->m->findById($_dataBaseName, $_id);
+    return $CI->model->findById($_dataBaseName, $_id);
 }
 
 /* END function mc_findByIdDataDB() */
@@ -443,7 +443,7 @@ function mc_findByIdDataDB($_dataBaseName, $_id) {
  */
 function mc_findByFieldDataDB($_dataBaseName, $_field, $_value, $_condition = NULL, $_orderBY = NULL) {
     $CI = & get_instance();
-    return $CI->m->findByField($_dataBaseName, $_field, $_value, $_condition, $_orderBY);
+    return $CI->model->findByField($_dataBaseName, $_field, $_value, $_condition, $_orderBY);
 }
 
 /* END function mc_findByFieldDataDB() */

@@ -8,18 +8,27 @@
 
 
 -->
+
+<?php
+if (mc_contains_in_string('metodo', $_parametros['code_type'])) {
+    $_code_type = str_replace('metodo-php', 'MÉTODO PHP', $_parametros['code_type']);
+} else {
+    $_code_type = strtoupper(str_replace('-', ' ', $_parametros['code_type']));
+}
+?>
+
 <section class="content-header header-dashboard" style="margin-top: 0px; margin-left: -15px; margin-bottom: 23px;">
     <h1>
         <i class="<?= $_font_icon; ?>"></i>
         <?= $_titulo_app; ?>
         <small class=" ">
-            <span style=" font-size: 1.8em; color:#2c3b41"> - Code Editor</span> <b> - <?= strtoupper(str_replace('-', ' ', $_parametros['code_type'])); ?></b>
+            <span style=" font-size: 1.8em; color:#2c3b41"> - Code Editor</span> <b> - <?= $_code_type; ?></b>
         </small>
     </h1>
     <ol class="breadcrumb">
         <li><a href="<?= site_url('dashboard'); ?>" target="_top" class="active btn-show-modal-aguarde"><i class="fa fa-dashboard"></i>Dashboard</a></li>
         <li class=""><a href="<?= site_url($this->router->fetch_class() . '/edit/' . $_dados_projeto->id); ?>" class="btn-show-modal-aguarde"><i class="<?= $_font_icon; ?>"></i><?= $_titulo_app; ?></a></li>
-        <li class="active"><i class="glyphicon glyphicon-edit margin-right-5"></i>Editando <b><?= strtoupper(str_replace('-', ' ', $_parametros['code_type'])); ?></b> </li>
+        <li class="active"><i class="glyphicon glyphicon-edit margin-right-5"></i>Editando <b><?= $_code_type; ?></b> </li>
     </ol>
 </section>
 
@@ -167,7 +176,7 @@
         $("#btn-del-code-editor").on("click", function (e) {
 
             var t = '';
-            t = 'Deseja deletar este método PHP ?';
+            t = 'Deseja deletar este <?= strtoupper($_code_type); ?> ?';
 
             swal({
                 title: "ATENÇÃO",
@@ -181,12 +190,10 @@
 
                             swal.close();
 
-
                             $(this).attr('type', 'submit');
                             $(this).click();
 
                         } else {
-
 
                             swal.close();
 

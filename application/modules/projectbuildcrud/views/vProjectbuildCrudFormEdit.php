@@ -269,13 +269,12 @@
                                         <?= form_dropdown('app_template_padrao', $_templatePadraoOptions, (set_value('app_template_padrao')) ? set_value('app_template_padrao') : $dados->app_template_padrao, 'id="app_template_padrao" class="form-control triggerBtnEditar"'); ?>
                                     </div><!-- /.input group -->
                                 </div>
-                            <?php endif; ?>
-                            <!--END TEMPLATE PADRÃO DO APLICATIVO-->
+
+                                <!--END TEMPLATE PADRÃO DO APLICATIVO-->
 
 
 
-                            <!--SEGURANÇA DO APLICATIVO-->
-                            <?php if ($dados->type_project == 'blank'): ?>
+                                <!--SEGURANÇA DO APLICATIVO-->
                                 <div class="col-xs-12 col-sm-2 col-md-2 form-group">
                                     <label for="app_security">Segurança APP</label>
                                     <div class="input-group" style="width:100%;">
@@ -288,23 +287,23 @@
                                         <?= form_dropdown('app_security', $_securityOptions, (set_value('app_security')) ? set_value('app_security') : $dados->app_security, 'id="app_security" class="form-control triggerBtnEditar"'); ?>
                                     </div><!-- /.input group -->
                                 </div>
+                                <!--END SEGURANÇA DO APLICATIVO-->
+
                             <?php endif; ?>
-                            <!--END SEGURANÇA DO APLICATIVO-->
-
-
-
-                            <!--TABELAS-->
-                            <div class="col-xs-12 col-sm-4 col-md-4 form-group hide">
-                                <div class="form-group has-feedback">
-                                    <label for="tabela">Tabela</label>
-                                    <input type="hidden" name="tabela" class="form-control" placeholder="Tabela" value="<?= $dados->tabela; ?>" maxlength="250" disabled />
-                                </div>
-                            </div>
-                            <!--END TABELAS-->
 
 
 
                             <?php if ($dados->type_project == 'crud'): ?>
+                                <!--TABELAS-->
+                                <div class="col-xs-12 col-sm-4 col-md-4 form-group hide">
+                                    <div class="form-group has-feedback">
+                                        <label for="tabela">Tabela</label>
+                                        <input type="hidden" name="tabela" class="form-control" placeholder="Tabela" value="<?= $dados->tabela; ?>" maxlength="250" disabled />
+                                    </div>
+                                </div>
+                                <!--END TABELAS-->
+
+
                                 <!--PRIMARY KEY-->
                                 <div class="col-xs-12 col-sm-4 col-md-4 form-group">
                                     <div class="form-group has-feedback">
@@ -322,6 +321,7 @@
                                 </div>
                                 <!--END PRIMARY KEY-->
 
+
                                 <!--ORDER BY-->
                                 <div class="col-xs-12 col-sm-4 col-md-4 form-group">
                                     <div class="form-group has-feedback">
@@ -335,6 +335,29 @@
 
 
                         </div>
+
+
+
+                        <?php if ($dados->type_project == 'blank'): ?>
+                            <div class="row">
+
+                                <!--TYPE MODEL - DEFAULT OU ELOQUENT-->
+                                <div class="col-xs-12 col-sm-2 col-md-2 form-group">
+                                    <label for="type_model">Model</label>
+                                    <div class="input-group" style="width:100%;">
+                                        <?php
+                                        $_typoModelOptions = array(
+                                            'default' => 'Default',
+                                            'eloquent' => 'Eloquent',
+                                        );
+                                        ?>
+                                        <?= form_dropdown('type_model', $_typoModelOptions, (set_value('type_model')) ? set_value('type_model') : $dados->type_model, 'id="type_model" class="form-control triggerBtnEditar"'); ?>
+                                    </div><!-- /.input group -->
+                                </div>
+                                <!--END TYPE MODEL - DEFAULT OU ELOQUENT-->
+
+                            </div>
+                        <?php endif; ?>
 
 
                     </div>

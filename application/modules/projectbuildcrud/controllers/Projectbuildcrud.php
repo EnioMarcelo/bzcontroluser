@@ -34,6 +34,7 @@ class ProjectbuildCrud extends MY_Controller {
     protected $_appTitulo = '';
     protected $_appIcone = '';
     protected $_appTableName = '';
+    protected $_typeModel = '';
     protected $_appArrayDados = '';
     protected $_primary_key_field = '';
     protected $_appCalendarInputs = [];
@@ -1372,8 +1373,24 @@ class ProjectbuildCrud extends MY_Controller {
             /*
              * SAVE DADOS DO EDITOR DE CÓDIGOS
              */
+            if ($this->input->post('btn-del-code-editor')) {
 
-            if ($this->input->post('btn-save-code-editor')) {
+                $_dados_del_code = $this->input->post();
+                unset($_dados_del_code['btn-del-code-editor']);
+                unset($_dados_del_code['code_script']);
+
+                $this->db->where('proj_build_id', $_dados_del_code['proj_build_id']);
+                $this->db->where('code_screen', $_dados_del_code['code_screen']);
+                $this->db->where('code_type', $_dados_del_code['code_type']);
+                $_r_del_code_editor = $this->db->delete('proj_build_codeeditor');
+
+                if ($_r_del_code_editor) {
+                    set_mensagem_trigger_notifi(strtoupper(str_replace('-', ' ', $_dados_del_code['code_type'])) . ': ' . $_dados_del_code['code_screen'] . ' () Deletado com Sucesso.', 'success');
+                    redirect('projectbuildcrud/edit/' . $_dados_del_code['proj_build_id'] . '?tab = gridlist');
+                } else {
+                    
+                }
+            } elseif ($this->input->post('btn-save-code-editor')) {
                 /*
                  * CHECK SE EXISTE O REGISTRO GRAVADO
                  */
@@ -1415,23 +1432,6 @@ class ProjectbuildCrud extends MY_Controller {
                     $this->create->exec('proj_build_codeeditor', $_data_code_editor);
 
                     set_mensagem_trigger_notifi(strtoupper(str_replace('-', ' ', $this->input->post('code_type'))) . ' Adicionado com Sucesso.', 'success');
-                }
-            } elseif ($this->input->post('btn-del-code-editor')) {
-
-                $_dados_del_code = $this->input->post();
-                unset($_dados_del_code['btn-del-code-editor']);
-                unset($_dados_del_code['code_script']);
-
-                $this->db->where('proj_build_id', $_dados_del_code['proj_build_id']);
-                $this->db->where('code_screen', $_dados_del_code['code_screen']);
-                $this->db->where('code_type', $_dados_del_code['code_type']);
-                $_r_del_code_editor = $this->db->delete('proj_build_codeeditor');
-
-                if ($_r_del_code_editor) {
-                    set_mensagem_trigger_notifi(strtoupper(str_replace('-', ' ', $_dados_del_code['code_type'])) . ': ' . $_dados_del_code['code_screen'] . ' () Deletado com Sucesso.', 'success');
-                    redirect('projectbuildcrud/edit/' . $_dados_del_code['proj_build_id'] . '?tab = gridlist');
-                } else {
-                    
                 }
             }
         }
@@ -1617,6 +1617,8 @@ class ProjectbuildCrud extends MY_Controller {
             $this->_app_nome = $_appProject->app_nome;
             $this->_appTitulo = $_appProject->app_titulo;
             $this->_appIcone = $_appProject->app_icone;
+            $this->_typeModel = $_appProject->type_model;
+
 
             $this->_directory = FCPATH . 'application/modules/' . strtolower($this->_app_nome);
 
@@ -3909,7 +3911,16 @@ class ProjectbuildCrud extends MY_Controller {
         }
         /* END GET CODE EDITOR METODOS PHP MODELS */
 
-        $this->ger_models();
+        /**
+         * TESTE O TIPO DE MODEL QUE VAI SER GERADO
+         */
+        $_modelEloquent = false;
+        if ($this->_typeModel == 'eloquent') {
+            $_modelEloquent = true;
+        }
+        /** END TESTE O TIPO DE MODEL QUE VAI SER GERADO */
+        /* GERA A MODEL */
+        $this->ger_models($_modelEloquent);
     }
 
     /* END private function ger_controllerBlank() */
@@ -4139,7 +4150,7 @@ class ProjectbuildCrud extends MY_Controller {
      * GERA O MODEL DO APP
      */
 
-    private function ger_models() {
+    private function ger_models($_modelEloquent = NULL) {
         /*
          * IMPORTA O TEMPLATE DO MODEL
          */
@@ -4153,6 +4164,7 @@ class ProjectbuildCrud extends MY_Controller {
         /*
          * FAZ AS SUBSTITUIÇÕES DOS MARCADORES PELOS CÓDIGOS GERADOS
          */
+
         $this->_dadosModel = str_replace('{{created-date}}', date('d/m/Y'), $this->_dadosModel);
         $this->_dadosModel = str_replace('{{created-time}}', date('H:i') . ((date('H') > 11) ? 'PM' : 'AM'), $this->_dadosModel);
         $this->_dadosModel = str_replace('{{author-name}}', $this->session->userdata('user_login')['user_nome'], $this->_dadosModel);
@@ -4161,11 +4173,39 @@ class ProjectbuildCrud extends MY_Controller {
         $this->_dadosModel = str_replace('{{model-name}}', $this->_app_nome, $this->_dadosModel);
         $this->_dadosModel = str_replace('{{models-metodos-php}}', $this->_models_metodos_php, $this->_dadosModel);
 
-        /* GERA O ARQUIVO model DA APLICAÇÃO */
+
+        /**
+         * 
+         * ========================================================================================================================================================================
+         * QUANDO A OPÇÃO MODEL ELOQUENTE ESTIVER MARCADO
+         * ========================================================================================================================================================================
+         * 
+         */
+        if ($_modelEloquent) {
+            $this->_dadosModel = str_replace('{{model-eloquent}}', 'Eloquent', $this->_dadosModel);
+        } else {
+            $this->_dadosModel = str_replace('{{model-eloquent}}', '', $this->_dadosModel);
+        }
+        /**
+         * 
+         * END QUANDO A OPÇÃO MODEL ELOQUENTE ESTIVER MARCADO
+         * ========================================================================================================================================================================
+         */
+        /**
+         * 
+         * ========================================================================================================================================================================
+         * GERA O ARQUIVO model DA APLICAÇÃO
+         * ========================================================================================================================================================================
+         * 
+         */
         write_file($this->_directory . '/models/' . $this->_app_nome . '_model.php', bz_removeEmptyLines($this->_dadosModel));
-        /* END GERA O ARQUIVO model DA APLICAÇÃO */
 
         $this->_dadosModel = '';
+        /**
+         * 
+         * END GERA O ARQUIVO model DA APLICAÇÃO
+         * ========================================================================================================================================================================
+         */
     }
 
     /* END private function ger_models() */
