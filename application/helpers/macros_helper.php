@@ -496,7 +496,7 @@ function mc_updateDataDB($table_name, array $dados, $termos) {
  */
 function mc_deleteDataDB($table_name, $termos) {
     $CI = & get_instance();
-    return $CI->update->ExecDelete($table_name, $termos);
+    return $CI->delete->exec($table_name, $termos);
 }
 
 /* ================================================================================================================================================================== */

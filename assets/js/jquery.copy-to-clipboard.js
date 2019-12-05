@@ -20,25 +20,9 @@ $.fn.CopyToClipboard = function () {
 };
 
 function CopyToClipboard(val, _msg) {
-
-//    console.clear();
-//    console.log('--> ' + val + ' - ' + _msg);
-//    $.toast({
-//        heading: '',
-//        text: _msg,
-//        position: 'top-center',
-//        icon: 'info',
-//        loaderBg: '#29a7d8'
-//    });
-
-
-//    $.HP({
-//        message: 'Copiado com sucesso.',
-//        title: '',
-//        location: 'br',
-//        duration: '3200'
-//    });
-
+           
+    editAreaLoader.setSelectedText('codeeditor_1', val);
+    editArea.textareaFocused=true;
 
     var param = [];
     param['title'] = "Copaido com sucesso!";
@@ -46,8 +30,6 @@ function CopyToClipboard(val, _msg) {
     param['timer'] = 3000;
 
     triggerNotify(param);
-
-
 
     var hiddenClipboard = $('#_hiddenClipboard_');
     if (!hiddenClipboard.length) {
