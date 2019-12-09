@@ -20,9 +20,6 @@ $.fn.CopyToClipboard = function () {
 };
 
 function CopyToClipboard(val, _msg) {
-           
-    editAreaLoader.setSelectedText('codeeditor_1', val);
-    editArea.textareaFocused=true;
 
     var param = [];
     param['title'] = "Copaido com sucesso!";
@@ -40,6 +37,11 @@ function CopyToClipboard(val, _msg) {
     hiddenClipboard.select();
     document.execCommand('copy');
     document.getSelection().removeAllRanges();
+
+    if ($("#codeeditor_1").length) {
+        editAreaLoader.setSelectedText('codeeditor_1', val);
+    }
+
 }
 
 $(function () {
