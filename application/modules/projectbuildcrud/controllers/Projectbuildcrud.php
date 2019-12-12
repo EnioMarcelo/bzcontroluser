@@ -71,7 +71,6 @@ class ProjectbuildCrud extends MY_Controller {
     protected $_gridListClearhButton = '';
     protected $_gridListHeaderTable = '';
     protected $_gridListFieldsTable = '';
-    protected $_gridListStatusDados = 'N';
     protected $_gridListVirtualFieldsTable = [];
 // FORM ADD/EDIT
     protected $_formAddCodeEditorCSS = '';
@@ -228,6 +227,7 @@ class ProjectbuildCrud extends MY_Controller {
                 $_dados['form_add_edit_field_value_select_multiple_dinamic'] = base64_encode($_dados['form_add_edit_field_value_select_multiple_dinamic']);
                 $_dados['form_add_edit_field_value_checkbox_multiple_dinamic'] = base64_encode($_dados['form_add_edit_field_value_checkbox_multiple_dinamic']);
                 $_dados['form_add_edit_field_mask_complement'] = base64_encode($_dados['form_add_edit_field_mask_complement']);
+                $_dados['form_add_edit_field_start_value'] = base64_encode($_dados['form_add_edit_field_start_value']);
 
                 /*
                  * REGRAS DE VALIDAÇÃO DO BOTÃO "OCULTO/HIDDEN" DO FORM ADD/EDIT DAS CONFIGURAÇÕES DOS INPUTS DO FORM.
@@ -405,6 +405,10 @@ class ProjectbuildCrud extends MY_Controller {
                     $_r->form_add_edit_field_mask_complement = base64_decode($_r->form_add_edit_field_mask_complement);
                 }
 
+                if (isset($_r->form_add_edit_field_start_value)) {
+                    $_r->form_add_edit_field_start_value = base64_decode($_r->form_add_edit_field_start_value);
+                }
+
                 $_r->csrf_token = $this->security->get_csrf_hash();
 
                 echo json_encode($_r);
@@ -444,7 +448,7 @@ class ProjectbuildCrud extends MY_Controller {
                     $_post['field_name'] = 'vrt_' . $_post['field_name'];
                     $_post['field_type'] = 'varchar';
                     $_post['field_length'] = '255';
-                    $_post['param_gridlist'] = '{"grid_list_show":"on","grid_list_search":"off","grid_list_export":"off","grid_list_label":"' . $_post['field_name'] . '","grid_list_aligne_label":"text-left","grid_list_field_length":"10%","grid_list_field_aligne":"text-left","grid_list_field_type":"virtual"}';
+                    $_post['param_gridlist'] = '{"grid_list_show":"on","grid_list_search":"off","grid_list_export":"off","grid_list_label":"' . $_post['field_name'] . '","grid_list_aligne_label":"text-left","grid_list_field_length":"10%","grid_list_field_aligne":"text-left","grid_list_field_type":"virtual","form_add_edit_field_start_value":""}';
 
                     $result = $this->create->exec('proj_build_fields', $_post);
 
@@ -1280,9 +1284,9 @@ class ProjectbuildCrud extends MY_Controller {
                  * PARÂMETROS DO CAMPO
                  */
                 if ($_screen_type == 'gridlist') {
-                    $_dadosTable['param_gridlist'] = '{"grid_list_show":"on", "grid_list_search":"on", "grid_list_export":"on", "grid_list_field_input_type":"' . $_input_type . '", "grid_list_label":"' . $_dadosTable['field_name'] . '", "grid_list_aligne_label":"text-left", "grid_list_field_length":"", "grid_list_field_aligne":"text-left"}';
+                    $_dadosTable['param_gridlist'] = '{"grid_list_show":"on", "grid_list_search":"on", "grid_list_export":"on", "grid_list_field_input_type":"' . $_input_type . '", "grid_list_label":"' . $_dadosTable['field_name'] . '", "grid_list_aligne_label":"text-left", "grid_list_field_length":"", "grid_list_field_aligne":"text-left","form_add_edit_field_start_value":""}';
                 } elseif ($_screen_type == 'formaddedit') {
-                    $_dadosTable['param_formaddedit'] = '{"form_add_edit_field_show":"on", "form_add_edit_field_type":"' . $_input_type . '", "form_add_edit_field_label":"' . $_dadosTable['field_name'] . '", "form_add_edit_field_placeholder":"", "form_add_edit_field_max_length":"' . (($_dadosTable['field_length'] > 0) ? $_dadosTable['field_length'] : '') . '"}';
+                    $_dadosTable['param_formaddedit'] = '{"form_add_edit_field_show":"on", "form_add_edit_field_type":"' . $_input_type . '", "form_add_edit_field_label":"' . $_dadosTable['field_name'] . '", "form_add_edit_field_placeholder":"", "form_add_edit_field_max_length":"' . (($_dadosTable['field_length'] > 0) ? $_dadosTable['field_length'] : '') . '","form_add_edit_field_start_value":""}';
                 }
                 /* END PARÂMETROS DO CAMPO */
 
@@ -1701,6 +1705,7 @@ class ProjectbuildCrud extends MY_Controller {
                         $_param_gridListField = json_decode($_row['param_gridlist'], true);
                         $_param_formAddEditField[$_row['field_name']] = mc_selectDataDB('proj_build_fields', 'WHERE proj_build_id = ' . $_row['proj_build_id'] . ' AND screen_type = "formaddedit" AND field_name = "' . $_row['field_name'] . '"')->row();
 
+
                         if ($_row['primary_key'] == 1) {
                             $this->_primary_key_field = $_row['field_name'];
                         }
@@ -1728,153 +1733,149 @@ class ProjectbuildCrud extends MY_Controller {
                             }
                             /* END CAMPOS VIRTUAIS */
 
-                            if (strtolower($_row['field_name']) == 'status_active') {
-                                $this->_gridListStatusDados = 'Y';
-                            } else {
-                                $_class = (!empty($_param_gridListField['grid_list_aligne_label'])) ? $_param_gridListField['grid_list_aligne_label'] : 'text-left';
-                                $_width_field .= (!empty($_param_gridListField['grid_list_field_length'])) ? 'width:' . $_param_gridListField['grid_list_field_length'] : '';
+                            $_class = (!empty($_param_gridListField['grid_list_aligne_label'])) ? $_param_gridListField['grid_list_aligne_label'] : 'text-left';
+                            $_width_field .= (!empty($_param_gridListField['grid_list_field_length'])) ? 'width:' . $_param_gridListField['grid_list_field_length'] : '';
 
-                                if (!empty($_param_gridListField['grid_list_aligne_label'])) {
-                                    if ($_param_gridListField['grid_list_aligne_label'] == 'text-left') {
-                                        if (!empty($_width_field)) {
-                                            $_width_field .= ';
+                            if (!empty($_param_gridListField['grid_list_aligne_label'])) {
+                                if ($_param_gridListField['grid_list_aligne_label'] == 'text-left') {
+                                    if (!empty($_width_field)) {
+                                        $_width_field .= ';
                         text-align:left';
-                                        } else {
-                                            $_width_field .= 'text-align:left';
-                                        }
-                                    } elseif ($_param_gridListField['grid_list_aligne_label'] == 'text-center') {
-                                        if (!empty($_width_field)) {
-                                            $_width_field .= ';
+                                    } else {
+                                        $_width_field .= 'text-align:left';
+                                    }
+                                } elseif ($_param_gridListField['grid_list_aligne_label'] == 'text-center') {
+                                    if (!empty($_width_field)) {
+                                        $_width_field .= ';
                         text-align:center';
-                                        } else {
-                                            $_width_field .= 'text-align:center';
-                                        }
-                                    } elseif ($_param_gridListField['grid_list_aligne_label'] == 'text-right') {
-                                        if (!empty($_width_field)) {
-                                            $_width_field .= ';
+                                    } else {
+                                        $_width_field .= 'text-align:center';
+                                    }
+                                } elseif ($_param_gridListField['grid_list_aligne_label'] == 'text-right') {
+                                    if (!empty($_width_field)) {
+                                        $_width_field .= ';
                         text-align:right';
-                                        } else {
-                                            $_width_field .= 'text-align:right';
-                                        }
+                                    } else {
+                                        $_width_field .= 'text-align:right';
                                     }
                                 }
+                            }
 
-                                $this->_gridListFields .= $_row['field_name'] . ', ';
-                                $this->_gridListHeaderTable .= '<th class = "thCl' . ucfirst($_row['field_name']) . ' ' . $_class . '" style = "' . $_width_field . '">' . $_param_gridListField['grid_list_label'] . '</th>' . PHP_EOL;
+                            $this->_gridListFields .= $_row['field_name'] . ', ';
+                            $this->_gridListHeaderTable .= '<th class = "thCl' . ucfirst($_row['field_name']) . ' ' . $_class . '" style = "' . $_width_field . '">' . $_param_gridListField['grid_list_label'] . '</th>' . PHP_EOL;
 
-                                /**
-                                 * FORMATAÇÃO DOS CAMPOS DA GRIDLIST $_ROW[] CONFORME SELEÇÃO DO CAMPO SELECT grid_list_field_input_type
-                                 */
-                                $_classBtnEdit = ' j-btn-edit btn-show-modal-aguarde mouse-cursor-pointer ';
+                            /**
+                             * FORMATAÇÃO DOS CAMPOS DA GRIDLIST $_ROW[] CONFORME SELEÇÃO DO CAMPO SELECT grid_list_field_input_type
+                             */
+                            $_classBtnEdit = ' j-btn-edit btn-show-modal-aguarde mouse-cursor-pointer ';
 
-                                if (!empty($_param_gridListField['grid_list_field_input_type'])) {
+                            if (!empty($_param_gridListField['grid_list_field_input_type'])) {
+
+                                /* CAMPO SELECT MODAL IMAGEM grid_list_field_type_modal_image  */
+                                if ($_param_gridListField['grid_list_field_input_type'] == 'upload-imagem') {
 
                                     /* CAMPO SELECT MODAL IMAGEM grid_list_field_type_modal_image  */
-                                    if ($_param_gridListField['grid_list_field_input_type'] == 'upload-imagem') {
+                                    if (!empty($_param_gridListField['grid_list_field_type_modal_image'])) {
 
-                                        /* CAMPO SELECT MODAL IMAGEM grid_list_field_type_modal_image  */
-                                        if (!empty($_param_gridListField['grid_list_field_type_modal_image'])) {
+                                        $_folderUploadImagem = json_decode($_param_formAddEditField[$_row['field_name']]->param_formaddedit)->form_add_edit_field_upload_imagem_folder;
 
-                                            $_folderUploadImagem = json_decode($_param_formAddEditField[$_row['field_name']]->param_formaddedit)->form_add_edit_field_upload_imagem_folder;
-
-                                            if ($_param_gridListField['grid_list_field_type_modal_image'] == 'icon-link') {
-                                                $this->_gridListFieldsTable .= '<td class = "tdCl' . ucfirst($_row['field_name']) . ' ' . $_class . '" style = "' . $_width_field . '"><? = mc_image_link_modal ($_row["' . $_row['field_name'] . '"], "' . $_folderUploadImagem . '");
+                                        if ($_param_gridListField['grid_list_field_type_modal_image'] == 'icon-link') {
+                                            $this->_gridListFieldsTable .= '<td class = "tdCl' . ucfirst($_row['field_name']) . ' ' . $_class . '" style = "' . $_width_field . '"><? = mc_image_link_modal ($_row["' . $_row['field_name'] . '"], "' . $_folderUploadImagem . '");
                         ?></td>' . PHP_EOL;
-                                            } else if ($_param_gridListField['grid_list_field_type_modal_image'] == 'thumb') {
-                                                $this->_gridListFieldsTable .= '<td class="tdCl' . ucfirst($_row['field_name']) . ' ' . $_class . '" style="' . $_width_field . '"><?= mc_image_thumb_modal ($_row["' . $_row['field_name'] . '"], "' . $_folderUploadImagem . '"); ?></td>' . PHP_EOL;
-                                            } else if ($_param_gridListField['grid_list_field_type_modal_image'] == 'multi-upload') {
-                                                $this->_gridListFieldsTable .= '<td class="tdCl' . ucfirst($_row['field_name']) . ' ' . $_class . '" style="' . $_width_field . '"><?= mc_image_thumb_modal ($_row["' . $_row['field_name'] . '"], "' . $_folderUploadImagem . '", "multi"); ?></td>' . PHP_EOL;
-                                            }
+                                        } else if ($_param_gridListField['grid_list_field_type_modal_image'] == 'thumb') {
+                                            $this->_gridListFieldsTable .= '<td class="tdCl' . ucfirst($_row['field_name']) . ' ' . $_class . '" style="' . $_width_field . '"><?= mc_image_thumb_modal ($_row["' . $_row['field_name'] . '"], "' . $_folderUploadImagem . '"); ?></td>' . PHP_EOL;
+                                        } else if ($_param_gridListField['grid_list_field_type_modal_image'] == 'multi-upload') {
+                                            $this->_gridListFieldsTable .= '<td class="tdCl' . ucfirst($_row['field_name']) . ' ' . $_class . '" style="' . $_width_field . '"><?= mc_image_thumb_modal ($_row["' . $_row['field_name'] . '"], "' . $_folderUploadImagem . '", "multi"); ?></td>' . PHP_EOL;
                                         }
-
-                                        /* END CAMPO SELECT MODAL IMAGEM grid_list_field_type_modal_image  */
-                                        /**/
-                                        /* CAMPO SELECT MODAL ARQUIVO grid_list_field_type_modal_arquivo  */
-                                    } elseif ($_param_gridListField['grid_list_field_input_type'] == 'upload-arquivo') {
-
-                                        $_folderUploadAquivo = json_decode($_param_formAddEditField[$_row['field_name']]->param_formaddedit)->form_add_edit_field_upload_arquivo_folder;
-
-                                        $this->_gridListFieldsTable .= '<td class="tdCl' . ucfirst($_row['field_name']) . ' ' . $_class . '" style="' . $_width_field . '"><?= mc_file_link_download ($_row["' . $_row['field_name'] . '"], "' . $_folderUploadAquivo . '"); ?></td>' . PHP_EOL;
-
-                                        /* END CAMPO SELECT MODAL ARQUIVO grid_list_field_type_modal_arquivo  */
-                                        /**/
-                                        /* CAMPO INPUT NUMBER DECIMAL grid_list_field_input_type  */
-                                    } elseif ($_param_gridListField['grid_list_field_input_type'] == 'number-decimal') {
-
-                                        $_class .= $_classBtnEdit;
-                                        $this->_gridListFieldsTable .= '<td class="tdCl' . ucfirst($_row['field_name']) . ' ' . $_class . '" style="' . $_width_field . '"><?= bz_converteMoedaBrasil ($_row["' . $_row['field_name'] . '"]); ?></td>' . PHP_EOL;
-
-                                        /* END CAMPO INPUT NUMBER DECIMAL grid_list_field_input_type */
-                                        /**/
-                                        /* CAMPO INPUT MOEDA grid_list_field_input_type  */
-                                    } elseif ($_param_gridListField['grid_list_field_input_type'] == 'moeda') {
-
-                                        $_class .= $_classBtnEdit;
-                                        $this->_gridListFieldsTable .= '<td class="tdCl' . ucfirst($_row['field_name']) . ' ' . $_class . '" style="' . $_width_field . '">R$ <?= bz_converteMoedaBrasil ($_row["' . $_row['field_name'] . '"]); ?></td>' . PHP_EOL;
-
-                                        /* END CAMPO INPUT MOEDA grid_list_field_input_type */
-                                        /**/
-                                        /* CAMPO INPUT NUMBER INTENGER grid_list_field_input_type  */
-                                    } elseif ($_param_gridListField['grid_list_field_input_type'] == 'number') {
-
-                                        $_class .= $_classBtnEdit;
-                                        $this->_gridListFieldsTable .= '<td class="tdCl' . ucfirst($_row['field_name']) . ' ' . $_class . '" style="' . $_width_field . '"><?= number_format ($_row["' . $_row['field_name'] . '"], 0, "", ""); ?></td>' . PHP_EOL;
-
-                                        /* END CAMPO INPUT NUMBER INTENGER grid_list_field_input_type */
-                                        /**/
-                                        /* CAMPO INPUT DATE grid_list_field_input_type  */
-                                    } elseif ($_param_gridListField['grid_list_field_input_type'] == 'date') {
-
-                                        $_class .= $_classBtnEdit;
-                                        $this->_gridListFieldsTable .= '<td class="tdCl' . ucfirst($_row['field_name']) . ' ' . $_class . '" style="' . $_width_field . '"><?= bz_formatdata ($_row["' . $_row['field_name'] . '"]); ?></td>' . PHP_EOL;
-
-                                        /* END CAMPO INPUT DATE grid_list_field_input_type */
-                                        /**/
-                                        /* CAMPO INPUT TIME grid_list_field_input_type  */
-                                    } elseif ($_param_gridListField['grid_list_field_input_type'] == 'time') {
-
-                                        $_class .= $_classBtnEdit;
-                                        $this->_gridListFieldsTable .= '<td class="tdCl' . ucfirst($_row['field_name']) . ' ' . $_class . '" style="' . $_width_field . '"><?= bz_formatdata ($_row["' . $_row['field_name'] . '"], "H:i:s"); ?></td>' . PHP_EOL;
-
-                                        /* END CAMPO INPUT TIME grid_list_field_input_type */
-                                        /**/
-                                        /* CAMPO INPUT DATETIME grid_list_field_input_type  */
-                                    } elseif ($_param_gridListField['grid_list_field_input_type'] == 'datetime') {
-
-                                        $_class .= $_classBtnEdit;
-                                        $this->_gridListFieldsTable .= '<td class="tdCl' . ucfirst($_row['field_name']) . ' ' . $_class . '" style="' . $_width_field . '"><?= bz_formatdata ($_row["' . $_row['field_name'] . '"], "d/m/Y H:i:s"); ?></td>' . PHP_EOL;
-
-                                        /* END CAMPO INPUT DATETIME grid_list_field_input_type */
-                                        /**/
-                                        /* CAMPO INPUT SELECT grid_list_field_input_type  */
-                                    } elseif ($_param_gridListField['grid_list_field_input_type'] == 'select') {
-
-                                        $_class .= $_classBtnEdit;
-                                        $_pkSelect = strtolower(base64_decode($_param_gridListField['grid_list_field_value_select']));
-                                        $_pkSelect = substr($_pkSelect, 7, (strpos($_pkSelect, ',') - 7));
-
-                                        $this->_gridListFieldsTable .= '<td class="tdCl' . ucfirst($_row['field_name']) . ' ' . $_class . '" style="' . $_width_field . '"><?= $this->db->query ("' . base64_decode($_param_gridListField['grid_list_field_value_select']) . ' WHERE ' . $_pkSelect . ' = ".$_row["' . $_row['field_name'] . '"])->row ()->' . str_replace('_id', '', $_row['field_name']) . '; ?></td>' . PHP_EOL;
-
-                                        /* END CAMPO INPUT SELECT grid_list_field_input_type */
-                                        /**/
-                                    } else {
-                                        /**/
-                                        $_class .= $_classBtnEdit;
-                                        $this->_gridListFieldsTable .= '<td class="tdCl' . ucfirst($_row['field_name']) . ' ' . $_class . '" style="' . $_width_field . '"><?= $_row["' . $_row['field_name'] . '"]; ?></td>' . PHP_EOL;
-                                        /**/
                                     }
 
+                                    /* END CAMPO SELECT MODAL IMAGEM grid_list_field_type_modal_image  */
+                                    /**/
+                                    /* CAMPO SELECT MODAL ARQUIVO grid_list_field_type_modal_arquivo  */
+                                } elseif ($_param_gridListField['grid_list_field_input_type'] == 'upload-arquivo') {
+
+                                    $_folderUploadAquivo = json_decode($_param_formAddEditField[$_row['field_name']]->param_formaddedit)->form_add_edit_field_upload_arquivo_folder;
+
+                                    $this->_gridListFieldsTable .= '<td class="tdCl' . ucfirst($_row['field_name']) . ' ' . $_class . '" style="' . $_width_field . '"><?= mc_file_link_download ($_row["' . $_row['field_name'] . '"], "' . $_folderUploadAquivo . '"); ?></td>' . PHP_EOL;
+
+                                    /* END CAMPO SELECT MODAL ARQUIVO grid_list_field_type_modal_arquivo  */
+                                    /**/
+                                    /* CAMPO INPUT NUMBER DECIMAL grid_list_field_input_type  */
+                                } elseif ($_param_gridListField['grid_list_field_input_type'] == 'number-decimal') {
+
+                                    $_class .= $_classBtnEdit;
+                                    $this->_gridListFieldsTable .= '<td class="tdCl' . ucfirst($_row['field_name']) . ' ' . $_class . '" style="' . $_width_field . '"><?= bz_converteMoedaBrasil ($_row["' . $_row['field_name'] . '"]); ?></td>' . PHP_EOL;
+
+                                    /* END CAMPO INPUT NUMBER DECIMAL grid_list_field_input_type */
+                                    /**/
+                                    /* CAMPO INPUT MOEDA grid_list_field_input_type  */
+                                } elseif ($_param_gridListField['grid_list_field_input_type'] == 'moeda') {
+
+                                    $_class .= $_classBtnEdit;
+                                    $this->_gridListFieldsTable .= '<td class="tdCl' . ucfirst($_row['field_name']) . ' ' . $_class . '" style="' . $_width_field . '">R$ <?= bz_converteMoedaBrasil ($_row["' . $_row['field_name'] . '"]); ?></td>' . PHP_EOL;
+
+                                    /* END CAMPO INPUT MOEDA grid_list_field_input_type */
+                                    /**/
+                                    /* CAMPO INPUT NUMBER INTENGER grid_list_field_input_type  */
+                                } elseif ($_param_gridListField['grid_list_field_input_type'] == 'number') {
+
+                                    $_class .= $_classBtnEdit;
+                                    $this->_gridListFieldsTable .= '<td class="tdCl' . ucfirst($_row['field_name']) . ' ' . $_class . '" style="' . $_width_field . '"><?= number_format ($_row["' . $_row['field_name'] . '"], 0, "", ""); ?></td>' . PHP_EOL;
+
+                                    /* END CAMPO INPUT NUMBER INTENGER grid_list_field_input_type */
+                                    /**/
+                                    /* CAMPO INPUT DATE grid_list_field_input_type  */
+                                } elseif ($_param_gridListField['grid_list_field_input_type'] == 'date') {
+
+                                    $_class .= $_classBtnEdit;
+                                    $this->_gridListFieldsTable .= '<td class="tdCl' . ucfirst($_row['field_name']) . ' ' . $_class . '" style="' . $_width_field . '"><?= bz_formatdata ($_row["' . $_row['field_name'] . '"]); ?></td>' . PHP_EOL;
+
+                                    /* END CAMPO INPUT DATE grid_list_field_input_type */
+                                    /**/
+                                    /* CAMPO INPUT TIME grid_list_field_input_type  */
+                                } elseif ($_param_gridListField['grid_list_field_input_type'] == 'time') {
+
+                                    $_class .= $_classBtnEdit;
+                                    $this->_gridListFieldsTable .= '<td class="tdCl' . ucfirst($_row['field_name']) . ' ' . $_class . '" style="' . $_width_field . '"><?= bz_formatdata ($_row["' . $_row['field_name'] . '"], "H:i:s"); ?></td>' . PHP_EOL;
+
+                                    /* END CAMPO INPUT TIME grid_list_field_input_type */
+                                    /**/
+                                    /* CAMPO INPUT DATETIME grid_list_field_input_type  */
+                                } elseif ($_param_gridListField['grid_list_field_input_type'] == 'datetime') {
+
+                                    $_class .= $_classBtnEdit;
+                                    $this->_gridListFieldsTable .= '<td class="tdCl' . ucfirst($_row['field_name']) . ' ' . $_class . '" style="' . $_width_field . '"><?= bz_formatdata ($_row["' . $_row['field_name'] . '"], "d/m/Y H:i:s"); ?></td>' . PHP_EOL;
+
+                                    /* END CAMPO INPUT DATETIME grid_list_field_input_type */
+                                    /**/
+                                    /* CAMPO INPUT SELECT grid_list_field_input_type  */
+                                } elseif ($_param_gridListField['grid_list_field_input_type'] == 'select') {
+
+                                    $_class .= $_classBtnEdit;
+                                    $_pkSelect = strtolower(base64_decode($_param_gridListField['grid_list_field_value_select']));
+                                    $_pkSelect = substr($_pkSelect, 7, (strpos($_pkSelect, ',') - 7));
+
+                                    $this->_gridListFieldsTable .= '<td class="tdCl' . ucfirst($_row['field_name']) . ' ' . $_class . '" style="' . $_width_field . '"><?= $this->db->query ("' . base64_decode($_param_gridListField['grid_list_field_value_select']) . ' WHERE ' . $_pkSelect . ' = ".$_row["' . $_row['field_name'] . '"])->row ()->' . str_replace('_id', '', $_row['field_name']) . '; ?></td>' . PHP_EOL;
+
+                                    /* END CAMPO INPUT SELECT grid_list_field_input_type */
                                     /**/
                                 } else {
-
+                                    /**/
+                                    $_class .= $_classBtnEdit;
                                     $this->_gridListFieldsTable .= '<td class="tdCl' . ucfirst($_row['field_name']) . ' ' . $_class . '" style="' . $_width_field . '"><?= $_row["' . $_row['field_name'] . '"]; ?></td>' . PHP_EOL;
-
                                     /**/
                                 }
-                                /* END FORMATAÇÃO DOS CAMPOS DA GRIDLIST $_ROW[] CONFORME SELEÇÃO DO CAMPO SELECT grid_list_field_input_type */
+
+                                /**/
+                            } else {
+
+                                $this->_gridListFieldsTable .= '<td class="tdCl' . ucfirst($_row['field_name']) . ' ' . $_class . '" style="' . $_width_field . '"><?= $_row["' . $_row['field_name'] . '"]; ?></td>' . PHP_EOL;
 
                                 /**/
                             }
+                            /* END FORMATAÇÃO DOS CAMPOS DA GRIDLIST $_ROW[] CONFORME SELEÇÃO DO CAMPO SELECT grid_list_field_input_type */
+
+                            /**/
                         }
                         /* END CAMPOS QUE SERÃO MOSTRADOS NA GRID LIST */
 
@@ -1892,37 +1893,33 @@ class ProjectbuildCrud extends MY_Controller {
                             }
                             /* END CAMPOS VIRTUAIS */
 
-                            if (strtolower($_row['field_name']) == 'status_active') {
-                                $this->_gridListStatusDados = 'Y';
-                            } else {
-                                $_class = (!empty($_param_gridListField['grid_list_aligne_label'])) ? $_param_gridListField['grid_list_aligne_label'] : 'text-left';
-                                $_width_field .= (!empty($_param_gridListField['grid_list_field_length'])) ? 'width:' . $_param_gridListField['grid_list_field_length'] : '';
+                            $_class = (!empty($_param_gridListField['grid_list_aligne_label'])) ? $_param_gridListField['grid_list_aligne_label'] : 'text-left';
+                            $_width_field .= (!empty($_param_gridListField['grid_list_field_length'])) ? 'width:' . $_param_gridListField['grid_list_field_length'] : '';
 
-                                if (!empty($_param_gridListField['grid_list_aligne_label'])) {
-                                    if ($_param_gridListField['grid_list_aligne_label'] == 'text-left') {
-                                        if (!empty($_width_field)) {
-                                            $_width_field .= '; text-align:left';
-                                        } else {
-                                            $_width_field .= 'text-align:left';
-                                        }
-                                    } elseif ($_param_gridListField['grid_list_aligne_label'] == 'text-center') {
-                                        if (!empty($_width_field)) {
-                                            $_width_field .= '; text-align:center';
-                                        } else {
-                                            $_width_field .= 'text-align:center';
-                                        }
-                                    } elseif ($_param_gridListField['grid_list_aligne_label'] == 'text-right') {
-                                        if (!empty($_width_field)) {
-                                            $_width_field .= '; text-align:right';
-                                        } else {
-                                            $_width_field .= 'text-align:right';
-                                        }
+                            if (!empty($_param_gridListField['grid_list_aligne_label'])) {
+                                if ($_param_gridListField['grid_list_aligne_label'] == 'text-left') {
+                                    if (!empty($_width_field)) {
+                                        $_width_field .= '; text-align:left';
+                                    } else {
+                                        $_width_field .= 'text-align:left';
+                                    }
+                                } elseif ($_param_gridListField['grid_list_aligne_label'] == 'text-center') {
+                                    if (!empty($_width_field)) {
+                                        $_width_field .= '; text-align:center';
+                                    } else {
+                                        $_width_field .= 'text-align:center';
+                                    }
+                                } elseif ($_param_gridListField['grid_list_aligne_label'] == 'text-right') {
+                                    if (!empty($_width_field)) {
+                                        $_width_field .= '; text-align:right';
+                                    } else {
+                                        $_width_field .= 'text-align:right';
                                     }
                                 }
-
-                                $this->_gridListHeaderTableExport .= '<th class="thCl' . ucfirst($_row['field_name']) . ' ' . $_class . '" style="' . $_width_field . '">' . $_param_gridListField['grid_list_label'] . '</th>' . PHP_EOL;
-                                $this->_gridListFieldsTableExport .= '<td class="tdCl' . ucfirst($_row['field_name']) . ' ' . $_class . '" style="' . $_width_field . '"><?= $_row["' . $_row['field_name'] . '"]; ?></td>' . PHP_EOL;
                             }
+
+                            $this->_gridListHeaderTableExport .= '<th class="thCl' . ucfirst($_row['field_name']) . ' ' . $_class . '" style="' . $_width_field . '">' . $_param_gridListField['grid_list_label'] . '</th>' . PHP_EOL;
+                            $this->_gridListFieldsTableExport .= '<td class="tdCl' . ucfirst($_row['field_name']) . ' ' . $_class . '" style="' . $_width_field . '"><?= $_row["' . $_row['field_name'] . '"]; ?></td>' . PHP_EOL;
                         }
                     }
 
@@ -2157,7 +2154,7 @@ class ProjectbuildCrud extends MY_Controller {
                              * GERA OS TIPOS DOS CAMPOS
                              */
 
-// SE O CAMPO FOR READ ONLY, DESABILITA ALGUMAS FUNÇÕES
+                            /* SE O CAMPO FOR READ ONLY, DESABILITA ALGUMAS FUNÇÕES */
 
                             $_geraFormAddDadosFillable = true;
                             $_geraFormEditDadosFillable = true;
@@ -2190,10 +2187,38 @@ class ProjectbuildCrud extends MY_Controller {
                                 }
                             }
 
+                            /* TRATA A VARIÁVEL form_add_edit_field_start_value DO INPUT - VALOR INICIAL */
+                            if (!empty(base64_decode($_param_formAddEditField['form_add_edit_field_start_value']))) {
+                                $_param_formAddEditField['form_add_edit_field_start_value'] = base64_decode($_param_formAddEditField['form_add_edit_field_start_value']);
 
+                                if (mc_contains_in_string('[[', $_param_formAddEditField['form_add_edit_field_start_value']) && mc_contains_in_string(']]', $_param_formAddEditField['form_add_edit_field_start_value'])) {
+                                    $_param_formAddEditField['form_add_edit_field_start_value'] = '"' . str_replace(['[[', ']]'], ['".', '."'], $_param_formAddEditField['form_add_edit_field_start_value']) . '"';
+                                } else {
+                                    $_param_formAddEditField['form_add_edit_field_start_value'] = '"' . $_param_formAddEditField['form_add_edit_field_start_value'] . '"';
+                                }
+                            } else {
+                                $_param_formAddEditField['form_add_edit_field_start_value'] = '""';
+                            }
+                            /* END TRATA A VARIÁVEL form_add_edit_field_start_value DO INPUT - VALOR INICIAL */
+
+
+
+                            /**
+                             * 
+                             * ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
+                             * INPUT TEXT OU INTEGER
+                             * ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
+                             * 
+                             */
                             if ($_param_formAddEditField['form_add_edit_field_type'] == 'text') {
 
-                                $this->_formAddEditConfigInput = '<input type="text" name="' . $_row['field_name'] . '" class="form-control ' . (!empty($_param_formAddEditField['form_add_edit_field_convert_letter_into']) ? $_param_formAddEditField['form_add_edit_field_convert_letter_into'] : null) . ' ' . ((!empty($_param_formAddEditField['form_add_edit_field_mask'])) ? 'j-mask-' . $_row['field_name'] : '') . ' " placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" ' . $this->_formAddEditConfigInputAtributos . ' value="<?= set_value ("' . $_row['field_name'] . '", !empty ($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : set_value ("' . $_row['field_name'] . '")); ?>" />';
+                                $this->_formAddEditConfigInput = '<input '
+                                        . 'type="text" '
+                                        . 'name="' . $_row['field_name'] . '" '
+                                        . 'class="form-control ' . (!empty($_param_formAddEditField['form_add_edit_field_convert_letter_into']) ? $_param_formAddEditField['form_add_edit_field_convert_letter_into'] : null) . ' ' . ((!empty($_param_formAddEditField['form_add_edit_field_mask'])) ? 'j-mask-' . $_row['field_name'] : '') . ' " '
+                                        . 'placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" ' . $this->_formAddEditConfigInputAtributos . ' '
+                                        . 'value="<?=set_value("' . $_row['field_name'] . '") ? : (isset($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : ' . $_param_formAddEditField['form_add_edit_field_start_value'] . ');?>" '
+                                        . '/>';
 
                                 if ($_row['field_type'] == 'int') {
                                     if ($_enableFormAddConvertDadosToDatabase)
@@ -2203,12 +2228,56 @@ class ProjectbuildCrud extends MY_Controller {
                                             $this->_formEditConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = preg_replace("/[^0-9]/", "", $_dados["' . $_row['field_name'] . '"]);' . PHP_EOL;
                                     }
                                 }
-                            }elseif ($_param_formAddEditField['form_add_edit_field_type'] == 'text-long') {
+                            }
+                            /**
+                             * 
+                             *  END INPUT TEXT OU INTEGER 
+                             */
+                            /* ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================ */
 
-                                $this->_formAddEditConfigInput = '<textarea rows="5" name="' . $_row['field_name'] . '" class="form-control" placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" ' . $this->_formAddEditConfigInputAtributos . '/><?= set_value ("' . $_row['field_name'] . '", isset ($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : set_value ("' . $_row['field_name'] . '")); ?></textarea>';
-                            } elseif ($_param_formAddEditField['form_add_edit_field_type'] == 'text-ckeditor') {
 
-                                $this->_formAddEditConfigInput = '<textarea id="ckeditor-' . $_row['field_name'] . '" rows="5" name="' . $_row['field_name'] . '" class="form-control" placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" ' . $this->_formAddEditConfigInputAtributos . '/><?= set_value  ("' . $_row['field_name'] . '", isset ($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : set_value ("' . $_row['field_name'] . '")); ?></textarea>';
+
+
+                            /**
+                             * 
+                             * ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
+                             * INPUT LONG TEXT
+                             * ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
+                             * 
+                             */
+                            if ($_param_formAddEditField['form_add_edit_field_type'] == 'text-long') {
+
+                                $this->_formAddEditConfigInput = '<textarea '
+                                        . 'rows="5" name="' . $_row['field_name'] . '" '
+                                        . 'class="form-control" '
+                                        . 'placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" ' . $this->_formAddEditConfigInputAtributos . '/>'
+                                        . '<?=set_value("' . $_row['field_name'] . '") ? : (isset($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : ' . $_param_formAddEditField['form_add_edit_field_start_value'] . ');?>'
+                                        . '</textarea>';
+                            }
+                            /**
+                             * 
+                             *  END INPUT LONG TEXT
+                             */
+                            /* ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================ */
+
+
+
+
+                            /**
+                             * 
+                             * ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
+                             * INPUT EDITOR HTML CKEDITOR
+                             * ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
+                             * 
+                             */
+                            if ($_param_formAddEditField['form_add_edit_field_type'] == 'text-ckeditor') {
+
+                                $this->_formAddEditConfigInput = '<textarea '
+                                        . 'id="ckeditor-' . $_row['field_name'] . '" '
+                                        . 'rows="5" name="' . $_row['field_name'] . '" '
+                                        . 'class="form-control" placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" ' . $this->_formAddEditConfigInputAtributos . '/>'
+                                        . '<?=set_value("' . $_row['field_name'] . '") ? : (isset($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : ' . $_param_formAddEditField['form_add_edit_field_start_value'] . ');?>'
+                                        . '</textarea>';
 
                                 if ($_enableFormAddConvertDadosToDatabase)
                                     $this->_formAddConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = $this->input->post("' . $_row['field_name'] . '",FALSE);';
@@ -2245,9 +2314,64 @@ class ProjectbuildCrud extends MY_Controller {
                                 $this->_formEditCodeEditorJS .= "<!--" . PHP_EOL;
                                 $this->_formEditCodeEditorJS .= " * END JQUERY SCRIPT - EDITOR DE TEXTO HTML - CKEDITOR" . PHP_EOL;
                                 $this->_formEditCodeEditorJS .= "-->" . PHP_EOL . PHP_EOL . PHP_EOL;
-                            }elseif ($_param_formAddEditField['form_add_edit_field_type'] == 'date') {
+                            }
+                            /**
+                             * 
+                             *  END INPUT EDITOR HTML CKEDITOR
+                             */
+                            /* ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================ */
 
-                                $this->_formAddEditConfigInput = '<input type="text" name="' . $_row['field_name'] . '" class="form-control datepicker j-mask-data-ptbr j-mask-' . $_row['field_name'] . '" placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" value="<?= set_value ("' . $_row['field_name'] . '", isset ($dados->' . $_row['field_name'] . ') ? bz_formatdata ($dados->' . $_row['field_name'] . ', "d/m/Y") : set_value ("' . $_row['field_name'] . '")); ?>" ' . $this->_formAddEditConfigInputAtributos . ' />';
+
+
+
+                            /**
+                             * 
+                             * ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
+                             * INPUT EMAIL
+                             * ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
+                             * 
+                             */
+                            if ($_param_formAddEditField['form_add_edit_field_type'] == 'email') {
+
+                                $this->_formAddEditConfigInput = '<input '
+                                        . 'type="text" '
+                                        . 'name="' . $_row['field_name'] . '" '
+                                        . 'class="form-control" '
+                                        . 'placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" '
+                                        . 'value="<?=set_value("' . $_row['field_name'] . '") ? : (isset($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : ' . $_param_formAddEditField['form_add_edit_field_start_value'] . ');?>" '
+                                        . $this->_formAddEditConfigInputAtributos
+                                        . ' />';
+                            }
+                            /**
+                             * 
+                             *  END INPUT EMAIL
+                             */
+                            /* ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================ */
+
+
+
+
+                            /**
+                             * 
+                             * ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
+                             * INPUT DATE
+                             * ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
+                             * 
+                             */
+                            if ($_param_formAddEditField['form_add_edit_field_type'] == 'date') {
+
+                                $this->_formAddEditConfigInputAtributos .= 'autocomplete="off"';
+
+                                $this->_formAddEditConfigInput = '<input '
+                                        . 'type="text" '
+                                        . 'name="' . $_row['field_name'] . '" '
+                                        . 'class="form-control datepicker j-mask-data-ptbr j-mask-' . $_row['field_name'] . '" '
+                                        . 'placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" '
+                                        . 'value="<?=set_value("' . $_row['field_name'] . '") ? : (isset($dados->' . $_row['field_name'] . ') ? bz_formatdata($dados->' . $_row['field_name'] . ',"d/m/Y") : ' . $_param_formAddEditField['form_add_edit_field_start_value'] . ');?>" '
+                                        . $this->_formAddEditConfigInputAtributos
+                                        . ' />';
+
+
                                 $this->_formAddEditConfigInputMask .= '$(".j-mask-' . $_row['field_name'] . '").mask("00/00/0000", {placeholder: "__/__/____"});' . PHP_EOL;
 
                                 if ($_enableFormAddConvertDadosToDatabase)
@@ -2256,9 +2380,79 @@ class ProjectbuildCrud extends MY_Controller {
                                     if ($_enableFormEditConvertDadosToDatabase)
                                         $this->_formEditConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = bz_formatdata($_dados["' . $_row['field_name'] . '"],"Y-m-d");' . PHP_EOL;
                                 }
-                            }elseif ($_param_formAddEditField['form_add_edit_field_type'] == 'datetime') {
+                            }
+                            /**
+                             * 
+                             *  END INPUT DATE
+                             */
+                            /* ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================ */
 
-                                $this->_formAddEditConfigInput = '<input type="text" name="' . $_row['field_name'] . '" class="form-control datetimepicker j-mask-datahora-ptbr j-mask-' . $_row['field_name'] . '" placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" value="<?= set_value ("' . $_row['field_name'] . '", isset ($dados->' . $_row['field_name'] . ') ? bz_formatdata ($dados->' . $_row['field_name'] . ', "d/m/Y H:i:s") : set_value ("' . $_row['field_name'] . '")); ?>" ' . $this->_formAddEditConfigInputAtributos . ' />';
+
+
+
+                            /**
+                             * 
+                             * ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
+                             * INPUT TIME
+                             * ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
+                             * 
+                             */
+                            if ($_param_formAddEditField['form_add_edit_field_type'] == 'time') {
+
+                                $this->_formAddEditConfigInputAtributos .= 'autocomplete="off"';
+
+                                $this->_formAddEditConfigInput = '<div class="input-group clockpicker">'
+                                        . '<input '
+                                        . 'type="text" '
+                                        . 'name="' . $_row['field_name'] . '" '
+                                        . 'class="form-control j-mask-' . $_row['field_name'] . '" '
+                                        . 'placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" '
+                                        . 'value="<?=set_value("' . $_row['field_name'] . '") ? : (isset($dados->' . $_row['field_name'] . ') ? bz_formatdata($dados->' . $_row['field_name'] . ',"H:i")  : ' . $_param_formAddEditField['form_add_edit_field_start_value'] . ');?>" '
+                                        . $this->_formAddEditConfigInputAtributos
+                                        . ' />'
+                                        . '<span class="input-group-addon">'
+                                        . '     <span class="glyphicon glyphicon-time"></span>'
+                                        . '</span>'
+                                        . '</div>';
+
+                                $this->_formAddEditConfigInputMask .= '$(".j-mask-' . $_row['field_name'] . '").mask("00:00", {placeholder: "__:__"});' . PHP_EOL;
+                            }
+                            /**
+                             * 
+                             *  END INPUT TIME
+                             */
+                            /* ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================ */
+
+
+
+
+                            /**
+                             * 
+                             * ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
+                             * INPUT DATETIME
+                             * ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
+                             * 
+                             */
+                            if ($_param_formAddEditField['form_add_edit_field_type'] == 'datetime') {
+
+                                $this->_formAddEditConfigInputAtributos .= 'autocomplete="off"';
+
+                                $this->_formAddEditConfigInput = '<div class="input-group">'
+                                        . '<input '
+                                        . 'type="text" '
+                                        . 'name="' . $_row['field_name'] . '" '
+                                        . 'class="form-control datetimepicker j-mask-datahora-ptbr j-mask-' . $_row['field_name'] . '" '
+                                        . 'data-format="dd/mm/yyyy HH:mm:ss PP"'
+                                        . 'placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" '
+                                        . 'value="<?=set_value("' . $_row['field_name'] . '") ? : (isset($dados->' . $_row['field_name'] . ') ? bz_formatdata($dados->' . $_row['field_name'] . ',"d/m/Y H:i:s")  : ' . $_param_formAddEditField['form_add_edit_field_start_value'] . ');?>" '
+                                        . $this->_formAddEditConfigInputAtributos
+                                        . ' />'
+                                        . '<span class="input-group-addon">'
+                                        . '     <span class="glyphicon glyphicon-calendar"></span>'
+                                        . '</span>'
+                                        . '</div>';
+
+
                                 $this->_formAddEditConfigInputMask .= '$(".j-mask-' . $_row['field_name'] . '").mask("00/00/0000 00:00", {placeholder: "__/__/____ __:__"});' . PHP_EOL;
 
                                 if ($_enableFormAddConvertDadosToDatabase)
@@ -2267,16 +2461,66 @@ class ProjectbuildCrud extends MY_Controller {
                                     if ($_enableFormEditConvertDadosToDatabase)
                                         $this->_formEditConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = bz_formatdata($_dados["' . $_row['field_name'] . '"],"Y-m-d H:i:s");' . PHP_EOL;
                                 }
-                            }elseif ($_param_formAddEditField['form_add_edit_field_type'] == 'time') {
+                            }
+                            /**
+                             * 
+                             *  END INPUT DATETIME
+                             */
+                            /* ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================ */
 
-                                $this->_formAddEditConfigInput = '<input type="text" name="' . $_row['field_name'] . '" class="form-control timepicker j-mask-hora-ptbr j-mask-' . $_row['field_name'] . '" placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" value="<?= set_value ("' . $_row['field_name'] . '", isset ($dados->' . $_row['field_name'] . ') ? bz_formatdata ($dados->' . $_row['field_name'] . ', "H:i:s") : set_value ("' . $_row['field_name'] . '")); ?>" ' . $this->_formAddEditConfigInputAtributos . ' />';
-                                $this->_formAddEditConfigInputMask .= '$(".j-mask-' . $_row['field_name'] . '").mask("00:00", {placeholder: "__:__"});' . PHP_EOL;
-                            } elseif ($_param_formAddEditField['form_add_edit_field_type'] == 'number') {
 
-                                $this->_formAddEditConfigInput = '<input type="number" name="' . $_row['field_name'] . '" class="form-control" placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" value="<?= set_value ("' . $_row['field_name'] . '", isset ($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : set_value ("' . $_row['field_name'] . '")); ?>" pattern="[0-9]" onkeypress="return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 0" ' . $this->_formAddEditConfigInputAtributos . ' />';
-                            } elseif ($_param_formAddEditField['form_add_edit_field_type'] == 'number-decimal') {
 
-                                $this->_formAddEditConfigInput = '<input type="text" name="' . $_row['field_name'] . '" class="form-control ' . ((!empty($_param_formAddEditField['form_add_edit_field_mask'])) ? 'j-mask-' . $_row['field_name'] : '') . '" placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" value="<?= set_value ("' . $_row['field_name'] . '", isset ($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : set_value ("' . $_row['field_name'] . '")); ?>" onkeypress="return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 44 || event.charCode == 0" ' . $this->_formAddEditConfigInputAtributos . ' />';
+
+                            /**
+                             * 
+                             * ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
+                             * INPUT INT NUMBER
+                             * ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
+                             * 
+                             */
+                            if ($_param_formAddEditField['form_add_edit_field_type'] == 'number') {
+
+                                $this->_formAddEditConfigInputAtributos .= 'autocomplete="off"';
+
+                                $this->_formAddEditConfigInput = '<input '
+                                        . 'type="number" '
+                                        . 'name="' . $_row['field_name'] . '" '
+                                        . 'class="form-control" placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" '
+                                        . 'value="<?=set_value("' . $_row['field_name'] . '") ? : (isset($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : ' . $_param_formAddEditField['form_add_edit_field_start_value'] . ');?>" '
+                                        . 'pattern="[0-9]" '
+                                        . 'onkeypress="return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 0" '
+                                        . $this->_formAddEditConfigInputAtributos
+                                        . ' />';
+                            }
+                            /**
+                             * 
+                             *  END INPUT INT NUMBER
+                             */
+                            /* ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================ */
+
+
+
+
+                            /**
+                             * 
+                             * ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
+                             * INPUT DECIMAL NUMBER
+                             * ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
+                             * 
+                             */
+                            if ($_param_formAddEditField['form_add_edit_field_type'] == 'number-decimal') {
+
+                                $this->_formAddEditConfigInputAtributos .= 'autocomplete="off"';
+
+                                $this->_formAddEditConfigInput = '<input '
+                                        . 'type="text" '
+                                        . 'name="' . $_row['field_name'] . '" '
+                                        . 'class="form-control ' . ((!empty($_param_formAddEditField['form_add_edit_field_mask'])) ? 'j-mask-' . $_row['field_name'] : '') . '" '
+                                        . 'placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" '
+                                        . 'value="<?=set_value("' . $_row['field_name'] . '") ? : (isset($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : ' . $_param_formAddEditField['form_add_edit_field_start_value'] . ');?>" '
+                                        . 'onkeypress="return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 44 || event.charCode == 0" '
+                                        . $this->_formAddEditConfigInputAtributos
+                                        . ' />';
 
                                 if ($_enableFormAddConvertDadosToDatabase)
                                     $this->_formAddConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = str_replace(",",".",str_replace(".","",$_dados["' . $_row['field_name'] . '"]));';
@@ -2284,9 +2528,36 @@ class ProjectbuildCrud extends MY_Controller {
                                     if ($_enableFormEditConvertDadosToDatabase)
                                         $this->_formEditConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = str_replace(",",".",str_replace(".","",$_dados["' . $_row['field_name'] . '"]));';
                                 }
-                            }elseif ($_param_formAddEditField['form_add_edit_field_type'] == 'moeda') {
+                            }
+                            /**
+                             * 
+                             *  END INPUT INT NUMBER
+                             */
+                            /* ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================ */
 
-                                $this->_formAddEditConfigInput = '<input type="text" name="' . $_row['field_name'] . '" class="form-control j-mask-moeda-ptbr" placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" value="<?= set_value ("' . $_row['field_name'] . '", isset ($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : set_value ("' . $_row['field_name'] . '")); ?>" onkeypress="return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 44 || event.charCode == 0" ' . $this->_formAddEditConfigInputAtributos . ' />';
+
+
+
+                            /**
+                             * 
+                             * ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
+                             * INPUT MONETARY VALUE
+                             * ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
+                             * 
+                             */
+                            if ($_param_formAddEditField['form_add_edit_field_type'] == 'moeda') {
+
+                                $this->_formAddEditConfigInputAtributos .= 'autocomplete="off"';
+
+                                $this->_formAddEditConfigInput = '<input '
+                                        . 'type="text" '
+                                        . 'name="' . $_row['field_name'] . '" '
+                                        . 'class="form-control j-mask-moeda-ptbr" '
+                                        . 'placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" '
+                                        . 'value="<?=set_value("' . $_row['field_name'] . '") ? : (isset($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : ' . $_param_formAddEditField['form_add_edit_field_start_value'] . ');?>" '
+                                        . 'onkeypress="return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 44 || event.charCode == 0" '
+                                        . $this->_formAddEditConfigInputAtributos
+                                        . ' />';
 
                                 if ($_enableFormAddConvertDadosToDatabase)
                                     $this->_formAddConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = str_replace(",",".",str_replace(".","",$_dados["' . $_row['field_name'] . '"]));';
@@ -2294,10 +2565,59 @@ class ProjectbuildCrud extends MY_Controller {
                                     if ($_enableFormEditConvertDadosToDatabase)
                                         $this->_formEditConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = str_replace(",",".",str_replace(".","",$_dados["' . $_row['field_name'] . '"]));';
                                 }
-                            }elseif ($_param_formAddEditField['form_add_edit_field_type'] == 'doc-cpf') {
+                            }
+                            /**
+                             * 
+                             *  END INPUT MONETARY VALUE
+                             */
+                            /* ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================ */
+
+
+
+
+                            /**
+                             * 
+                             * ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
+                             * INPUT PASSWORD
+                             * ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
+                             * 
+                             */
+                            if ($_param_formAddEditField['form_add_edit_field_type'] == 'senha') {
+
+                                $this->_formAddEditConfigInputAtributos .= 'autocomplete="off"';
+
+                                $this->_formAddEditConfigInput = '<input type="password" name="' . $_row['field_name'] . '" class="form-control" placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" value="<?= set_value ("' . $_row['field_name'] . '", isset ($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : set_value ("' . $_row['field_name'] . '")); ?>" ' . $this->_formAddEditConfigInputAtributos . ' />';
+                            }
+                            /**
+                             * 
+                             *  END INPUT PASSWORD
+                             */
+                            /* ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================ */
+
+
+
+
+                            /**
+                             * 
+                             * ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
+                             * INPUT CPF
+                             * ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
+                             * 
+                             */
+                            if ($_param_formAddEditField['form_add_edit_field_type'] == 'doc-cpf') {
+
+                                $this->_formAddEditConfigInputAtributos .= 'autocomplete="off"';
 
                                 /* MONTA O CAMPO */
-                                $this->_formAddEditConfigInput = '<input type="text" name="' . $_row['field_name'] . '" class="form-control j-mask-' . $_row['field_name'] . '" value="<?= set_value ("' . $_row['field_name'] . '", !empty ($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : set_value ("' . $_row['field_name'] . '")); ?>" ' . $this->_formAddEditConfigInputAtributos . ' />';
+                                $this->_formAddEditConfigInput = '<input '
+                                        . 'type="text" '
+                                        . 'name="' . $_row['field_name'] . '" '
+                                        . 'class="form-control j-mask-' . $_row['field_name'] . '" '
+                                        . 'value="<?=set_value("' . $_row['field_name'] . '") ? : (isset($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : ' . $_param_formAddEditField['form_add_edit_field_start_value'] . ');?>" '
+                                        . $this->_formAddEditConfigInputAtributos
+                                        . ' />';
+
+
                                 $this->_formAddEditConfigInputMask .= '$(".j-mask-' . $_row['field_name'] . '").mask("000.000.000-00", {placeholder: "000.000.000-00"});' . PHP_EOL;
 
                                 /* CONVERTE DADOS TO DB */
@@ -2310,10 +2630,36 @@ class ProjectbuildCrud extends MY_Controller {
                                 } else {
                                     $this->_formAddEditConfigInputValidationAtributos .= '|valid_cpf';
                                 }
-                            } elseif ($_param_formAddEditField['form_add_edit_field_type'] == 'doc-cnpj') {
+                            }
+                            /**
+                             * 
+                             *  END INPUT CPF
+                             */
+                            /* ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================ */
+
+
+
+
+                            /**
+                             * 
+                             * ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
+                             * INPUT CNPJ
+                             * ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
+                             * 
+                             */
+                            if ($_param_formAddEditField['form_add_edit_field_type'] == 'doc-cnpj') {
+
+                                $this->_formAddEditConfigInputAtributos .= 'autocomplete="off"';
 
                                 /* MONTA O CAMPO */
-                                $this->_formAddEditConfigInput = '<input type="text" name="' . $_row['field_name'] . '" class="form-control j-mask-' . $_row['field_name'] . '" value="<?= set_value ("' . $_row['field_name'] . '", !empty ($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : set_value ("' . $_row['field_name'] . '")); ?>" ' . $this->_formAddEditConfigInputAtributos . ' />';
+                                $this->_formAddEditConfigInput = '<input '
+                                        . 'type="text" '
+                                        . 'name="' . $_row['field_name'] . '" '
+                                        . 'class="form-control j-mask-' . $_row['field_name'] . '" '
+                                        . 'value="<?=set_value("' . $_row['field_name'] . '") ? : (isset($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : ' . $_param_formAddEditField['form_add_edit_field_start_value'] . ');?>" '
+                                        . $this->_formAddEditConfigInputAtributos
+                                        . ' />';
+
                                 $this->_formAddEditConfigInputMask .= '$(".j-mask-' . $_row['field_name'] . '").mask("00.000.000/0000-00", {placeholder: "00.000.000/0000-00"});' . PHP_EOL;
 
                                 /* CONVERTE DADOS TO DB */
@@ -2326,13 +2672,24 @@ class ProjectbuildCrud extends MY_Controller {
                                 } else {
                                     $this->_formAddEditConfigInputValidationAtributos .= '|valid_cnpj';
                                 }
-                            } elseif ($_param_formAddEditField['form_add_edit_field_type'] == 'email') {
+                            }
+                            /**
+                             * 
+                             *  END INPUT CNPJ
+                             */
+                            /* ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================ */
 
-                                $this->_formAddEditConfigInput = '<input type="text" name="' . $_row['field_name'] . '" class="form-control" placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" value="<?= set_value ("' . $_row['field_name'] . '", isset ($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : set_value ("' . $_row['field_name'] . '")); ?>" ' . $this->_formAddEditConfigInputAtributos . ' />';
-                            } elseif ($_param_formAddEditField['form_add_edit_field_type'] == 'senha') {
 
-                                $this->_formAddEditConfigInput = '<input type="password" name="' . $_row['field_name'] . '" class="form-control" placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" value="<?= set_value ("' . $_row['field_name'] . '", isset ($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : set_value ("' . $_row['field_name'] . '")); ?>" ' . $this->_formAddEditConfigInputAtributos . ' />';
-                            } elseif ($_param_formAddEditField['form_add_edit_field_type'] == 'upload-imagem') {
+
+
+                            /**
+                             * 
+                             * ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
+                             * INPUT UPLOAD IMAGE
+                             * ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
+                             * 
+                             */
+                            if ($_param_formAddEditField['form_add_edit_field_type'] == 'upload-imagem') {
 
                                 $_fileExtension = '.' . str_replace('|', ',.', $_param_formAddEditField['form_add_edit_field_upload_imagem_extensao_permitida']);
 
@@ -2503,9 +2860,26 @@ class ProjectbuildCrud extends MY_Controller {
                                             . "}" . PHP_EOL
                                             . "/* END DELETA IMAGEM */";
                                 }
+                            }
+                            /**
+                             * 
+                             *  END INPUT UPLOAD IMAGE
+                             */
+                            /* ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================ */
 
-                                /**/
-                            } elseif ($_param_formAddEditField['form_add_edit_field_type'] == 'upload-arquivo') {
+
+
+
+
+
+                            /**
+                             * 
+                             * ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
+                             * INPUT UPLOAD FILE
+                             * ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
+                             * 
+                             */
+                            if ($_param_formAddEditField['form_add_edit_field_type'] == 'upload-arquivo') {
 
                                 $_fileExtension = '.' . str_replace('|', ',.', $_param_formAddEditField['form_add_edit_field_upload_arquivo_extensao_permitida']);
 
@@ -2542,15 +2916,39 @@ class ProjectbuildCrud extends MY_Controller {
                                         . "     bz_delete_file(\$_file_name, bz_absolute_path() . ___CONF_UPLOAD_DIR___ . ___CONF_UPLOAD_FILE_DIR___ . '" . ($_param_formAddEditField['form_add_edit_field_upload_arquivo_folder'] ? $_param_formAddEditField['form_add_edit_field_upload_arquivo_folder'] . DIRECTORY_SEPARATOR : $_param_formAddEditField['form_add_edit_field_upload_arquivo_folder']) . "');" . PHP_EOL
                                         . "}" . PHP_EOL
                                         . "/* END DELETA ARQUIVO */";
-                            } elseif ($_param_formAddEditField['form_add_edit_field_type'] == 'select-manual') {
+                            }
+                            /**
+                             * 
+                             *  END INPUT UPLOAD FILE
+                             */
+                            /* ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================ */
+
+
+
+
+
+
+
+                            /**
+                             * 
+                             * ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
+                             * SELECT MANUAL
+                             * ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
+                             * 
+                             */
+                            if ($_param_formAddEditField['form_add_edit_field_type'] == 'select-manual') {
 
                                 $_selectValue = explode(',', $_param_formAddEditField['form_add_edit_field_value_select_manual']);
                                 $_s = '';
 
                                 foreach ($_selectValue as $_selectValue_value) {
                                     $_s = explode('|', $_selectValue_value);
-                                    $this->_formAddEditConfigInput .= '<option value="' . $_s[0] . '" <?= (set_value ("' . $_row['field_name'] . '", !empty ($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : set_value ("' . $_row['field_name'] . '")) == "' . $_s[0] . '") ? "selected" : null; ?> />' . $_s[1] . '</option>' . PHP_EOL;
+                                    $this->_formAddEditConfigInput .= '<option '
+                                            . 'value="' . $_s[0] . '" <?= (set_value ("' . $_row['field_name'] . '", !empty ($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : set_value ("' . $_row['field_name'] . '")) == "' . $_s[0] . '") ? "selected" : (' . $_param_formAddEditField['form_add_edit_field_start_value'] . ' == "' . $_s[0] . '") ? "selected" : null; ?> />'
+                                            . $_s[1] . '</option>' . PHP_EOL;
                                 }
+
+//                                $this->_formAddEditConfigInput = str_replace('""', '"', $this->_formAddEditConfigInput);
 
                                 $_s = '<p class="margin-bottom-0">' . PHP_EOL;
                                 $_s .= '<select name="' . $_row['field_name'] . '" class="form-control select2" data-placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" ' . $this->_formAddEditConfigInputAtributos . ' style="width:100%;"/>' . PHP_EOL;
@@ -2560,7 +2958,27 @@ class ProjectbuildCrud extends MY_Controller {
                                 $_s .= '</p>' . PHP_EOL;
 
                                 $this->_formAddEditConfigInput = $_s;
-                            } elseif ($_param_formAddEditField['form_add_edit_field_type'] == 'select-dinamic') {
+                            }
+                            /**
+                             * 
+                             *  END SELECT MANUAL
+                             */
+                            /* ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================ */
+
+
+
+
+
+
+
+                            /**
+                             * 
+                             * ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
+                             * SELECT DINAMIC
+                             * ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
+                             * 
+                             */
+                            if ($_param_formAddEditField['form_add_edit_field_type'] == 'select-dinamic') {
 
                                 if (!empty($_param_formAddEditField['form_add_edit_field_value_select_dinamic'])) {
 
@@ -2571,8 +2989,7 @@ class ProjectbuildCrud extends MY_Controller {
                                     if ($_query) {
 
                                         $_r .= '<p style="margin-bottom: 0">' . PHP_EOL;
-                                        $_r .= "<?php
-                            " . PHP_EOL;
+                                        $_r .= "<?php" . PHP_EOL . PHP_EOL;
                                         $_r .= "\$_results_" . $_row['field_name'] . " = \$this->db->query (\"" . $_param_formAddEditField['form_add_edit_field_value_select_dinamic'] . "\");" . PHP_EOL;
                                         $_r .= "\$_last_query_" . $_row['field_name'] . " = strtolower(\$this->db->last_query());" . PHP_EOL;
                                         $_r .= "\$_options_" . $_row['field_name'] . " = \$_results_" . $_row['field_name'] . "->result_array();" . PHP_EOL;
@@ -2585,14 +3002,34 @@ class ProjectbuildCrud extends MY_Controller {
                                         $_r .= "foreach (\$_results_" . $_row['field_name'] . "->result_array() as \$_r_" . $_row['field_name'] . "){" . PHP_EOL;
                                         $_r .= "\$_list_" . $_row['field_name'] . "[ \$_r_" . $_row['field_name'] . "[ \$_keyOptions_" . $_row['field_name'] . "[0] ] ] = \$_r_" . $_row['field_name'] . "[ \$_keyOptions_" . $_row['field_name'] . "[1] ];" . PHP_EOL;
                                         $_r .= "}" . PHP_EOL;
-                                        $_r .= "echo form_dropdown('" . $_row['field_name'] . "', \$_list_" . $_row['field_name'] . ", set_value('" . $_row['field_name'] . "',isset(\$dados->" . $_row['field_name'] . ") ? \$dados->" . $_row['field_name'] . " : set_value('" . $_row['field_name'] . "')), 'class=\"form-control select2\" " . $this->_formAddEditConfigInputAtributos . " style=\"width:100%;\"');" . PHP_EOL;
+                                        $_r .= "echo form_dropdown('" . $_row['field_name'] . "', \$_list_" . $_row['field_name'] . ", set_value('" . $_row['field_name'] . "',isset(\$dados->" . $_row['field_name'] . ") ? \$dados->" . $_row['field_name'] . " :  " . $_param_formAddEditField['form_add_edit_field_start_value'] . " ), 'class=\"form-control select2\" " . $this->_formAddEditConfigInputAtributos . " style=\"width:100%;\"');" . PHP_EOL;
                                         $_r .= "?>" . PHP_EOL;
                                         $_r .= "</p>" . PHP_EOL;
                                     }
 
                                     $this->_formAddEditConfigInput = $_r;
                                 }
-                            } elseif ($_param_formAddEditField['form_add_edit_field_type'] == 'select-multiple-manual') {
+                            }
+                            /**
+                             * 
+                             *  END SELECT DINAMIC
+                             */
+                            /* ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================ */
+
+
+
+
+
+
+
+                            /**
+                             * 
+                             * ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
+                             * SELECT MANUAL MULTIPLE
+                             * ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
+                             * 
+                             */
+                            if ($_param_formAddEditField['form_add_edit_field_type'] == 'select-multiple-manual') {
 
                                 $_selectMultipleValue = explode(',', $_param_formAddEditField['form_add_edit_field_value_select_multiple_manual']);
                                 $_s = '';
@@ -2624,7 +3061,27 @@ class ProjectbuildCrud extends MY_Controller {
                                     if ($_enableFormEditConvertDadosToDatabase)
                                         $this->_formEditConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = json_encode($_dados["' . $_row['field_name'] . '"]);';
                                 }
-                            }elseif ($_param_formAddEditField['form_add_edit_field_type'] == 'select-multiple-dinamic') {
+                            }
+                            /**
+                             * 
+                             *  END SELECT MANUAL MULTIPLE
+                             */
+                            /* ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================ */
+
+
+
+
+
+
+
+                            /**
+                             * 
+                             * ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
+                             * SELECT DIMAMIC MULTIPLE
+                             * ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
+                             * 
+                             */
+                            if ($_param_formAddEditField['form_add_edit_field_type'] == 'select-multiple-dinamic') {
 
                                 if (!empty($_param_formAddEditField['form_add_edit_field_value_select_multiple_dinamic'])) {
 
@@ -2674,14 +3131,38 @@ class ProjectbuildCrud extends MY_Controller {
 
                                     $this->_formAddEditConfigInput = $_r;
                                 }
-                            }elseif ($_param_formAddEditField['form_add_edit_field_type'] == 'radio-manual') {
+                            }
+                            /**
+                             * 
+                             *  END SELECT DINAMIC MULTIPLE
+                             */
+                            /* ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================ */
+
+
+
+
+
+
+
+                            /**
+                             * 
+                             * ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
+                             * RADIO BUTTON MANUAL
+                             * ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
+                             * 
+                             */
+                            if ($_param_formAddEditField['form_add_edit_field_type'] == 'radio-manual') {
 
                                 $_radioValue = explode(',', $_param_formAddEditField['form_add_edit_field_value_radiobutton_manual']);
                                 $_r = "";
 
                                 foreach ($_radioValue as $_radioValue_value) {
                                     $_r = explode('|', $_radioValue_value);
-                                    $this->_formAddEditConfigInput .= '<input class="flat-green" type="radio" name="' . $_row['field_name'] . '" value="' . $_r[0] . '" <?= ($_radiobutton_manual_' . $_row['field_name'] . '=="' . $_r[0] . '") ? "checked" : null ;?> ' . $this->_formAddEditConfigInputAtributos . '/> ' . $_r[1] . '<i class="margin-right-10"></i>' . PHP_EOL;
+                                    $this->_formAddEditConfigInput .= '<input '
+                                            . 'class="flat-green" type="radio" '
+                                            . 'name="' . $_row['field_name'] . '" '
+                                            . 'value="' . $_r[0] . '" <?= ($_radiobutton_manual_' . $_row['field_name'] . '=="' . $_r[0] . '") ? "checked" : (' . $_param_formAddEditField['form_add_edit_field_start_value'] . ' == "' . $_r[0] . '") ? "checked" : null; ?> '
+                                            . $this->_formAddEditConfigInputAtributos . '/> ' . $_r[1] . '<i class="margin-right-10"></i>' . PHP_EOL;
                                 }
 
                                 $_r = "" . PHP_EOL;
@@ -2697,7 +3178,27 @@ class ProjectbuildCrud extends MY_Controller {
                                 $_r .= '<p class="margin-bottom-5">' . PHP_EOL . $this->_formAddEditConfigInput . PHP_EOL . '</p>';
 
                                 $this->_formAddEditConfigInput = $_r;
-                            } elseif ($_param_formAddEditField['form_add_edit_field_type'] == 'radio-dinamic') {
+                            }
+                            /**
+                             * 
+                             *  END RADIO BUTTON MANUAL
+                             */
+                            /* ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================ */
+
+
+
+
+
+
+
+                            /**
+                             * 
+                             * ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
+                             * RADIO BUTTON DINAMIC
+                             * ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
+                             * 
+                             */
+                            if ($_param_formAddEditField['form_add_edit_field_type'] == 'radio-dinamic') {
 
                                 if (!empty($_param_formAddEditField['form_add_edit_field_value_radiobutton_dinamic'])) {
 
@@ -2729,7 +3230,10 @@ class ProjectbuildCrud extends MY_Controller {
                                         $_r .= "foreach (\$_results_" . $_row['field_name'] . "->result_array() as \$_r_" . $_row['field_name'] . "){" . PHP_EOL;
                                         $_r .= "\$_list_" . $_row['field_name'] . "[ \$_r_" . $_row['field_name'] . "[ \$_keyOptions_" . $_row['field_name'] . "[0] ] ] = \$_r_" . $_row['field_name'] . "[ \$_keyOptions_" . $_row['field_name'] . "[1] ];" . PHP_EOL;
                                         $_r .= "?>" . PHP_EOL;
-                                        $_r .= '<input class="flat-green" type="radio" name="' . $_row['field_name'] . '"  value="<?=$_r_' . $_row['field_name'] . '[ $_keyOptions_' . $_row['field_name'] . '[0] ];?>" <?= ($_radiobutton_dinamic_' . $_row['field_name'] . '==$_r_' . $_row['field_name'] . '[ $_keyOptions_' . $_row['field_name'] . '[0] ]) ? "checked" : null ;?> /> <?=$_r_' . $_row['field_name'] . '[ $_keyOptions_' . $_row['field_name'] . '[1] ];?><i class="margin-right-10"></i>' . PHP_EOL;
+
+                                        /* $_r .= '<input class="flat-green" type="radio" name="' . $_row['field_name'] . '" value="<?=$_r_' . $_row['field_name'] . '[ $_keyOptions_' . $_row['field_name'] . '[0] ];?>" <?= ($_radiobutton_dinamic_' . $_row['field_name'] . '==$_r_' . $_row['field_name'] . '[ $_keyOptions_' . $_row['field_name'] . '[0] ]) ? "checked" : ($_r_' . $_row['field_name'] . '[ $_keyOptions_' . $_row['field_name'] . '[0] ] == ' . $_param_formAddEditField['form_add_edit_field_start_value'] . ') ? "checked" : null ;?> /> <?=$_r_' . $_row['field_name'] . '[ $_keyOptions_' . $_row['field_name'] . '[1] ];?><i class="margin-right-10"></i>' . PHP_EOL; */
+                                        $_r .= '<input class="flat-green" type="radio" name="' . $_row['field_name'] . '" value="<?=$_r_' . $_row['field_name'] . '[ $_keyOptions_' . $_row['field_name'] . '[0] ];?>" <?= set_radio("' . $_row['field_name'] . '", $_r_' . $_row['field_name'] . '[ $_keyOptions_' . $_row['field_name'] . '[0] ], ($_radiobutton_dinamic_' . $_row['field_name'] . ' == $_r_' . $_row['field_name'] . '[ $_keyOptions_' . $_row['field_name'] . '[0] ] ? TRUE : ($_r_' . $_row['field_name'] . '[ $_keyOptions_' . $_row['field_name'] . '[0] ] == ' . $_param_formAddEditField['form_add_edit_field_start_value'] . ') ? TRUE : FALSE)); ?> /><?= $_r_' . $_row['field_name'] . '[ $_keyOptions_' . $_row['field_name'] . '[1] ]; ?><i class="margin-right-10"></i>' . PHP_EOL;
+
                                         $_r .= "<?php" . PHP_EOL;
                                         $_r .= "}" . PHP_EOL;
                                         $_r .= "?>" . PHP_EOL;
@@ -2738,7 +3242,27 @@ class ProjectbuildCrud extends MY_Controller {
 
                                     $this->_formAddEditConfigInput = $_r;
                                 }
-                            } elseif ($_param_formAddEditField['form_add_edit_field_type'] == 'checkbox-manual') {
+                            }
+                            /**
+                             * 
+                             *  END RADIO BUTTON DINAMIC
+                             */
+                            /* ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================ */
+
+
+
+
+
+
+
+                            /**
+                             * 
+                             * ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
+                             * CHECKBOX MANUAL
+                             * ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
+                             * 
+                             */
+                            if ($_param_formAddEditField['form_add_edit_field_type'] == 'checkbox-manual') {
 
                                 $_r = "" . PHP_EOL;
                                 $_r .= "<?php" . PHP_EOL;
@@ -2750,17 +3274,37 @@ class ProjectbuildCrud extends MY_Controller {
                                 $_r .= "}" . PHP_EOL;
                                 $_r .= "?>" . PHP_EOL . PHP_EOL;
 
-                                $_r .= '<p class="margin-bottom-5">' . PHP_EOL . '<input class="flat-green" type="checkbox" name="' . $_row['field_name'] . '" value="' . $_param_formAddEditField['form_add_edit_field_value_checkbox_manual_on'] . '" <?= ($_checkbox_manual_' . $_row['field_name'] . '=="' . $_param_formAddEditField['form_add_edit_field_value_checkbox_manual_on'] . '") ? "checked" : null ;?> />' . PHP_EOL . '</p>';
+                                $_r .= '<p class="margin-bottom-5">' . PHP_EOL . '<input class="flat-green" type="checkbox" name="' . $_row['field_name'] . '" value="' . $_param_formAddEditField['form_add_edit_field_value_checkbox_manual_on'] . '" <?= ($_checkbox_manual_' . $_row['field_name'] . '=="' . $_param_formAddEditField['form_add_edit_field_value_checkbox_manual_on'] . '") ? "checked" : ("' . $_param_formAddEditField['form_add_edit_field_value_checkbox_manual_on'] . '"== ' . $_param_formAddEditField['form_add_edit_field_start_value'] . ') ? "checked" : NULL ;?> />' . PHP_EOL . '</p>';
 
                                 $this->_formAddEditConfigInput .= $_r;
 
                                 if ($_enableFormAddConvertDadosToDatabase)
-                                    $this->_formAddConvertDadosToDatabase .= '(isset($_dados["' . $_row['field_name'] . '"])) ? ($_dados["' . $_row['field_name'] . '"] == "' . $_param_formAddEditField['form_add_edit_field_value_checkbox_manual_on'] . '") ? $_dados["' . $_row['field_name'] . '"] : "' . $_param_formAddEditField['form_add_edit_field_value_checkbox_manual_off'] . '" : "' . $_param_formAddEditField['form_add_edit_field_value_checkbox_manual_off'] . '";' . PHP_EOL;
+                                    $this->_formAddConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = (isset($_dados["' . $_row['field_name'] . '"])) ? ($_dados["' . $_row['field_name'] . '"] == "' . $_param_formAddEditField['form_add_edit_field_value_checkbox_manual_on'] . '") ? $_dados["' . $_row['field_name'] . '"] : "' . $_param_formAddEditField['form_add_edit_field_value_checkbox_manual_off'] . '" : "' . $_param_formAddEditField['form_add_edit_field_value_checkbox_manual_off'] . '";' . PHP_EOL;
                                 if ($_row['primary_key'] == 0) {
                                     if ($_enableFormEditConvertDadosToDatabase)
-                                        $this->_formEditConvertDadosToDatabase .= '(isset($_dados["' . $_row['field_name'] . '"])) ? ($_dados["' . $_row['field_name'] . '"] == "' . $_param_formAddEditField['form_add_edit_field_value_checkbox_manual_on'] . '") ? $_dados["' . $_row['field_name'] . '"] : "' . $_param_formAddEditField['form_add_edit_field_value_checkbox_manual_off'] . '" : "' . $_param_formAddEditField['form_add_edit_field_value_checkbox_manual_off'] . '";' . PHP_EOL;
+                                        $this->_formEditConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = (isset($_dados["' . $_row['field_name'] . '"])) ? ($_dados["' . $_row['field_name'] . '"] == "' . $_param_formAddEditField['form_add_edit_field_value_checkbox_manual_on'] . '") ? $_dados["' . $_row['field_name'] . '"] : "' . $_param_formAddEditField['form_add_edit_field_value_checkbox_manual_off'] . '" : "' . $_param_formAddEditField['form_add_edit_field_value_checkbox_manual_off'] . '";' . PHP_EOL;
                                 }
-                            }elseif ($_param_formAddEditField['form_add_edit_field_type'] == 'checkbox-multiple-manual') {
+                            }
+                            /**
+                             * 
+                             *  END CHECKBOX MANUAL
+                             */
+                            /* ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================ */
+
+
+
+
+
+
+
+                            /**
+                             * 
+                             * ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
+                             * CHECKBOX MULTIPLE MANUAL
+                             * ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
+                             * 
+                             */
+                            if ($_param_formAddEditField['form_add_edit_field_type'] == 'checkbox-multiple-manual') {
 
                                 $_checkboxMultipleValue = explode(',', $_param_formAddEditField['form_add_edit_field_value_checkbox_multiple_manual']);
                                 $_c = '';
@@ -2791,7 +3335,27 @@ class ProjectbuildCrud extends MY_Controller {
                                     if ($_enableFormEditConvertDadosToDatabase)
                                         $this->_formEditConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = json_encode($_dados["' . $_row['field_name'] . '"]);' . PHP_EOL;
                                 }
-                            }elseif ($_param_formAddEditField['form_add_edit_field_type'] == 'checkbox-multiple-dinamic') {
+                            }
+                            /**
+                             * 
+                             *  END MULTIPLE MANUAL
+                             */
+                            /* ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================ */
+
+
+
+
+
+
+
+                            /**
+                             * 
+                             * ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
+                             * CHECKBOX MULTIPLE MANUAL
+                             * ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
+                             * 
+                             */
+                            if ($_param_formAddEditField['form_add_edit_field_type'] == 'checkbox-multiple-dinamic') {
 
                                 if (!empty($_param_formAddEditField['form_add_edit_field_value_checkbox_multiple_dinamic'])) {
 
@@ -2859,24 +3423,35 @@ class ProjectbuildCrud extends MY_Controller {
                                     }
                                 }
                             }
+                            /**
+                             * 
+                             *  END MULTIPLE MANUAL
+                             */
+                            /* ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================ */
 
+
+
+
+
+
+
+                            /**
+                             * 
+                             * ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
+                             * MONTA O CAMPO GERADO COM AS LABELS E ATTRIBUTOS
+                             * ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
+                             * 
+                             */
                             if (!empty($this->_formAddEditConfigInput)) {
-
-                                /*
-                                 * MONTA O CAMPO GERADO COM AS LABELS E ATTRIBUTOS
-                                 */
 
                                 if (!empty($_param_formAddEditField['form_add_edit_field_hidden'])) {
                                     if ($_param_formAddEditField['form_add_edit_field_hidden'] == 'on') {
 
                                         if ($_param_formAddEditField['form_add_edit_field_hidden_in_form'] == 'formadd') {
-//echo '- > ' . $_row['field_name'] . ' - Hidden ONLY Form ADD';
                                             $this->_formAddEditConfigInputClassCSS .= ' hidden-formadd ';
                                         } elseif ($_param_formAddEditField['form_add_edit_field_hidden_in_form'] == 'formedit') {
-//echo '- > ' . $_row['field_name'] . ' - Hidden ONLY Form EDIT';
                                             $this->_formAddEditConfigInputClassCSS .= ' hidden-formedit ';
                                         } else {
-//echo '- > ' . $_row['field_name'] . ' - Hidden Todos';
                                             $this->_formAddEditConfigInputClassCSS .= ' hidden ';
                                         }
 
@@ -2885,14 +3460,14 @@ class ProjectbuildCrud extends MY_Controller {
                                     }
                                 }
 
-//JQUERY MASK
+                                /* JQUERY MASK */
                                 if (isset($_param_formAddEditField['form_add_edit_field_mask'])) {
                                     if (!empty($_param_formAddEditField['form_add_edit_field_mask'])) {
                                         $this->_formAddEditConfigInputMask .= '$(".j-mask-' . $_row['field_name'] . '").mask("' . $_param_formAddEditField['form_add_edit_field_mask'] . '", ' . html_entity_decode(base64_decode($_param_formAddEditField['form_add_edit_field_mask_complement']), ENT_QUOTES) . ');' . PHP_EOL;
                                     }
                                 }
 
-//VALDATION ATRIBUTO EMAIL
+                                /* VALDATION ATRIBUTO EMAIL */
                                 if ($_param_formAddEditField['form_add_edit_field_type'] == 'email') {
                                     if (empty($this->_formAddEditConfigInputValidationAtributos)) {
                                         $this->_formAddEditConfigInputValidationAtributos .= 'valid_email|strtolower';
@@ -2901,7 +3476,7 @@ class ProjectbuildCrud extends MY_Controller {
                                     }
                                 }
 
-//VALDATION ATRIBUTO NÚMERO INTEIRO
+                                /* VALDATION ATRIBUTO NÚMERO INTEIRO */
                                 if ($_param_formAddEditField['form_add_edit_field_type'] == 'number') {
                                     if (empty($this->_formAddEditConfigInputValidationAtributos)) {
                                         $this->_formAddEditConfigInputValidationAtributos .= 'numeric|integer';
@@ -2910,7 +3485,7 @@ class ProjectbuildCrud extends MY_Controller {
                                     }
                                 }
 
-//VALDATION ATRIBUTO UPEPRCASE / LOWERCASE
+                                /* VALDATION ATRIBUTO UPEPRCASE / LOWERCASE */
                                 if (isset($_param_formAddEditField['form_add_edit_field_convert_letter_into'])) {
                                     if ($_param_formAddEditField['form_add_edit_field_convert_letter_into'] == 'text-uppercase') {
                                         if (empty($this->_formAddEditConfigInputValidationAtributos)) {
@@ -2927,7 +3502,7 @@ class ProjectbuildCrud extends MY_Controller {
                                     }
                                 }
 
-//VALDATION ONLY NUMBERS, ONLY CHARACTERS OR ALL CHARACTERS
+                                /* VALDATION ONLY NUMBERS, ONLY CHARACTERS OR ALL CHARACTERS */
                                 if (isset($_param_formAddEditField['form_add_edit_field_type_characters'])) {
                                     if ($_param_formAddEditField['form_add_edit_field_type_characters'] == 'only_numbers') {
                                         if (empty($this->_formAddEditConfigInputValidationAtributos)) {
@@ -2950,7 +3525,7 @@ class ProjectbuildCrud extends MY_Controller {
                                     }
                                 }
 
-//VALDATION ATRIBUTO FIELD MIN LENGHT
+                                /* VALDATION ATRIBUTO FIELD MIN LENGHT */
                                 if (isset($_param_formAddEditField['form_add_edit_field_min_length'])) {
                                     if ($_param_formAddEditField['form_add_edit_field_min_length'] > 0) {
                                         if (empty($this->_formAddEditConfigInputValidationAtributos)) {
@@ -2961,7 +3536,7 @@ class ProjectbuildCrud extends MY_Controller {
                                     }
                                 }
 
-//VALDATION ATRIBUTO FIELD MAX LENGHT
+                                /* VALDATION ATRIBUTO FIELD MAX LENGHT */
                                 if (isset($_param_formAddEditField['form_add_edit_field_max_length'])) {
                                     if ($_param_formAddEditField['form_add_edit_field_max_length'] > 0) {
                                         if (empty($this->_formAddEditConfigInputValidationAtributos)) {
@@ -2972,7 +3547,7 @@ class ProjectbuildCrud extends MY_Controller {
                                     }
                                 }
 
-//VALDATION DATE
+                                /* VALDATION DATE */
                                 if (isset($_param_formAddEditField['form_add_edit_field_type'])) {
                                     if ($_param_formAddEditField['form_add_edit_field_type'] == "date") {
                                         if (empty($this->_formAddEditConfigInputValidationAtributos)) {
@@ -3011,7 +3586,6 @@ class ProjectbuildCrud extends MY_Controller {
                                             }
                                         }
 
-//echo '-- > ' . $_classDisabledReadOnlyAsterisk;
 
                                         $this->_formAddEditFields .= ''
                                                 . '<?php $_error = form_error("' . $_row['field_name'] . '", "<small class=\'text-danger col-xs-12 bz-input-error\'>", "</small>"); ?>' . PHP_EOL
@@ -3500,17 +4074,15 @@ class ProjectbuildCrud extends MY_Controller {
                                 /*
                                  * MONTA AS VALIDAÇÕES DOS CAMPOS
                                  */
-//echo 'AAA-> ' . $_row['field_name'] . ' - Required : ' . (isset($_param_formAddEditField['form_add_edit_field_required']) ? $_param_formAddEditField['form_add_edit_field_required'] : 'OFF') . ' - XX: ' . $_param_formAddEditField['form_add_edit_field_required_in_form'];
-
                                 if (!empty($_param_formAddEditField['form_add_edit_field_required_in_form'])) {
 
                                     if ($_param_formAddEditField['form_add_edit_field_required_in_form'] == 'formadd') {
 
                                         $this->_formAddConfigInputValidationAtributos = $this->_formAddEditConfigInputValidationAtributos;
 
-//echo 'FORM ADD<br><br>';
+                                        /* echo 'FORM ADD<br><br>'; */
                                     } else {
-//$this->_formAddConfigInputValidationAtributos = str_replace('required', 'add-required', $this->_formAddConfigInputValidationAtributos);
+                                        /* $this->_formAddConfigInputValidationAtributos = str_replace('required', 'add-required', $this->_formAddConfigInputValidationAtributos); */
                                     }
                                 }
 
@@ -3519,9 +4091,9 @@ class ProjectbuildCrud extends MY_Controller {
 
                                         $this->_formEditConfigInputValidationAtributos = $this->_formAddEditConfigInputValidationAtributos;
 
-//echo 'FORM EDIT<br><br>';
+                                        /* echo 'FORM EDIT<br><br>'; */
                                     } else {
-//$this->_formEditConfigInputValidationAtributos = str_replace('required', 'edit-required', $this->_formEditConfigInputValidationAtributos);
+                                        /* $this->_formEditConfigInputValidationAtributos = str_replace('required', 'edit-required', $this->_formEditConfigInputValidationAtributos); */
                                     }
                                 }
 
@@ -3541,6 +4113,13 @@ class ProjectbuildCrud extends MY_Controller {
                                     $this->_formEditConfigInputValidation .= "\$this->form_validation->set_rules('" . $_row['field_name'] . "', '<b>" . $_param_formAddEditField['form_add_edit_field_label'] . "</b>', '" . $this->_formEditConfigInputValidationAtributos . "');" . PHP_EOL;
                                 }
                             }
+                            /**
+                             * 
+                             *  END MONTA O CAMPO GERADO COM AS LABELS E ATTRIBUTOS
+                             */
+                            /* ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================ */
+
+
 
                             /**
                              * DADOS FILLABLE
@@ -3706,7 +4285,7 @@ class ProjectbuildCrud extends MY_Controller {
                             $this->_gridListCodeEditorOnRecord .= "/* END ON RECORD */" . PHP_EOL . PHP_EOL;
                         }
                     }
-//END GET CODE EDITOR ON RECORD
+                    /* END GET CODE EDITOR ON RECORD */
 
                     /*
                      * GET CODE EDITOR ON RECORD EXPORT
@@ -3723,7 +4302,7 @@ class ProjectbuildCrud extends MY_Controller {
                             $this->_exportCodeEditorOnRecord .= "/* END ON RECORD EXPORT */" . PHP_EOL . PHP_EOL;
                         }
                     }
-//END GET CODE EDITOR ON RECORD EXPORT
+                    /* END GET CODE EDITOR ON RECORD EXPORT */
 
                     /*
                      * GET CODE EDITOR FORM ADD
@@ -3760,7 +4339,7 @@ class ProjectbuildCrud extends MY_Controller {
                             $this->_formAddCodeEditorJS .= "-->" . PHP_EOL . PHP_EOL . PHP_EOL;
                         }
                     }
-//END GET CODE EDITOR FORM ADD
+                    /* END GET CODE EDITOR FORM ADD */
 
                     /*
                      * GET CODE EDITOR FORM EDIT
@@ -3795,7 +4374,7 @@ class ProjectbuildCrud extends MY_Controller {
                             $this->_formEditCodeEditorJS .= "-->" . PHP_EOL . PHP_EOL . PHP_EOL;
                         }
                     }
-//END GET CODE EDITOR FORM ADD
+                    /* END GET CODE EDITOR FORM ADD */
                 } else {
 
                     set_mensagem_trigger_notifi('APP Não foi Gerado.', 'warning');
@@ -4385,7 +4964,6 @@ class ProjectbuildCrud extends MY_Controller {
 
         $this->_dadosView = str_replace('{{grid-list-header-table}}', $this->_gridListHeaderTable, $this->_dadosView);
         $this->_dadosView = str_replace('{{grid-list-fields-table}}', $this->_gridListFieldsTable, $this->_dadosView);
-        $this->_dadosView = str_replace('{{grid-list-show-status}}', $this->_gridListStatusDados, $this->_dadosView);
 
         $this->_dadosView = str_replace('{{grid-list-on-record}}', $this->_gridListCodeEditorOnRecord, $this->_dadosView);
 

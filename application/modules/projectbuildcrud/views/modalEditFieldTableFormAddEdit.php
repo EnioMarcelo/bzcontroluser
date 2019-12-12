@@ -350,91 +350,6 @@
 
 
                         <!--COLUNA 2-->
-                        <div class="col-md-4 padding-left-0">
-                            <fieldset>
-                                <legend class="text-center">Validação</legend>
-
-                                <!--HIDDEN-->
-                                <div class="form-group col-bg-12 col-md-12 col-sm-12 col-xs-12">
-                                    <label>Oculto:</label>
-                                    <div class="input-group col-bg-12 col-md-12 col-sm-12 col-xs-12">
-                                        <input type="checkbox" class="form-control input-sm btn_form_add_edit_field_hidden" data-toggle="toggle" data-on="ON" data-off="OFF" name="form_add_edit_field_hidden">
-
-                                        <select class="input-sm margin-left-20 hide" name="form_add_edit_field_hidden_in_form">
-                                            <option value="todos">Todos</option>
-                                            <option value="formadd">Somente Form ADD</option>
-                                            <option value="formedit">Somente Form EDIT</option>
-
-                                        </select>
-                                    </div>
-                                </div>
-
-
-                                <!--READ ONLY-->
-                                <div class="form-group col-bg-12 col-md-12 col-sm-12 col-xs-12">
-                                    <label>Somente Leitura:</label>
-                                    <div class="input-group">
-                                        <input type="checkbox" class="form-control input-sm btn_form_add_edit_field_read_only" data-toggle="toggle" data-on="ON" data-off="OFF" name="form_add_edit_field_read_only" />
-
-                                        <select class="input-sm margin-left-20 hide" name="form_add_edit_field_read_only_in_form">
-                                            <option value="todos">Todos</option>
-                                            <option value="formadd">Somente Form ADD</option>
-                                            <option value="formedit">Somente Form EDIT</option>
-
-                                        </select>
-                                    </div>
-                                </div>
-
-
-
-
-                                <!--REQUIRED-->
-                                <div class="form-group col-bg-12 col-md-12 col-sm-12 col-xs-12">
-                                    <label>Obrigatório:</label>
-                                    <div class="input-group">
-                                        <input type="checkbox" class="form-control input-sm" data-toggle="toggle" data-on="ON" data-off="OFF" name="form_add_edit_field_required" />
-
-                                        <select class="input-sm margin-left-20 hide" name="form_add_edit_field_required_in_form">
-                                            <option value="todos">Todos</option>
-                                            <option value="formadd">Somente Form ADD</option>
-                                            <option value="formedit">Somente Form EDIT</option>
-
-                                        </select>
-                                    </div>
-                                </div>
-
-                            </fieldset>
-
-
-                            <!--MULTI UPLOAD DE IMAGEM-->
-                            <fieldset id='id-fildset-active-multi-upload-imagem'>
-                                <legend class="text-center"></legend>
-
-                                <div class="form-group col-bg-12 col-md-12 col-sm-12 col-xs-12">
-                                    <label>Multi Upload:</label>
-                                    <div class="input-group col-bg-12 col-md-12 col-sm-12 col-xs-12">
-                                        <input type="checkbox" class="form-control input-sm btn_form_add_edit_active_multi_upload_imagem" data-toggle="toggle" data-on="ON" data-off="OFF" name="form_add_edit_active_multi_upload_imagem">
-                                    </div>
-                                </div>
-                            </fieldset>
-
-                            <fieldset class="" style="margin-top:-25px;">
-                                <legend class="text-center" style="border-bottom:none;"></legend>
-
-                                <div class="form-group col-bg-12 col-md-12 col-sm-12 col-xs-12">
-                                    <label>Quantidade máxima de imagem para upload:</label>
-                                    <div class="input-group col-bg-12 col-md-12 col-sm-12 col-xs-12">
-                                        <input type="number" class="form-control input-sm" name="form_add_edit_active_multi_upload_imagem_max_file" value="<?= ini_get('max_file_uploads'); ?>">
-                                    </div>
-                                </div>
-                            </fieldset>
-                            <!--MULTI UPLOAD DE IMAGEM-->
-                        </div>
-                        <!--END COLUNA 2-->
-
-
-
-                        <!--COLUNA 3-->
                         <div class="col-md-4">
 
                             <!--COLUNAS-->
@@ -516,6 +431,16 @@
                                     <input class="form-control input-sm" style="text-transform: lowercase;" type="text" placeholder="Altura do editor vai refletir na quantidade de linhas de texto." name="form_add_edit_field_editorhtml_ckeditor_line_height" value="">
                                 </div>
                                 <span class="margin-left-0" style="font-size: 0.9em; font-weight: 100;">Unidade de Medida: px, em, vh</span>
+                            </div>
+
+
+
+                            <!--VALOR INICIAL DO INPUT-->
+                            <div class="form-group col-bg-12 col-md-12 col-sm-12 col-xs-12">
+                                <label>Valor Inicial:</label>
+                                <div class="input-group col-bg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <input class="form-control input-sm" type="text" name="form_add_edit_field_start_value" value="">
+                                </div>
                             </div>
 
 
@@ -602,6 +527,90 @@
 
 
                         </div>
+                        <!--END COLUNA 2-->
+
+
+                        <!--COLUNA 3-->
+                        <div class="col-md-4 padding-left-0">
+                            <fieldset>
+                                <legend class="text-center">Validação</legend>
+
+                                <!--HIDDEN-->
+                                <div class="form-group col-bg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <label>Oculto:</label>
+                                    <div class="input-group col-bg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <input type="checkbox" class="form-control input-sm btn_form_add_edit_field_hidden" data-toggle="toggle" data-on="ON" data-off="OFF" name="form_add_edit_field_hidden">
+
+                                        <select class="input-sm margin-left-20 hide" name="form_add_edit_field_hidden_in_form">
+                                            <option value="todos">Todos</option>
+                                            <option value="formadd">Somente Form ADD</option>
+                                            <option value="formedit">Somente Form EDIT</option>
+
+                                        </select>
+                                    </div>
+                                </div>
+
+
+                                <!--READ ONLY-->
+                                <div class="form-group col-bg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <label>Somente Leitura:</label>
+                                    <div class="input-group">
+                                        <input type="checkbox" class="form-control input-sm btn_form_add_edit_field_read_only" data-toggle="toggle" data-on="ON" data-off="OFF" name="form_add_edit_field_read_only" />
+
+                                        <select class="input-sm margin-left-20 hide" name="form_add_edit_field_read_only_in_form">
+                                            <option value="todos">Todos</option>
+                                            <option value="formadd">Somente Form ADD</option>
+                                            <option value="formedit">Somente Form EDIT</option>
+
+                                        </select>
+                                    </div>
+                                </div>
+
+
+
+
+                                <!--REQUIRED-->
+                                <div class="form-group col-bg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <label>Obrigatório:</label>
+                                    <div class="input-group">
+                                        <input type="checkbox" class="form-control input-sm" data-toggle="toggle" data-on="ON" data-off="OFF" name="form_add_edit_field_required" />
+
+                                        <select class="input-sm margin-left-20 hide" name="form_add_edit_field_required_in_form">
+                                            <option value="todos">Todos</option>
+                                            <option value="formadd">Somente Form ADD</option>
+                                            <option value="formedit">Somente Form EDIT</option>
+
+                                        </select>
+                                    </div>
+                                </div>
+
+                            </fieldset>
+
+
+                            <!--MULTI UPLOAD DE IMAGEM-->
+                            <fieldset id='id-fildset-active-multi-upload-imagem'>
+                                <legend class="text-center"></legend>
+
+                                <div class="form-group col-bg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <label>Multi Upload:</label>
+                                    <div class="input-group col-bg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <input type="checkbox" class="form-control input-sm btn_form_add_edit_active_multi_upload_imagem" data-toggle="toggle" data-on="ON" data-off="OFF" name="form_add_edit_active_multi_upload_imagem">
+                                    </div>
+                                </div>
+                            </fieldset>
+
+                            <fieldset class="" style="margin-top:-25px;">
+                                <legend class="text-center" style="border-bottom:none;"></legend>
+
+                                <div class="form-group col-bg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <label>Quantidade máxima de imagem para upload:</label>
+                                    <div class="input-group col-bg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <input type="number" class="form-control input-sm" name="form_add_edit_active_multi_upload_imagem_max_file" value="<?= ini_get('max_file_uploads'); ?>">
+                                    </div>
+                                </div>
+                            </fieldset>
+                            <!--MULTI UPLOAD DE IMAGEM-->
+                        </div>
                         <!--END COLUNA 3-->
 
                     </div>
@@ -646,7 +655,13 @@
             $("#ui_notifIt").remove();
         }
 
-        function reset_inputs() {
+        function reset_inputs(_type_field) {
+
+            console.clear();
+            console.log(_type_field);
+
+            /* VALOR INICIAL DO CAMPO */
+            $('input[name="form_add_edit_field_start_value"]').val('');
 
             /* PLACEHOLDER DO CAMPO */
             $('input[name="form_add_edit_field_placeholder"]').parent().removeClass('hide');
@@ -673,6 +688,27 @@
             $('.form_add_edit_field_required_in_form').parent().parent().parent().removeClass('hide');
             /* END CAMPO OBRIGATÓRIO */
 
+
+
+            /* DESABILITA CAMPOS */
+            if (_type_field == 'senha'
+                    || _type_field == 'senha'
+                    || _type_field == 'upload-arquivo'
+                    || _type_field == 'upload-imagem'
+                    || _type_field == 'select-multiple-manual'
+                    || _type_field == 'select-multiple-dinamic'
+                    || _type_field == 'checkbox-multiple-manual'
+                    || _type_field == 'checkbox-multiple-dinamic')
+            {
+                $('input[name="form_add_edit_field_start_value"]').parent().parent().addClass('hide');
+            } else {
+                $('input[name="form_add_edit_field_start_value"]').parent().parent().removeClass('hide');
+            }
+
+
+
+
+
         }
 
         //GET DADOS
@@ -698,7 +734,6 @@
                     }
                     $("input[name='<?php echo $this->security->get_csrf_token_name(); ?>']").attr('value', csrfHash);
                     /* END RENEW TOKEN CSRF */
-
 
                     /* RESET INPUTS */
                     reset_inputs();
@@ -796,6 +831,10 @@
                     } else {
                         $('input[name="form_add_edit_field_max_length"]').parent().parent().addClass('hide');
                     }
+
+                    //INPUT VALOR INICIAL
+                    $('input[name="form_add_edit_field_start_value"]').val(result.form_add_edit_field_start_value);
+
 
                     // INPUT LINE HEIGHT CKEDITOR
                     if (result.form_add_edit_field_type == 'text-ckeditor') {
@@ -1045,7 +1084,7 @@
             var _selected = $(this).val();
 
             /* RESET INPUTS */
-            reset_inputs();
+            reset_inputs(_selected);
 
 
             $('textarea[name="form_add_edit_field_value_select_manual"]').val('');
@@ -1145,7 +1184,10 @@
                 $('input[name="form_add_edit_field_upload_imagem_folder"]').parent().parent().parent().removeClass('hide');
                 $('input[name="form_add_edit_field_upload_imagem_extensao_permitida"]').parent().parent().parent().removeClass('hide');
                 // MULTI UPLOAD
-                if (result.form_add_edit_active_multi_upload_imagem === 'on') {
+
+                var _active_multi_upload_imagem = $('input[name="form_add_edit_active_multi_upload_imagem"]').parent().hasClass('on');
+
+                if (_active_multi_upload_imagem === true) {
                     $('input[name="form_add_edit_active_multi_upload_imagem"]').bootstrapToggle('on');
                     $('input[name="form_add_edit_active_multi_upload_imagem_max_file"]').parent().parent().parent().removeClass('hide');
                     $('input[name="form_add_edit_active_multi_upload_imagem_max_file"]').val(result.form_add_edit_active_multi_upload_imagem_max_file);

@@ -569,9 +569,9 @@
         $('.j-mask-hora-ptbr').mask('00:00');
         /** DATA E HORA PT BR **/
         $('.j-mask-datahora-ptbr').mask('00/00/0000 00:00');
-        
-        
-        
+
+
+
     });
     /*
      * BOTÃO DELETA REGISTROS
@@ -673,6 +673,14 @@
         $('.datepicker').datepicker({todayHighlight: true, toggleActive: true, format: "dd/mm/yyyy", autoclose: true, language: 'pt-BR'});
         $('.datetimepicker').datetimepicker({format: "dd/mm/yyyy HH:ii", use24hours: true, autoclose: true, language: 'pt-BR'});
         $('.timepicker').timepicker({format: "HH:ii", showMeridian: false, autoclose: true, defaultTime: ''});
+
+        $('.clockpicker').clockpicker({
+            placement: 'center',
+            align: 'left',
+            autoclose: true,
+            donetext: 'OK'
+        });
+
     });
     //END DATE AND TIME PICKER
 

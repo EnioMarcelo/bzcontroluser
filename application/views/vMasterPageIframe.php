@@ -16,10 +16,13 @@
     <head>
         <meta charset="UTF-8">
         <title><?= bz_remove_strip_tags_content($this->config->item('config_system')['CONF_TITULO_SISTEMA']); ?></title>
+        <?= $this->config->item('config_system')['CONF_ICON']; ?>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
 
         <!-- Bootstrap 3.3.4 -->
         <link href="<?= base_url('assets'); ?>/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+        <!-- Bootstrap ClockPicker -->
+        <link href="<?= base_url('assets'); ?>/bootstrap/css/bootstrap-clockpicker.min.css" rel="stylesheet" type="text/css" />
         <!-- Bootstrap Button Toggle -->
         <link href="<?= base_url('assets'); ?>/plugins/button-toggle/bootstrap-toggle.min.css" rel="stylesheet" type="text/css"/>
         <!--Select 2-->
@@ -109,6 +112,8 @@
         <script src="<?= base_url('assets'); ?>/plugins/jQueryUI/jquery-ui-1.12.1/jquery-ui.min.js" type="text/javascript"></script>
         <!-- Bootstrap 3.3.2 JS -->
         <script src="<?= base_url('assets'); ?>/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+        <!-- Bootstrap ClockPicker -->
+        <script src="<?= base_url('assets'); ?>/bootstrap/js/bootstrap-clockpicker.min.js" type="text/javascript"></script>
         <!-- Bootstrap Button Toggle -->
         <!--bootstrap-wysihtml5-->
         <script src="<?= base_url('assets'); ?>/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js" type="text/javascript"></script>

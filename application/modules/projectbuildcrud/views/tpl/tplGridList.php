@@ -46,13 +46,6 @@
             </div>
         </div>
 
-        <!--        <div class="col-md-12 col-xs-12 padding-top-5 margin-left-15">
-                    <ol class='breadcrumb col-md-12' style="margin-bottom:-10px;">
-                        <li><a href='<?= site_url('dashboard'); ?>' target='_top' class='active btn-show-modal-aguarde'><i class='fa fa-dashboard margin-left-5'></i>&nbsp;Dashboard</a></li>
-                        <li class='active'><i class='<?= $_font_icon; ?> margin-right-5'></i><?= $_titulo_app; ?></li>
-                    </ol>
-                </div>-->
-
     </div>
 
 </section>
@@ -102,23 +95,9 @@
                         {{grid-list-button-clear}}
 
 
-
                         <!-- BOTÕES AVULSOS -->
                         <a id="buttons-loose-after"></a>
                         <!-- BOTÕES AVULSOS -->
-
-
-
-                        <!-- BTN ATIVO/INATIVO -->
-                        <?php if ('{{grid-list-show-status}}' == 'Y'): ?>
-                            <!-- BTN ATIVO -->
-                            <a href='<?= site_url($this->router->fetch_class()); ?>?status_active=Y<?= (($this->input->get('search')) ? '&search=' . $this->input->get('search') : ''); ?>' class='btn btn-sm btn-success btn-show-modal-aguarde j-tooltip margin-left-10 <?= (strtoupper($this->input->get('status_active', TRUE)) == 'Y') ? 'disabled' : ''; ?>' data-placement='bottom' data-toggle='tooltip' data-original-title='ATIVADO'><i class='fa fa-check-circle-o'></i></a>
-                            <!-- BTN ATIVO -->
-
-                            <!-- BTN INATIVO -->
-                            <a href='<?= site_url($this->router->fetch_class()); ?>?status_active=N<?= (($this->input->get('search')) ? '&search=' . $this->input->get('search') : ''); ?>' class='btn btn-sm btn-danger btn-show-modal-aguarde j-tooltip <?= (strtoupper($this->input->get('status_active', TRUE)) == 'N') ? 'disabled' : ''; ?>' data-placement='bottom' data-toggle='tooltip' data-original-title='DESATIVADO'><i class='fa fa-circle-o'></i></a>
-                            <!-- BTN INATIVO -->
-                        <?php endif; ?>                       
 
 
                     </div>
