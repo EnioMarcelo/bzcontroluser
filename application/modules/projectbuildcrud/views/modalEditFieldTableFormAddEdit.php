@@ -441,6 +441,7 @@
                                 <div class="input-group col-bg-12 col-md-12 col-sm-12 col-xs-12">
                                     <input class="form-control input-sm" type="text" name="form_add_edit_field_start_value" value="">
                                 </div>
+                                <span class="margin-left-0" style="font-size: 0.9em; font-weight: 100;">Para executar uma macro ou model dentro do campo digite:<p>[[ sua_macro() ]] ou [[ $this->model->sua_model() ]]</p></span>
                             </div>
 
 

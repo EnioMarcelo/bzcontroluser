@@ -2192,7 +2192,7 @@ class ProjectbuildCrud extends MY_Controller {
                                 $_param_formAddEditField['form_add_edit_field_start_value'] = base64_decode($_param_formAddEditField['form_add_edit_field_start_value']);
 
                                 if (mc_contains_in_string('[[', $_param_formAddEditField['form_add_edit_field_start_value']) && mc_contains_in_string(']]', $_param_formAddEditField['form_add_edit_field_start_value'])) {
-                                    $_param_formAddEditField['form_add_edit_field_start_value'] = '"' . str_replace(['[[', ']]'], ['".', '."'], $_param_formAddEditField['form_add_edit_field_start_value']) . '"';
+                                    $_param_formAddEditField['form_add_edit_field_start_value'] = str_replace(['[[', ']]'], ['', ''], $_param_formAddEditField['form_add_edit_field_start_value']);
                                 } else {
                                     $_param_formAddEditField['form_add_edit_field_start_value'] = '"' . $_param_formAddEditField['form_add_edit_field_start_value'] . '"';
                                 }
@@ -2333,14 +2333,16 @@ class ProjectbuildCrud extends MY_Controller {
                              */
                             if ($_param_formAddEditField['form_add_edit_field_type'] == 'email') {
 
-                                $this->_formAddEditConfigInput = '<input '
+                                $this->_formAddEditConfigInput = '<div class="input-group">'
+                                        . '<span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>'
+                                        . '<input '
                                         . 'type="text" '
                                         . 'name="' . $_row['field_name'] . '" '
                                         . 'class="form-control" '
                                         . 'placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" '
                                         . 'value="<?=set_value("' . $_row['field_name'] . '") ? : (isset($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : ' . $_param_formAddEditField['form_add_edit_field_start_value'] . ');?>" '
                                         . $this->_formAddEditConfigInputAtributos
-                                        . ' />';
+                                        . ' /></div>';
                             }
                             /**
                              * 
@@ -2586,7 +2588,15 @@ class ProjectbuildCrud extends MY_Controller {
 
                                 $this->_formAddEditConfigInputAtributos .= 'autocomplete="off"';
 
-                                $this->_formAddEditConfigInput = '<input type="password" name="' . $_row['field_name'] . '" class="form-control" placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" value="<?= set_value ("' . $_row['field_name'] . '", isset ($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : set_value ("' . $_row['field_name'] . '")); ?>" ' . $this->_formAddEditConfigInputAtributos . ' />';
+                                $this->_formAddEditConfigInput = '<div class="input-group">'
+                                        . '<span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>'
+                                        . '<input type="password" '
+                                        . 'name="' . $_row['field_name'] . '" '
+                                        . 'class="form-control" placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" '
+                                        . 'value="<?= set_value ("' . $_row['field_name'] . '", isset ($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : set_value ("' . $_row['field_name'] . '")); ?>" '
+                                        . $this->_formAddEditConfigInputAtributos
+                                        . ' />'
+                                        . '</div>';
                             }
                             /**
                              * 
