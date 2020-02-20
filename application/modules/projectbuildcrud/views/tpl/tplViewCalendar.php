@@ -1,8 +1,8 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 <!--
-/*
-  Created on : {{created-date}}, {{created-time}}
-  Author     : {{author-name}} - {{author-email}}
+/**
+  Created on : "{{created-date}}", "{{created-time}}"
+  Author     : "{{author-name}}" - "{{author-email}}"
  */
 -->
 <!-- BREADCUMBS -->
@@ -29,7 +29,7 @@
 
 
 <div class="col-md-12">
-    <div class="box box-primary">                                
+    <div class="box box-primary">
         <div class="box-body" style="padding-left:0">
             <!-- THE CALENDAR -->
             <div id="calendar"></div>
@@ -40,13 +40,13 @@
 <script type="text/javascript">
     $(function () {
 
-        /* TIME REFRESH CALENDAR */
-        var _timeRefresCalendar = {{calendar-time-refresh-screen}};
+        /** TIME REFRESH CALENDAR */
+        var _timeRefresCalendar = "{{calendar-input-id}}";
 
         if (_timeRefresCalendar > 0) {
-            
+
             _timeRefresCalendar = _timeRefresCalendar * 1000;
-            
+
             setTimeout(refreatCalendar, _timeRefresCalendar);
 
             function refreatCalendar() {
@@ -58,12 +58,12 @@
 
             }
         }
-        /* END TIME REFRESH CALENDAR */
+        /** END TIME REFRESH CALENDAR */
 
 
-        /* initialize the calendar
+        /** initialize the calendar
          -----------------------------------------------------------------*/
-        //Date for the calendar events (dummy data)
+        /** Date for the calendar events (dummy data) */
         var date = new Date();
         var d = date.getDate(),
                 m = date.getMonth(),
@@ -97,7 +97,7 @@
                     alert('ocorreu um erro ao buscar os eventos!');
                 }
             },
-            
+
             timeFormat: 'H(:mm)',
             axisFormat: 'H(:mm)',
             lang: 'pt-br',
@@ -136,7 +136,6 @@
             }
 
 
-        }
-        );
+        });
     });
 </script>

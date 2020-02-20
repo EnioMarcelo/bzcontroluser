@@ -26,9 +26,12 @@ if (mc_contains_in_string('metodo', $_parametros['code_type'])) {
         </small>
     </h1>
     <ol class="breadcrumb">
-        <li><a href="<?= site_url('dashboard'); ?>" target="_top" class="active btn-show-modal-aguarde"><i class="fa fa-dashboard"></i>Dashboard</a></li>
-        <li class=""><a href="<?= site_url($this->router->fetch_class() . '/edit/' . $_dados_projeto->id); ?>" class="btn-show-modal-aguarde"><i class="<?= $_font_icon; ?>"></i><?= $_titulo_app; ?></a></li>
-        <li class="active"><i class="glyphicon glyphicon-edit margin-right-5"></i>Editando <b><?= $_code_type; ?></b> </li>
+        <li><a href="<?= site_url('dashboard'); ?>" target="_top" class="active btn-show-modal-aguarde"><i
+                        class="fa fa-dashboard"></i>Dashboard</a></li>
+        <li class=""><a href="<?= site_url($this->router->fetch_class() . '/edit/' . $_dados_projeto->id); ?>"
+                        class="btn-show-modal-aguarde"><i class="<?= $_font_icon; ?>"></i><?= $_titulo_app; ?></a></li>
+        <li class="active"><i class="glyphicon glyphicon-edit margin-right-5"></i>Editando <b><?= $_code_type; ?></b>
+        </li>
     </ol>
 </section>
 
@@ -55,23 +58,29 @@ if (mc_contains_in_string('metodo', $_parametros['code_type'])) {
 
         <div class="row pull-right margin-right-5">
 
-            <a href="<?= site_url($this->router->fetch_class() . '/edit/' . $_dados_projeto->id . '?' . bz_app_parametros_url()); ?>" class="btn btn-sm btn-default btn-show-modal-aguarde margin-right-5">
+            <a href="<?= site_url($this->router->fetch_class() . '/edit/' . $_dados_projeto->id . '?' . bz_app_parametros_url()); ?>"
+               class="btn btn-sm btn-default btn-show-modal-aguarde margin-right-5">
                 <span class="fa fa-reply margin-right-5"></span> Voltar
             </a>
 
-            <button type="submit" id="btn-save-code-editor" class="btn btn-sm btn-primary btn-show-modal-aguarde margin-right-5" name="btn-save-code-editor" value="btn-save-code-editor">
+            <button type="submit" id="btn-save-code-editor"
+                    class="btn btn-sm btn-primary btn-show-modal-aguarde margin-right-5" name="btn-save-code-editor"
+                    value="btn-save-code-editor">
                 <span class="fa fa-save margin-right-5" aria-hidden="true"></span> Salvar
             </button>
 
             <?php if ($_parametros['code_type'] == 'metodo-php' || $_parametros['code_type'] == 'model-php'): ?>
-                <button type="button" id="btn-del-code-editor" class="btn btn-sm btn-danger margin-right-5" name="btn-del-code-editor" value="btn-del-code-editor">
+                <button type="button" id="btn-del-code-editor" class="btn btn-sm btn-danger margin-right-5"
+                        name="btn-del-code-editor" value="btn-del-code-editor">
                     <span class="fa fa-trash" aria-hidden="true"></span>
                 </button>
             <?php endif; ?>
 
             <!-- BTN SIDEBAR INPUT FILDS-->
             <?php if ($_parametros['code_type'] == 'onrecord' || $_parametros['code_type'] == 'onrecordexport'): ?>
-                <a id="j-btn-control-sidebar-fields-database" class="btn btn-sm bg-black margin-left-20 j-tooltip" data-toggle="control-sidebar" data-placement="bottom" data-toggle="tooltip" data-original-title="Campos da Tabela">
+                <a id="j-btn-control-sidebar-fields-database" class="btn btn-sm bg-black margin-left-20 j-tooltip"
+                   data-toggle="control-sidebar" data-placement="bottom" data-toggle="tooltip"
+                   data-original-title="Campos da Tabela">
                     <span class="glyphicon glyphicon-indent-left"></span>
                 </a>
             <?php endif; ?>
@@ -80,7 +89,9 @@ if (mc_contains_in_string('metodo', $_parametros['code_type'])) {
 
             <!-- BTN SIDEBAR MACRO CASE-->
             <?php if ($_parametros['code_type'] !== 'css'): ?>
-                <a id="j-btn-control-sidebar-macros" class="btn btn-sm bg-fuchsia-active margin-left-20 j-tooltip" data-toggle="control-sidebar" data-placement="bottom" data-toggle="tooltip" data-original-title="Estojo de Macros">
+                <a id="j-btn-control-sidebar-macros" class="btn btn-sm bg-fuchsia-active margin-left-20 j-tooltip"
+                   data-toggle="control-sidebar" data-placement="bottom" data-toggle="tooltip"
+                   data-original-title="Estojo de Macros">
                     <span class="fa fa-code"></span>
                 </a>
             <?php endif; ?>
@@ -88,15 +99,21 @@ if (mc_contains_in_string('metodo', $_parametros['code_type'])) {
 
             <!-- BTN GERAR APLICAÇÃO-->
             <?php $_buildApp = site_url($this->router->fetch_class() . '/build_app/' . $_dados_projeto->id . '?' . bz_app_parametros_url()); ?>
-            <a class="btn btn-sm bg-purple margin-left-20" data-toggle="modal" data-target="#modalBuildApp" data-build="<?= strtolower($_buildApp); ?>" data-width="50%" data-height="350px" data-title="Gerando Aplicação">
-                <span class="fa fa-gears j-tooltip" data-placement="bottom" data-toggle="tooltip" data-original-title="Gerar"></span>
+            <a class="btn btn-sm bg-purple margin-left-20" data-toggle="modal" data-target="#modalBuildApp"
+               data-build="<?= strtolower($_buildApp); ?>" data-width="50%" data-height="350px"
+               data-title="Gerando Aplicação">
+                <span class="fa fa-gears j-tooltip" data-placement="bottom" data-toggle="tooltip"
+                      data-original-title="Gerar"></span>
             </a>
             <!-- END BTN GERAR APLICAÇÃO-->
 
             <!-- BTN EXECUTAR APLICAÇÃO-->
             <?php $_buildApp = site_url($_dados_projeto->app_nome); ?>
-            <a id="j-btn-exec-app" class="btn btn-sm bg-maroon margin-left-20" data-toggle="modal" data-target="#modalBuildApp" data-build="<?= strtolower($_buildApp); ?>" data-width="90%" data-height="500px" data-title="Executando Aplicação">
-                <span class="fa fa-external-link-square j-tooltip" data-placement="bottom" data-toggle="tooltip" data-original-title="Executar Aplicação"></span>
+            <a id="j-btn-exec-app" class="btn btn-sm bg-maroon margin-left-20" data-toggle="modal"
+               data-target="#modalBuildApp" data-build="<?= strtolower($_buildApp); ?>" data-width="90%"
+               data-height="500px" data-title="Executando Aplicação">
+                <span class="fa fa-external-link-square j-tooltip" data-placement="bottom" data-toggle="tooltip"
+                      data-original-title="Executar Aplicação"></span>
             </a>
             <!-- END BTN EXECUTAR APLICAÇÃO-->
 
@@ -129,7 +146,12 @@ if (mc_contains_in_string('metodo', $_parametros['code_type'])) {
                 <div class="col-md-3">
                     <div class="form-group">
                         <label class="" style="">
-                            <input <?= $_parametros['code_access_ajax_only']; ?> type="checkbox" id="code_access_ajax_only" name="code_access_ajax_only" class="flat-green" style="position: absolute; opacity: 0;" kl_vkbd_parsed="true">
+                            <input <?= $_parametros['code_access_ajax_only']; ?> type="checkbox"
+                                                                                 id="code_access_ajax_only"
+                                                                                 name="code_access_ajax_only"
+                                                                                 class="flat-green"
+                                                                                 style="position: absolute; opacity: 0;"
+                                                                                 kl_vkbd_parsed="true">
                         </label>
                         <label>
                             &nbsp;Acesso somente por AJAX ?
@@ -140,7 +162,25 @@ if (mc_contains_in_string('metodo', $_parametros['code_type'])) {
             <?php endif; ?>
 
             <?php if ($_parametros['code_type'] !== 'onrecord' && $_parametros['code_type'] !== 'onrecordexport'): ?>
-                <div class="col-md-12"><b>Evento: </b> <?= $_parametros['code_screen_title']; ?></div>
+                <div class="col-md-3"><b>Evento: </b> <?= $_parametros['code_screen_title']; ?></div>
+
+                <?php if ($_parametros['code_screen_title'] == 'FORM ADD'): ?>
+                    <div class="col-md-3"
+                    <div class="form-group">
+                        <label class="" style="">
+                            <input <?= $_parametros['copy_script_js_from_form_add_to_form_edit']; ?> type="checkbox"
+                                                                                                     id="copy_script_js_from_form_add_to_form_edit"
+                                                                                                     name="copy_script_js_from_form_add_to_form_edit"
+                                                                                                     class="flat-green"
+                                                                                                     style="position: absolute; opacity: 0;"
+                                                                                                     kl_vkbd_parsed="true">
+                        </label>
+                        <label>
+                            &nbsp;Utilizar este SCRIPT JS no FORM EDIT ?
+                        </label>
+                    </div>
+                <?php endif; ?>
+
             <?php endif; ?>
 
         </div>
@@ -156,7 +196,8 @@ if (mc_contains_in_string('metodo', $_parametros['code_type'])) {
         <input type="hidden" name="code_type" value="<?= $_parametros['code_type']; ?>">
         <input type="hidden" name="btn-save-code-editor" value="btn-save-code-editor">
 
-        <textarea id="codeeditor_1"  class="col-xs-12" name="code_script" rows="30" width=="100%" autofocus /><?= (($_parametros['code_script']) ? base64_decode($_parametros['code_script']) : null); ?></textarea>
+        <textarea id="codeeditor_1" class="col-xs-12" name="code_script" rows="30" width=="100%"
+                  autofocus/><?= (($_parametros['code_script']) ? base64_decode($_parametros['code_script']) : null); ?></textarea>
 
     </div>
 
@@ -185,20 +226,20 @@ if (mc_contains_in_string('metodo', $_parametros['code_type'])) {
                 buttons: true,
                 dangerMode: true,
             })
-                    .then((willDelete) => {
-                        if (willDelete) {
+                .then((willDelete) => {
+                    if (willDelete) {
 
-                            swal.close();
+                        swal.close();
 
-                            $(this).attr('type', 'submit');
-                            $(this).click();
+                        $(this).attr('type', 'submit');
+                        $(this).click();
 
-                        } else {
+                    } else {
 
-                            swal.close();
+                        swal.close();
 
-                        }
-                    });
+                    }
+                });
 
         });
         /**
@@ -252,55 +293,55 @@ if (mc_contains_in_string('metodo', $_parametros['code_type'])) {
          * BTN OPEN SIDE MENU 
          * ############################################################################################################################################################
          */
-<?php if ($_parametros['code_type'] !== 'jquery'): ?>
+        <?php if ($_parametros['code_type'] !== 'jquery'): ?>
 
-            /* BTN OPEN SIDE MENU FIELDS DATABASE */
-            $('#j-btn-control-sidebar-fields-database').on('click', function () {
-                $('#title-sidebar-tabs').html('Campos');
+        /* BTN OPEN SIDE MENU FIELDS DATABASE */
+        $('#j-btn-control-sidebar-fields-database').on('click', function () {
+            $('#title-sidebar-tabs').html('Campos');
 
-                $('#control-sidebar-fields-table-tab').removeClass('hidden');
-                $('a[href="#control-sidebar-fields-table-tab"]').parent().removeClass('hidden');
+            $('#control-sidebar-fields-table-tab').removeClass('hidden');
+            $('a[href="#control-sidebar-fields-table-tab"]').parent().removeClass('hidden');
 
-                $('#control-sidebar-database-tab').addClass('hidden');
-                $('a[href="#control-sidebar-database-tab"]').parent().addClass('hidden');
+            $('#control-sidebar-database-tab').addClass('hidden');
+            $('a[href="#control-sidebar-database-tab"]').parent().addClass('hidden');
 
-                $('#control-sidebar-modelo-tab').addClass('hidden');
-                $('a[href="#control-sidebar-modelo-tab"]').parent().addClass('hidden');
+            $('#control-sidebar-modelo-tab').addClass('hidden');
+            $('a[href="#control-sidebar-modelo-tab"]').parent().addClass('hidden');
 
-                $('#control-sidebar-diversos-tab').addClass('hidden');
-                $('a[href="#control-sidebar-diversos-tab"]').parent().addClass('hidden');
+            $('#control-sidebar-diversos-tab').addClass('hidden');
+            $('a[href="#control-sidebar-diversos-tab"]').parent().addClass('hidden');
 
-                $('.control-sidebar').find('.active').removeClass('active');
-                $('a[href="#control-sidebar-fields-table-tab"]').parent().addClass('active');
-                $('#control-sidebar-fields-table-tab').addClass('active');
+            $('.control-sidebar').find('.active').removeClass('active');
+            $('a[href="#control-sidebar-fields-table-tab"]').parent().addClass('active');
+            $('#control-sidebar-fields-table-tab').addClass('active');
 
-            });
-            /* END BTN OPEN SIDE MENU FIELDS DATABASE */
+        });
+        /* END BTN OPEN SIDE MENU FIELDS DATABASE */
 
-            /* BTN OPEN SIDE MENU MACROS */
-            $('#j-btn-control-sidebar-macros').on('click', function () {
-                $('#title-sidebar-tabs').html('Macros');
+        /* BTN OPEN SIDE MENU MACROS */
+        $('#j-btn-control-sidebar-macros').on('click', function () {
+            $('#title-sidebar-tabs').html('Macros');
 
-                $('#control-sidebar-fields-table-tab').addClass('hidden');
-                $('a[href="#control-sidebar-fields-table-tab"]').parent().addClass('hidden');
+            $('#control-sidebar-fields-table-tab').addClass('hidden');
+            $('a[href="#control-sidebar-fields-table-tab"]').parent().addClass('hidden');
 
-                $('#control-sidebar-database-tab').removeClass('hidden');
-                $('a[href="#control-sidebar-database-tab"]').parent().removeClass('hidden');
+            $('#control-sidebar-database-tab').removeClass('hidden');
+            $('a[href="#control-sidebar-database-tab"]').parent().removeClass('hidden');
 
-                $('#control-sidebar-modelo-tab').removeClass('hidden');
-                $('a[href="#control-sidebar-modelo-tab"]').parent().removeClass('hidden');
+            $('#control-sidebar-modelo-tab').removeClass('hidden');
+            $('a[href="#control-sidebar-modelo-tab"]').parent().removeClass('hidden');
 
-                $('#control-sidebar-diversos-tab').removeClass('hidden');
-                $('a[href="#control-sidebar-diversos-tab"]').parent().removeClass('hidden');
+            $('#control-sidebar-diversos-tab').removeClass('hidden');
+            $('a[href="#control-sidebar-diversos-tab"]').parent().removeClass('hidden');
 
-                $('.control-sidebar').find('.active').removeClass('active');
-                $('a[href="#control-sidebar-database-tab"]').parent().addClass('active');
-                $('#control-sidebar-database-tab').addClass('active');
+            $('.control-sidebar').find('.active').removeClass('active');
+            $('a[href="#control-sidebar-database-tab"]').parent().addClass('active');
+            $('#control-sidebar-database-tab').addClass('active');
 
-            });
-            /* END BTN OPEN SIDE MENU MACROS */
+        });
+        /* END BTN OPEN SIDE MENU MACROS */
 
-<?php endif; ?>
+        <?php endif; ?>
         /**
          * END BTN OPEN SIDE MENU
          * ############################################################################################################################################################
@@ -308,8 +349,6 @@ if (mc_contains_in_string('metodo', $_parametros['code_type'])) {
 
 
     });//END function
-
-
 
 
 </script>

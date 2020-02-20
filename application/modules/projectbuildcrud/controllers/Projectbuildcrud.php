@@ -1,21 +1,22 @@
 <?php
 
-/*
-  Created on : 20/06/2018, 10:16:00
-  Author     : Enio Marcelo Buzaneli - eniomarcelo@gmail.com
+/**
+ * Created on : 20/06/2018, 10:16:00
+ * Author     : Enio Marcelo Buzaneli - eniomarcelo@gmail.com
  */
 
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class ProjectbuildCrud extends MY_Controller {
-    /*
+class ProjectbuildCrud extends MY_Controller
+{
+    /**
      * VARIÁVEIS DO APP BLANK
      */
 
 // CONTROLLER
     protected $_blankCode = '';
 
-    /*
+    /**
      * VARIÁVEIS DO APP
      */
     protected $_security = '';
@@ -103,53 +104,88 @@ class ProjectbuildCrud extends MY_Controller {
     protected $_formEditCodeEditorCSS = '';
     protected $_formEditCodeEditorJS = '';
 
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct();
 
-        /*
+        /**
          * TÍTULO DA APLICAÇÃO
          */
         $this->dados['_titulo_app'] = 'Projeto';
         $this->dados['_font_icon'] = 'fa fa-codepen';
 
-        /*
+        /**
          * VIEW DA APLICAÇÃO
          */
         $this->dados['_view_app_list'] = 'vProjectbuildCrud';
         $this->dados['_view_app_add'] = 'vProjectbuildCrudFormAdd';
         $this->dados['_view_app_edit'] = 'vProjectbuildCrudFormEdit';
 
-        /*
+        /**
          * TABELA QUE SERÁ USADO PELO MÓDULO DO SISTEMA
          */
         $this->table_name = 'proj_build';
     }
 
-    /* END function __construct() */
+    /** END function __construct() */
 
-    public function index() {
+    public function index()
+    {
         $this->session->set_flashdata('btn_voltar_link', site_url($this->router->fetch_class()) . '?' . bz_app_parametros_url());
-        /*
+
+        /**
          * CARREGA OS REGISTROS COM PAGINAÇÃO
          */
         $this->dados['_result'] = $this->get_paginacao();
 
-        /*
+        /**
          * TEMPLATE QUE SERÁ USADO PELO MÓDULO DO SISTEMA
          */
         $this->dados['_conteudo_masterPageIframe'] = $this->router->fetch_class() . '/' . $this->dados['_view_app_list'];
         $this->load->view('vMasterPageIframe', $this->dados);
     }
 
-    /* END function index() */
+    /** END function index() */
 
-    /*
+    /**
+     * CARREGA REGISTROS COM PAGINAÇÃO
+     */
+
+    private function get_paginacao()
+    {
+
+        $_filter = $this->input->get();
+        unset($_filter['pg']);
+        unset($_filter['search']);
+
+        /**
+         * DADOS PARA PAGINAÇÃO
+         */
+        $_dados_pag['table'] = $this->table_name;
+        if ($this->input->get('search', true)) {
+            $_dados_pag['search'] = array('_concat_fields' => 'tabela, app_nome, app_titulo', '_string' => $this->input->get('search', true));
+        }
+
+        $_dados_pag['filter'] = $_filter;
+        $_dados_pag['order_by'] = 'tabela';
+        $_dados_pag['programa'] = $this->router->fetch_class();
+        $_dados_pag['per_page'] = '10';
+
+        $_result_pag = bz_paginacao($_dados_pag);
+
+        return $_result_pag;
+    }
+
+    /** END function gridlist_save() */
+
+    /**
      * FUNÇÃO EDIT FIELDS GRID LIST
      */
 
-    public function setup_gridlist() {
+    public function setup_gridlist()
+    {
 
-        /*
+        /**
          * CERTIFICA SE O ACESSO A ESTA FUNCTION REALMENTE ESTÁ SENDO FEITO POR AJAX.
          */
         bz_check_is_ajax_request();
@@ -196,15 +232,16 @@ class ProjectbuildCrud extends MY_Controller {
         } //END $_POST
     }
 
-    /* END function gridlist_save() */
+    /** END function setup_formaddedit() */
 
-    /*
+    /**
      * FUNÇÃO EDIT FIELDS FORM ADD/EDIT
      */
 
-    public function setup_formaddedit() {
+    public function setup_formaddedit()
+    {
 
-        /*
+        /**
          * CERTIFICA SE O ACESSO A ESTA FUNCTION REALMENTE ESTÁ SENDO FEITO POR AJAX.
          */
         bz_check_is_ajax_request();
@@ -229,13 +266,13 @@ class ProjectbuildCrud extends MY_Controller {
                 $_dados['form_add_edit_field_mask_complement'] = base64_encode($_dados['form_add_edit_field_mask_complement']);
                 $_dados['form_add_edit_field_start_value'] = base64_encode($_dados['form_add_edit_field_start_value']);
 
-                /*
+                /**
                  * REGRAS DE VALIDAÇÃO DO BOTÃO "OCULTO/HIDDEN" DO FORM ADD/EDIT DAS CONFIGURAÇÕES DOS INPUTS DO FORM.
                  */
                 if (!empty($_dados['form_add_edit_field_hidden'])) {
                     if ($_dados['form_add_edit_field_hidden'] == 'on') {
 
-                        /* SE O BOTÃO OCULTO ESTIVER ON E A OPÇÃO ESTIVER EM TODOS, DESATIVA O BOTÃO SOMENTE LEITURA E O BOTÃO OBRIGATÓRIO. */
+                        /** SE O BOTÃO OCULTO ESTIVER ON E A OPÇÃO ESTIVER EM TODOS, DESATIVA O BOTÃO SOMENTE LEITURA E O BOTÃO OBRIGATÓRIO. */
                         if ($_dados['form_add_edit_field_hidden_in_form'] == 'todos') {
                             $_dados['form_add_edit_field_read_only'] = '';
                             $_dados['form_add_edit_field_read_only_in_form'] = 'todos';
@@ -243,7 +280,7 @@ class ProjectbuildCrud extends MY_Controller {
                             $_dados['form_add_edit_field_required_in_form'] = 'todos';
                         } elseif ($_dados['form_add_edit_field_hidden_in_form'] == 'formadd') {
 
-                            /*
+                            /**
                              * E O BOTÃO OCULTO ESTIVER ON E A OPÇÃO ESTIVER EM SOMENT FORM ADD, DESATIVA O BOTÃO OBRIGATÓRIO E PERMITE SOMENTE A OPÇÃO
                              * FORM EDIT DO BOTÃO SOMENTE LEITURA.
                              */
@@ -260,7 +297,7 @@ class ProjectbuildCrud extends MY_Controller {
                             }
                         } elseif ($_dados['form_add_edit_field_hidden_in_form'] == 'formedit') {
 
-                            /*
+                            /**
                              * SE O BOTÃO OCULTO ESTIVER ON E A OPÇÃO ESTIVER EM SOMENT FORM EDIT, DESATIVA O BOTÃO OBRIGATÓRIO E PERMITE SOMENTE A OPÇÃO
                              * SOMETE FORM ADD DO BOTÃO SOMENTE LEITURA.
                              */
@@ -277,21 +314,21 @@ class ProjectbuildCrud extends MY_Controller {
                         }
                     }
                 }
-                /* END REGRAS DE VALIDAÇÃO DO BOTÃO "OCULTO/HIDDEN" DO FORM ADD/EDIT DAS CONFIGURAÇÕES DOS INPUTS DO FORM */
+                /** END REGRAS DE VALIDAÇÃO DO BOTÃO "OCULTO/HIDDEN" DO FORM ADD/EDIT DAS CONFIGURAÇÕES DOS INPUTS DO FORM */
 
-                /*
+                /**
                  * REGRAS DE VALIDAÇÃO DO BOTÃO "SOMENTE LEITURA/READ ONLY" DO FORM ADD/EDIT DAS CONFIGURAÇÕES DOS INPUTS DO FORM
                  */
                 if (!empty($_dados['form_add_edit_field_read_only'])) {
                     if ($_dados['form_add_edit_field_read_only'] == 'on') {
 
-                        /* SE O BOTÃO SOMENTE ESTIVER ON E A OPÇÃO ESTIVER EM TODOS, DESATIVA O BOTÃO OBRIGATÓRIO. */
+                        /** SE O BOTÃO SOMENTE ESTIVER ON E A OPÇÃO ESTIVER EM TODOS, DESATIVA O BOTÃO OBRIGATÓRIO. */
                         if ($_dados['form_add_edit_field_read_only_in_form'] == 'todos') {
                             $_dados['form_add_edit_field_required'] = '';
                             $_dados['form_add_edit_field_required_in_form'] = 'todos';
                         } elseif ($_dados['form_add_edit_field_read_only_in_form'] == 'formadd') {
 
-                            /*
+                            /**
                              * SE O BOTÃO SOMENTE LEITURA ESTIVER ON E A OPÇÃO ESTIVER EM SOMENT FORM ADD, PERMITE SOMENTE A OPÇÃO
                              * FORM EDIT DO BOTÃO OBRIGATORIO.
                              */
@@ -305,7 +342,7 @@ class ProjectbuildCrud extends MY_Controller {
                             }
                         } elseif ($_dados['form_add_edit_field_read_only_in_form'] == 'formedit') {
 
-                            /*
+                            /**
                              * SE O BOTÃO SOMENTE LEITURA ESTIVER ON E A OPÇÃO ESTIVER EM SOMENT FORM EDIT, PERMITE SOMENTE A OPÇÃO
                              * FORM ADD DO BOTÃO OBRIGATORIO.
                              */
@@ -320,15 +357,15 @@ class ProjectbuildCrud extends MY_Controller {
                         }
                     }
                 }
-                /* END REGRAS DE VALIDAÇÃO DO BOTÃO "SOMENTE LEITURA/READ ONLY" DO FORM ADD/EDIT DAS CONFIGURAÇÕES DOS INPUTS DO FORM */
+                /** END REGRAS DE VALIDAÇÃO DO BOTÃO "SOMENTE LEITURA/READ ONLY" DO FORM ADD/EDIT DAS CONFIGURAÇÕES DOS INPUTS DO FORM */
 
-                /*
+                /**
                  * REGRAS DE VALIDAÇÃO DO BOTÃO "OBRIGATÓRIO/REQUIRED" DO FORM ADD/EDIT DAS CONFIGURAÇÕES DOS INPUTS DO FORM
                  */
                 if (!empty($_dados['form_add_edit_field_hidden'])) {
                     if ($_dados['form_add_edit_field_hidden'] == 'on') {
 
-                        /*
+                        /**
                          * SE O BOTÃO OCULTO ESTIVER NA OPÇÃO SOMENTE FORM ADD E O BOTÃO OBRIGATÓRIO ESTIVER NA OPÇÃO SOMENTE FORM ADD,
                          * ENTÃO DELIGUE O BOTÃO OBRIGATÓRIO.
                          */
@@ -342,7 +379,7 @@ class ProjectbuildCrud extends MY_Controller {
                                 }
                             }
 
-                            /*
+                            /**
                              * SE O BOTÃO OCULTO ESTIVER NA OPÇÃO SOMENTE FORM EDIT E O BOTÃO OBRIGATÓRIO ESTIVER NA OPÇÃO SOMENTE FORM EDIT,
                              * ENTÃO DELIGUE O BOTÃO OBRIGATÓRIO.
                              */
@@ -359,15 +396,15 @@ class ProjectbuildCrud extends MY_Controller {
                     }
                 }
 
-                /* END REGRAS DE VALIDAÇÃO DO BOTÃO "OBRIGATÓRIO/REQUIRED" DO FORM ADD/EDIT DAS CONFIGURAÇÕES DOS INPUTS DO FORM */
+                /** END REGRAS DE VALIDAÇÃO DO BOTÃO "OBRIGATÓRIO/REQUIRED" DO FORM ADD/EDIT DAS CONFIGURAÇÕES DOS INPUTS DO FORM */
 
-                /* if (empty($_dados['form_add_edit_field_hidden'])){
-                  $_dados['form_add_edit_field_hidden_in_form'] = '';
-                  }
-
-                  if (empty($_dados['form_add_edit_field_read_only']) || !empty($_dados['form_add_edit_field_hidden'])){
-                  $_dados['form_add_edit_field_read_only_in_form'] = '';
-                  } */
+                /** if (empty($_dados['form_add_edit_field_hidden'])){
+                 * $_dados['form_add_edit_field_hidden_in_form'] = '';
+                 * }
+                 *
+                 * if (empty($_dados['form_add_edit_field_read_only']) || !empty($_dados['form_add_edit_field_hidden'])){
+                 * $_dados['form_add_edit_field_read_only_in_form'] = '';
+                 * } */
 
                 $_where = 'WHERE proj_build_id = ' . $this->input->post('modal_projeto_id') . ' AND field_name = "' . $this->input->post('field_name') . '" AND screen_type = "' . $_screen_type . '"';
                 if ($this->update->exec('proj_build_fields', array('param_formaddedit' => json_encode($_dados, JSON_UNESCAPED_UNICODE)), $_where)) {
@@ -417,14 +454,15 @@ class ProjectbuildCrud extends MY_Controller {
         } //END $_POST
     }
 
-    /* END function setup_formaddedit() */
+    /** END FUNÇÃO CADASTRO DE CAMPO DA GRIDLIST */
 
     /**
      * FUNÇÃO CADASTRO DE CAMPO DA GRIDLIST
      */
-    public function addFieldGridList() {
+    public function addFieldGridList()
+    {
 
-        /*
+        /**
          * CERTIFICA SE O ACESSO A ESTA FUNCTION REALMENTE ESTÁ SENDO FEITO POR AJAX.
          */
         bz_check_is_ajax_request();
@@ -498,15 +536,16 @@ class ProjectbuildCrud extends MY_Controller {
         }
     }
 
-    /* END FUNÇÃO CADASTRO DE CAMPO DA GRIDLIST */
+    /** END public function add() */
 
-    /*
+    /**
      * FUNÇÃO CADASTRO
      */
 
-    public function add() {
+    public function add()
+    {
 
-        /*
+        /**
          * ADD OS DADOS DO APLICATIVO
          */
         if ($this->input->post()) {
@@ -541,12 +580,12 @@ class ProjectbuildCrud extends MY_Controller {
 
                     if ($_dados['type_project'] == 'crud') {
 
-                        /*
+                        /**
                          * GRAVA CAMPOS DA TABELA DA GRIDLIST
                          */
                         $this->save_fields_project($_dados['tabela'], $result['last_id_add'], 'gridlist');
 
-                        /*
+                        /**
                          * GRAVA CAMPOS DA TABELA DO FORM ADD/EDIT
                          */
                         $this->save_fields_project(str_replace('vw_', '', $_dados['tabela']), $result['last_id_add'], 'formaddedit');
@@ -567,7 +606,7 @@ class ProjectbuildCrud extends MY_Controller {
                         /**/
                     }
 
-                    /* GRAVA AUDITORIA */
+                    /** GRAVA AUDITORIA */
                     $dados_auditoria['creator'] = 'user';
                     $dados_auditoria['action'] = 'add';
                     $dados_auditoria['description'] = ___MSG_AUDITORIA_ADD_SUCCESS___;
@@ -587,7 +626,7 @@ class ProjectbuildCrud extends MY_Controller {
 
                     if ($result_create_sec_aplicativos) {
 
-                        /* GRAVA AUDITORIA */
+                        /** GRAVA AUDITORIA */
                         $dados_auditoria['creator'] = 'user';
                         $dados_auditoria['action'] = 'add';
                         $dados_auditoria['description'] = ___MSG_AUDITORIA_ADD_SUCCESS___;
@@ -608,22 +647,110 @@ class ProjectbuildCrud extends MY_Controller {
 
         $this->dados['_tabelas'] = get_tables_system();
 
-        /*
+        /**
          * TEMPLATE QUE SERÁ USADO PELO MÓDULO DO SISTEMA
          */
         $this->dados['_conteudo_masterPageIframe'] = $this->dados['_view_app_add'];
         $this->load->view('vMasterPageIframe', $this->dados);
     }
 
-    /* END public function add() */
+//END public function edit()
 
-    /*
+    /**
+     * GRAVA CAMPOS DA TABELA DO PROJETO
+     */
+
+    private function save_fields_project($_tabela, $_proj_build_id, $_screen_type)
+    {
+
+        /**
+         * OBTEM TODOS OS CAMPOS DE UMA TABELA DE DADOS
+         */
+        $_fields = $this->db->field_data($_tabela);
+
+        /**
+         * VERIFICA SE A CAMPO DA TABELA ESTÁ CADASTRADO NA GRIDLIST E FORMADDEDIT
+         */
+        foreach ($_fields as $_field) {
+
+            $_dadosTable = [];
+
+            if (!$this->read->exec('proj_build_fields', 'WHERE proj_build_id = ' . $_proj_build_id . ' AND field_name = "' . $_field->name . '" AND screen_type = "' . $_screen_type . '"')->result()) {
+
+                $_dadosTable['proj_build_id'] = $_proj_build_id;
+                $_dadosTable['field_name'] = $_field->name;
+                $_dadosTable['field_type'] = $_field->type;
+                $_dadosTable['field_length'] = $_field->max_length;
+                $_dadosTable['screen_type'] = $_screen_type;
+                $_dadosTable['order_field_gridlist'] = 999;
+                $_dadosTable['order_field_form'] = 999;
+
+                if ($this->_primary_key_field) {
+                    if ($this->_primary_key_field == $_field->name) {
+                        $_dadosTable['primary_key'] = 1;
+                    }
+                } else {
+                    $_dadosTable['primary_key'] = $_field->primary_key;
+                }
+
+                /**
+                 * TIPOS DE CAMPOS DA GRIDLIST E DO FORM
+                 */
+                $_input_type = 'text';
+
+                if ($_dadosTable['field_type'] == "int") {
+                    $_input_type = 'number';
+                } elseif ($_dadosTable['field_type'] == "longtext") {
+                    $_input_type = 'text-long';
+                } elseif ($_dadosTable['field_type'] == "date") {
+                    $_input_type = 'date';
+                } elseif ($_dadosTable['field_type'] == "time") {
+                    $_input_type = 'time';
+                } elseif ($_dadosTable['field_type'] == "datetime") {
+                    $_input_type = 'datetime';
+                }
+                /** END TIPOS DE CAMPOS DA GRIDLIST E DO FORM */
+
+                /**
+                 * PARÂMETROS DO CAMPO
+                 */
+                if ($_screen_type == 'gridlist') {
+                    $_dadosTable['param_gridlist'] = '{"grid_list_show":"on", "grid_list_search":"on", "grid_list_export":"on", "grid_list_field_input_type":"' . $_input_type . '", "grid_list_label":"' . $_dadosTable['field_name'] . '", "grid_list_aligne_label":"text-left", "grid_list_field_length":"", "grid_list_field_aligne":"text-left","form_add_edit_field_start_value":""}';
+                } elseif ($_screen_type == 'formaddedit') {
+                    $_dadosTable['param_formaddedit'] = '{"form_add_edit_field_show":"on", "form_add_edit_field_type":"' . $_input_type . '", "form_add_edit_field_label":"' . $_dadosTable['field_name'] . '", "form_add_edit_field_placeholder":"", "form_add_edit_field_max_length":"' . (($_dadosTable['field_length'] > 0) ? $_dadosTable['field_length'] : '') . '","form_add_edit_field_start_value":""}';
+                }
+                /** END PARÂMETROS DO CAMPO */
+
+                $this->create->exec('proj_build_fields', $_dadosTable);
+            }
+        }
+
+        /**
+         * VERIFICA SE ALGUM CAMPO DA TABELA FOI DELETADO, CASO SIM, DELETE TAMBÉM O CAMPO DA GRIDLIST E FORMADDEDIT
+         */
+        $_fieldsDeleteTable = $this->read->exec('proj_build_fields', 'WHERE proj_build_id = ' . $_proj_build_id)->result();
+        foreach ($_fieldsDeleteTable as $_fieldDelete) {
+            if (!mc_filter_like_array((array)$_fields, $_fieldDelete->field_name)) {
+                mc_deleteDataDB(
+                    'proj_build_fields'
+                    , 'WHERE id = ' . $_fieldDelete->id
+                );
+            }
+        }
+        /** END */
+
+
+    }
+    /** END public function save_fields_project() */
+
+    /**
      * FUNÇÃO EDIÇÃO
      */
 
-    public function edit($_id) {
+    public function edit($_id)
+    {
 
-        /* GRAVA OS DADOS DA EDIÇÃO DO REGISTRO */
+        /** GRAVA OS DADOS DA EDIÇÃO DO REGISTRO */
         if ($this->input->post()) {
 
             if ($this->input->post('btn-editar') == 'btn-editar') {
@@ -667,7 +794,7 @@ class ProjectbuildCrud extends MY_Controller {
 
                     $_dados['calendar_inputs'] = json_encode($_calendarInputs);
 
-                    /* END PREPARA OS DADOS DOS CAMPOS DO CALENDÁRIO PARA GRAVAR */
+                    /** END PREPARA OS DADOS DOS CAMPOS DO CALENDÁRIO PARA GRAVAR */
 
                     $_dados['code_script'] = $this->input->post('code_script', false);
 
@@ -698,9 +825,9 @@ class ProjectbuildCrud extends MY_Controller {
 
                             /**/
                         }
-                        /* END GRAVA CODEEDITOR APP BLANK */
+                        /** END GRAVA CODEEDITOR APP BLANK */
 
-                        /* GRAVA AUDITORIA */
+                        /** GRAVA AUDITORIA */
                         $dados_auditoria['creator'] = 'user';
                         $dados_auditoria['action'] = 'edit';
                         $dados_auditoria['description'] = ___MSG_AUDITORIA_UPDATE_SUCCESS___;
@@ -720,7 +847,7 @@ class ProjectbuildCrud extends MY_Controller {
                             $this->db->update('proj_build_fields');
                         }
 
-                        /* GRAVA AUDITORIA */
+                        /** GRAVA AUDITORIA */
                         $dados_auditoria['creator'] = 'user';
                         $dados_auditoria['action'] = 'edit';
                         $dados_auditoria['description'] = ___MSG_AUDITORIA_UPDATE_SUCCESS___;
@@ -729,7 +856,7 @@ class ProjectbuildCrud extends MY_Controller {
 
                         $this->form_validation->clear_field_data();
                     } else {
-                        /* GRAVA AUDITORIA */
+                        /** GRAVA AUDITORIA */
                         $dados_auditoria['creator'] = 'system';
                         $dados_auditoria['action'] = 'error edit';
                         $dados_auditoria['description'] = ___MSG_AUDITORIA_UPDATE_ERROR___;
@@ -742,10 +869,10 @@ class ProjectbuildCrud extends MY_Controller {
             }
         }
 
-        /* GET DADOS PARA EDIÇÃO DOS REGISTROS */
+        /** GET DADOS PARA EDIÇÃO DOS REGISTROS */
         if ($_id) {
 
-            /*
+            /**
              * BUSCA OS DADOS
              */
             $_where = 'WHERE id = "' . $_id . '" LIMIT 1';
@@ -770,25 +897,25 @@ class ProjectbuildCrud extends MY_Controller {
                     $_resultCodeEditorBlank = $this->read->exec('proj_build_codeeditor', $_whereCodeEditorBlank);
                     $this->dados['dados']->_codeEditorBlank = $_resultCodeEditorBlank->row();
                 }
-                /* END GET DADOS CODE EDITOR APP BLANK */
+                /** END GET DADOS CODE EDITOR APP BLANK */
 
                 if ($this->dados['dados']->type_project == 'crud') {
-                    /*
+                    /**
                      * GRAVA CAMPOS DA GRID LIST
                      */
                     $this->save_fields_project($this->dados['dados']->tabela, $this->dados['dados']->id, 'gridlist');
 
-                    /*
+                    /**
                      * GRAVA CAMPOS DO FORM ADD/EDIT
                      */
                     $this->save_fields_project(str_replace('vw_', '', $this->dados['dados']->tabela), $this->dados['dados']->id, 'formaddedit');
 
-                    /*
+                    /**
                      * CARREGA OS CAMPOS DA GRID LIST
                      */
                     $this->dados['_fields_table_gridlist']['_result'] = $this->read->exec('proj_build_fields', 'WHERE proj_build_id = ' . $_id . ' AND screen_type = "gridlist" ORDER BY order_field_gridlist')->result_array();
 
-                    /*
+                    /**
                      * CARREGA OS CAMPOS DO FORM ADD/EDIT
                      */
                     $this->dados['_fields_table_formAddEdit']['_result'] = $this->read->exec('proj_build_fields', 'WHERE proj_build_id = ' . $_id . ' AND screen_type = "formaddedit" ORDER BY order_field_form')->result_array();
@@ -830,10 +957,10 @@ class ProjectbuildCrud extends MY_Controller {
                     }
                 }
 
-                /* GET METODOS PHP */
+                /** GET METODOS PHP */
                 $this->dados["_metodos_php"] = $this->db->get_where('proj_build_codeeditor', array('code_type' => 'metodo-php', 'proj_build_id' => $_id))->result_array();
 
-                /* GET MODELS PHP */
+                /** GET MODELS PHP */
                 $this->dados["_models_php"] = $this->db->get_where('proj_build_codeeditor', array('code_type' => 'model-php', 'proj_build_id' => $_id))->result_array();
             } else {
 
@@ -844,22 +971,23 @@ class ProjectbuildCrud extends MY_Controller {
             redirect($this->_redirect_parametros_url);
         }
 
-        /*
+        /**
          * TEMPLATE QUE SERÁ USADO PELO MÓDULO DO SISTEMA
          */
         $this->dados['_conteudo_masterPageIframe'] = $this->dados['_view_app_edit'];
         $this->load->view('vMasterPageIframe', $this->dados);
     }
 
-//END public function edit()
+//END public function reorder_linegridlist()
 
-    /*
+    /**
      * FUNÇÃO DELETAR
      */
 
-    public function del() {
+    public function del()
+    {
 
-        /*
+        /**
          * CERTIFICA SE O ACESSO A ESTA FUNCTION REALMENTE ESTÁ SENDO FEITO POR AJAX.
          */
         bz_check_is_ajax_request();
@@ -874,19 +1002,19 @@ class ProjectbuildCrud extends MY_Controller {
 
             foreach ($_dados as $_rowdel) {
 
-                /*
+                /**
                  * GET NOME DO APP
                  */
                 $this->db->where('id', $_rowdel);
                 $this->_app_nome = $this->db->get($this->table_name)->row()->app_nome;
                 $this->_directory = FCPATH . 'application/modules/';
 
-                /*
+                /**
                  * RENAME FOLDER APP PARA DELETAR
                  */
                 bz_renamedir($this->_directory, strtolower($this->_app_nome));
 
-                /*
+                /**
                  * DELETA OS REGISTROS
                  */
                 $this->db->where('id', $_rowdel);
@@ -901,7 +1029,7 @@ class ProjectbuildCrud extends MY_Controller {
                         $dados_auditoria['description'] = ___MSG_AUDITORIA_DEL_SUCCESS___;
                     }
 
-                    /* GRAVA AUDITORIA */
+                    /** GRAVA AUDITORIA */
                     $dados_auditoria['creator'] = 'user';
                     $dados_auditoria['action'] = 'del';
                     $dados_auditoria['last_query'] = $this->db->last_query();
@@ -914,7 +1042,7 @@ class ProjectbuildCrud extends MY_Controller {
                     $this->db->delete('sec_aplicativos');
 
                     if ($this->db->affected_rows()) {
-                        /* GRAVA AUDITORIA */
+                        /** GRAVA AUDITORIA */
                         $dados_auditoria['creator'] = 'user';
                         $dados_auditoria['action'] = 'del';
                         $dados_auditoria['last_query'] = $this->db->last_query();
@@ -931,14 +1059,15 @@ class ProjectbuildCrud extends MY_Controller {
         exit;
     }
 
-//END public function del()
+//END public function switch_search_field_on_off()
 
-    /*
+    /**
      * REORDER LINE TABLE GRID LIST
      */
-    public function reorder_linegridlist() {
+    public function reorder_linegridlist()
+    {
 
-        /*
+        /**
          * CERTIFICA SE O ACESSO A ESTA FUNCTION REALMENTE ESTÁ SENDO FEITO POR AJAX.
          */
         bz_check_is_ajax_request();
@@ -995,13 +1124,14 @@ class ProjectbuildCrud extends MY_Controller {
         exit;
     }
 
-//END public function reorder_linegridlist()
+//END public function switch_export_field_on_off()
 
-    /*
+    /**
      * MARCA O FIELD PARA PESQUISA NA GRID LIST
      */
-    public function switch_search_field_on_off() {
-        /*
+    public function switch_search_field_on_off()
+    {
+        /**
          * CERTIFICA SE O ACESSO A ESTA FUNCTION REALMENTE ESTÁ SENDO FEITO POR AJAX.
          */
         bz_check_is_ajax_request();
@@ -1010,7 +1140,7 @@ class ProjectbuildCrud extends MY_Controller {
 
             $_response['post'] = $this->input->post();
 
-            /* GET DADOS FIELDS */
+            /** GET DADOS FIELDS */
             $_r = $this->db->get_where('proj_build_fields', array('proj_build_id' => $this->input->post('project_id'), 'field_name' => $this->input->post('field_name'), 'screen_type' => $this->input->post('screen_type')))->row();
             $_r_param_gridlist = $_r->param_gridlist;
             $_r_param_formaddedit = $_r->param_formaddedit;
@@ -1027,17 +1157,17 @@ class ProjectbuildCrud extends MY_Controller {
 //                    $_grid_list_show = $_dados['grid_list_show'];
                     $_dados = json_encode($_dados, JSON_UNESCAPED_UNICODE);
 
-                    /* if ($_grid_list_show == 'off') {
-                      $_response['message'] = 'SAVE-SWITCH-OK';
-                      echo json_encode($_response);
-                      exit;
-                      } */
+                    /** if ($_grid_list_show == 'off') {
+                     * $_response['message'] = 'SAVE-SWITCH-OK';
+                     * echo json_encode($_response);
+                     * exit;
+                     * } */
 
-                    /* $this->db->set('param_gridlist', $_dados);
-                      $this->db->where('proj_build_id', $this->input->post('project_id'));
-                      $this->db->where('field_name', $this->input->post('field_name'));
-                      $this->db->where('screen_type', $this->input->post('screen_type'));
-                      $_response['update'] = $this->db->update('proj_build_fields'); */
+                    /** $this->db->set('param_gridlist', $_dados);
+                     * $this->db->where('proj_build_id', $this->input->post('project_id'));
+                     * $this->db->where('field_name', $this->input->post('field_name'));
+                     * $this->db->where('screen_type', $this->input->post('screen_type'));
+                     * $_response['update'] = $this->db->update('proj_build_fields'); */
 
 
                     $_where = "WHERE proj_build_id = " . $this->input->post('project_id') . " AND field_name = '" . $this->input->post('field_name') . "' AND screen_type = '" . $this->input->post('screen_type') . "'";
@@ -1054,13 +1184,14 @@ class ProjectbuildCrud extends MY_Controller {
         exit;
     }
 
-//END public function switch_search_field_on_off()
+//END public function switch_show_field_on_off()
 
-    /*
+    /**
      * MARCA O FIELD PARA EXPORTAR
      */
-    public function switch_export_field_on_off() {
-        /*
+    public function switch_export_field_on_off()
+    {
+        /**
          * CERTIFICA SE O ACESSO A ESTA FUNCTION REALMENTE ESTÁ SENDO FEITO POR AJAX.
          */
         bz_check_is_ajax_request();
@@ -1069,7 +1200,7 @@ class ProjectbuildCrud extends MY_Controller {
 
             $_response['post'] = $this->input->post();
 
-            /* GET DADOS FIELDS */
+            /** GET DADOS FIELDS */
             $_r = $this->db->get_where('proj_build_fields', array('proj_build_id' => $this->input->post('project_id'), 'field_name' => $this->input->post('field_name'), 'screen_type' => $this->input->post('screen_type')))->row();
             $_r_param_gridlist = $_r->param_gridlist;
             $_r_param_formaddedit = $_r->param_formaddedit;
@@ -1086,11 +1217,11 @@ class ProjectbuildCrud extends MY_Controller {
 //                    $_grid_list_show = $_dados['grid_list_show'];
                     $_dados = json_encode($_dados, JSON_UNESCAPED_UNICODE);
 
-                    /* if ($_grid_list_show == 'off') {
-                      $_response['message'] = 'SAVE-SWITCH-OK';
-                      echo json_e ncode($_response);
-                      exit;
-                      } */
+                    /** if ($_grid_list_show == 'off') {
+                     * $_response['message'] = 'SAVE-SWITCH-OK';
+                     * echo json_e ncode($_response);
+                     * exit;
+                     * } */
 
 //                    $this->db->set('param_gridlist', $_dados);
 //                    $this->db->where('proj_build_id', $this->input->post('project_id'));
@@ -1111,14 +1242,15 @@ class ProjectbuildCrud extends MY_Controller {
         exit;
     }
 
-//END public function switch_export_field_on_off()
+//END private function get_paginacao()
 
-    /*
+    /**
      * MARCA O FIELD PARA MOSTRAR OU NÃO NA GRID LIST E/OU FORM ADD/EDIT
      */
-    public function switch_show_field_on_off() {
+    public function switch_show_field_on_off()
+    {
 
-        /*
+        /**
          * CERTIFICA SE O ACESSO A ESTA FUNCTION REALMENTE ESTÁ SENDO FEITO POR AJAX.
          */
         bz_check_is_ajax_request();
@@ -1127,7 +1259,7 @@ class ProjectbuildCrud extends MY_Controller {
 
             $_response['post'] = $this->input->post();
 
-            /* GET DADOS FIELDS */
+            /** GET DADOS FIELDS */
             $_r = $this->db->get_where('proj_build_fields', array('proj_build_id' => $this->input->post('project_id'), 'field_name' => $this->input->post('field_name'), 'screen_type' => $this->input->post('screen_type')))->row();
             $_r_param_gridlist = $_r->param_gridlist;
             $_r_param_formaddedit = $_r->param_formaddedit;
@@ -1188,122 +1320,31 @@ class ProjectbuildCrud extends MY_Controller {
         exit;
     }
 
-//END public function switch_show_field_on_off()
+//END public function icons()
 
-    /*
-     * CARREGA REGISTROS COM PAGINAÇÃO
-     */
-
-    private function get_paginacao() {
-
-        $_filter = $this->input->get();
-        unset($_filter['pg']);
-        unset($_filter['search']);
-
-        /*
-         * DADOS PARA PAGINAÇÃO
-         */
-        $_dados_pag['table'] = $this->table_name;
-        if ($this->input->get('search', true)) {
-            $_dados_pag['search'] = array('_concat_fields' => 'tabela, app_nome, app_titulo', '_string' => $this->input->get('search', true));
-        }
-
-        $_dados_pag['filter'] = $_filter;
-        $_dados_pag['order_by'] = 'tabela';
-        $_dados_pag['programa'] = $this->router->fetch_class();
-        $_dados_pag['per_page'] = '10';
-
-        $_result_pag = bz_paginacao($_dados_pag);
-
-        return $_result_pag;
-    }
-
-//END private function get_paginacao()
-
-    /*
+    /**
      * ICONES
      */
 
-    public function icons() {
-        /*
+    public function icons()
+    {
+        /**
          * TEMPLATE QUE SERÁ USADO PELO MÓDULO DO SISTEMA
          */
         $this->dados['_conteudo_masterPageIframe'] = $this->router->fetch_class() . '/vIcons';
         $this->load->view('vMasterPageIframe', $this->dados);
     }
 
-//END public function icons()
-
-    /*
-     * GRAVA CAMPOS DA TABELA DO PROJETO
-     */
-
-    private function save_fields_project($_tabela, $_proj_build_id, $_screen_type) {
-
-        $_fields = $this->db->field_data($_tabela);
-
-        foreach ($_fields as $_field) {
-
-            $_dadosTable = array();
-
-            if (!$this->read->exec('proj_build_fields', 'WHERE proj_build_id = ' . $_proj_build_id . ' AND field_name = "' . $_field->name . '" AND screen_type = "' . $_screen_type . '"')->result()) {
-
-                $_dadosTable['proj_build_id'] = $_proj_build_id;
-                $_dadosTable['field_name'] = $_field->name;
-                $_dadosTable['field_type'] = $_field->type;
-                $_dadosTable['field_length'] = $_field->max_length;
-                $_dadosTable['screen_type'] = $_screen_type;
-
-                if ($this->_primary_key_field) {
-                    if ($this->_primary_key_field == $_field->name) {
-                        $_dadosTable['primary_key'] = 1;
-                    }
-                } else {
-                    $_dadosTable['primary_key'] = $_field->primary_key;
-                }
-
-                /**
-                 * TIPOS DE CAMPOS DA GRIDLIST E DO FORM
-                 */
-                $_input_type = 'text';
-
-                if ($_dadosTable['field_type'] == "int") {
-                    $_input_type = 'number';
-                } elseif ($_dadosTable['field_type'] == "longtext") {
-                    $_input_type = 'text-long';
-                } elseif ($_dadosTable['field_type'] == "date") {
-                    $_input_type = 'date';
-                } elseif ($_dadosTable['field_type'] == "time") {
-                    $_input_type = 'time';
-                } elseif ($_dadosTable['field_type'] == "datetime") {
-                    $_input_type = 'datetime';
-                }
-                /* END TIPOS DE CAMPOS DA GRIDLIST E DO FORM */
-
-                /*
-                 * PARÂMETROS DO CAMPO
-                 */
-                if ($_screen_type == 'gridlist') {
-                    $_dadosTable['param_gridlist'] = '{"grid_list_show":"on", "grid_list_search":"on", "grid_list_export":"on", "grid_list_field_input_type":"' . $_input_type . '", "grid_list_label":"' . $_dadosTable['field_name'] . '", "grid_list_aligne_label":"text-left", "grid_list_field_length":"", "grid_list_field_aligne":"text-left","form_add_edit_field_start_value":""}';
-                } elseif ($_screen_type == 'formaddedit') {
-                    $_dadosTable['param_formaddedit'] = '{"form_add_edit_field_show":"on", "form_add_edit_field_type":"' . $_input_type . '", "form_add_edit_field_label":"' . $_dadosTable['field_name'] . '", "form_add_edit_field_placeholder":"", "form_add_edit_field_max_length":"' . (($_dadosTable['field_length'] > 0) ? $_dadosTable['field_length'] : '') . '","form_add_edit_field_start_value":""}';
-                }
-                /* END PARÂMETROS DO CAMPO */
-
-                $this->create->exec('proj_build_fields', $_dadosTable);
-            }
-        }
-    }
-
 //END private function save_fields_project()
 
-    /*
+    /**
      * GET FIELDS TABLE
      */
 
-    public function ajax_get_fields_table() {
+    public function ajax_get_fields_table()
+    {
 
-        /*
+        /**
          * CERTIFICA SE O ACESSO A ESTA FUNCTION REALMENTE ESTÁ SENDO FEITO POR AJAX.
          */
         bz_check_is_ajax_request();
@@ -1332,13 +1373,14 @@ class ProjectbuildCrud extends MY_Controller {
 
 //END public function ajax_get_fields_table()
 
-    /*
+    /**
      * EDITOR DECÓDIGOS DO PROJETO
      */
 
-    public function codeeditor($_idProjeto = null, $_code_screen = null, $_code_type = null) {
+    public function codeeditor($_idProjeto = null, $_code_screen = null, $_code_type = null)
+    {
 
-        /*
+        /**
          * CHECK SE EXISTE
          */
         if (($_code_type == 'metodo-php' || 'model-php' || $_code_type == 'evento-php' || $_code_type == 'blank') && !empty($_idProjeto)) {
@@ -1353,7 +1395,7 @@ class ProjectbuildCrud extends MY_Controller {
             }
 
             if ($_code_screen == 'gridlist' || $_code_screen == 'formadd' || $_code_screen == 'formedit') {
-                
+
             } else {
                 set_mensagem_trigger_notifi('Foram passados parâmetros inconsistentes para o Editor de Códigos do Projeto.', 'warning');
                 redirect(site_url('projectbuildcrud'));
@@ -1361,7 +1403,7 @@ class ProjectbuildCrud extends MY_Controller {
             }
 
             if ($_code_type == 'css' || $_code_type == 'jquery') {
-                
+
             } else {
                 set_mensagem_trigger_notifi('Foram passados parâmetros inconsistentes para o Editor de Códigos do Projeto.', 'warning');
                 redirect(site_url('projectbuildcrud'));
@@ -1369,12 +1411,12 @@ class ProjectbuildCrud extends MY_Controller {
             }
         }
 
-        /*
+        /**
          * CHECK POST SAVE
          */
         if ($this->input->post()) {
 
-            /*
+            /**
              * SAVE DADOS DO EDITOR DE CÓDIGOS
              */
             if ($this->input->post('btn-del-code-editor')) {
@@ -1392,24 +1434,25 @@ class ProjectbuildCrud extends MY_Controller {
                     set_mensagem_trigger_notifi(strtoupper(str_replace('-', ' ', $_dados_del_code['code_type'])) . ': ' . $_dados_del_code['code_screen'] . ' () Deletado com Sucesso.', 'success');
                     redirect('projectbuildcrud/edit/' . $_dados_del_code['proj_build_id'] . '?tab = gridlist');
                 } else {
-                    
+
                 }
             } elseif ($this->input->post('btn-save-code-editor')) {
-                /*
+                /**
                  * CHECK SE EXISTE O REGISTRO GRAVADO
                  */
                 $_where = 'WHERE proj_build_id = "' . $this->input->post('proj_build_id') . '" AND ' .
-                        'code_screen = "' . $this->input->post('code_screen') . '" AND ' .
-                        'code_type = "' . $this->input->post('code_type') . '"';
+                    'code_screen = "' . $this->input->post('code_screen') . '" AND ' .
+                    'code_type = "' . $this->input->post('code_type') . '"';
 
                 $_query = $this->read->exec('proj_build_codeeditor', $_where);
 
                 if ($_query->result_array()) {
-                    /*
+                    /**
                      * SE EXISTIR FAZ O UPDATE
                      */
                     $_data_code_editor = array(
                         'code_access_ajax_only' => ($this->input->post('code_access_ajax_only') == 'on' ? 1 : 0),
+                        'copy_script_js_from_form_add_to_form_edit' => ($this->input->post('copy_script_js_from_form_add_to_form_edit') == 'on' ? 1 : 0),
                         'code_type_method' => ($this->input->post('code_access_ajax_only') == 'on' ? 'public' : $this->input->post('code_type_method')),
                         'code_script' => base64_encode($this->input->post('code_script', false)),
                     );
@@ -1421,7 +1464,7 @@ class ProjectbuildCrud extends MY_Controller {
                         set_mensagem_trigger_notifi(strtoupper(str_replace('-', ' ', $this->input->post('code_type'))) . ' Erro ao Atualizar Registro.', 'error');
                     }
                 } else {
-                    /*
+                    /**
                      * SE NÃO EXISTIR CRIA O REGISTRO
                      */
 
@@ -1430,6 +1473,7 @@ class ProjectbuildCrud extends MY_Controller {
                         'code_screen' => $this->input->post('code_screen'),
                         'code_type' => $this->input->post('code_type'),
                         'code_access_ajax_only' => ($this->input->post('code_access_ajax_only') == 'on' ? 1 : 0),
+                        'copy_script_js_from_form_add_to_form_edit' => ($this->input->post('copy_script_js_from_form_add_to_form_edit') == 'on' ? 1 : 0),
                         'code_type_method' => ($this->input->post('code_access_ajax_only') == 'on' ? 'public' : $this->input->post('code_type_method')),
                         'code_script' => base64_encode($this->input->post('code_script', false)),
                     );
@@ -1440,12 +1484,12 @@ class ProjectbuildCrud extends MY_Controller {
             }
         }
 
-        /*
+        /**
          * PARÂMETROS
          */
         $this->dados['_parametros']['code_screen'] = $_code_screen;
 
-        if (( $_code_screen == 'gridlist')) {
+        if (($_code_screen == 'gridlist')) {
             $this->dados['_parametros']['code_screen_title'] = 'GRID LIST';
         } elseif (($_code_screen == 'formadd')) {
             $this->dados['_parametros']['code_screen_title'] = 'FORM ADD';
@@ -1457,9 +1501,10 @@ class ProjectbuildCrud extends MY_Controller {
 
         $this->dados['_parametros']['code_script'] = '';
         $this->dados['_parametros']['code_access_ajax_only'] = '';
+        $this->dados['_parametros']['copy_script_js_from_form_add_to_form_edit'] = '';
         $this->dados['_parametros']['code_type_method'] = 'public';
 
-        /*
+        /**
          * GET DADOS DO PROJETO
          */
         $_where = 'WHERE id = "' . $_idProjeto . '" LIMIT 1';
@@ -1469,14 +1514,14 @@ class ProjectbuildCrud extends MY_Controller {
 
             $this->dados['_dados_projeto'] = $_result->row();
 
-            /* TITULO APP */
+            /** TITULO APP */
             if ($this->dados['_dados_projeto']->type_project == 'blank') {
                 $this->dados['_titulo_app'] .= ' BLANK';
             } elseif ($this->dados['_dados_projeto']->type_project == 'crud') {
                 $this->dados['_titulo_app'] .= ' CRUD';
             }
 
-            /*
+            /**
              * GET CODE SCRIPT
              */
             $_where = array(
@@ -1489,6 +1534,7 @@ class ProjectbuildCrud extends MY_Controller {
 
             if ($_r_CodeEditor) {
                 $this->dados['_parametros']['code_access_ajax_only'] = ($_r_CodeEditor['code_access_ajax_only'] == '1' ? 'checked' : '');
+                $this->dados['_parametros']['copy_script_js_from_form_add_to_form_edit'] = ($_r_CodeEditor['copy_script_js_from_form_add_to_form_edit'] == '1' ? 'checked' : '');
                 $this->dados['_parametros']['code_type_method'] = $_r_CodeEditor['code_type_method'];
                 $this->dados['_parametros']['code_script'] = $_r_CodeEditor['code_script'];
                 $this->dados['_parametros']['type_project'] = $this->dados['_dados_projeto']->type_project;
@@ -1506,7 +1552,7 @@ class ProjectbuildCrud extends MY_Controller {
         $this->dados['_fields_table'] = get_fields_gridlist_project($this->dados['_dados_projeto']->id);
 
 
-        /*
+        /**
          * TEMPLATE QUE SERÁ USADO PELO MÓDULO DO SISTEMA
          */
         $this->dados['_conteudo_masterPageIframe'] = $this->router->fetch_class() . '/vProjectbuildCrudCodeEditor';
@@ -1515,11 +1561,12 @@ class ProjectbuildCrud extends MY_Controller {
 
 //END public function codeeditor()
 
-    /*
+    /**
      * CHECK SE O NOME DO APP EXISTE NA TABELA
      */
 
-    public function check_name_app_exist() {
+    public function check_name_app_exist()
+    {
 
         $this->load->helper('file');
 
@@ -1534,7 +1581,7 @@ class ProjectbuildCrud extends MY_Controller {
 
         $this->_directory = FCPATH . 'application/modules/' . strtolower($this->_app_nome);
 
-        /*
+        /**
          * CHECK SE O DIRETORIO MODULES TEM PREMISSÃO PARA SER GRAVADO
          */
         if (!is_writable(str_replace('/' . strtolower($this->_app_nome), '', $this->_directory))) {
@@ -1542,7 +1589,7 @@ class ProjectbuildCrud extends MY_Controller {
             return false;
         }
 
-        /*
+        /**
          * CHECK SE O DIRETÓRIO DO APP JÁ EXISTE
          */
         if (is_dir($this->_directory)) {
@@ -1550,7 +1597,7 @@ class ProjectbuildCrud extends MY_Controller {
             return false;
         }
 
-        /*
+        /**
          * CHECK SE O NOME DO APP JÁ FOI CADASTRADO
          */
         $_where = 'WHERE app_nome = "' . $_app_nome . '" AND type_project = "crud" LIMIT 1';
@@ -1561,7 +1608,7 @@ class ProjectbuildCrud extends MY_Controller {
             return false;
         } else {
 
-            /*
+            /**
              * CRIA O APP NO SERVIDOR
              */
 
@@ -1592,23 +1639,24 @@ class ProjectbuildCrud extends MY_Controller {
 
 //END public function check_name_app_exist()
 
-    /*
+    /**
      * GERA O APP
      */
 
-    public function build_app($_projectID) {
+    public function build_app($_projectID)
+    {
 
-        /*
+        /**
          * CARREGA OS HELPERS
          */
         $this->load->helper('file');
 
-        /*
+        /**
          * VARIÁVEIS
          */
         $this->_project_id = $_projectID;
 
-        /*
+        /**
          * GET TYPE PROJECT
          */
         $_appProject = $this->db->get_where('proj_build', array('id' => $this->_project_id))->row();
@@ -1631,7 +1679,7 @@ class ProjectbuildCrud extends MY_Controller {
              */
             echo "<link href=\"" . base_url('assets/dist/css/AdminLTE.BZ.min.css') . "\" rel=\"stylesheet\" type=\"text/css\"/>";
 
-            /*
+            /**
              * GERA O CONTROLLER DO APP BLANK
              */
             echo '<div class = "callout callout-success">
@@ -1639,7 +1687,7 @@ class ProjectbuildCrud extends MY_Controller {
                         </div>';
             $this->ger_controllerBlank();
 
-            /*
+            /**
              * GERA O MODEL DO APP BLANK
              */
             echo '<div class = "callout callout-success">
@@ -1647,7 +1695,7 @@ class ProjectbuildCrud extends MY_Controller {
                         </div>';
             $this->ger_modelsBlank();
 
-            /*
+            /**
              * GERA O VIEW DO APP BLANK
              */
             echo '<div class = "callout callout-success">
@@ -1669,7 +1717,7 @@ class ProjectbuildCrud extends MY_Controller {
 
             if ($_r_projetc->num_rows() != 0) {
 
-                /*
+                /**
                  * VARIÁVEIS
                  */
 
@@ -1684,12 +1732,12 @@ class ProjectbuildCrud extends MY_Controller {
                 $this->_appCalendarInputs = json_decode($_r_projetc->row()->calendar_inputs);
 
 
-                /*
+                /**
                  * CHECK SE O DIRETÓRIO DO APP JÁ EXISTE
                  */
                 if (is_dir($this->_directory)) {
 
-                    /*
+                    /**
                      * CARREGA AS VARIÁVEIS COM OS DADOS DOS FIELDS DO PROJETO
                      */
                     $_r = '';
@@ -1710,7 +1758,7 @@ class ProjectbuildCrud extends MY_Controller {
                             $this->_primary_key_field = $_row['field_name'];
                         }
 
-                        /* CAMPOS PARA FILTRAGEM DOS DADOS */
+                        /** CAMPOS PARA FILTRAGEM DOS DADOS */
                         if ($_param_gridListField['grid_list_search'] == 'on' && (empty($_param_gridListField['grid_list_field_type']) || $_param_gridListField['grid_list_field_type'] != 'virtual')) {
                             if ($this->_gridListSearchFields) {
                                 $this->_gridListSearchFields .= ',' . $_row['field_name'];
@@ -1718,20 +1766,20 @@ class ProjectbuildCrud extends MY_Controller {
                                 $this->_gridListSearchFields .= $_row['field_name'];
                             }
                         }
-                        /* END CAMPOS PARA FILTRAGEM DOS DADOS */
+                        /** END CAMPOS PARA FILTRAGEM DOS DADOS */
 
-                        /*
+                        /**
                          * CAMPOS QUE SERÃO MOSTRADOS NA GRID LIST
                          */
                         if ($_param_gridListField['grid_list_show'] == 'on') {
 
-                            /* CAMPOS VIRTUAIS */
+                            /** CAMPOS VIRTUAIS */
                             if (!empty($_param_gridListField['grid_list_field_type'])) {
                                 if ($_param_gridListField['grid_list_field_type'] == 'virtual') {
                                     $this->_gridListVirtualFieldsTable[] = $_row['field_name'];
                                 }
                             }
-                            /* END CAMPOS VIRTUAIS */
+                            /** END CAMPOS VIRTUAIS */
 
                             $_class = (!empty($_param_gridListField['grid_list_aligne_label'])) ? $_param_gridListField['grid_list_aligne_label'] : 'text-left';
                             $_width_field .= (!empty($_param_gridListField['grid_list_field_length'])) ? 'width:' . $_param_gridListField['grid_list_field_length'] : '';
@@ -1771,10 +1819,10 @@ class ProjectbuildCrud extends MY_Controller {
 
                             if (!empty($_param_gridListField['grid_list_field_input_type'])) {
 
-                                /* CAMPO SELECT MODAL IMAGEM grid_list_field_type_modal_image  */
+                                /** CAMPO SELECT MODAL IMAGEM grid_list_field_type_modal_image  */
                                 if ($_param_gridListField['grid_list_field_input_type'] == 'upload-imagem') {
 
-                                    /* CAMPO SELECT MODAL IMAGEM grid_list_field_type_modal_image  */
+                                    /** CAMPO SELECT MODAL IMAGEM grid_list_field_type_modal_image  */
                                     if (!empty($_param_gridListField['grid_list_field_type_modal_image'])) {
 
                                         $_folderUploadImagem = json_decode($_param_formAddEditField[$_row['field_name']]->param_formaddedit)->form_add_edit_field_upload_imagem_folder;
@@ -1789,66 +1837,66 @@ class ProjectbuildCrud extends MY_Controller {
                                         }
                                     }
 
-                                    /* END CAMPO SELECT MODAL IMAGEM grid_list_field_type_modal_image  */
+                                    /** END CAMPO SELECT MODAL IMAGEM grid_list_field_type_modal_image  */
                                     /**/
-                                    /* CAMPO SELECT MODAL ARQUIVO grid_list_field_type_modal_arquivo  */
+                                    /** CAMPO SELECT MODAL ARQUIVO grid_list_field_type_modal_arquivo  */
                                 } elseif ($_param_gridListField['grid_list_field_input_type'] == 'upload-arquivo') {
 
                                     $_folderUploadAquivo = json_decode($_param_formAddEditField[$_row['field_name']]->param_formaddedit)->form_add_edit_field_upload_arquivo_folder;
 
                                     $this->_gridListFieldsTable .= '<td class="tdCl' . ucfirst($_row['field_name']) . ' ' . $_class . '" style="' . $_width_field . '"><?= mc_file_link_download ($_row["' . $_row['field_name'] . '"], "' . $_folderUploadAquivo . '"); ?></td>' . PHP_EOL;
 
-                                    /* END CAMPO SELECT MODAL ARQUIVO grid_list_field_type_modal_arquivo  */
+                                    /** END CAMPO SELECT MODAL ARQUIVO grid_list_field_type_modal_arquivo  */
                                     /**/
-                                    /* CAMPO INPUT NUMBER DECIMAL grid_list_field_input_type  */
+                                    /** CAMPO INPUT NUMBER DECIMAL grid_list_field_input_type  */
                                 } elseif ($_param_gridListField['grid_list_field_input_type'] == 'number-decimal') {
 
                                     $_class .= $_classBtnEdit;
                                     $this->_gridListFieldsTable .= '<td class="tdCl' . ucfirst($_row['field_name']) . ' ' . $_class . '" style="' . $_width_field . '"><?= bz_converteMoedaBrasil ($_row["' . $_row['field_name'] . '"]); ?></td>' . PHP_EOL;
 
-                                    /* END CAMPO INPUT NUMBER DECIMAL grid_list_field_input_type */
+                                    /** END CAMPO INPUT NUMBER DECIMAL grid_list_field_input_type */
                                     /**/
-                                    /* CAMPO INPUT MOEDA grid_list_field_input_type  */
+                                    /** CAMPO INPUT MOEDA grid_list_field_input_type  */
                                 } elseif ($_param_gridListField['grid_list_field_input_type'] == 'moeda') {
 
                                     $_class .= $_classBtnEdit;
                                     $this->_gridListFieldsTable .= '<td class="tdCl' . ucfirst($_row['field_name']) . ' ' . $_class . '" style="' . $_width_field . '">R$ <?= bz_converteMoedaBrasil ($_row["' . $_row['field_name'] . '"]); ?></td>' . PHP_EOL;
 
-                                    /* END CAMPO INPUT MOEDA grid_list_field_input_type */
+                                    /** END CAMPO INPUT MOEDA grid_list_field_input_type */
                                     /**/
-                                    /* CAMPO INPUT NUMBER INTENGER grid_list_field_input_type  */
+                                    /** CAMPO INPUT NUMBER INTENGER grid_list_field_input_type  */
                                 } elseif ($_param_gridListField['grid_list_field_input_type'] == 'number') {
 
                                     $_class .= $_classBtnEdit;
                                     $this->_gridListFieldsTable .= '<td class="tdCl' . ucfirst($_row['field_name']) . ' ' . $_class . '" style="' . $_width_field . '"><?= number_format ($_row["' . $_row['field_name'] . '"], 0, "", ""); ?></td>' . PHP_EOL;
 
-                                    /* END CAMPO INPUT NUMBER INTENGER grid_list_field_input_type */
+                                    /** END CAMPO INPUT NUMBER INTENGER grid_list_field_input_type */
                                     /**/
-                                    /* CAMPO INPUT DATE grid_list_field_input_type  */
+                                    /** CAMPO INPUT DATE grid_list_field_input_type  */
                                 } elseif ($_param_gridListField['grid_list_field_input_type'] == 'date') {
 
                                     $_class .= $_classBtnEdit;
                                     $this->_gridListFieldsTable .= '<td class="tdCl' . ucfirst($_row['field_name']) . ' ' . $_class . '" style="' . $_width_field . '"><?= bz_formatdata ($_row["' . $_row['field_name'] . '"]); ?></td>' . PHP_EOL;
 
-                                    /* END CAMPO INPUT DATE grid_list_field_input_type */
+                                    /** END CAMPO INPUT DATE grid_list_field_input_type */
                                     /**/
-                                    /* CAMPO INPUT TIME grid_list_field_input_type  */
+                                    /** CAMPO INPUT TIME grid_list_field_input_type  */
                                 } elseif ($_param_gridListField['grid_list_field_input_type'] == 'time') {
 
                                     $_class .= $_classBtnEdit;
                                     $this->_gridListFieldsTable .= '<td class="tdCl' . ucfirst($_row['field_name']) . ' ' . $_class . '" style="' . $_width_field . '"><?= bz_formatdata ($_row["' . $_row['field_name'] . '"], "H:i:s"); ?></td>' . PHP_EOL;
 
-                                    /* END CAMPO INPUT TIME grid_list_field_input_type */
+                                    /** END CAMPO INPUT TIME grid_list_field_input_type */
                                     /**/
-                                    /* CAMPO INPUT DATETIME grid_list_field_input_type  */
+                                    /** CAMPO INPUT DATETIME grid_list_field_input_type  */
                                 } elseif ($_param_gridListField['grid_list_field_input_type'] == 'datetime') {
 
                                     $_class .= $_classBtnEdit;
                                     $this->_gridListFieldsTable .= '<td class="tdCl' . ucfirst($_row['field_name']) . ' ' . $_class . '" style="' . $_width_field . '"><?= bz_formatdata ($_row["' . $_row['field_name'] . '"], "d/m/Y H:i:s"); ?></td>' . PHP_EOL;
 
-                                    /* END CAMPO INPUT DATETIME grid_list_field_input_type */
+                                    /** END CAMPO INPUT DATETIME grid_list_field_input_type */
                                     /**/
-                                    /* CAMPO INPUT SELECT grid_list_field_input_type  */
+                                    /** CAMPO INPUT SELECT grid_list_field_input_type  */
                                 } elseif ($_param_gridListField['grid_list_field_input_type'] == 'select') {
 
                                     $_class .= $_classBtnEdit;
@@ -1857,7 +1905,7 @@ class ProjectbuildCrud extends MY_Controller {
 
                                     $this->_gridListFieldsTable .= '<td class="tdCl' . ucfirst($_row['field_name']) . ' ' . $_class . '" style="' . $_width_field . '"><?= $this->db->query ("' . base64_decode($_param_gridListField['grid_list_field_value_select']) . ' WHERE ' . $_pkSelect . ' = ".$_row["' . $_row['field_name'] . '"])->row ()->' . str_replace('_id', '', $_row['field_name']) . '; ?></td>' . PHP_EOL;
 
-                                    /* END CAMPO INPUT SELECT grid_list_field_input_type */
+                                    /** END CAMPO INPUT SELECT grid_list_field_input_type */
                                     /**/
                                 } else {
                                     /**/
@@ -1873,25 +1921,25 @@ class ProjectbuildCrud extends MY_Controller {
 
                                 /**/
                             }
-                            /* END FORMATAÇÃO DOS CAMPOS DA GRIDLIST $_ROW[] CONFORME SELEÇÃO DO CAMPO SELECT grid_list_field_input_type */
+                            /** END FORMATAÇÃO DOS CAMPOS DA GRIDLIST $_ROW[] CONFORME SELEÇÃO DO CAMPO SELECT grid_list_field_input_type */
 
                             /**/
                         }
-                        /* END CAMPOS QUE SERÃO MOSTRADOS NA GRID LIST */
+                        /** END CAMPOS QUE SERÃO MOSTRADOS NA GRID LIST */
 
 
-                        /*
+                        /**
                          * CAMPOS QUE SERÃO MOSTRADOS NA EXPORT
                          */
                         if (isset($_param_gridListField['grid_list_export']) && $_param_gridListField['grid_list_export'] == 'on') {
 
-                            /* CAMPOS VIRTUAIS */
+                            /** CAMPOS VIRTUAIS */
                             if (!empty($_param_gridListField['grid_list_field_type'])) {
                                 if ($_param_gridListField['grid_list_field_type'] == 'virtual') {
                                     $this->_gridListVirtualFieldsTable[] = $_row['field_name'];
                                 }
                             }
-                            /* END CAMPOS VIRTUAIS */
+                            /** END CAMPOS VIRTUAIS */
 
                             $_class = (!empty($_param_gridListField['grid_list_aligne_label'])) ? $_param_gridListField['grid_list_aligne_label'] : 'text-left';
                             $_width_field .= (!empty($_param_gridListField['grid_list_field_length'])) ? 'width:' . $_param_gridListField['grid_list_field_length'] : '';
@@ -1948,7 +1996,7 @@ class ProjectbuildCrud extends MY_Controller {
 
                     $this->_gridListFields = substr($this->_gridListFields, 0, -1);
 
-                    /*
+                    /**
                      * GET CODE EDITOR GRID LIST
                      */
                     $_where_getCode_GridList = array(
@@ -1989,7 +2037,7 @@ class ProjectbuildCrud extends MY_Controller {
                         }
                     }
 
-                    /*
+                    /**
                      * END GET CODE EDITOR GRID LIST
                      */
                 } else {
@@ -2004,7 +2052,7 @@ class ProjectbuildCrud extends MY_Controller {
                 exit;
             }
 
-            /* END CARREGA DADOS DO PROJETO PARA GRID LIST VIEW */
+            /** END CARREGA DADOS DO PROJETO PARA GRID LIST VIEW */
 
             /**
              * CARREGA DADOS DO PROJETO PARA FORM ADD/EDIT
@@ -2019,17 +2067,17 @@ class ProjectbuildCrud extends MY_Controller {
 
             if ($_r_projetcFormAddEdit->num_rows() != 0) {
 
-                /*
+                /**
                  * VARIÁVEIS
                  */
                 $this->_appArrayDados = $_r_projetcFormAddEdit->result_array();
 
-                /*
+                /**
                  * CHECK SE O DIRETÓRIO DO APP JÁ EXISTE
                  */
                 if (is_dir($this->_directory)) {
 
-                    /*
+                    /**
                      * CARREGA AS VARIÁVEIS COM OS DADOS DOS FIELDS DO PROJETO
                      */
                     $_r = '';
@@ -2042,12 +2090,12 @@ class ProjectbuildCrud extends MY_Controller {
 
                         $_param_formAddEditField = json_decode($_row['param_formaddedit'], true);
 
-                        /*
+                        /**
                          * CAMPOS QUE SERÃO MOSTRADOS NO FORM ADD/EDIT
                          */
                         if ($_param_formAddEditField['form_add_edit_field_show'] == 'on') {
 
-                            /*
+                            /**
                              * VARIÁVEIS
                              */
                             $this->_formAddEditConfigInput = '';
@@ -2110,18 +2158,18 @@ class ProjectbuildCrud extends MY_Controller {
                             if ($_row['primary_key'] == 1) {
                                 $this->_formEditUnsetPrimaryKey .= "unset(\$_dados['" . $this->_primary_key_field . "']);" . PHP_EOL;
                             }
-                            /* END UNSET NO FIELD PRIMARY KEY NO EDIT */
+                            /** END UNSET NO FIELD PRIMARY KEY NO EDIT */
 
-                            /*
+                            /**
                              * VALIDAÇÕES DOS INPUTS
                              */
-                            /* AUTO FOCUS */
+                            /** AUTO FOCUS */
                             if ($_autofocus == 'false' && empty($_param_formAddEditField['form_add_edit_field_read_only'])) {
                                 $_autofocus = 'true';
                                 $this->_formAddEditConfigInputAtributos .= 'autofocus ';
                             }
 
-                            /* READ ONLY */
+                            /** READ ONLY */
                             if (!empty($_param_formAddEditField['form_add_edit_field_read_only'])) {
                                 if ($_param_formAddEditField['form_add_edit_field_read_only'] == 'on') {
 
@@ -2135,7 +2183,7 @@ class ProjectbuildCrud extends MY_Controller {
                                 }
                             }
 
-                            /* QUANTIDADE DE COLUNAS DO INPUT FIELD */
+                            /** QUANTIDADE DE COLUNAS DO INPUT FIELD */
                             if (!empty($_param_formAddEditField['form_add_edit_field_column'])) {
                                 if (strlen($this->_formAddEditConfigInputClassCSS) > 0) {
                                     $this->_formAddEditConfigInputClassCSS .= ' col-sm-' . (($_param_formAddEditField['form_add_edit_field_column'] > 0) ? $_param_formAddEditField['form_add_edit_field_column'] : '12');
@@ -2150,11 +2198,11 @@ class ProjectbuildCrud extends MY_Controller {
                                 }
                             }
 
-                            /*
+                            /**
                              * GERA OS TIPOS DOS CAMPOS
                              */
 
-                            /* SE O CAMPO FOR READ ONLY, DESABILITA ALGUMAS FUNÇÕES */
+                            /** SE O CAMPO FOR READ ONLY, DESABILITA ALGUMAS FUNÇÕES */
 
                             $_geraFormAddDadosFillable = true;
                             $_geraFormEditDadosFillable = true;
@@ -2162,7 +2210,7 @@ class ProjectbuildCrud extends MY_Controller {
                             $_enableFormAddConvertDadosToDatabase = true;
                             $_enableFormEditConvertDadosToDatabase = true;
 
-                            if (isset($_param_formAddEditField['form_add_edit_field_read_only']) && $_param_formAddEditField['form_add_edit_field_read_only_in_form'] == 'on') {
+                            if (isset($_param_formAddEditField['form_add_edit_field_read_only']) && $_param_formAddEditField['form_add_edit_field_read_only'] == 'on') {
 
                                 if ($_param_formAddEditField['form_add_edit_field_read_only_in_form'] == 'todos') {
                                     /**/
@@ -2185,9 +2233,10 @@ class ProjectbuildCrud extends MY_Controller {
                                     $_enableFormAddConvertDadosToDatabase = false;
                                     /**/
                                 }
+
                             }
 
-                            /* TRATA A VARIÁVEL form_add_edit_field_start_value DO INPUT - VALOR INICIAL */
+                            /** TRATA A VARIÁVEL form_add_edit_field_start_value DO INPUT - VALOR INICIAL */
                             if (!empty(base64_decode($_param_formAddEditField['form_add_edit_field_start_value']))) {
                                 $_param_formAddEditField['form_add_edit_field_start_value'] = base64_decode($_param_formAddEditField['form_add_edit_field_start_value']);
 
@@ -2199,26 +2248,25 @@ class ProjectbuildCrud extends MY_Controller {
                             } else {
                                 $_param_formAddEditField['form_add_edit_field_start_value'] = '""';
                             }
-                            /* END TRATA A VARIÁVEL form_add_edit_field_start_value DO INPUT - VALOR INICIAL */
-
+                            /** END TRATA A VARIÁVEL form_add_edit_field_start_value DO INPUT - VALOR INICIAL */
 
 
                             /**
-                             * 
+                             *
                              * ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
                              * INPUT TEXT OU INTEGER
                              * ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
-                             * 
+                             *
                              */
                             if ($_param_formAddEditField['form_add_edit_field_type'] == 'text') {
 
                                 $this->_formAddEditConfigInput = '<input '
-                                        . 'type="text" '
-                                        . 'name="' . $_row['field_name'] . '" '
-                                        . 'class="form-control ' . (!empty($_param_formAddEditField['form_add_edit_field_convert_letter_into']) ? $_param_formAddEditField['form_add_edit_field_convert_letter_into'] : null) . ' ' . ((!empty($_param_formAddEditField['form_add_edit_field_mask'])) ? 'j-mask-' . $_row['field_name'] : '') . ' " '
-                                        . 'placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" ' . $this->_formAddEditConfigInputAtributos . ' '
-                                        . 'value="<?=set_value("' . $_row['field_name'] . '") ? : (isset($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : ' . $_param_formAddEditField['form_add_edit_field_start_value'] . ');?>" '
-                                        . '/>';
+                                    . 'type="text" '
+                                    . 'name="' . $_row['field_name'] . '" '
+                                    . 'class="form-control ' . (!empty($_param_formAddEditField['form_add_edit_field_convert_letter_into']) ? $_param_formAddEditField['form_add_edit_field_convert_letter_into'] : null) . ' ' . ((!empty($_param_formAddEditField['form_add_edit_field_mask'])) ? 'j-mask-' . $_row['field_name'] : '') . ' " '
+                                    . 'placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" ' . $this->_formAddEditConfigInputAtributos . ' '
+                                    . 'value="<?=set_value("' . $_row['field_name'] . '") ? : (isset($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : ' . $_param_formAddEditField['form_add_edit_field_start_value'] . ');?>" '
+                                    . '/>';
 
                                 if ($_row['field_type'] == 'int') {
                                     if ($_enableFormAddConvertDadosToDatabase)
@@ -2230,54 +2278,50 @@ class ProjectbuildCrud extends MY_Controller {
                                 }
                             }
                             /**
-                             * 
-                             *  END INPUT TEXT OU INTEGER 
+                             *
+                             *  END INPUT TEXT OU INTEGER
                              */
-                            /* ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================ */
-
-
+                            /** ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================ */
 
 
                             /**
-                             * 
+                             *
                              * ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
                              * INPUT LONG TEXT
                              * ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
-                             * 
+                             *
                              */
                             if ($_param_formAddEditField['form_add_edit_field_type'] == 'text-long') {
 
                                 $this->_formAddEditConfigInput = '<textarea '
-                                        . 'rows="5" name="' . $_row['field_name'] . '" '
-                                        . 'class="form-control" '
-                                        . 'placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" ' . $this->_formAddEditConfigInputAtributos . '/>'
-                                        . '<?=set_value("' . $_row['field_name'] . '") ? : (isset($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : ' . $_param_formAddEditField['form_add_edit_field_start_value'] . ');?>'
-                                        . '</textarea>';
+                                    . 'rows="5" name="' . $_row['field_name'] . '" '
+                                    . 'class="form-control" '
+                                    . 'placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" ' . $this->_formAddEditConfigInputAtributos . '/>'
+                                    . '<?=set_value("' . $_row['field_name'] . '") ? : (isset($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : ' . $_param_formAddEditField['form_add_edit_field_start_value'] . ');?>'
+                                    . '</textarea>';
                             }
                             /**
-                             * 
+                             *
                              *  END INPUT LONG TEXT
                              */
-                            /* ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================ */
-
-
+                            /** ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================ */
 
 
                             /**
-                             * 
+                             *
                              * ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
                              * INPUT EDITOR HTML CKEDITOR
                              * ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
-                             * 
+                             *
                              */
                             if ($_param_formAddEditField['form_add_edit_field_type'] == 'text-ckeditor') {
 
                                 $this->_formAddEditConfigInput = '<textarea '
-                                        . 'id="ckeditor-' . $_row['field_name'] . '" '
-                                        . 'rows="5" name="' . $_row['field_name'] . '" '
-                                        . 'class="form-control" placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" ' . $this->_formAddEditConfigInputAtributos . '/>'
-                                        . '<?=set_value("' . $_row['field_name'] . '") ? : (isset($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : ' . $_param_formAddEditField['form_add_edit_field_start_value'] . ');?>'
-                                        . '</textarea>';
+                                    . 'id="ckeditor-' . $_row['field_name'] . '" '
+                                    . 'rows="5" name="' . $_row['field_name'] . '" '
+                                    . 'class="form-control" placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" ' . $this->_formAddEditConfigInputAtributos . '/>'
+                                    . '<?=set_value("' . $_row['field_name'] . '") ? : (isset($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : ' . $_param_formAddEditField['form_add_edit_field_start_value'] . ');?>'
+                                    . '</textarea>';
 
                                 if ($_enableFormAddConvertDadosToDatabase)
                                     $this->_formAddConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = $this->input->post("' . $_row['field_name'] . '",FALSE);';
@@ -2285,7 +2329,7 @@ class ProjectbuildCrud extends MY_Controller {
                                 if ($_enableFormEditConvertDadosToDatabase)
                                     $this->_formEditConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = $this->input->post("' . $_row['field_name'] . '",FALSE);';
 
-                                /* FORM ADD */
+                                /** FORM ADD */
                                 $this->_formAddCodeEditorJS .= "<!--" . PHP_EOL;
                                 $this->_formAddCodeEditorJS .= " * JQUERY SCRIPT - EDITOR DE TEXTO HTML - CKEDITOR" . PHP_EOL;
                                 $this->_formAddCodeEditorJS .= "-->" . PHP_EOL;
@@ -2300,7 +2344,7 @@ class ProjectbuildCrud extends MY_Controller {
                                 $this->_formAddCodeEditorJS .= " * END JQUERY SCRIPT - EDITOR DE TEXTO HTML - CKEDITOR" . PHP_EOL;
                                 $this->_formAddCodeEditorJS .= "-->" . PHP_EOL . PHP_EOL . PHP_EOL;
 
-                                /* FORM EDIT */
+                                /** FORM EDIT */
                                 $this->_formEditCodeEditorJS .= "<!--" . PHP_EOL;
                                 $this->_formEditCodeEditorJS .= " * JQUERY SCRIPT - EDITOR DE TEXTO HTML - CKEDITOR" . PHP_EOL;
                                 $this->_formEditCodeEditorJS .= "-->" . PHP_EOL;
@@ -2316,62 +2360,58 @@ class ProjectbuildCrud extends MY_Controller {
                                 $this->_formEditCodeEditorJS .= "-->" . PHP_EOL . PHP_EOL . PHP_EOL;
                             }
                             /**
-                             * 
+                             *
                              *  END INPUT EDITOR HTML CKEDITOR
                              */
-                            /* ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================ */
-
-
+                            /** ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================ */
 
 
                             /**
-                             * 
+                             *
                              * ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
                              * INPUT EMAIL
                              * ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
-                             * 
+                             *
                              */
                             if ($_param_formAddEditField['form_add_edit_field_type'] == 'email') {
 
                                 $this->_formAddEditConfigInput = '<div class="input-group">'
-                                        . '<span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>'
-                                        . '<input '
-                                        . 'type="text" '
-                                        . 'name="' . $_row['field_name'] . '" '
-                                        . 'class="form-control" '
-                                        . 'placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" '
-                                        . 'value="<?=set_value("' . $_row['field_name'] . '") ? : (isset($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : ' . $_param_formAddEditField['form_add_edit_field_start_value'] . ');?>" '
-                                        . $this->_formAddEditConfigInputAtributos
-                                        . ' /></div>';
+                                    . '<span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>'
+                                    . '<input '
+                                    . 'type="text" '
+                                    . 'name="' . $_row['field_name'] . '" '
+                                    . 'class="form-control" '
+                                    . 'placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" '
+                                    . 'value="<?=set_value("' . $_row['field_name'] . '") ? : (isset($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : ' . $_param_formAddEditField['form_add_edit_field_start_value'] . ');?>" '
+                                    . $this->_formAddEditConfigInputAtributos
+                                    . ' /></div>';
                             }
                             /**
-                             * 
+                             *
                              *  END INPUT EMAIL
                              */
-                            /* ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================ */
-
-
+                            /** ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================ */
 
 
                             /**
-                             * 
+                             *
                              * ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
                              * INPUT DATE
                              * ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
-                             * 
+                             *
                              */
                             if ($_param_formAddEditField['form_add_edit_field_type'] == 'date') {
 
                                 $this->_formAddEditConfigInputAtributos .= 'autocomplete="off"';
 
                                 $this->_formAddEditConfigInput = '<input '
-                                        . 'type="text" '
-                                        . 'name="' . $_row['field_name'] . '" '
-                                        . 'class="form-control datepicker j-mask-data-ptbr j-mask-' . $_row['field_name'] . '" '
-                                        . 'placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" '
-                                        . 'value="<?=set_value("' . $_row['field_name'] . '") ? : (isset($dados->' . $_row['field_name'] . ') ? bz_formatdata($dados->' . $_row['field_name'] . ',"d/m/Y") : ' . $_param_formAddEditField['form_add_edit_field_start_value'] . ');?>" '
-                                        . $this->_formAddEditConfigInputAtributos
-                                        . ' />';
+                                    . 'type="text" '
+                                    . 'name="' . $_row['field_name'] . '" '
+                                    . 'class="form-control datepicker j-mask-data-ptbr j-mask-' . $_row['field_name'] . '" '
+                                    . 'placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" '
+                                    . 'value="<?=set_value("' . $_row['field_name'] . '") ? : (isset($dados->' . $_row['field_name'] . ') ? bz_formatdata($dados->' . $_row['field_name'] . ',"d/m/Y") : ' . $_param_formAddEditField['form_add_edit_field_start_value'] . ');?>" '
+                                    . $this->_formAddEditConfigInputAtributos
+                                    . ' />';
 
 
                                 $this->_formAddEditConfigInputMask .= '$(".j-mask-' . $_row['field_name'] . '").mask("00/00/0000", {placeholder: "__/__/____"});' . PHP_EOL;
@@ -2384,75 +2424,71 @@ class ProjectbuildCrud extends MY_Controller {
                                 }
                             }
                             /**
-                             * 
+                             *
                              *  END INPUT DATE
                              */
-                            /* ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================ */
-
-
+                            /** ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================ */
 
 
                             /**
-                             * 
+                             *
                              * ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
                              * INPUT TIME
                              * ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
-                             * 
+                             *
                              */
                             if ($_param_formAddEditField['form_add_edit_field_type'] == 'time') {
 
                                 $this->_formAddEditConfigInputAtributos .= 'autocomplete="off"';
 
                                 $this->_formAddEditConfigInput = '<div class="input-group clockpicker">'
-                                        . '<input '
-                                        . 'type="text" '
-                                        . 'name="' . $_row['field_name'] . '" '
-                                        . 'class="form-control j-mask-' . $_row['field_name'] . '" '
-                                        . 'placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" '
-                                        . 'value="<?=set_value("' . $_row['field_name'] . '") ? : (isset($dados->' . $_row['field_name'] . ') ? bz_formatdata($dados->' . $_row['field_name'] . ',"H:i")  : ' . $_param_formAddEditField['form_add_edit_field_start_value'] . ');?>" '
-                                        . $this->_formAddEditConfigInputAtributos
-                                        . ' />'
-                                        . '<span class="input-group-addon">'
-                                        . '     <span class="glyphicon glyphicon-time"></span>'
-                                        . '</span>'
-                                        . '</div>';
+                                    . '<input '
+                                    . 'type="text" '
+                                    . 'name="' . $_row['field_name'] . '" '
+                                    . 'class="form-control j-mask-' . $_row['field_name'] . '" '
+                                    . 'placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" '
+                                    . 'value="<?=set_value("' . $_row['field_name'] . '") ? : (isset($dados->' . $_row['field_name'] . ') ? bz_formatdata($dados->' . $_row['field_name'] . ',"H:i")  : ' . $_param_formAddEditField['form_add_edit_field_start_value'] . ');?>" '
+                                    . $this->_formAddEditConfigInputAtributos
+                                    . ' />'
+                                    . '<span class="input-group-addon">'
+                                    . '     <span class="glyphicon glyphicon-time"></span>'
+                                    . '</span>'
+                                    . '</div>';
 
                                 $this->_formAddEditConfigInputMask .= '$(".j-mask-' . $_row['field_name'] . '").mask("00:00", {placeholder: "__:__"});' . PHP_EOL;
                             }
                             /**
-                             * 
+                             *
                              *  END INPUT TIME
                              */
-                            /* ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================ */
-
-
+                            /** ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================ */
 
 
                             /**
-                             * 
+                             *
                              * ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
                              * INPUT DATETIME
                              * ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
-                             * 
+                             *
                              */
                             if ($_param_formAddEditField['form_add_edit_field_type'] == 'datetime') {
 
                                 $this->_formAddEditConfigInputAtributos .= 'autocomplete="off"';
 
                                 $this->_formAddEditConfigInput = '<div class="input-group">'
-                                        . '<input '
-                                        . 'type="text" '
-                                        . 'name="' . $_row['field_name'] . '" '
-                                        . 'class="form-control datetimepicker j-mask-datahora-ptbr j-mask-' . $_row['field_name'] . '" '
-                                        . 'data-format="dd/mm/yyyy HH:mm:ss PP"'
-                                        . 'placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" '
-                                        . 'value="<?=set_value("' . $_row['field_name'] . '") ? : (isset($dados->' . $_row['field_name'] . ') ? bz_formatdata($dados->' . $_row['field_name'] . ',"d/m/Y H:i:s")  : ' . $_param_formAddEditField['form_add_edit_field_start_value'] . ');?>" '
-                                        . $this->_formAddEditConfigInputAtributos
-                                        . ' />'
-                                        . '<span class="input-group-addon">'
-                                        . '     <span class="glyphicon glyphicon-calendar"></span>'
-                                        . '</span>'
-                                        . '</div>';
+                                    . '<input '
+                                    . 'type="text" '
+                                    . 'name="' . $_row['field_name'] . '" '
+                                    . 'class="form-control datetimepicker j-mask-datahora-ptbr j-mask-' . $_row['field_name'] . '" '
+                                    . 'data-format="dd/mm/yyyy HH:mm:ss PP"'
+                                    . 'placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" '
+                                    . 'value="<?=set_value("' . $_row['field_name'] . '") ? : (isset($dados->' . $_row['field_name'] . ') ? bz_formatdata($dados->' . $_row['field_name'] . ',"d/m/Y H:i:s")  : ' . $_param_formAddEditField['form_add_edit_field_start_value'] . ');?>" '
+                                    . $this->_formAddEditConfigInputAtributos
+                                    . ' />'
+                                    . '<span class="input-group-addon">'
+                                    . '     <span class="glyphicon glyphicon-calendar"></span>'
+                                    . '</span>'
+                                    . '</div>';
 
 
                                 $this->_formAddEditConfigInputMask .= '$(".j-mask-' . $_row['field_name'] . '").mask("00/00/0000 00:00", {placeholder: "__/__/____ __:__"});' . PHP_EOL;
@@ -2465,64 +2501,60 @@ class ProjectbuildCrud extends MY_Controller {
                                 }
                             }
                             /**
-                             * 
+                             *
                              *  END INPUT DATETIME
                              */
-                            /* ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================ */
-
-
+                            /** ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================ */
 
 
                             /**
-                             * 
+                             *
                              * ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
                              * INPUT INT NUMBER
                              * ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
-                             * 
+                             *
                              */
                             if ($_param_formAddEditField['form_add_edit_field_type'] == 'number') {
 
                                 $this->_formAddEditConfigInputAtributos .= 'autocomplete="off"';
 
                                 $this->_formAddEditConfigInput = '<input '
-                                        . 'type="number" '
-                                        . 'name="' . $_row['field_name'] . '" '
-                                        . 'class="form-control" placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" '
-                                        . 'value="<?=set_value("' . $_row['field_name'] . '") ? : (isset($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : ' . $_param_formAddEditField['form_add_edit_field_start_value'] . ');?>" '
-                                        . 'pattern="[0-9]" '
-                                        . 'onkeypress="return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 0" '
-                                        . $this->_formAddEditConfigInputAtributos
-                                        . ' />';
+                                    . 'type="number" '
+                                    . 'name="' . $_row['field_name'] . '" '
+                                    . 'class="form-control" placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" '
+                                    . 'value="<?=set_value("' . $_row['field_name'] . '") ? : (isset($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : ' . $_param_formAddEditField['form_add_edit_field_start_value'] . ');?>" '
+                                    . 'pattern="[0-9]" '
+                                    . 'onkeypress="return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 0" '
+                                    . $this->_formAddEditConfigInputAtributos
+                                    . ' />';
                             }
                             /**
-                             * 
+                             *
                              *  END INPUT INT NUMBER
                              */
-                            /* ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================ */
-
-
+                            /** ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================ */
 
 
                             /**
-                             * 
+                             *
                              * ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
                              * INPUT DECIMAL NUMBER
                              * ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
-                             * 
+                             *
                              */
                             if ($_param_formAddEditField['form_add_edit_field_type'] == 'number-decimal') {
 
                                 $this->_formAddEditConfigInputAtributos .= 'autocomplete="off"';
 
                                 $this->_formAddEditConfigInput = '<input '
-                                        . 'type="text" '
-                                        . 'name="' . $_row['field_name'] . '" '
-                                        . 'class="form-control ' . ((!empty($_param_formAddEditField['form_add_edit_field_mask'])) ? 'j-mask-' . $_row['field_name'] : '') . '" '
-                                        . 'placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" '
-                                        . 'value="<?=set_value("' . $_row['field_name'] . '") ? : (isset($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : ' . $_param_formAddEditField['form_add_edit_field_start_value'] . ');?>" '
-                                        . 'onkeypress="return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 44 || event.charCode == 0" '
-                                        . $this->_formAddEditConfigInputAtributos
-                                        . ' />';
+                                    . 'type="text" '
+                                    . 'name="' . $_row['field_name'] . '" '
+                                    . 'class="form-control ' . ((!empty($_param_formAddEditField['form_add_edit_field_mask'])) ? 'j-mask-' . $_row['field_name'] : '') . '" '
+                                    . 'placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" '
+                                    . 'value="<?=set_value("' . $_row['field_name'] . '") ? : (isset($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : ' . $_param_formAddEditField['form_add_edit_field_start_value'] . ');?>" '
+                                    . 'onkeypress="return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 44 || event.charCode == 0" '
+                                    . $this->_formAddEditConfigInputAtributos
+                                    . ' />';
 
                                 if ($_enableFormAddConvertDadosToDatabase)
                                     $this->_formAddConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = str_replace(",",".",str_replace(".","",$_dados["' . $_row['field_name'] . '"]));';
@@ -2532,34 +2564,32 @@ class ProjectbuildCrud extends MY_Controller {
                                 }
                             }
                             /**
-                             * 
+                             *
                              *  END INPUT INT NUMBER
                              */
-                            /* ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================ */
-
-
+                            /** ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================ */
 
 
                             /**
-                             * 
+                             *
                              * ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
                              * INPUT MONETARY VALUE
                              * ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
-                             * 
+                             *
                              */
                             if ($_param_formAddEditField['form_add_edit_field_type'] == 'moeda') {
 
                                 $this->_formAddEditConfigInputAtributos .= 'autocomplete="off"';
 
                                 $this->_formAddEditConfigInput = '<input '
-                                        . 'type="text" '
-                                        . 'name="' . $_row['field_name'] . '" '
-                                        . 'class="form-control j-mask-moeda-ptbr" '
-                                        . 'placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" '
-                                        . 'value="<?=set_value("' . $_row['field_name'] . '") ? : (isset($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : ' . $_param_formAddEditField['form_add_edit_field_start_value'] . ');?>" '
-                                        . 'onkeypress="return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 44 || event.charCode == 0" '
-                                        . $this->_formAddEditConfigInputAtributos
-                                        . ' />';
+                                    . 'type="text" '
+                                    . 'name="' . $_row['field_name'] . '" '
+                                    . 'class="form-control j-mask-moeda-ptbr" '
+                                    . 'placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" '
+                                    . 'value="<?=set_value("' . $_row['field_name'] . '") ? : (isset($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : ' . $_param_formAddEditField['form_add_edit_field_start_value'] . ');?>" '
+                                    . 'onkeypress="return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 44 || event.charCode == 0" '
+                                    . $this->_formAddEditConfigInputAtributos
+                                    . ' />';
 
                                 if ($_enableFormAddConvertDadosToDatabase)
                                     $this->_formAddConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = str_replace(",",".",str_replace(".","",$_dados["' . $_row['field_name'] . '"]));';
@@ -2569,72 +2599,68 @@ class ProjectbuildCrud extends MY_Controller {
                                 }
                             }
                             /**
-                             * 
+                             *
                              *  END INPUT MONETARY VALUE
                              */
-                            /* ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================ */
-
-
+                            /** ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================ */
 
 
                             /**
-                             * 
+                             *
                              * ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
                              * INPUT PASSWORD
                              * ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
-                             * 
+                             *
                              */
                             if ($_param_formAddEditField['form_add_edit_field_type'] == 'senha') {
 
                                 $this->_formAddEditConfigInputAtributos .= 'autocomplete="off"';
 
                                 $this->_formAddEditConfigInput = '<div class="input-group">'
-                                        . '<span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>'
-                                        . '<input type="password" '
-                                        . 'name="' . $_row['field_name'] . '" '
-                                        . 'class="form-control" placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" '
-                                        . 'value="<?= set_value ("' . $_row['field_name'] . '", isset ($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : set_value ("' . $_row['field_name'] . '")); ?>" '
-                                        . $this->_formAddEditConfigInputAtributos
-                                        . ' />'
-                                        . '</div>';
+                                    . '<span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>'
+                                    . '<input type="password" '
+                                    . 'name="' . $_row['field_name'] . '" '
+                                    . 'class="form-control" placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" '
+                                    . 'value="<?= set_value ("' . $_row['field_name'] . '", isset ($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : set_value ("' . $_row['field_name'] . '")); ?>" '
+                                    . $this->_formAddEditConfigInputAtributos
+                                    . ' />'
+                                    . '</div>';
                             }
                             /**
-                             * 
+                             *
                              *  END INPUT PASSWORD
                              */
-                            /* ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================ */
-
-
+                            /** ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================ */
 
 
                             /**
-                             * 
+                             *
                              * ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
                              * INPUT CPF
                              * ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
-                             * 
+                             *
                              */
                             if ($_param_formAddEditField['form_add_edit_field_type'] == 'doc-cpf') {
 
                                 $this->_formAddEditConfigInputAtributos .= 'autocomplete="off"';
 
-                                /* MONTA O CAMPO */
+                                /** MONTA O CAMPO */
                                 $this->_formAddEditConfigInput = '<input '
-                                        . 'type="text" '
-                                        . 'name="' . $_row['field_name'] . '" '
-                                        . 'class="form-control j-mask-' . $_row['field_name'] . '" '
-                                        . 'value="<?=set_value("' . $_row['field_name'] . '") ? : (isset($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : ' . $_param_formAddEditField['form_add_edit_field_start_value'] . ');?>" '
-                                        . $this->_formAddEditConfigInputAtributos
-                                        . ' />';
+                                    . 'type="text" '
+                                    . 'name="' . $_row['field_name'] . '" '
+                                    . 'class="form-control j-mask-' . $_row['field_name'] . '" '
+                                    . 'value="<?=set_value("' . $_row['field_name'] . '") ? : (isset($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : ' . $_param_formAddEditField['form_add_edit_field_start_value'] . ');?>" '
+                                    . $this->_formAddEditConfigInputAtributos
+                                    . ' />';
 
 
                                 $this->_formAddEditConfigInputMask .= '$(".j-mask-' . $_row['field_name'] . '").mask("000.000.000-00", {placeholder: "000.000.000-00"});' . PHP_EOL;
 
-                                /* CONVERTE DADOS TO DB */
+                                /** CONVERTE DADOS TO DB */
                                 $this->_formAddConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = str_replace([".","-"], "", $_dados["' . $_row['field_name'] . '"]);' . PHP_EOL;
                                 $this->_formEditConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = str_replace([".","-"], "", $_dados["' . $_row['field_name'] . '"]);' . PHP_EOL;
 
-                                /* VALIDAÇÃO */
+                                /** VALIDAÇÃO */
                                 if (empty($this->_formAddEditConfigInputValidationAtributos)) {
                                     $this->_formAddEditConfigInputValidationAtributos .= 'valid_cpf';
                                 } else {
@@ -2642,41 +2668,39 @@ class ProjectbuildCrud extends MY_Controller {
                                 }
                             }
                             /**
-                             * 
+                             *
                              *  END INPUT CPF
                              */
-                            /* ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================ */
-
-
+                            /** ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================ */
 
 
                             /**
-                             * 
+                             *
                              * ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
                              * INPUT CNPJ
                              * ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
-                             * 
+                             *
                              */
                             if ($_param_formAddEditField['form_add_edit_field_type'] == 'doc-cnpj') {
 
                                 $this->_formAddEditConfigInputAtributos .= 'autocomplete="off"';
 
-                                /* MONTA O CAMPO */
+                                /** MONTA O CAMPO */
                                 $this->_formAddEditConfigInput = '<input '
-                                        . 'type="text" '
-                                        . 'name="' . $_row['field_name'] . '" '
-                                        . 'class="form-control j-mask-' . $_row['field_name'] . '" '
-                                        . 'value="<?=set_value("' . $_row['field_name'] . '") ? : (isset($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : ' . $_param_formAddEditField['form_add_edit_field_start_value'] . ');?>" '
-                                        . $this->_formAddEditConfigInputAtributos
-                                        . ' />';
+                                    . 'type="text" '
+                                    . 'name="' . $_row['field_name'] . '" '
+                                    . 'class="form-control j-mask-' . $_row['field_name'] . '" '
+                                    . 'value="<?=set_value("' . $_row['field_name'] . '") ? : (isset($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : ' . $_param_formAddEditField['form_add_edit_field_start_value'] . ');?>" '
+                                    . $this->_formAddEditConfigInputAtributos
+                                    . ' />';
 
                                 $this->_formAddEditConfigInputMask .= '$(".j-mask-' . $_row['field_name'] . '").mask("00.000.000/0000-00", {placeholder: "00.000.000/0000-00"});' . PHP_EOL;
 
-                                /* CONVERTE DADOS TO DB */
+                                /** CONVERTE DADOS TO DB */
                                 $this->_formAddConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = str_replace([".","-","/"], "", $_dados["' . $_row['field_name'] . '"]);' . PHP_EOL;
                                 $this->_formEditConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = str_replace([".","-","/"], "", $_dados["' . $_row['field_name'] . '"]);' . PHP_EOL;
 
-                                /* VALIDAÇÃO */
+                                /** VALIDAÇÃO */
                                 if (empty($this->_formAddEditConfigInputValidationAtributos)) {
                                     $this->_formAddEditConfigInputValidationAtributos .= 'valid_cnpj';
                                 } else {
@@ -2684,20 +2708,18 @@ class ProjectbuildCrud extends MY_Controller {
                                 }
                             }
                             /**
-                             * 
+                             *
                              *  END INPUT CNPJ
                              */
-                            /* ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================ */
-
-
+                            /** ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================ */
 
 
                             /**
-                             * 
+                             *
                              * ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
                              * INPUT UPLOAD IMAGE
                              * ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
-                             * 
+                             *
                              */
                             if ($_param_formAddEditField['form_add_edit_field_type'] == 'upload-imagem') {
 
@@ -2705,127 +2727,126 @@ class ProjectbuildCrud extends MY_Controller {
 
                                 $this->task['multiUploadImagem'] = ((!empty($_param_formAddEditField['form_add_edit_active_multi_upload_imagem']) && $_param_formAddEditField['form_add_edit_active_multi_upload_imagem'] == 'on') ? 1 : 0);
 
-                                /* $this->_formAddEditConfigInput = '<input type="file" name="' . $_row['field_name'] . '" class="form-control-file margin-bottom-10" placeholder="" value="<?= set_value ("' . $_row['field_name'] . '", isset ($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : set_value ("' . $_row['field_name'] . '")); ?>"  />'; */
+                                /** $this->_formAddEditConfigInput = '<input type="file" name="' . $_row['field_name'] . '" class="form-control-file margin-bottom-10" placeholder="" value="<?= set_value ("' . $_row['field_name'] . '", isset ($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : set_value ("' . $_row['field_name'] . '")); ?>"  />'; */
 
                                 if ($this->task['multiUploadImagem']) {
 
 
                                     $this->_formAddEditConfigInput = '<input type="file" name="' . $_row['field_name'] . '[]" class="form-control-file margin-bottom-10" placeholder="" value="<?= set_value ("' . $_row['field_name'] . '", isset ($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : set_value ("' . $_row['field_name'] . '")); ?>" accept="' . $_fileExtension . '"  multiple/>' . PHP_EOL
-                                            . '<?php if ($this->uri->segment (2) == "edit" && !empty($dados->' . $_row['field_name'] . ')){ ?>' . PHP_EOL
-                                            . ''
-                                            . '     <?php $images = json_decode ($dados->' . $_row['field_name'] . '); ?>' . PHP_EOL
-                                            . '     <?php $galleryID = mc_random_number (); ?>' . PHP_EOL
-                                            . ''
-                                            . '     <?php foreach ($images as $image){ ?>' . PHP_EOL
-                                            . '         <?php $_linkImg = base_url () . ___CONF_UPLOAD_DIR___ . ___CONF_UPLOAD_IMAGE_DIR___ . "' . $_param_formAddEditField['form_add_edit_field_upload_imagem_folder'] . '/" . $image; ?>'
-                                            . ''
-                                            . '         <div class="pull-left margin-bottom-5 margin-right-10">' . PHP_EOL
-                                            . '             <a class="" href="<?= $_linkImg; ?>" rel="lightbox[\' <?= $galleryID ?> \']">' . PHP_EOL
-                                            . '                 <img class="img-thumbnail" style="width:150px; height: 100px; object-fit: cover;" src="<?= $_linkImg; ?>">' . PHP_EOL
-                                            . '             </a>' . PHP_EOL
-                                            . '             <div class="text-right text-normal mouse-cursor-pointer margin-right-5 j-btn-del-image" style="font-size:0.8em" data-image="<?= $image; ?>" data-id="<?= $dados->id; ?>">Excluir Imagem<i class="fa fa-trash text-normal margin-left-5"></i></div>' . PHP_EOL
-                                            . '         </div>' . PHP_EOL
-                                            . '     <?php } ?>' . PHP_EOL
-                                            . ''
-                                            . '<?php }else{ ?>' . PHP_EOL
-                                            . ''
-                                            . '<?php } ?>' . PHP_EOL;
+                                        . '<?php if ($this->uri->segment (2) == "edit" && !empty($dados->' . $_row['field_name'] . ')){ ?>' . PHP_EOL
+                                        . ''
+                                        . '     <?php $images = json_decode ($dados->' . $_row['field_name'] . '); ?>' . PHP_EOL
+                                        . '     <?php $galleryID = mc_random_number (); ?>' . PHP_EOL
+                                        . ''
+                                        . '     <?php foreach ($images as $image){ ?>' . PHP_EOL
+                                        . '         <?php $_linkImg = base_url () . ___CONF_UPLOAD_DIR___ . ___CONF_UPLOAD_IMAGE_DIR___ . "' . $_param_formAddEditField['form_add_edit_field_upload_imagem_folder'] . '/" . $image; ?>'
+                                        . ''
+                                        . '         <div class="pull-left margin-bottom-5 margin-right-10">' . PHP_EOL
+                                        . '             <a class="" href="<?= $_linkImg; ?>" rel="lightbox[\' <?= $galleryID ?> \']">' . PHP_EOL
+                                        . '                 <img class="img-thumbnail" style="width:150px; height: 100px; object-fit: cover;" src="<?= $_linkImg; ?>">' . PHP_EOL
+                                        . '             </a>' . PHP_EOL
+                                        . '             <div class="text-right text-normal mouse-cursor-pointer margin-right-5 j-btn-del-image" style="font-size:0.8em" data-image="<?= $image; ?>" data-id="<?= $dados->id; ?>">Excluir Imagem<i class="fa fa-trash text-normal margin-left-5"></i></div>' . PHP_EOL
+                                        . '         </div>' . PHP_EOL
+                                        . '     <?php } ?>' . PHP_EOL
+                                        . ''
+                                        . '<?php }else{ ?>' . PHP_EOL
+                                        . ''
+                                        . '<?php } ?>' . PHP_EOL;
 
 
                                     if ($_enableFormAddConvertDadosToDatabase) {
                                         $this->_formAddConvertDadosToDatabase .= ""
-                                                . "if( \$this->task['uploaded_image']==TRUE && !empty(\$this->task['files_uploaded']) ){" . PHP_EOL
-                                                . "     \$_dados['" . $_row['field_name'] . "'] = json_encode(\$this->task['files_uploaded']);" . PHP_EOL
-                                                . "}" . PHP_EOL
-                                                . "";
+                                            . "if( \$this->task['uploaded_image']==TRUE && !empty(\$this->task['files_uploaded']) ){" . PHP_EOL
+                                            . "     \$_dados['" . $_row['field_name'] . "'] = json_encode(\$this->task['files_uploaded']);" . PHP_EOL
+                                            . "}" . PHP_EOL
+                                            . "";
                                     }
 
 
-
                                     $this->_controller_metodos_php .= ""
-                                            . "/**" . PHP_EOL
-                                            . " * DELETE IMAGE" . PHP_EOL
-                                            . " */" . PHP_EOL
-                                            . ""
-                                            . "public function del_image() {" . PHP_EOL
-                                            . "     /* CERTIFICA SE O ACESSO A ESTA FUNCTION REALMENTE ESTÁ SENDO FEITO POR AJAX. */" . PHP_EOL
-                                            . "     bz_check_is_ajax_request();" . PHP_EOL
-                                            . ""
-                                            . "     if (\$this->input->post('data')) {" . PHP_EOL
-                                            . "         \$_data = \$this->input->post('data');" . PHP_EOL
-                                            . "         \$_imageDel = \$_data['image'];" . PHP_EOL
-                                            . "         \$_IdImageDel = \$_data['id'];" . PHP_EOL
-                                            . "         \$_pathImage = '';" . PHP_EOL
-                                            . ""
-                                            . "         \$_data = \$this->read->exec(\$this->table_formaddedit_name, 'WHERE id=' . \$_IdImageDel)->row()->" . $_row['field_name'] . ";" . PHP_EOL
-                                            . "         \$_data = json_decode(\$_data);" . PHP_EOL
-                                            . "";
+                                        . "/**" . PHP_EOL
+                                        . " * DELETE IMAGE" . PHP_EOL
+                                        . " */" . PHP_EOL
+                                        . ""
+                                        . "public function del_image() {" . PHP_EOL
+                                        . "     /** CERTIFICA SE O ACESSO A ESTA FUNCTION REALMENTE ESTÁ SENDO FEITO POR AJAX. */" . PHP_EOL
+                                        . "     bz_check_is_ajax_request();" . PHP_EOL
+                                        . ""
+                                        . "     if (\$this->input->post('data')) {" . PHP_EOL
+                                        . "         \$_data = \$this->input->post('data');" . PHP_EOL
+                                        . "         \$_imageDel = \$_data['image'];" . PHP_EOL
+                                        . "         \$_IdImageDel = \$_data['id'];" . PHP_EOL
+                                        . "         \$_pathImage = '';" . PHP_EOL
+                                        . ""
+                                        . "         \$_data = \$this->read->exec(\$this->table_formaddedit_name, 'WHERE id=' . \$_IdImageDel)->row()->" . $_row['field_name'] . ";" . PHP_EOL
+                                        . "         \$_data = json_decode(\$_data);" . PHP_EOL
+                                        . "";
 
                                     if (!empty($_param_formAddEditField['form_add_edit_field_required']) && $_param_formAddEditField['form_add_edit_field_required'] == 'on') {
                                         $this->_controller_metodos_php .= ""
-                                                . "if (count(\$_data) < 2) {" . PHP_EOL
-                                                . "     \$json['message']['triggernotifi']['mensagem'] = 'Campo Obrigatório. Imagem não pode ser deletada.';" . PHP_EOL
-                                                . "     \$json['message']['triggernotifi']['tipo'] = 'error';" . PHP_EOL
-                                                . "     \$json['data'] = 'ERRO';" . PHP_EOL
-                                                . ""
-                                                . "     echo json_encode(\$json);" . PHP_EOL
-                                                . ""
-                                                . "     exit;" . PHP_EOL
-                                                . "}" . PHP_EOL
-                                                . "";
+                                            . "if (count(\$_data) < 2) {" . PHP_EOL
+                                            . "     \$json['message']['triggernotifi']['mensagem'] = 'Campo Obrigatório. Imagem não pode ser deletada.';" . PHP_EOL
+                                            . "     \$json['message']['triggernotifi']['tipo'] = 'error';" . PHP_EOL
+                                            . "     \$json['data'] = 'ERRO';" . PHP_EOL
+                                            . ""
+                                            . "     echo json_encode(\$json);" . PHP_EOL
+                                            . ""
+                                            . "     exit;" . PHP_EOL
+                                            . "}" . PHP_EOL
+                                            . "";
                                     }
 
                                     $this->_controller_metodos_php .= ""
-                                            . "         foreach (\$_data as \$key => \$image) {" . PHP_EOL
-                                            . "             if (\$image == \$_imageDel) {" . PHP_EOL
-                                            . "                 unset(\$_data[\$key]);" . PHP_EOL
-                                            . "             }" . PHP_EOL
-                                            . "         }" . PHP_EOL
-                                            . ""
-                                            . "         \$_data = array_values(\$_data);" . PHP_EOL
-                                            . ""
-                                            . "         \$_data = json_encode(\$_data);" . PHP_EOL
-                                            . ""
-                                            . "         \$_resultDelDB = \$this->update->exec(\$this->table_formaddedit_name, ['" . $_row['field_name'] . "' => \$_data], 'WHERE id=' . \$_IdImageDel);" . PHP_EOL
-                                            . ""
-                                            . "         if (\$_resultDelDB) {" . PHP_EOL
-                                            . "             bz_delete_file(\$_imageDel, bz_absolute_path() . ___CONF_UPLOAD_DIR___ . ___CONF_UPLOAD_IMAGE_DIR___ . '" . $_param_formAddEditField['form_add_edit_field_upload_imagem_folder'] . "/');" . PHP_EOL
-                                            . "             \$json['message']['triggernotifi']['mensagem'] = 'Imagem excluida com sucesso.';" . PHP_EOL
-                                            . "             \$json['message']['triggernotifi']['tipo'] = 'success';" . PHP_EOL
-                                            . "             \$json['data'] = 'OK';" . PHP_EOL
-                                            . "         } else {" . PHP_EOL
-                                            . "             \$json['message']['triggernotifi']['mensagem'] = 'Erro ao excluir imagem.';" . PHP_EOL
-                                            . "             \$json['message']['triggernotifi']['tipo'] = 'error';" . PHP_EOL
-                                            . "             \$json['data'] = 'ERRO';" . PHP_EOL
-                                            . "         }" . PHP_EOL
-                                            . ""
-                                            . "         echo json_encode(\$json);" . PHP_EOL
-                                            . ""
-                                            . "     }" . PHP_EOL
-                                            . "}" . PHP_EOL
-                                            . "/* END DELETE IMAGE */" . PHP_EOL;
+                                        . "         foreach (\$_data as \$key => \$image) {" . PHP_EOL
+                                        . "             if (\$image == \$_imageDel) {" . PHP_EOL
+                                        . "                 unset(\$_data[\$key]);" . PHP_EOL
+                                        . "             }" . PHP_EOL
+                                        . "         }" . PHP_EOL
+                                        . ""
+                                        . "         \$_data = array_values(\$_data);" . PHP_EOL
+                                        . ""
+                                        . "         \$_data = json_encode(\$_data);" . PHP_EOL
+                                        . ""
+                                        . "         \$_resultDelDB = \$this->update->exec(\$this->table_formaddedit_name, ['" . $_row['field_name'] . "' => \$_data], 'WHERE id=' . \$_IdImageDel);" . PHP_EOL
+                                        . ""
+                                        . "         if (\$_resultDelDB) {" . PHP_EOL
+                                        . "             bz_delete_file(\$_imageDel, bz_absolute_path() . ___CONF_UPLOAD_DIR___ . ___CONF_UPLOAD_IMAGE_DIR___ . '" . $_param_formAddEditField['form_add_edit_field_upload_imagem_folder'] . "/');" . PHP_EOL
+                                        . "             \$json['message']['triggernotifi']['mensagem'] = 'Imagem excluida com sucesso.';" . PHP_EOL
+                                        . "             \$json['message']['triggernotifi']['tipo'] = 'success';" . PHP_EOL
+                                        . "             \$json['data'] = 'OK';" . PHP_EOL
+                                        . "         } else {" . PHP_EOL
+                                        . "             \$json['message']['triggernotifi']['mensagem'] = 'Erro ao excluir imagem.';" . PHP_EOL
+                                        . "             \$json['message']['triggernotifi']['tipo'] = 'error';" . PHP_EOL
+                                        . "             \$json['data'] = 'ERRO';" . PHP_EOL
+                                        . "         }" . PHP_EOL
+                                        . ""
+                                        . "         echo json_encode(\$json);" . PHP_EOL
+                                        . ""
+                                        . "     }" . PHP_EOL
+                                        . "}" . PHP_EOL
+                                        . "/** END DELETE IMAGE */" . PHP_EOL;
 
                                     /**/
                                 } else {
 
                                     $this->_formAddEditConfigInput = '<input type="file" name="' . $_row['field_name'] . '" class="form-control-file margin-bottom-10" placeholder="" value="<?= set_value("' . $_row['field_name'] . '", isset ($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : set_value ("' . $_row['field_name'] . '")); ?>" accept="' . $_fileExtension . '"  />' . PHP_EOL
-                                            . '<?php if ($this->uri->segment(2) == "edit" && !empty($dados->' . $_row['field_name'] . ')){ ?>' . PHP_EOL
-                                            . '     <div class="col-xs-12 col-sm-12 col-md-3 col-lg-2"><?= mc_image_thumb_modal ($dados->' . $_row['field_name'] . ', "' . $_param_formAddEditField['form_add_edit_field_upload_imagem_folder'] . '"); ?></div>' . PHP_EOL
-                                            /* . '     <div class="btn-ver-imagem margin-top-5 margin-bottom-5" style="font-size: 0.8em"><i class="fa fa-fw fa-camera"></i> <?= anchor (___CONF_UPLOAD_DIR___ . ___CONF_UPLOAD_IMAGE_DIR___ . "' . $_param_formAddEditField['form_add_edit_field_upload_imagem_folder'] . ($_param_formAddEditField['form_add_edit_field_upload_imagem_folder'] ? DIRECTORY_SEPARATOR : '') . '" . set_value ("imagem_nome", isset ($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : set_value ("' . $_row['field_name'] . '")), "xxxxVer Imagem", "data-lightbox=\'' . $_row['field_name'] . '\'"); ?></div>' . PHP_EOL */
-                                            . '     <input type="hidden" name="' . $_row['field_name'] . '" value="<?= $dados->' . $_row['field_name'] . '; ?>">' . PHP_EOL
-                                            . '     ' . PHP_EOL
-                                            . '<?php }else{ ?>' . PHP_EOL
-                                            . '     ' . PHP_EOL
-                                            . '     ' . PHP_EOL
-                                            . '     ' . PHP_EOL
-                                            . '<?php } ?>' . PHP_EOL;
+                                        . '<?php if ($this->uri->segment(2) == "edit" && !empty($dados->' . $_row['field_name'] . ')){ ?>' . PHP_EOL
+                                        . '     <div class="col-xs-12 col-sm-12 col-md-3 col-lg-2"><?= mc_image_thumb_modal ($dados->' . $_row['field_name'] . ', "' . $_param_formAddEditField['form_add_edit_field_upload_imagem_folder'] . '"); ?></div>' . PHP_EOL
+                                        /** . '     <div class="btn-ver-imagem margin-top-5 margin-bottom-5" style="font-size: 0.8em"><i class="fa fa-fw fa-camera"></i> <?= anchor (___CONF_UPLOAD_DIR___ . ___CONF_UPLOAD_IMAGE_DIR___ . "' . $_param_formAddEditField['form_add_edit_field_upload_imagem_folder'] . ($_param_formAddEditField['form_add_edit_field_upload_imagem_folder'] ? DIRECTORY_SEPARATOR : '') . '" . set_value ("imagem_nome", isset ($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : set_value ("' . $_row['field_name'] . '")), "xxxxVer Imagem", "data-lightbox=\'' . $_row['field_name'] . '\'"); ?></div>' . PHP_EOL */
+                                        . '     <input type="hidden" name="' . $_row['field_name'] . '" value="<?= $dados->' . $_row['field_name'] . '; ?>">' . PHP_EOL
+                                        . '     ' . PHP_EOL
+                                        . '<?php }else{ ?>' . PHP_EOL
+                                        . '     ' . PHP_EOL
+                                        . '     ' . PHP_EOL
+                                        . '     ' . PHP_EOL
+                                        . '<?php } ?>' . PHP_EOL;
 
 
                                     $this->_formAddConvertDadosToDatabase .= "" . PHP_EOL
-                                            . "if( !empty(\$this->task['result_upload']['file_name']) ){" . PHP_EOL
-                                            . "     \$_dados['" . $_row['field_name'] . "'] = \$this->task['result_upload']['file_name'];" . PHP_EOL
-                                            . "}" . PHP_EOL
-                                            . "";
+                                        . "if( !empty(\$this->task['result_upload']['file_name']) ){" . PHP_EOL
+                                        . "     \$_dados['" . $_row['field_name'] . "'] = \$this->task['result_upload']['file_name'];" . PHP_EOL
+                                        . "}" . PHP_EOL
+                                        . "";
                                 }
 
 
@@ -2833,118 +2854,109 @@ class ProjectbuildCrud extends MY_Controller {
 
                                 if ($this->task['multiUploadImagem']) {
                                     $this->_controller_DeleteFileFunction .= ""
-                                            . "/**" . PHP_EOL
-                                            . " * DELETA IMAGEM" . PHP_EOL
-                                            . " */" . PHP_EOL
-                                            . ""
-                                            . "foreach (\$_dados as \$_value){" . PHP_EOL
-                                            . "     \$_files = mc_findByIdDataDB(\$this->table_formaddedit_name, \$_value)->row()->" . $_row['field_name'] . ";" . PHP_EOL
-                                            . "     \$_files = json_decode(\$_files);" . PHP_EOL
-                                            . ""
-                                            . "     foreach (\$_files as \$_file){" . PHP_EOL
-                                            . "         bz_delete_file(\$_file, bz_absolute_path() . ___CONF_UPLOAD_DIR___ . ___CONF_UPLOAD_IMAGE_DIR___ . '" . ($_param_formAddEditField['form_add_edit_field_upload_imagem_folder'] ? $_param_formAddEditField['form_add_edit_field_upload_imagem_folder'] . DIRECTORY_SEPARATOR : $_param_formAddEditField['form_add_edit_field_upload_imagem_folder']) . "');" . PHP_EOL
-                                            . "     }" . PHP_EOL
-                                            . ""
-                                            . "}" . PHP_EOL
-                                            . ""
-                                            . "/* END DELETA IMAGEM */" . PHP_EOL
-                                            . ""
-                                            . "";
+                                        . "/**" . PHP_EOL
+                                        . " * DELETA IMAGEM" . PHP_EOL
+                                        . " */" . PHP_EOL
+                                        . ""
+                                        . "foreach (\$_dados as \$_value){" . PHP_EOL
+                                        . "     \$_files = mc_findByIdDataDB(\$this->table_formaddedit_name, \$_value)->row()->" . $_row['field_name'] . ";" . PHP_EOL
+                                        . "     \$_files = json_decode(\$_files);" . PHP_EOL
+                                        . ""
+                                        . "     foreach (\$_files as \$_file){" . PHP_EOL
+                                        . "         bz_delete_file(\$_file, bz_absolute_path() . ___CONF_UPLOAD_DIR___ . ___CONF_UPLOAD_IMAGE_DIR___ . '" . ($_param_formAddEditField['form_add_edit_field_upload_imagem_folder'] ? $_param_formAddEditField['form_add_edit_field_upload_imagem_folder'] . DIRECTORY_SEPARATOR : $_param_formAddEditField['form_add_edit_field_upload_imagem_folder']) . "');" . PHP_EOL
+                                        . "     }" . PHP_EOL
+                                        . ""
+                                        . "}" . PHP_EOL
+                                        . ""
+                                        . "/** END DELETA IMAGEM */" . PHP_EOL
+                                        . ""
+                                        . "";
                                 } else {
 
                                     $this->_controller_DeleteFileFunction .= "/**" . PHP_EOL
-                                            . " * DELETA IMAGEM" . PHP_EOL
-                                            . " */" . PHP_EOL
-                                            . "foreach (\$_dados as \$_value){" . PHP_EOL
-                                            . "     \$_file_name = mc_findByIdDataDB(\$this->table_formaddedit_name, \$_value)->row()->" . $_row['field_name'] . ";" . PHP_EOL
-                                            . "     bz_delete_file(\$_file_name, bz_absolute_path() . ___CONF_UPLOAD_DIR___ . ___CONF_UPLOAD_IMAGE_DIR___ . '" . ($_param_formAddEditField['form_add_edit_field_upload_imagem_folder'] ? $_param_formAddEditField['form_add_edit_field_upload_imagem_folder'] . DIRECTORY_SEPARATOR : $_param_formAddEditField['form_add_edit_field_upload_imagem_folder']) . "');" . PHP_EOL
-                                            . "}" . PHP_EOL
-                                            . "/* END DELETA IMAGEM */";
+                                        . " * DELETA IMAGEM" . PHP_EOL
+                                        . " */" . PHP_EOL
+                                        . "foreach (\$_dados as \$_value){" . PHP_EOL
+                                        . "     \$_file_name = mc_findByIdDataDB(\$this->table_formaddedit_name, \$_value)->row()->" . $_row['field_name'] . ";" . PHP_EOL
+                                        . "     bz_delete_file(\$_file_name, bz_absolute_path() . ___CONF_UPLOAD_DIR___ . ___CONF_UPLOAD_IMAGE_DIR___ . '" . ($_param_formAddEditField['form_add_edit_field_upload_imagem_folder'] ? $_param_formAddEditField['form_add_edit_field_upload_imagem_folder'] . DIRECTORY_SEPARATOR : $_param_formAddEditField['form_add_edit_field_upload_imagem_folder']) . "');" . PHP_EOL
+                                        . "}" . PHP_EOL
+                                        . "/** END DELETA IMAGEM */";
 
                                     $this->_form_edit_unset_fields .= "/**" . PHP_EOL . PHP_EOL
-                                            . " * DELETA IMAGEM" . PHP_EOL
-                                            . " */" . PHP_EOL
-                                            . "if (isset(\$this->task['uploaded_image']) && \$this->task['uploaded_image']) {" . PHP_EOL
-                                            . "     \$_file_name = mc_findByIdDataDB(\$this->table_formaddedit_name, \$_id)->row()->" . $_row['field_name'] . ";" . PHP_EOL
-                                            . "     bz_delete_file(\$_file_name, bz_absolute_path() . ___CONF_UPLOAD_DIR___ . ___CONF_UPLOAD_IMAGE_DIR___ . '" . ($_param_formAddEditField['form_add_edit_field_upload_imagem_folder'] ? $_param_formAddEditField['form_add_edit_field_upload_imagem_folder'] . DIRECTORY_SEPARATOR : $_param_formAddEditField['form_add_edit_field_upload_imagem_folder']) . "');" . PHP_EOL
-                                            . "}" . PHP_EOL
-                                            . "/* END DELETA IMAGEM */";
+                                        . " * DELETA IMAGEM" . PHP_EOL
+                                        . " */" . PHP_EOL
+                                        . "if (isset(\$this->task['uploaded_image']) && \$this->task['uploaded_image']) {" . PHP_EOL
+                                        . "     \$_file_name = mc_findByIdDataDB(\$this->table_formaddedit_name, \$_id)->row()->" . $_row['field_name'] . ";" . PHP_EOL
+                                        . "     bz_delete_file(\$_file_name, bz_absolute_path() . ___CONF_UPLOAD_DIR___ . ___CONF_UPLOAD_IMAGE_DIR___ . '" . ($_param_formAddEditField['form_add_edit_field_upload_imagem_folder'] ? $_param_formAddEditField['form_add_edit_field_upload_imagem_folder'] . DIRECTORY_SEPARATOR : $_param_formAddEditField['form_add_edit_field_upload_imagem_folder']) . "');" . PHP_EOL
+                                        . "}" . PHP_EOL
+                                        . "/** END DELETA IMAGEM */";
                                 }
                             }
                             /**
-                             * 
+                             *
                              *  END INPUT UPLOAD IMAGE
                              */
-                            /* ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================ */
-
-
-
-
+                            /** ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================ */
 
 
                             /**
-                             * 
+                             *
                              * ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
                              * INPUT UPLOAD FILE
                              * ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
-                             * 
+                             *
                              */
                             if ($_param_formAddEditField['form_add_edit_field_type'] == 'upload-arquivo') {
 
                                 $_fileExtension = '.' . str_replace('|', ',.', $_param_formAddEditField['form_add_edit_field_upload_arquivo_extensao_permitida']);
 
                                 $this->_formAddEditConfigInput = '<input type="file" name="' . $_row['field_name'] . '" class="form-control-file margin-bottom-10" placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" value="<?= set_value ("' . $_row['field_name'] . '", isset ($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : set_value ("' . $_row['field_name'] . '")); ?>" ' . $this->_formAddEditConfigInputAtributos . ' accept="' . $_fileExtension . '" />' . PHP_EOL
-                                        . '<?php if ($this->uri->segment (2) == "edit"){ ?>' . PHP_EOL
-                                        . '     <input type="hidden" name="' . $_row['field_name'] . '" value="<?= $dados->' . $_row['field_name'] . '; ?>" />' . PHP_EOL
-                                        . '     <div id="" class=""><?= mc_file_link_download ($dados->' . $_row['field_name'] . ', "' . $_param_formAddEditField['form_add_edit_field_upload_arquivo_folder'] . '"); ?></div>' . PHP_EOL
-                                        . '<?php }else{ ?>' . PHP_EOL
-                                        . '     ' . PHP_EOL
-                                        . '     ' . PHP_EOL
-                                        . '     ' . PHP_EOL
-                                        . '<?php } ?>' . PHP_EOL;
+                                    . '<?php if ($this->uri->segment (2) == "edit"){ ?>' . PHP_EOL
+                                    . '     <input type="hidden" name="' . $_row['field_name'] . '" value="<?= $dados->' . $_row['field_name'] . '; ?>" />' . PHP_EOL
+                                    . '     <div id="" class=""><?= mc_file_link_download ($dados->' . $_row['field_name'] . ', "' . $_param_formAddEditField['form_add_edit_field_upload_arquivo_folder'] . '"); ?></div>' . PHP_EOL
+                                    . '<?php }else{ ?>' . PHP_EOL
+                                    . '     ' . PHP_EOL
+                                    . '     ' . PHP_EOL
+                                    . '     ' . PHP_EOL
+                                    . '<?php } ?>' . PHP_EOL;
 
                                 $this->_formAddConvertDadosToDatabase .= "if( !empty(\$this->task['result_upload']['file_name']) ){" . PHP_EOL
-                                        . "     \$_dados['" . $_row['field_name'] . "'] = \$this->task['result_upload']['file_name'];" . PHP_EOL
-                                        . "}";
+                                    . "     \$_dados['" . $_row['field_name'] . "'] = \$this->task['result_upload']['file_name'];" . PHP_EOL
+                                    . "}";
 
                                 $this->_formEditConvertDadosToDatabase .= $this->_formAddConvertDadosToDatabase;
 
                                 $this->_controller_DeleteFileFunction = "/**" . PHP_EOL
-                                        . " * DELETA ARQUIVO" . PHP_EOL
-                                        . " */" . PHP_EOL
-                                        . "foreach (\$_dados as \$_value){" . PHP_EOL
-                                        . "     \$_file_name = mc_findByIdDataDB(\$this->table_formaddedit_name, \$_value)->row()->" . $_row['field_name'] . ";" . PHP_EOL
-                                        . "     bz_delete_file(\$_file_name, bz_absolute_path() . ___CONF_UPLOAD_DIR___ . ___CONF_UPLOAD_FILE_DIR___ . '" . ($_param_formAddEditField['form_add_edit_field_upload_arquivo_folder'] ? $_param_formAddEditField['form_add_edit_field_upload_arquivo_folder'] . DIRECTORY_SEPARATOR : $_param_formAddEditField['form_add_edit_field_upload_arquivo_folder']) . "');" . PHP_EOL
-                                        . "}" . PHP_EOL
-                                        . "/* END DELETA ARQUIVO */";
+                                    . " * DELETA ARQUIVO" . PHP_EOL
+                                    . " */" . PHP_EOL
+                                    . "foreach (\$_dados as \$_value){" . PHP_EOL
+                                    . "     \$_file_name = mc_findByIdDataDB(\$this->table_formaddedit_name, \$_value)->row()->" . $_row['field_name'] . ";" . PHP_EOL
+                                    . "     bz_delete_file(\$_file_name, bz_absolute_path() . ___CONF_UPLOAD_DIR___ . ___CONF_UPLOAD_FILE_DIR___ . '" . ($_param_formAddEditField['form_add_edit_field_upload_arquivo_folder'] ? $_param_formAddEditField['form_add_edit_field_upload_arquivo_folder'] . DIRECTORY_SEPARATOR : $_param_formAddEditField['form_add_edit_field_upload_arquivo_folder']) . "');" . PHP_EOL
+                                    . "}" . PHP_EOL
+                                    . "/** END DELETA ARQUIVO */";
 
                                 $this->_form_edit_unset_fields .= "/**" . PHP_EOL . PHP_EOL
-                                        . " * DELETA ARQUIVO" . PHP_EOL
-                                        . " */" . PHP_EOL
-                                        . "if (isset(\$this->task['uploaded_file']) && \$this->task['uploaded_file']) {" . PHP_EOL
-                                        . "     \$_file_name = mc_findByIdDataDB(\$this->table_formaddedit_name, \$_id)->row()->" . $_row['field_name'] . ";" . PHP_EOL
-                                        . "     bz_delete_file(\$_file_name, bz_absolute_path() . ___CONF_UPLOAD_DIR___ . ___CONF_UPLOAD_FILE_DIR___ . '" . ($_param_formAddEditField['form_add_edit_field_upload_arquivo_folder'] ? $_param_formAddEditField['form_add_edit_field_upload_arquivo_folder'] . DIRECTORY_SEPARATOR : $_param_formAddEditField['form_add_edit_field_upload_arquivo_folder']) . "');" . PHP_EOL
-                                        . "}" . PHP_EOL
-                                        . "/* END DELETA ARQUIVO */";
+                                    . " * DELETA ARQUIVO" . PHP_EOL
+                                    . " */" . PHP_EOL
+                                    . "if (isset(\$this->task['uploaded_file']) && \$this->task['uploaded_file']) {" . PHP_EOL
+                                    . "     \$_file_name = mc_findByIdDataDB(\$this->table_formaddedit_name, \$_id)->row()->" . $_row['field_name'] . ";" . PHP_EOL
+                                    . "     bz_delete_file(\$_file_name, bz_absolute_path() . ___CONF_UPLOAD_DIR___ . ___CONF_UPLOAD_FILE_DIR___ . '" . ($_param_formAddEditField['form_add_edit_field_upload_arquivo_folder'] ? $_param_formAddEditField['form_add_edit_field_upload_arquivo_folder'] . DIRECTORY_SEPARATOR : $_param_formAddEditField['form_add_edit_field_upload_arquivo_folder']) . "');" . PHP_EOL
+                                    . "}" . PHP_EOL
+                                    . "/** END DELETA ARQUIVO */";
                             }
                             /**
-                             * 
+                             *
                              *  END INPUT UPLOAD FILE
                              */
-                            /* ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================ */
-
-
-
-
-
+                            /** ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================ */
 
 
                             /**
-                             * 
+                             *
                              * ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
                              * SELECT MANUAL
                              * ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
-                             * 
+                             *
                              */
                             if ($_param_formAddEditField['form_add_edit_field_type'] == 'select-manual') {
 
@@ -2954,8 +2966,8 @@ class ProjectbuildCrud extends MY_Controller {
                                 foreach ($_selectValue as $_selectValue_value) {
                                     $_s = explode('|', $_selectValue_value);
                                     $this->_formAddEditConfigInput .= '<option '
-                                            . 'value="' . $_s[0] . '" <?= (set_value ("' . $_row['field_name'] . '", !empty ($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : set_value ("' . $_row['field_name'] . '")) == "' . $_s[0] . '") ? "selected" : (' . $_param_formAddEditField['form_add_edit_field_start_value'] . ' == "' . $_s[0] . '") ? "selected" : null; ?> />'
-                                            . $_s[1] . '</option>' . PHP_EOL;
+                                        . 'value="' . $_s[0] . '" <?= (set_value ("' . $_row['field_name'] . '", !empty ($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : set_value ("' . $_row['field_name'] . '")) == "' . $_s[0] . '") ? "selected" : (' . $_param_formAddEditField['form_add_edit_field_start_value'] . ' == "' . $_s[0] . '") ? "selected" : null; ?> />'
+                                        . $_s[1] . '</option>' . PHP_EOL;
                                 }
 
 //                                $this->_formAddEditConfigInput = str_replace('""', '"', $this->_formAddEditConfigInput);
@@ -2970,23 +2982,18 @@ class ProjectbuildCrud extends MY_Controller {
                                 $this->_formAddEditConfigInput = $_s;
                             }
                             /**
-                             * 
+                             *
                              *  END SELECT MANUAL
                              */
-                            /* ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================ */
-
-
-
-
-
+                            /** ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================ */
 
 
                             /**
-                             * 
+                             *
                              * ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
                              * SELECT DINAMIC
                              * ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
-                             * 
+                             *
                              */
                             if ($_param_formAddEditField['form_add_edit_field_type'] == 'select-dinamic') {
 
@@ -3021,23 +3028,18 @@ class ProjectbuildCrud extends MY_Controller {
                                 }
                             }
                             /**
-                             * 
+                             *
                              *  END SELECT DINAMIC
                              */
-                            /* ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================ */
-
-
-
-
-
+                            /** ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================ */
 
 
                             /**
-                             * 
+                             *
                              * ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
                              * SELECT MANUAL MULTIPLE
                              * ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
-                             * 
+                             *
                              */
                             if ($_param_formAddEditField['form_add_edit_field_type'] == 'select-multiple-manual') {
 
@@ -3073,23 +3075,18 @@ class ProjectbuildCrud extends MY_Controller {
                                 }
                             }
                             /**
-                             * 
+                             *
                              *  END SELECT MANUAL MULTIPLE
                              */
-                            /* ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================ */
-
-
-
-
-
+                            /** ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================ */
 
 
                             /**
-                             * 
+                             *
                              * ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
                              * SELECT DIMAMIC MULTIPLE
                              * ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
-                             * 
+                             *
                              */
                             if ($_param_formAddEditField['form_add_edit_field_type'] == 'select-multiple-dinamic') {
 
@@ -3143,23 +3140,18 @@ class ProjectbuildCrud extends MY_Controller {
                                 }
                             }
                             /**
-                             * 
+                             *
                              *  END SELECT DINAMIC MULTIPLE
                              */
-                            /* ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================ */
-
-
-
-
-
+                            /** ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================ */
 
 
                             /**
-                             * 
+                             *
                              * ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
                              * RADIO BUTTON MANUAL
                              * ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
-                             * 
+                             *
                              */
                             if ($_param_formAddEditField['form_add_edit_field_type'] == 'radio-manual') {
 
@@ -3169,10 +3161,10 @@ class ProjectbuildCrud extends MY_Controller {
                                 foreach ($_radioValue as $_radioValue_value) {
                                     $_r = explode('|', $_radioValue_value);
                                     $this->_formAddEditConfigInput .= '<input '
-                                            . 'class="flat-green" type="radio" '
-                                            . 'name="' . $_row['field_name'] . '" '
-                                            . 'value="' . $_r[0] . '" <?= ($_radiobutton_manual_' . $_row['field_name'] . '=="' . $_r[0] . '") ? "checked" : (' . $_param_formAddEditField['form_add_edit_field_start_value'] . ' == "' . $_r[0] . '") ? "checked" : null; ?> '
-                                            . $this->_formAddEditConfigInputAtributos . '/> ' . $_r[1] . '<i class="margin-right-10"></i>' . PHP_EOL;
+                                        . 'class="flat-green" type="radio" '
+                                        . 'name="' . $_row['field_name'] . '" '
+                                        . 'value="' . $_r[0] . '" <?= ($_radiobutton_manual_' . $_row['field_name'] . '=="' . $_r[0] . '") ? "checked" : (' . $_param_formAddEditField['form_add_edit_field_start_value'] . ' == "' . $_r[0] . '") ? "checked" : null; ?> '
+                                        . $this->_formAddEditConfigInputAtributos . '/> ' . $_r[1] . '<i class="margin-right-10"></i>' . PHP_EOL;
                                 }
 
                                 $_r = "" . PHP_EOL;
@@ -3190,23 +3182,18 @@ class ProjectbuildCrud extends MY_Controller {
                                 $this->_formAddEditConfigInput = $_r;
                             }
                             /**
-                             * 
+                             *
                              *  END RADIO BUTTON MANUAL
                              */
-                            /* ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================ */
-
-
-
-
-
+                            /** ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================ */
 
 
                             /**
-                             * 
+                             *
                              * ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
                              * RADIO BUTTON DINAMIC
                              * ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
-                             * 
+                             *
                              */
                             if ($_param_formAddEditField['form_add_edit_field_type'] == 'radio-dinamic') {
 
@@ -3241,7 +3228,7 @@ class ProjectbuildCrud extends MY_Controller {
                                         $_r .= "\$_list_" . $_row['field_name'] . "[ \$_r_" . $_row['field_name'] . "[ \$_keyOptions_" . $_row['field_name'] . "[0] ] ] = \$_r_" . $_row['field_name'] . "[ \$_keyOptions_" . $_row['field_name'] . "[1] ];" . PHP_EOL;
                                         $_r .= "?>" . PHP_EOL;
 
-                                        /* $_r .= '<input class="flat-green" type="radio" name="' . $_row['field_name'] . '" value="<?=$_r_' . $_row['field_name'] . '[ $_keyOptions_' . $_row['field_name'] . '[0] ];?>" <?= ($_radiobutton_dinamic_' . $_row['field_name'] . '==$_r_' . $_row['field_name'] . '[ $_keyOptions_' . $_row['field_name'] . '[0] ]) ? "checked" : ($_r_' . $_row['field_name'] . '[ $_keyOptions_' . $_row['field_name'] . '[0] ] == ' . $_param_formAddEditField['form_add_edit_field_start_value'] . ') ? "checked" : null ;?> /> <?=$_r_' . $_row['field_name'] . '[ $_keyOptions_' . $_row['field_name'] . '[1] ];?><i class="margin-right-10"></i>' . PHP_EOL; */
+                                        /** $_r .= '<input class="flat-green" type="radio" name="' . $_row['field_name'] . '" value="<?=$_r_' . $_row['field_name'] . '[ $_keyOptions_' . $_row['field_name'] . '[0] ];?>" <?= ($_radiobutton_dinamic_' . $_row['field_name'] . '==$_r_' . $_row['field_name'] . '[ $_keyOptions_' . $_row['field_name'] . '[0] ]) ? "checked" : ($_r_' . $_row['field_name'] . '[ $_keyOptions_' . $_row['field_name'] . '[0] ] == ' . $_param_formAddEditField['form_add_edit_field_start_value'] . ') ? "checked" : null ;?> /> <?=$_r_' . $_row['field_name'] . '[ $_keyOptions_' . $_row['field_name'] . '[1] ];?><i class="margin-right-10"></i>' . PHP_EOL; */
                                         $_r .= '<input class="flat-green" type="radio" name="' . $_row['field_name'] . '" value="<?=$_r_' . $_row['field_name'] . '[ $_keyOptions_' . $_row['field_name'] . '[0] ];?>" <?= set_radio("' . $_row['field_name'] . '", $_r_' . $_row['field_name'] . '[ $_keyOptions_' . $_row['field_name'] . '[0] ], ($_radiobutton_dinamic_' . $_row['field_name'] . ' == $_r_' . $_row['field_name'] . '[ $_keyOptions_' . $_row['field_name'] . '[0] ] ? TRUE : ($_r_' . $_row['field_name'] . '[ $_keyOptions_' . $_row['field_name'] . '[0] ] == ' . $_param_formAddEditField['form_add_edit_field_start_value'] . ') ? TRUE : FALSE)); ?> /><?= $_r_' . $_row['field_name'] . '[ $_keyOptions_' . $_row['field_name'] . '[1] ]; ?><i class="margin-right-10"></i>' . PHP_EOL;
 
                                         $_r .= "<?php" . PHP_EOL;
@@ -3254,23 +3241,18 @@ class ProjectbuildCrud extends MY_Controller {
                                 }
                             }
                             /**
-                             * 
+                             *
                              *  END RADIO BUTTON DINAMIC
                              */
-                            /* ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================ */
-
-
-
-
-
+                            /** ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================ */
 
 
                             /**
-                             * 
+                             *
                              * ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
                              * CHECKBOX MANUAL
                              * ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
-                             * 
+                             *
                              */
                             if ($_param_formAddEditField['form_add_edit_field_type'] == 'checkbox-manual') {
 
@@ -3296,23 +3278,18 @@ class ProjectbuildCrud extends MY_Controller {
                                 }
                             }
                             /**
-                             * 
+                             *
                              *  END CHECKBOX MANUAL
                              */
-                            /* ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================ */
-
-
-
-
-
+                            /** ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================ */
 
 
                             /**
-                             * 
+                             *
                              * ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
                              * CHECKBOX MULTIPLE MANUAL
                              * ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
-                             * 
+                             *
                              */
                             if ($_param_formAddEditField['form_add_edit_field_type'] == 'checkbox-multiple-manual') {
 
@@ -3347,23 +3324,18 @@ class ProjectbuildCrud extends MY_Controller {
                                 }
                             }
                             /**
-                             * 
+                             *
                              *  END MULTIPLE MANUAL
                              */
-                            /* ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================ */
-
-
-
-
-
+                            /** ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================ */
 
 
                             /**
-                             * 
+                             *
                              * ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
                              * CHECKBOX MULTIPLE MANUAL
                              * ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
-                             * 
+                             *
                              */
                             if ($_param_formAddEditField['form_add_edit_field_type'] == 'checkbox-multiple-dinamic') {
 
@@ -3425,32 +3397,27 @@ class ProjectbuildCrud extends MY_Controller {
                                      * SE O BOTÃO DE SOMENTE LEITURA DO CAMPO DO FORM ESTIVER LIGADO
                                      */
                                     if (!empty($_param_formAddEditField['form_add_edit_field_read_only']) && $_param_formAddEditField['form_add_edit_field_read_only_in_form'] == 'todos') {
-                                        
+
                                     } elseif (!empty($_param_formAddEditField['form_add_edit_field_read_only']) && $_param_formAddEditField['form_add_edit_field_read_only_in_form'] == 'formadd') {
-                                        
+
                                     } elseif (!empty($_param_formAddEditField['form_add_edit_field_read_only']) && $_param_formAddEditField['form_add_edit_field_read_only_in_form'] == 'formedit') {
-                                        
+
                                     }
                                 }
                             }
                             /**
-                             * 
+                             *
                              *  END MULTIPLE MANUAL
                              */
-                            /* ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================ */
-
-
-
-
-
+                            /** ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================ */
 
 
                             /**
-                             * 
+                             *
                              * ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
                              * MONTA O CAMPO GERADO COM AS LABELS E ATTRIBUTOS
                              * ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
-                             * 
+                             *
                              */
                             if (!empty($this->_formAddEditConfigInput)) {
 
@@ -3465,19 +3432,19 @@ class ProjectbuildCrud extends MY_Controller {
                                             $this->_formAddEditConfigInputClassCSS .= ' hidden ';
                                         }
 
-                                        /* $this->_formAddEditConfigInput = '';
-                                          $this->_formAddEditFields .= '<input type="hidden" name="' . $_row['field_name'] . '" value="<?=set_value("' . $_row['field_name'] . '",!empty($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : set_value("' . $_row['field_name'] . '"));?>" />' . PHP_EOL; */
+                                        /** $this->_formAddEditConfigInput = '';
+                                         * $this->_formAddEditFields .= '<input type="hidden" name="' . $_row['field_name'] . '" value="<?=set_value("' . $_row['field_name'] . '",!empty($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : set_value("' . $_row['field_name'] . '"));?>" />' . PHP_EOL; */
                                     }
                                 }
 
-                                /* JQUERY MASK */
+                                /** JQUERY MASK */
                                 if (isset($_param_formAddEditField['form_add_edit_field_mask'])) {
                                     if (!empty($_param_formAddEditField['form_add_edit_field_mask'])) {
                                         $this->_formAddEditConfigInputMask .= '$(".j-mask-' . $_row['field_name'] . '").mask("' . $_param_formAddEditField['form_add_edit_field_mask'] . '", ' . html_entity_decode(base64_decode($_param_formAddEditField['form_add_edit_field_mask_complement']), ENT_QUOTES) . ');' . PHP_EOL;
                                     }
                                 }
 
-                                /* VALDATION ATRIBUTO EMAIL */
+                                /** VALDATION ATRIBUTO EMAIL */
                                 if ($_param_formAddEditField['form_add_edit_field_type'] == 'email') {
                                     if (empty($this->_formAddEditConfigInputValidationAtributos)) {
                                         $this->_formAddEditConfigInputValidationAtributos .= 'valid_email|strtolower';
@@ -3486,7 +3453,7 @@ class ProjectbuildCrud extends MY_Controller {
                                     }
                                 }
 
-                                /* VALDATION ATRIBUTO NÚMERO INTEIRO */
+                                /** VALDATION ATRIBUTO NÚMERO INTEIRO */
                                 if ($_param_formAddEditField['form_add_edit_field_type'] == 'number') {
                                     if (empty($this->_formAddEditConfigInputValidationAtributos)) {
                                         $this->_formAddEditConfigInputValidationAtributos .= 'numeric|integer';
@@ -3495,7 +3462,7 @@ class ProjectbuildCrud extends MY_Controller {
                                     }
                                 }
 
-                                /* VALDATION ATRIBUTO UPEPRCASE / LOWERCASE */
+                                /** VALDATION ATRIBUTO UPEPRCASE / LOWERCASE */
                                 if (isset($_param_formAddEditField['form_add_edit_field_convert_letter_into'])) {
                                     if ($_param_formAddEditField['form_add_edit_field_convert_letter_into'] == 'text-uppercase') {
                                         if (empty($this->_formAddEditConfigInputValidationAtributos)) {
@@ -3512,7 +3479,7 @@ class ProjectbuildCrud extends MY_Controller {
                                     }
                                 }
 
-                                /* VALDATION ONLY NUMBERS, ONLY CHARACTERS OR ALL CHARACTERS */
+                                /** VALDATION ONLY NUMBERS, ONLY CHARACTERS OR ALL CHARACTERS */
                                 if (isset($_param_formAddEditField['form_add_edit_field_type_characters'])) {
                                     if ($_param_formAddEditField['form_add_edit_field_type_characters'] == 'only_numbers') {
                                         if (empty($this->_formAddEditConfigInputValidationAtributos)) {
@@ -3535,7 +3502,7 @@ class ProjectbuildCrud extends MY_Controller {
                                     }
                                 }
 
-                                /* VALDATION ATRIBUTO FIELD MIN LENGHT */
+                                /** VALDATION ATRIBUTO FIELD MIN LENGHT */
                                 if (isset($_param_formAddEditField['form_add_edit_field_min_length'])) {
                                     if ($_param_formAddEditField['form_add_edit_field_min_length'] > 0) {
                                         if (empty($this->_formAddEditConfigInputValidationAtributos)) {
@@ -3546,7 +3513,7 @@ class ProjectbuildCrud extends MY_Controller {
                                     }
                                 }
 
-                                /* VALDATION ATRIBUTO FIELD MAX LENGHT */
+                                /** VALDATION ATRIBUTO FIELD MAX LENGHT */
                                 if (isset($_param_formAddEditField['form_add_edit_field_max_length'])) {
                                     if ($_param_formAddEditField['form_add_edit_field_max_length'] > 0) {
                                         if (empty($this->_formAddEditConfigInputValidationAtributos)) {
@@ -3557,7 +3524,7 @@ class ProjectbuildCrud extends MY_Controller {
                                     }
                                 }
 
-                                /* VALDATION DATE */
+                                /** VALDATION DATE */
                                 if (isset($_param_formAddEditField['form_add_edit_field_type'])) {
                                     if ($_param_formAddEditField['form_add_edit_field_type'] == "date") {
                                         if (empty($this->_formAddEditConfigInputValidationAtributos)) {
@@ -3570,7 +3537,7 @@ class ProjectbuildCrud extends MY_Controller {
 
                                 if (!empty($_param_formAddEditField['form_add_edit_field_required'])) {
 
-                                    /* INPUT REQUIRED */
+                                    /** INPUT REQUIRED */
                                     if ($_param_formAddEditField['form_add_edit_field_required'] == 'on') {
 
                                         if (!empty($_param_formAddEditField['form_add_edit_field_read_only'])) {
@@ -3582,32 +3549,35 @@ class ProjectbuildCrud extends MY_Controller {
                                                     $_classDisabledReadOnlyAsterisk = 'hide-all-form';
                                                     $this->_form_add_unset_fields .= 'unset($_dados["' . $_row['field_name'] . '"]);' . PHP_EOL;
                                                     $this->_form_edit_unset_fields .= 'unset($_dados["' . $_row['field_name'] . '"]);' . PHP_EOL;
+
                                                 } elseif ($_param_formAddEditField['form_add_edit_field_read_only_in_form'] == 'formadd') {
 
                                                     echo '<br>ADD' . '<br>';
                                                     $_classDisabledReadOnlyAsterisk = 'hide-formadd';
                                                     $this->_form_add_unset_fields .= 'unset($_dados["' . $_row['field_name'] . '"]);' . PHP_EOL;
+
                                                 } elseif ($_param_formAddEditField['form_add_edit_field_read_only_in_form'] == 'formedit') {
 
                                                     echo '<br>EDIT' . '<br>';
                                                     $_classDisabledReadOnlyAsterisk = 'hide-formedit';
                                                     $this->_form_edit_unset_fields .= 'unset($_dados["' . $_row['field_name'] . '"]);' . PHP_EOL;
+
                                                 }
                                             }
                                         }
 
 
                                         $this->_formAddEditFields .= ''
-                                                . '<?php $_error = form_error("' . $_row['field_name'] . '", "<small class=\'text-danger col-xs-12 bz-input-error\'>", "</small>"); ?>' . PHP_EOL
-                                                . '<div id="' . $_row['field_name'] . '" class="form-group has-feedback ' . $this->_formAddEditConfigInputClassCSS . '">' . PHP_EOL
-                                                . '<label for="' . $_row['field_name'] . '"><i class="fa fa-asterisk margin-right-5 text-error ' . $_classDisabledReadOnlyAsterisk . '" style="font-size: 0.7em;"></i>' . $_param_formAddEditField['form_add_edit_field_label'] . '</label>' . PHP_EOL
-                                                . '' . $this->_formAddEditConfigInput . '' . PHP_EOL
-                                                . '<?= $_error; ?>' . PHP_EOL
-                                                . ' </div>' . PHP_EOL
-                                                . '' . PHP_EOL . PHP_EOL . PHP_EOL;
+                                            . '<?php $_error = form_error("' . $_row['field_name'] . '", "<small class=\'text-danger col-xs-12 bz-input-error\'>", "</small>"); ?>' . PHP_EOL
+                                            . '<div id="' . $_row['field_name'] . '" class="form-group has-feedback ' . $this->_formAddEditConfigInputClassCSS . '">' . PHP_EOL
+                                            . '<label for="' . $_row['field_name'] . '"><i class="fa fa-asterisk margin-right-5 text-error ' . $_classDisabledReadOnlyAsterisk . '" style="font-size: 0.7em;"></i>' . $_param_formAddEditField['form_add_edit_field_label'] . '</label>' . PHP_EOL
+                                            . '' . $this->_formAddEditConfigInput . '' . PHP_EOL
+                                            . '<?= $_error; ?>' . PHP_EOL
+                                            . ' </div>' . PHP_EOL
+                                            . '' . PHP_EOL . PHP_EOL . PHP_EOL;
 
 
-                                        /* VALDATION ATRIBUTO REQUIRED */
+                                        /** VALDATION ATRIBUTO REQUIRED */
                                         if ($_param_formAddEditField['form_add_edit_field_type'] == 'checkbox-multiple-manual' || $_param_formAddEditField['form_add_edit_field_type'] == 'checkbox-multiple-dinamic' || $_param_formAddEditField['form_add_edit_field_type'] == 'select-multiple-manual' || $_param_formAddEditField['form_add_edit_field_type'] == 'select-dinamic' || $_param_formAddEditField['form_add_edit_field_type'] == 'select-multiple-dinamic' || $_param_formAddEditField['form_add_edit_field_type'] == 'radio-dinamic') {
 
                                             if (empty($this->_formAddEditConfigInputValidationAtributos)) {
@@ -3617,14 +3587,14 @@ class ProjectbuildCrud extends MY_Controller {
                                             }
 
                                             $this->_formAddEditConfigInputValidationCallback .= ""
-                                                    . ""
-                                                    . "/* VALIDAÇÃO POR CALLBACK DO CAMPO " . $_row["field_name"] . ". */" . PHP_EOL
-                                                    . "public function validation_required_" . $_row["field_name"] . "() {" . PHP_EOL
-                                                    . "     if (\$this->input->post('" . $_row["field_name"] . "')) return true;" . PHP_EOL
-                                                    . "         \$this->form_validation->set_message('validation_required_" . $_row["field_name"] . "', 'O campo <b>" . $_param_formAddEditField['form_add_edit_field_label'] . "</b> é obrigatório.');" . PHP_EOL
-                                                    . "         return false;" . PHP_EOL
-                                                    . "     }" . PHP_EOL
-                                                    . "/* END VALIDAÇÃO POR CALLBACK DO CAMPO " . $_row["field_name"] . ". */" . PHP_EOL . PHP_EOL . PHP_EOL;
+                                                . ""
+                                                . "/** VALIDAÇÃO POR CALLBACK DO CAMPO " . $_row["field_name"] . ". */" . PHP_EOL
+                                                . "public function validation_required_" . $_row["field_name"] . "() {" . PHP_EOL
+                                                . "     if (\$this->input->post('" . $_row["field_name"] . "')) return true;" . PHP_EOL
+                                                . "         \$this->form_validation->set_message('validation_required_" . $_row["field_name"] . "', 'O campo <b>" . $_param_formAddEditField['form_add_edit_field_label'] . "</b> é obrigatório.');" . PHP_EOL
+                                                . "         return false;" . PHP_EOL
+                                                . "     }" . PHP_EOL
+                                                . "/** END VALIDAÇÃO POR CALLBACK DO CAMPO " . $_row["field_name"] . ". */" . PHP_EOL . PHP_EOL . PHP_EOL;
                                         } else {
 
                                             /**
@@ -3664,163 +3634,163 @@ class ProjectbuildCrud extends MY_Controller {
                                                 if ($this->task['multiUploadImagem']) {
 
                                                     $this->_formAddEditConfigInputValidationCallback .= ""
-                                                            . "/* VALIDAÇÃO POR CALLBACK MULTI UPLOAD DE IMAGENS " . $_row["field_name"] . ". */" . PHP_EOL
-                                                            . "/* CAMPO OBRIGATÓRIO */" . PHP_EOL
-                                                            . ""
-                                                            . "public function validation_upload_images_" . $_row["field_name"] . "(\$_str = NULL, \$_id = NULL) {" . PHP_EOL
-                                                            . "     /**" . PHP_EOL
-                                                            . "      * VALIDAÇÃO DE UPLOAD DE ARQUIVOS" . PHP_EOL
-                                                            . "      */" . PHP_EOL
-                                                            . ""
-                                                            . "     /* REQUIRED */" . PHP_EOL
-                                                            . "     \$_count = 0;" . PHP_EOL
-                                                            . "     foreach (\$_FILES['" . $_row["field_name"] . "']['name'] as \$file){" . PHP_EOL
-                                                            . "         if (\$file) {" . PHP_EOL
-                                                            . "             \$_count++;" . PHP_EOL
-                                                            . "         }" . PHP_EOL
-                                                            . "     }" . PHP_EOL
-                                                            . "     if (\$_count == 0) {" . PHP_EOL
-                                                            . "         \$this->form_validation->set_message('validation_upload_images_" . $_row["field_name"] . "', 'Nenhuma imagem selecionada para ser enviada.');" . PHP_EOL
-                                                            . "         return false;" . PHP_EOL
-                                                            . "     }else if (\$_count > " . $_param_formAddEditField['form_add_edit_active_multi_upload_imagem_max_file'] . ") {" . PHP_EOL
-                                                            . "         \$this->form_validation->set_message('validation_upload_images_" . $_row["field_name"] . "', 'Quantidade de imagens selecionadas é maior que o permitido. Quantidade máxima permitida é de " . $_param_formAddEditField['form_add_edit_active_multi_upload_imagem_max_file'] . " imagens.');" . PHP_EOL
-                                                            . "         return false;" . PHP_EOL
-                                                            . "     }" . PHP_EOL
-                                                            . ""
-                                                            . "     /* END REQUIRED */" . PHP_EOL
-                                                            . ""
-                                                            . "     /* ONLY IMAGES FILE */" . PHP_EOL
-                                                            . "     \$_count = 0;" . PHP_EOL
-                                                            . "     \$_total = 0;" . PHP_EOL
-                                                            . "     foreach (\$_FILES['" . $_row["field_name"] . "']['type'] as \$type){" . PHP_EOL
-                                                            . "         \$_total++;" . PHP_EOL
-                                                            . "         if (strpos(\$type, 'image/') !== 0) {" . PHP_EOL
-                                                            . "             \$_count++;" . PHP_EOL
-                                                            . "         }" . PHP_EOL
-                                                            . "     }" . PHP_EOL
-                                                            . "     if (\$_count > 0) {" . PHP_EOL
-                                                            . "         if (\$_total == 1) {" . PHP_EOL
-                                                            . "             \$this->form_validation->set_message('validation_upload_images_" . $_row["field_name"] . "', 'Arquivo enviado não é um arquivo de imagem.');" . PHP_EOL
-                                                            . "         } else {" . PHP_EOL
-                                                            . "             \$this->form_validation->set_message('validation_upload_images_" . $_row["field_name"] . "', 'Algum arquivo enviado não é um arquivo de imagem.');" . PHP_EOL
-                                                            . "         }" . PHP_EOL
-                                                            . "         return false;" . PHP_EOL
-                                                            . "     }" . PHP_EOL
-                                                            . "     /* END ONLY IMAGES FILE */" . PHP_EOL
-                                                            . ""
-                                                            . "     /* SIZE FILE */" . PHP_EOL
-                                                            . "     \$_count = 0;" . PHP_EOL
-                                                            . "     \$_total = 0;" . PHP_EOL
-                                                            . "     \$_fizeFile = " . $_param_formAddEditField['form_add_edit_field_upload_imagem_tamanho_maximo'] . ";" . PHP_EOL
-                                                            . "     foreach (\$_FILES['" . $_row["field_name"] . "']['size'] as \$size){" . PHP_EOL
-                                                            . "         \$_total++;" . PHP_EOL
-                                                            . "         if ((\$size / 1000) > \$_fizeFile) {" . PHP_EOL
-                                                            . "             \$_count++;"
-                                                            . "         }" . PHP_EOL
-                                                            . "     }" . PHP_EOL
-                                                            . "     if (\$_count > 0) {" . PHP_EOL
-                                                            . "         if (\$_total == 1) {" . PHP_EOL
-                                                            . "             \$this->form_validation->set_message('validation_upload_images_" . $_row["field_name"] . "', 'Arquivo enviado tem tamanho maior que o permitido.');" . PHP_EOL
-                                                            . "         } else {" . PHP_EOL
-                                                            . "             \$this->form_validation->set_message('validation_upload_images_" . $_row["field_name"] . "', 'Algum arquivo enviado tem tamanho maior que o permitido.');" . PHP_EOL
-                                                            . "         }" . PHP_EOL
-                                                            . "         return false;" . PHP_EOL
-                                                            . "     }" . PHP_EOL
-                                                            . ""
-                                                            . "     /* END SIZE FILE */" . PHP_EOL
-                                                            . ""
-                                                            . "     /* END VALIDAÇÃO DE UPLOAD DE ARQUIVO */" . PHP_EOL
-                                                            . ""
-                                                            . ""
-                                                            . "     /* UPLOAD FILE */" . PHP_EOL
-                                                            . ""
-                                                            . "     \$_count = 0;" . PHP_EOL
-                                                            . "     \$_count = count(\$_FILES['" . $_row["field_name"] . "']['name']);" . PHP_EOL
-                                                            . "     \$_uploadFILES = \$_FILES;" . PHP_EOL
-                                                            . "     \$_filesUploaded = [];" . PHP_EOL
-                                                            . ""
-                                                            . "     for (\$i = 0; \$i < \$_count; \$i++) {" . PHP_EOL
-                                                            . ""
-                                                            . "         \$_FILES = [];" . PHP_EOL
-                                                            . "         \$_FILES['" . $_row["field_name"] . "']['name'] = \$_uploadFILES['" . $_row["field_name"] . "']['name'][\$i];" . PHP_EOL
-                                                            . "         \$_FILES['" . $_row["field_name"] . "']['type'] = \$_uploadFILES['" . $_row["field_name"] . "']['type'][\$i];" . PHP_EOL
-                                                            . "         \$_FILES['" . $_row["field_name"] . "']['tmp_name'] = \$_uploadFILES['" . $_row["field_name"] . "']['tmp_name'][\$i];" . PHP_EOL
-                                                            . "         \$_FILES['" . $_row["field_name"] . "']['error'] = \$_uploadFILES['" . $_row["field_name"] . "']['error'][\$i];" . PHP_EOL
-                                                            . "         \$_FILES['" . $_row["field_name"] . "']['size'] = \$_uploadFILES['" . $_row["field_name"] . "']['size'][\$i];" . PHP_EOL
-                                                            . ""
-                                                            . "     \$this->task['result_upload'] = bz_upload_file('" . $_row["field_name"] . "', ___CONF_UPLOAD_IMAGE_DIR___ . '" . $_param_formAddEditField['form_add_edit_field_upload_imagem_folder'] . "', '" . $_param_formAddEditField['form_add_edit_field_upload_imagem_extensao_permitida'] . "', '" . $_param_formAddEditField['form_add_edit_field_upload_imagem_tamanho_maximo'] . "', '" . $_param_formAddEditField['form_add_edit_field_upload_imagem_max_width'] . "', '" . $_param_formAddEditField['form_add_edit_field_upload_imagem_max_height'] . "');" . PHP_EOL
-                                                            . ""
-                                                            . "         if (isset(\$this->task['result_upload']['error'])) {" . PHP_EOL
-                                                            . "             \$_path_file = bz_absolute_path() . ___CONF_UPLOAD_DIR___ . ___CONF_UPLOAD_IMAGE_DIR___ . '" . ($_param_formAddEditField['form_add_edit_field_upload_imagem_folder'] ? $_param_formAddEditField['form_add_edit_field_upload_imagem_folder'] . DIRECTORY_SEPARATOR : $_param_formAddEditField['form_add_edit_field_upload_imagem_folder']) . "';" . PHP_EOL
-                                                            . "             \$_table_name = \$this->table_formaddedit_name;" . PHP_EOL
-                                                            . "             \$_field_name = '" . $_row["field_name"] . "';" . PHP_EOL
-                                                            . "             bz_delete_files_orphans(\$_path_file, \$_table_name, \$_field_name);" . PHP_EOL
-                                                            . ""
-                                                            . "             \$this->form_validation->set_message('validation_upload_images_" . $_row["field_name"] . "', \$this->task['result_upload']['error']['message']);" . PHP_EOL
-                                                            . "             return false;" . PHP_EOL
-                                                            . "         }" . PHP_EOL
-                                                            . ""
-                                                            . "         \$_filesUploaded[] = \$this->task['result_upload']['file_name'];" . PHP_EOL
-                                                            . ""
-                                                            . "     }" . PHP_EOL
-                                                            . ""
-                                                            . "     /* END UPLOAD FILE */" . PHP_EOL
-                                                            . ""
-                                                            . "     if (!empty(\$this->input->post('btn-editar')) && !empty(\$_id)) {" . PHP_EOL
-                                                            . "         \$_json_" . $_row["field_name"] . " = \$this->read->exec(\$this->table_formaddedit_name, 'WHERE id=' . \$_id)->row()->" . $_row["field_name"] . ";" . PHP_EOL
-                                                            . "         if (\$_json_" . $_row["field_name"] . ") {" . PHP_EOL
-                                                            . "             \$_json_" . $_row["field_name"] . " = json_decode(\$_json_" . $_row["field_name"] . ");" . PHP_EOL
-                                                            . "             \$this->task['files_uploaded'] = array_merge(\$_json_" . $_row["field_name"] . ", \$_filesUploaded);" . PHP_EOL
-                                                            . "         }" . PHP_EOL
-                                                            . "     } else {" . PHP_EOL
-                                                            . "         \$this->task['files_uploaded'] = \$_filesUploaded;" . PHP_EOL
-                                                            . "     }" . PHP_EOL
-                                                            . ""
-                                                            . "     \$this->task['uploaded_image'] = true;" . PHP_EOL
-                                                            . ""
-                                                            . "}" . PHP_EOL
-                                                            . "/* END VALIDAÇÃO POR CALLBACK MULTI UPLOAD DE IMAGENS " . $_row["field_name"] . ". */" . PHP_EOL . PHP_EOL . PHP_EOL;
+                                                        . "/** VALIDAÇÃO POR CALLBACK MULTI UPLOAD DE IMAGENS " . $_row["field_name"] . ". */" . PHP_EOL
+                                                        . "/** CAMPO OBRIGATÓRIO */" . PHP_EOL
+                                                        . ""
+                                                        . "public function validation_upload_images_" . $_row["field_name"] . "(\$_str = NULL, \$_id = NULL) {" . PHP_EOL
+                                                        . "     /**" . PHP_EOL
+                                                        . "      * VALIDAÇÃO DE UPLOAD DE ARQUIVOS" . PHP_EOL
+                                                        . "      */" . PHP_EOL
+                                                        . ""
+                                                        . "     /** REQUIRED */" . PHP_EOL
+                                                        . "     \$_count = 0;" . PHP_EOL
+                                                        . "     foreach (\$_FILES['" . $_row["field_name"] . "']['name'] as \$file){" . PHP_EOL
+                                                        . "         if (\$file) {" . PHP_EOL
+                                                        . "             \$_count++;" . PHP_EOL
+                                                        . "         }" . PHP_EOL
+                                                        . "     }" . PHP_EOL
+                                                        . "     if (\$_count == 0) {" . PHP_EOL
+                                                        . "         \$this->form_validation->set_message('validation_upload_images_" . $_row["field_name"] . "', 'Nenhuma imagem selecionada para ser enviada.');" . PHP_EOL
+                                                        . "         return false;" . PHP_EOL
+                                                        . "     }else if (\$_count > " . $_param_formAddEditField['form_add_edit_active_multi_upload_imagem_max_file'] . ") {" . PHP_EOL
+                                                        . "         \$this->form_validation->set_message('validation_upload_images_" . $_row["field_name"] . "', 'Quantidade de imagens selecionadas é maior que o permitido. Quantidade máxima permitida é de " . $_param_formAddEditField['form_add_edit_active_multi_upload_imagem_max_file'] . " imagens.');" . PHP_EOL
+                                                        . "         return false;" . PHP_EOL
+                                                        . "     }" . PHP_EOL
+                                                        . ""
+                                                        . "     /** END REQUIRED */" . PHP_EOL
+                                                        . ""
+                                                        . "     /** ONLY IMAGES FILE */" . PHP_EOL
+                                                        . "     \$_count = 0;" . PHP_EOL
+                                                        . "     \$_total = 0;" . PHP_EOL
+                                                        . "     foreach (\$_FILES['" . $_row["field_name"] . "']['type'] as \$type){" . PHP_EOL
+                                                        . "         \$_total++;" . PHP_EOL
+                                                        . "         if (strpos(\$type, 'image/') !== 0) {" . PHP_EOL
+                                                        . "             \$_count++;" . PHP_EOL
+                                                        . "         }" . PHP_EOL
+                                                        . "     }" . PHP_EOL
+                                                        . "     if (\$_count > 0) {" . PHP_EOL
+                                                        . "         if (\$_total == 1) {" . PHP_EOL
+                                                        . "             \$this->form_validation->set_message('validation_upload_images_" . $_row["field_name"] . "', 'Arquivo enviado não é um arquivo de imagem.');" . PHP_EOL
+                                                        . "         } else {" . PHP_EOL
+                                                        . "             \$this->form_validation->set_message('validation_upload_images_" . $_row["field_name"] . "', 'Algum arquivo enviado não é um arquivo de imagem.');" . PHP_EOL
+                                                        . "         }" . PHP_EOL
+                                                        . "         return false;" . PHP_EOL
+                                                        . "     }" . PHP_EOL
+                                                        . "     /** END ONLY IMAGES FILE */" . PHP_EOL
+                                                        . ""
+                                                        . "     /** SIZE FILE */" . PHP_EOL
+                                                        . "     \$_count = 0;" . PHP_EOL
+                                                        . "     \$_total = 0;" . PHP_EOL
+                                                        . "     \$_fizeFile = " . $_param_formAddEditField['form_add_edit_field_upload_imagem_tamanho_maximo'] . ";" . PHP_EOL
+                                                        . "     foreach (\$_FILES['" . $_row["field_name"] . "']['size'] as \$size){" . PHP_EOL
+                                                        . "         \$_total++;" . PHP_EOL
+                                                        . "         if ((\$size / 1000) > \$_fizeFile) {" . PHP_EOL
+                                                        . "             \$_count++;"
+                                                        . "         }" . PHP_EOL
+                                                        . "     }" . PHP_EOL
+                                                        . "     if (\$_count > 0) {" . PHP_EOL
+                                                        . "         if (\$_total == 1) {" . PHP_EOL
+                                                        . "             \$this->form_validation->set_message('validation_upload_images_" . $_row["field_name"] . "', 'Arquivo enviado tem tamanho maior que o permitido.');" . PHP_EOL
+                                                        . "         } else {" . PHP_EOL
+                                                        . "             \$this->form_validation->set_message('validation_upload_images_" . $_row["field_name"] . "', 'Algum arquivo enviado tem tamanho maior que o permitido.');" . PHP_EOL
+                                                        . "         }" . PHP_EOL
+                                                        . "         return false;" . PHP_EOL
+                                                        . "     }" . PHP_EOL
+                                                        . ""
+                                                        . "     /** END SIZE FILE */" . PHP_EOL
+                                                        . ""
+                                                        . "     /** END VALIDAÇÃO DE UPLOAD DE ARQUIVO */" . PHP_EOL
+                                                        . ""
+                                                        . ""
+                                                        . "     /** UPLOAD FILE */" . PHP_EOL
+                                                        . ""
+                                                        . "     \$_count = 0;" . PHP_EOL
+                                                        . "     \$_count = count(\$_FILES['" . $_row["field_name"] . "']['name']);" . PHP_EOL
+                                                        . "     \$_uploadFILES = \$_FILES;" . PHP_EOL
+                                                        . "     \$_filesUploaded = [];" . PHP_EOL
+                                                        . ""
+                                                        . "     for (\$i = 0; \$i < \$_count; \$i++) {" . PHP_EOL
+                                                        . ""
+                                                        . "         \$_FILES = [];" . PHP_EOL
+                                                        . "         \$_FILES['" . $_row["field_name"] . "']['name'] = \$_uploadFILES['" . $_row["field_name"] . "']['name'][\$i];" . PHP_EOL
+                                                        . "         \$_FILES['" . $_row["field_name"] . "']['type'] = \$_uploadFILES['" . $_row["field_name"] . "']['type'][\$i];" . PHP_EOL
+                                                        . "         \$_FILES['" . $_row["field_name"] . "']['tmp_name'] = \$_uploadFILES['" . $_row["field_name"] . "']['tmp_name'][\$i];" . PHP_EOL
+                                                        . "         \$_FILES['" . $_row["field_name"] . "']['error'] = \$_uploadFILES['" . $_row["field_name"] . "']['error'][\$i];" . PHP_EOL
+                                                        . "         \$_FILES['" . $_row["field_name"] . "']['size'] = \$_uploadFILES['" . $_row["field_name"] . "']['size'][\$i];" . PHP_EOL
+                                                        . ""
+                                                        . "     \$this->task['result_upload'] = bz_upload_file('" . $_row["field_name"] . "', ___CONF_UPLOAD_IMAGE_DIR___ . '" . $_param_formAddEditField['form_add_edit_field_upload_imagem_folder'] . "', '" . $_param_formAddEditField['form_add_edit_field_upload_imagem_extensao_permitida'] . "', '" . $_param_formAddEditField['form_add_edit_field_upload_imagem_tamanho_maximo'] . "', '" . $_param_formAddEditField['form_add_edit_field_upload_imagem_max_width'] . "', '" . $_param_formAddEditField['form_add_edit_field_upload_imagem_max_height'] . "');" . PHP_EOL
+                                                        . ""
+                                                        . "         if (isset(\$this->task['result_upload']['error'])) {" . PHP_EOL
+                                                        . "             \$_path_file = bz_absolute_path() . ___CONF_UPLOAD_DIR___ . ___CONF_UPLOAD_IMAGE_DIR___ . '" . ($_param_formAddEditField['form_add_edit_field_upload_imagem_folder'] ? $_param_formAddEditField['form_add_edit_field_upload_imagem_folder'] . DIRECTORY_SEPARATOR : $_param_formAddEditField['form_add_edit_field_upload_imagem_folder']) . "';" . PHP_EOL
+                                                        . "             \$_table_name = \$this->table_formaddedit_name;" . PHP_EOL
+                                                        . "             \$_field_name = '" . $_row["field_name"] . "';" . PHP_EOL
+                                                        . "             bz_delete_files_orphans(\$_path_file, \$_table_name, \$_field_name);" . PHP_EOL
+                                                        . ""
+                                                        . "             \$this->form_validation->set_message('validation_upload_images_" . $_row["field_name"] . "', \$this->task['result_upload']['error']['message']);" . PHP_EOL
+                                                        . "             return false;" . PHP_EOL
+                                                        . "         }" . PHP_EOL
+                                                        . ""
+                                                        . "         \$_filesUploaded[] = \$this->task['result_upload']['file_name'];" . PHP_EOL
+                                                        . ""
+                                                        . "     }" . PHP_EOL
+                                                        . ""
+                                                        . "     /** END UPLOAD FILE */" . PHP_EOL
+                                                        . ""
+                                                        . "     if (!empty(\$this->input->post('btn-editar')) && !empty(\$_id)) {" . PHP_EOL
+                                                        . "         \$_json_" . $_row["field_name"] . " = \$this->read->exec(\$this->table_formaddedit_name, 'WHERE id=' . \$_id)->row()->" . $_row["field_name"] . ";" . PHP_EOL
+                                                        . "         if (\$_json_" . $_row["field_name"] . ") {" . PHP_EOL
+                                                        . "             \$_json_" . $_row["field_name"] . " = json_decode(\$_json_" . $_row["field_name"] . ");" . PHP_EOL
+                                                        . "             \$this->task['files_uploaded'] = array_merge(\$_json_" . $_row["field_name"] . ", \$_filesUploaded);" . PHP_EOL
+                                                        . "         }" . PHP_EOL
+                                                        . "     } else {" . PHP_EOL
+                                                        . "         \$this->task['files_uploaded'] = \$_filesUploaded;" . PHP_EOL
+                                                        . "     }" . PHP_EOL
+                                                        . ""
+                                                        . "     \$this->task['uploaded_image'] = true;" . PHP_EOL
+                                                        . ""
+                                                        . "}" . PHP_EOL
+                                                        . "/** END VALIDAÇÃO POR CALLBACK MULTI UPLOAD DE IMAGENS " . $_row["field_name"] . ". */" . PHP_EOL . PHP_EOL . PHP_EOL;
                                                 } else {
 
                                                     /**
                                                      * SE BOTÃO DE MULTI UPLOAD ESTIVER DESLIGADO OFF
                                                      */
                                                     $this->_formAddEditConfigInputValidationCallback .= ""
-                                                            . "/* VALIDAÇÃO POR CALLBACK UPLOAD DE IMAGENS " . $_row["field_name"] . ". */" . PHP_EOL
-                                                            . "/* CAMPO OBRIGATÓRIO */" . PHP_EOL
-                                                            . ""
-                                                            . "public function validation_upload_images_" . $_row["field_name"] . "() {" . PHP_EOL
-                                                            . ""
-                                                            . "     if (empty(\$_FILES['" . $_row["field_name"] . "']['name']) && !empty(\$this->input->post('" . $_row["field_name"] . "')) ) {" . PHP_EOL
-                                                            . "         return true;" . PHP_EOL
-                                                            . "     }" . PHP_EOL
-                                                            . ""
-                                                            . "     if (empty(\$_FILES['" . $_row["field_name"] . "']['name'])) {" . PHP_EOL
-                                                            . "         \$this->form_validation->set_message('validation_upload_images_" . $_row["field_name"] . "', 'Nenhuma imagem selecionada para ser enviada.');" . PHP_EOL
-                                                            . "         return false;" . PHP_EOL
-                                                            . "     }" . PHP_EOL
-                                                            . ""
-                                                            . "     if (strpos(\$_FILES['" . $_row["field_name"] . "']['type'], 'image/') !== 0) {" . PHP_EOL
-                                                            . "         \$this->form_validation->set_message('validation_upload_images_" . $_row["field_name"] . "', 'Este arquivo não é um arquivo de imagem.');" . PHP_EOL
-                                                            . "         return false;" . PHP_EOL
-                                                            . "     }" . PHP_EOL
-                                                            . ""
-                                                            . "     \$this->task['result_upload'] = bz_upload_file('" . $_row["field_name"] . "', ___CONF_UPLOAD_IMAGE_DIR___ . '" . $_param_formAddEditField['form_add_edit_field_upload_imagem_folder'] . "', '" . $_param_formAddEditField['form_add_edit_field_upload_imagem_extensao_permitida'] . "', '" . $_param_formAddEditField['form_add_edit_field_upload_imagem_tamanho_maximo'] . "', '" . $_param_formAddEditField['form_add_edit_field_upload_imagem_max_width'] . "', '" . $_param_formAddEditField['form_add_edit_field_upload_imagem_max_height'] . "');" . PHP_EOL
-                                                            . ""
-                                                            . "     if (isset(\$this->task['result_upload']['error'])) {" . PHP_EOL
-                                                            . "         \$_path_file = bz_absolute_path() . ___CONF_UPLOAD_DIR___ . ___CONF_UPLOAD_IMAGE_DIR___ . '" . ($_param_formAddEditField['form_add_edit_field_upload_imagem_folder'] ? $_param_formAddEditField['form_add_edit_field_upload_imagem_folder'] . DIRECTORY_SEPARATOR : $_param_formAddEditField['form_add_edit_field_upload_imagem_folder']) . "';" . PHP_EOL
-                                                            . "         \$_table_name = \$this->table_formaddedit_name;" . PHP_EOL
-                                                            . "         \$_field_name = '" . $_row["field_name"] . "';" . PHP_EOL
-                                                            . "         bz_delete_files_orphans(\$_path_file, \$_table_name, \$_field_name);" . PHP_EOL
-                                                            . ""
-                                                            . "         \$this->form_validation->set_message('validation_upload_images_" . $_row["field_name"] . "', \$this->task['result_upload']['error']['message']);" . PHP_EOL
-                                                            . "         return false;" . PHP_EOL
-                                                            . "     }" . PHP_EOL
-                                                            . ""
-                                                            . "     \$this->task['uploaded_image'] = true;" . PHP_EOL
-                                                            . ""
-                                                            . "}" . PHP_EOL
-                                                            . "/* END VALIDAÇÃO POR CALLBACK UPLOAD DE IMAGENS " . $_row["field_name"] . ". */" . PHP_EOL . PHP_EOL;
+                                                        . "/** VALIDAÇÃO POR CALLBACK UPLOAD DE IMAGENS " . $_row["field_name"] . ". */" . PHP_EOL
+                                                        . "/** CAMPO OBRIGATÓRIO */" . PHP_EOL
+                                                        . ""
+                                                        . "public function validation_upload_images_" . $_row["field_name"] . "() {" . PHP_EOL
+                                                        . ""
+                                                        . "     if (empty(\$_FILES['" . $_row["field_name"] . "']['name']) && !empty(\$this->input->post('" . $_row["field_name"] . "')) ) {" . PHP_EOL
+                                                        . "         return true;" . PHP_EOL
+                                                        . "     }" . PHP_EOL
+                                                        . ""
+                                                        . "     if (empty(\$_FILES['" . $_row["field_name"] . "']['name'])) {" . PHP_EOL
+                                                        . "         \$this->form_validation->set_message('validation_upload_images_" . $_row["field_name"] . "', 'Nenhuma imagem selecionada para ser enviada.');" . PHP_EOL
+                                                        . "         return false;" . PHP_EOL
+                                                        . "     }" . PHP_EOL
+                                                        . ""
+                                                        . "     if (strpos(\$_FILES['" . $_row["field_name"] . "']['type'], 'image/') !== 0) {" . PHP_EOL
+                                                        . "         \$this->form_validation->set_message('validation_upload_images_" . $_row["field_name"] . "', 'Este arquivo não é um arquivo de imagem.');" . PHP_EOL
+                                                        . "         return false;" . PHP_EOL
+                                                        . "     }" . PHP_EOL
+                                                        . ""
+                                                        . "     \$this->task['result_upload'] = bz_upload_file('" . $_row["field_name"] . "', ___CONF_UPLOAD_IMAGE_DIR___ . '" . $_param_formAddEditField['form_add_edit_field_upload_imagem_folder'] . "', '" . $_param_formAddEditField['form_add_edit_field_upload_imagem_extensao_permitida'] . "', '" . $_param_formAddEditField['form_add_edit_field_upload_imagem_tamanho_maximo'] . "', '" . $_param_formAddEditField['form_add_edit_field_upload_imagem_max_width'] . "', '" . $_param_formAddEditField['form_add_edit_field_upload_imagem_max_height'] . "');" . PHP_EOL
+                                                        . ""
+                                                        . "     if (isset(\$this->task['result_upload']['error'])) {" . PHP_EOL
+                                                        . "         \$_path_file = bz_absolute_path() . ___CONF_UPLOAD_DIR___ . ___CONF_UPLOAD_IMAGE_DIR___ . '" . ($_param_formAddEditField['form_add_edit_field_upload_imagem_folder'] ? $_param_formAddEditField['form_add_edit_field_upload_imagem_folder'] . DIRECTORY_SEPARATOR : $_param_formAddEditField['form_add_edit_field_upload_imagem_folder']) . "';" . PHP_EOL
+                                                        . "         \$_table_name = \$this->table_formaddedit_name;" . PHP_EOL
+                                                        . "         \$_field_name = '" . $_row["field_name"] . "';" . PHP_EOL
+                                                        . "         bz_delete_files_orphans(\$_path_file, \$_table_name, \$_field_name);" . PHP_EOL
+                                                        . ""
+                                                        . "         \$this->form_validation->set_message('validation_upload_images_" . $_row["field_name"] . "', \$this->task['result_upload']['error']['message']);" . PHP_EOL
+                                                        . "         return false;" . PHP_EOL
+                                                        . "     }" . PHP_EOL
+                                                        . ""
+                                                        . "     \$this->task['uploaded_image'] = true;" . PHP_EOL
+                                                        . ""
+                                                        . "}" . PHP_EOL
+                                                        . "/** END VALIDAÇÃO POR CALLBACK UPLOAD DE IMAGENS " . $_row["field_name"] . ". */" . PHP_EOL . PHP_EOL;
                                                 }
                                             }
 
@@ -3840,8 +3810,8 @@ class ProjectbuildCrud extends MY_Controller {
                                                 }
 
                                                 $this->_formAddEditConfigInputValidationCallback .= "
-																											                                                 /* VALIDAÇÃO POR CALLBACK UPLOAD DE ARQUIVOS " . $_row["field_name"] . ". */
-                                                                                                                                                             /* CAMPO OBRIGATÓRIO */
+																											                                                 /** VALIDAÇÃO POR CALLBACK UPLOAD DE ARQUIVOS " . $_row["field_name"] . ". */
+                                                                                                                                                             /** CAMPO OBRIGATÓRIO */
 																											                                                  public function validation_upload_files_" . $_row["field_name"] . "() {
 
 																											                                                        if (empty(\$_FILES['" . $_row["field_name"] . "']['name']) && !empty(\$this->input->post('" . $_row["field_name"] . "')) ) {
@@ -3862,12 +3832,12 @@ class ProjectbuildCrud extends MY_Controller {
 
 																											                                                        \$this->task['uploaded_file'] = true;
 																											                                                  }
-																											                                                  /* END VALIDAÇÃO POR CALLBACK UPLOAD DE ARQUIVOS " . $_row["field_name"] . ". */" . PHP_EOL . PHP_EOL . PHP_EOL;
+																											                                                  /** END VALIDAÇÃO POR CALLBACK UPLOAD DE ARQUIVOS " . $_row["field_name"] . ". */" . PHP_EOL . PHP_EOL . PHP_EOL;
                                             }
                                         }
                                     } else {
 
-                                        /* INPUT NOT REQUIRED */
+                                        /** INPUT NOT REQUIRED */
                                         $this->_formAddEditFields .= '
 																					                                                <?php $_error = form_error("' . $_row['field_name'] . '", "<small class=\'text-danger col-xs-12 bz-input-error\'>", "</small>"); ?>
 																					                                                <div id="' . $_row['field_name'] . '" class="form-group has-feedback ' . $this->_formAddEditConfigInputClassCSS . '">
@@ -3904,133 +3874,133 @@ class ProjectbuildCrud extends MY_Controller {
 
 
                                             $this->_formAddEditConfigInputValidationCallback .= ""
-                                                    . "/* VALIDAÇÃO POR CALLBACK MULTI UPLOAD DE IMAGENS " . $_row["field_name"] . ". */" . PHP_EOL
-                                                    . "/* CAMPO NÃO OBRIGATÓRIO */" . PHP_EOL
-                                                    . ""
-                                                    . "public function validation_upload_images_" . $_row["field_name"] . "(\$_str = NULL, \$_id = NULL) {" . PHP_EOL
-                                                    . ""
-                                                    . "     if (empty(array_filter(\$_FILES['imagem_nome']['name']))) {" . PHP_EOL
-                                                    . "         return;"
-                                                    . "     }"
-                                                    . ""
-                                                    . "     /* ONLY IMAGES FILE */" . PHP_EOL
-                                                    . "     \$_count = 0;" . PHP_EOL
-                                                    . "     \$_total = 0;" . PHP_EOL
-                                                    . "     foreach (\$_FILES['" . $_row["field_name"] . "']['type'] as \$type){" . PHP_EOL
-                                                    . "         \$_total++;" . PHP_EOL
-                                                    . "         if (strpos(\$type, 'image/') !== 0) {" . PHP_EOL
-                                                    . "             \$_count++;" . PHP_EOL
-                                                    . "         }" . PHP_EOL
-                                                    . "     }" . PHP_EOL
-                                                    . "     if (\$_count > 0) {" . PHP_EOL
-                                                    . "         if (\$_total == 1) {" . PHP_EOL
-                                                    . "             \$this->form_validation->set_message('validation_upload_images_" . $_row["field_name"] . "', 'Arquivo enviado não é um arquivo de imagem.');" . PHP_EOL
-                                                    . "         } else {" . PHP_EOL
-                                                    . "             \$this->form_validation->set_message('validation_upload_images_" . $_row["field_name"] . "', 'Algum arquivo enviado não é um arquivo de imagem.');" . PHP_EOL
-                                                    . "         }" . PHP_EOL
-                                                    . "         return false;" . PHP_EOL
-                                                    . "     }" . PHP_EOL
-                                                    . "     /* END ONLY IMAGES FILE */" . PHP_EOL
-                                                    . ""
-                                                    . "     /* SIZE FILE */" . PHP_EOL
-                                                    . "     \$_count = 0;" . PHP_EOL
-                                                    . "     \$_total = 0;" . PHP_EOL
-                                                    . "     \$_fizeFile = " . $_param_formAddEditField['form_add_edit_field_upload_imagem_tamanho_maximo'] . ";" . PHP_EOL
-                                                    . "     foreach (\$_FILES['" . $_row["field_name"] . "']['size'] as \$size){" . PHP_EOL
-                                                    . "         \$_total++;" . PHP_EOL
-                                                    . "         if ((\$size / 1000) > \$_fizeFile) {" . PHP_EOL
-                                                    . "             \$_count++;"
-                                                    . "         }" . PHP_EOL
-                                                    . "     }" . PHP_EOL
-                                                    . "     if (\$_count > 0) {" . PHP_EOL
-                                                    . "         if (\$_total == 1) {" . PHP_EOL
-                                                    . "             \$this->form_validation->set_message('validation_upload_images_" . $_row["field_name"] . "', 'Arquivo enviado tem tamanho maior que o permitido.');" . PHP_EOL
-                                                    . "         } else {" . PHP_EOL
-                                                    . "             \$this->form_validation->set_message('validation_upload_images_" . $_row["field_name"] . "', 'Algum arquivo enviado tem tamanho maior que o permitido.');" . PHP_EOL
-                                                    . "         }" . PHP_EOL
-                                                    . "         return false;" . PHP_EOL
-                                                    . "     }" . PHP_EOL
-                                                    . ""
-                                                    . "     /* END SIZE FILE */" . PHP_EOL
-                                                    . ""
-                                                    . "     /* END VALIDAÇÃO DE UPLOAD DE ARQUIVO */" . PHP_EOL
-                                                    . ""
-                                                    . ""
-                                                    . "     /* UPLOAD FILE */" . PHP_EOL
-                                                    . ""
-                                                    . "     \$_count = 0;" . PHP_EOL
-                                                    . "     \$_count = count(\$_FILES['" . $_row["field_name"] . "']['name']);" . PHP_EOL
-                                                    . "     \$_uploadFILES = \$_FILES;" . PHP_EOL
-                                                    . "     \$_filesUploaded = [];" . PHP_EOL
-                                                    . ""
-                                                    . "     for (\$i = 0; \$i < \$_count; \$i++) {" . PHP_EOL
-                                                    . ""
-                                                    . "         \$_FILES = [];" . PHP_EOL
-                                                    . "         \$_FILES['" . $_row["field_name"] . "']['name'] = \$_uploadFILES['" . $_row["field_name"] . "']['name'][\$i];" . PHP_EOL
-                                                    . "         \$_FILES['" . $_row["field_name"] . "']['type'] = \$_uploadFILES['" . $_row["field_name"] . "']['type'][\$i];" . PHP_EOL
-                                                    . "         \$_FILES['" . $_row["field_name"] . "']['tmp_name'] = \$_uploadFILES['" . $_row["field_name"] . "']['tmp_name'][\$i];" . PHP_EOL
-                                                    . "         \$_FILES['" . $_row["field_name"] . "']['error'] = \$_uploadFILES['" . $_row["field_name"] . "']['error'][\$i];" . PHP_EOL
-                                                    . "         \$_FILES['" . $_row["field_name"] . "']['size'] = \$_uploadFILES['" . $_row["field_name"] . "']['size'][\$i];" . PHP_EOL
-                                                    . ""
-                                                    . "     \$this->task['result_upload'] = bz_upload_file('" . $_row["field_name"] . "', ___CONF_UPLOAD_IMAGE_DIR___ . '" . $_param_formAddEditField['form_add_edit_field_upload_imagem_folder'] . "', '" . $_param_formAddEditField['form_add_edit_field_upload_imagem_extensao_permitida'] . "', '" . $_param_formAddEditField['form_add_edit_field_upload_imagem_tamanho_maximo'] . "', '" . $_param_formAddEditField['form_add_edit_field_upload_imagem_max_width'] . "', '" . $_param_formAddEditField['form_add_edit_field_upload_imagem_max_height'] . "');" . PHP_EOL
-                                                    . ""
-                                                    . "         if (isset(\$this->task['result_upload']['error'])) {" . PHP_EOL
-                                                    . "             \$_path_file = bz_absolute_path() . ___CONF_UPLOAD_DIR___ . ___CONF_UPLOAD_IMAGE_DIR___ . '" . ($_param_formAddEditField['form_add_edit_field_upload_imagem_folder'] ? $_param_formAddEditField['form_add_edit_field_upload_imagem_folder'] . DIRECTORY_SEPARATOR : $_param_formAddEditField['form_add_edit_field_upload_imagem_folder']) . "';" . PHP_EOL
-                                                    . "             \$_table_name = \$this->table_formaddedit_name;" . PHP_EOL
-                                                    . "             \$_field_name = '" . $_row["field_name"] . "';" . PHP_EOL
-                                                    . "             bz_delete_files_orphans(\$_path_file, \$_table_name, \$_field_name);" . PHP_EOL
-                                                    . ""
-                                                    . "             \$this->form_validation->set_message('validation_upload_images_" . $_row["field_name"] . "', \$this->task['result_upload']['error']['message']);" . PHP_EOL
-                                                    . "             return false;" . PHP_EOL
-                                                    . "         }" . PHP_EOL
-                                                    . ""
-                                                    . "         \$_filesUploaded[] = \$this->task['result_upload']['file_name'];" . PHP_EOL
-                                                    . ""
-                                                    . "     }" . PHP_EOL
-                                                    . ""
-                                                    . "     /* END UPLOAD FILE */" . PHP_EOL
-                                                    . ""
-                                                    . "     if (!empty(\$this->input->post('btn-editar')) && !empty(\$_id)) {" . PHP_EOL
-                                                    . "         \$_json_" . $_row["field_name"] . " = \$this->read->exec(\$this->table_formaddedit_name, 'WHERE id=' . \$_id)->row()->" . $_row["field_name"] . ";" . PHP_EOL
-                                                    . "         if (\$_json_" . $_row["field_name"] . ") {" . PHP_EOL
-                                                    . "             \$_json_" . $_row["field_name"] . " = json_decode(\$_json_" . $_row["field_name"] . ");" . PHP_EOL
-                                                    . "             \$this->task['files_uploaded'] = array_merge(\$_json_" . $_row["field_name"] . ", \$_filesUploaded);" . PHP_EOL
-                                                    . "         }" . PHP_EOL
-                                                    . "     } else {" . PHP_EOL
-                                                    . "         \$this->task['files_uploaded'] = \$_filesUploaded;" . PHP_EOL
-                                                    . "     }" . PHP_EOL
-                                                    . ""
-                                                    . "     \$this->task['uploaded_image'] = true;" . PHP_EOL
-                                                    . ""
-                                                    . "}" . PHP_EOL
-                                                    . "/* END VALIDAÇÃO POR CALLBACK MULTI UPLOAD DE IMAGENS " . $_row["field_name"] . ". */" . PHP_EOL . PHP_EOL . PHP_EOL;
+                                                . "/** VALIDAÇÃO POR CALLBACK MULTI UPLOAD DE IMAGENS " . $_row["field_name"] . ". */" . PHP_EOL
+                                                . "/** CAMPO NÃO OBRIGATÓRIO */" . PHP_EOL
+                                                . ""
+                                                . "public function validation_upload_images_" . $_row["field_name"] . "(\$_str = NULL, \$_id = NULL) {" . PHP_EOL
+                                                . ""
+                                                . "     if (empty(array_filter(\$_FILES['imagem_nome']['name']))) {" . PHP_EOL
+                                                . "         return;"
+                                                . "     }"
+                                                . ""
+                                                . "     /** ONLY IMAGES FILE */" . PHP_EOL
+                                                . "     \$_count = 0;" . PHP_EOL
+                                                . "     \$_total = 0;" . PHP_EOL
+                                                . "     foreach (\$_FILES['" . $_row["field_name"] . "']['type'] as \$type){" . PHP_EOL
+                                                . "         \$_total++;" . PHP_EOL
+                                                . "         if (strpos(\$type, 'image/') !== 0) {" . PHP_EOL
+                                                . "             \$_count++;" . PHP_EOL
+                                                . "         }" . PHP_EOL
+                                                . "     }" . PHP_EOL
+                                                . "     if (\$_count > 0) {" . PHP_EOL
+                                                . "         if (\$_total == 1) {" . PHP_EOL
+                                                . "             \$this->form_validation->set_message('validation_upload_images_" . $_row["field_name"] . "', 'Arquivo enviado não é um arquivo de imagem.');" . PHP_EOL
+                                                . "         } else {" . PHP_EOL
+                                                . "             \$this->form_validation->set_message('validation_upload_images_" . $_row["field_name"] . "', 'Algum arquivo enviado não é um arquivo de imagem.');" . PHP_EOL
+                                                . "         }" . PHP_EOL
+                                                . "         return false;" . PHP_EOL
+                                                . "     }" . PHP_EOL
+                                                . "     /** END ONLY IMAGES FILE */" . PHP_EOL
+                                                . ""
+                                                . "     /** SIZE FILE */" . PHP_EOL
+                                                . "     \$_count = 0;" . PHP_EOL
+                                                . "     \$_total = 0;" . PHP_EOL
+                                                . "     \$_fizeFile = " . $_param_formAddEditField['form_add_edit_field_upload_imagem_tamanho_maximo'] . ";" . PHP_EOL
+                                                . "     foreach (\$_FILES['" . $_row["field_name"] . "']['size'] as \$size){" . PHP_EOL
+                                                . "         \$_total++;" . PHP_EOL
+                                                . "         if ((\$size / 1000) > \$_fizeFile) {" . PHP_EOL
+                                                . "             \$_count++;"
+                                                . "         }" . PHP_EOL
+                                                . "     }" . PHP_EOL
+                                                . "     if (\$_count > 0) {" . PHP_EOL
+                                                . "         if (\$_total == 1) {" . PHP_EOL
+                                                . "             \$this->form_validation->set_message('validation_upload_images_" . $_row["field_name"] . "', 'Arquivo enviado tem tamanho maior que o permitido.');" . PHP_EOL
+                                                . "         } else {" . PHP_EOL
+                                                . "             \$this->form_validation->set_message('validation_upload_images_" . $_row["field_name"] . "', 'Algum arquivo enviado tem tamanho maior que o permitido.');" . PHP_EOL
+                                                . "         }" . PHP_EOL
+                                                . "         return false;" . PHP_EOL
+                                                . "     }" . PHP_EOL
+                                                . ""
+                                                . "     /** END SIZE FILE */" . PHP_EOL
+                                                . ""
+                                                . "     /** END VALIDAÇÃO DE UPLOAD DE ARQUIVO */" . PHP_EOL
+                                                . ""
+                                                . ""
+                                                . "     /** UPLOAD FILE */" . PHP_EOL
+                                                . ""
+                                                . "     \$_count = 0;" . PHP_EOL
+                                                . "     \$_count = count(\$_FILES['" . $_row["field_name"] . "']['name']);" . PHP_EOL
+                                                . "     \$_uploadFILES = \$_FILES;" . PHP_EOL
+                                                . "     \$_filesUploaded = [];" . PHP_EOL
+                                                . ""
+                                                . "     for (\$i = 0; \$i < \$_count; \$i++) {" . PHP_EOL
+                                                . ""
+                                                . "         \$_FILES = [];" . PHP_EOL
+                                                . "         \$_FILES['" . $_row["field_name"] . "']['name'] = \$_uploadFILES['" . $_row["field_name"] . "']['name'][\$i];" . PHP_EOL
+                                                . "         \$_FILES['" . $_row["field_name"] . "']['type'] = \$_uploadFILES['" . $_row["field_name"] . "']['type'][\$i];" . PHP_EOL
+                                                . "         \$_FILES['" . $_row["field_name"] . "']['tmp_name'] = \$_uploadFILES['" . $_row["field_name"] . "']['tmp_name'][\$i];" . PHP_EOL
+                                                . "         \$_FILES['" . $_row["field_name"] . "']['error'] = \$_uploadFILES['" . $_row["field_name"] . "']['error'][\$i];" . PHP_EOL
+                                                . "         \$_FILES['" . $_row["field_name"] . "']['size'] = \$_uploadFILES['" . $_row["field_name"] . "']['size'][\$i];" . PHP_EOL
+                                                . ""
+                                                . "     \$this->task['result_upload'] = bz_upload_file('" . $_row["field_name"] . "', ___CONF_UPLOAD_IMAGE_DIR___ . '" . $_param_formAddEditField['form_add_edit_field_upload_imagem_folder'] . "', '" . $_param_formAddEditField['form_add_edit_field_upload_imagem_extensao_permitida'] . "', '" . $_param_formAddEditField['form_add_edit_field_upload_imagem_tamanho_maximo'] . "', '" . $_param_formAddEditField['form_add_edit_field_upload_imagem_max_width'] . "', '" . $_param_formAddEditField['form_add_edit_field_upload_imagem_max_height'] . "');" . PHP_EOL
+                                                . ""
+                                                . "         if (isset(\$this->task['result_upload']['error'])) {" . PHP_EOL
+                                                . "             \$_path_file = bz_absolute_path() . ___CONF_UPLOAD_DIR___ . ___CONF_UPLOAD_IMAGE_DIR___ . '" . ($_param_formAddEditField['form_add_edit_field_upload_imagem_folder'] ? $_param_formAddEditField['form_add_edit_field_upload_imagem_folder'] . DIRECTORY_SEPARATOR : $_param_formAddEditField['form_add_edit_field_upload_imagem_folder']) . "';" . PHP_EOL
+                                                . "             \$_table_name = \$this->table_formaddedit_name;" . PHP_EOL
+                                                . "             \$_field_name = '" . $_row["field_name"] . "';" . PHP_EOL
+                                                . "             bz_delete_files_orphans(\$_path_file, \$_table_name, \$_field_name);" . PHP_EOL
+                                                . ""
+                                                . "             \$this->form_validation->set_message('validation_upload_images_" . $_row["field_name"] . "', \$this->task['result_upload']['error']['message']);" . PHP_EOL
+                                                . "             return false;" . PHP_EOL
+                                                . "         }" . PHP_EOL
+                                                . ""
+                                                . "         \$_filesUploaded[] = \$this->task['result_upload']['file_name'];" . PHP_EOL
+                                                . ""
+                                                . "     }" . PHP_EOL
+                                                . ""
+                                                . "     /** END UPLOAD FILE */" . PHP_EOL
+                                                . ""
+                                                . "     if (!empty(\$this->input->post('btn-editar')) && !empty(\$_id)) {" . PHP_EOL
+                                                . "         \$_json_" . $_row["field_name"] . " = \$this->read->exec(\$this->table_formaddedit_name, 'WHERE id=' . \$_id)->row()->" . $_row["field_name"] . ";" . PHP_EOL
+                                                . "         if (\$_json_" . $_row["field_name"] . ") {" . PHP_EOL
+                                                . "             \$_json_" . $_row["field_name"] . " = json_decode(\$_json_" . $_row["field_name"] . ");" . PHP_EOL
+                                                . "             \$this->task['files_uploaded'] = array_merge(\$_json_" . $_row["field_name"] . ", \$_filesUploaded);" . PHP_EOL
+                                                . "         }" . PHP_EOL
+                                                . "     } else {" . PHP_EOL
+                                                . "         \$this->task['files_uploaded'] = \$_filesUploaded;" . PHP_EOL
+                                                . "     }" . PHP_EOL
+                                                . ""
+                                                . "     \$this->task['uploaded_image'] = true;" . PHP_EOL
+                                                . ""
+                                                . "}" . PHP_EOL
+                                                . "/** END VALIDAÇÃO POR CALLBACK MULTI UPLOAD DE IMAGENS " . $_row["field_name"] . ". */" . PHP_EOL . PHP_EOL . PHP_EOL;
                                         } else {
 
                                             $this->_formAddEditConfigInputValidationCallback .= ""
-                                                    . "/* VALIDAÇÃO POR CALLBACK UPLOAD DE IMAGENS " . $_row["field_name"] . ". */" . PHP_EOL
-                                                    . "/* CAMPO NÃO OBRIGATÓRIO */" . PHP_EOL
-                                                    . ""
-                                                    . "public function validation_upload_images_" . $_row["field_name"] . "() {" . PHP_EOL
-                                                    . ""
-                                                    . "     if (!empty(\$_FILES['" . $_row["field_name"] . "']['name'])) {" . PHP_EOL
-                                                    . "         \$this->task['result_upload'] = bz_upload_file('" . $_row["field_name"] . "', ___CONF_UPLOAD_IMAGE_DIR___ . '" . $_param_formAddEditField['form_add_edit_field_upload_imagem_folder'] . "', '" . $_param_formAddEditField['form_add_edit_field_upload_imagem_extensao_permitida'] . "', '" . $_param_formAddEditField['form_add_edit_field_upload_imagem_tamanho_maximo'] . "', '" . $_param_formAddEditField['form_add_edit_field_upload_imagem_max_width'] . "', '" . $_param_formAddEditField['form_add_edit_field_upload_imagem_max_height'] . "');" . PHP_EOL
-                                                    . ""
-                                                    . "         if (strpos(\$_FILES['" . $_row["field_name"] . "']['type'], 'image/') !== 0) {" . PHP_EOL
-                                                    . "             \$this->form_validation->set_message('validation_upload_images_imagem_nome', 'Este arquivo não é um arquivo de imagem.');" . PHP_EOL
-                                                    . "             return false;" . PHP_EOL
-                                                    . "         }" . PHP_EOL
-                                                    . ""
-                                                    . "         if (isset(\$this->task['result_upload']['error'])) {" . PHP_EOL
-                                                    . "             \$this->form_validation->set_message('validation_upload_images_" . $_row["field_name"] . "', \$this->task['result_upload']['error']['message']);" . PHP_EOL
-                                                    . "             return false;" . PHP_EOL
-                                                    . "         }" . PHP_EOL
-                                                    . ""
-                                                    . "         \$this->task['uploaded_image'] = true;" . PHP_EOL
-                                                    . "     }" . PHP_EOL
-                                                    . "}" . PHP_EOL
-                                                    . "/* END VALIDAÇÃO POR CALLBACK UPLOAD DE IMAGENS " . $_row["field_name"] . ". */"
-                                                    . ""
-                                                    . "" . PHP_EOL . PHP_EOL . PHP_EOL;
+                                                . "/** VALIDAÇÃO POR CALLBACK UPLOAD DE IMAGENS " . $_row["field_name"] . ". */" . PHP_EOL
+                                                . "/** CAMPO NÃO OBRIGATÓRIO */" . PHP_EOL
+                                                . ""
+                                                . "public function validation_upload_images_" . $_row["field_name"] . "() {" . PHP_EOL
+                                                . ""
+                                                . "     if (!empty(\$_FILES['" . $_row["field_name"] . "']['name'])) {" . PHP_EOL
+                                                . "         \$this->task['result_upload'] = bz_upload_file('" . $_row["field_name"] . "', ___CONF_UPLOAD_IMAGE_DIR___ . '" . $_param_formAddEditField['form_add_edit_field_upload_imagem_folder'] . "', '" . $_param_formAddEditField['form_add_edit_field_upload_imagem_extensao_permitida'] . "', '" . $_param_formAddEditField['form_add_edit_field_upload_imagem_tamanho_maximo'] . "', '" . $_param_formAddEditField['form_add_edit_field_upload_imagem_max_width'] . "', '" . $_param_formAddEditField['form_add_edit_field_upload_imagem_max_height'] . "');" . PHP_EOL
+                                                . ""
+                                                . "         if (strpos(\$_FILES['" . $_row["field_name"] . "']['type'], 'image/') !== 0) {" . PHP_EOL
+                                                . "             \$this->form_validation->set_message('validation_upload_images_imagem_nome', 'Este arquivo não é um arquivo de imagem.');" . PHP_EOL
+                                                . "             return false;" . PHP_EOL
+                                                . "         }" . PHP_EOL
+                                                . ""
+                                                . "         if (isset(\$this->task['result_upload']['error'])) {" . PHP_EOL
+                                                . "             \$this->form_validation->set_message('validation_upload_images_" . $_row["field_name"] . "', \$this->task['result_upload']['error']['message']);" . PHP_EOL
+                                                . "             return false;" . PHP_EOL
+                                                . "         }" . PHP_EOL
+                                                . ""
+                                                . "         \$this->task['uploaded_image'] = true;" . PHP_EOL
+                                                . "     }" . PHP_EOL
+                                                . "}" . PHP_EOL
+                                                . "/** END VALIDAÇÃO POR CALLBACK UPLOAD DE IMAGENS " . $_row["field_name"] . ". */"
+                                                . ""
+                                                . "" . PHP_EOL . PHP_EOL . PHP_EOL;
                                         }
                                     }
 
@@ -4050,27 +4020,27 @@ class ProjectbuildCrud extends MY_Controller {
                                         }
 
                                         $this->_formAddEditConfigInputValidationCallback .= ""
-                                                . "/* VALIDAÇÃO POR CALLBACK UPLOAD DE ARQUIVOS " . $_row["field_name"] . ". */" . PHP_EOL
-                                                . "public function validation_upload_files_" . $_row["field_name"] . "() {" . PHP_EOL
-                                                . ""
-                                                . "     if (!empty(\$_FILES['" . $_row["field_name"] . "']['name'])) {" . PHP_EOL
-                                                . "         \$this->task['result_upload'] = bz_upload_file('" . $_row["field_name"] . "', ___CONF_UPLOAD_FILE_DIR___ . '" . $_param_formAddEditField['form_add_edit_field_upload_arquivo_folder'] . "', '" . $_param_formAddEditField['form_add_edit_field_upload_arquivo_extensao_permitida'] . "', '" . $_param_formAddEditField['form_add_edit_field_upload_arquivo_tamanho_maximo'] . "', '', '');" . PHP_EOL
-                                                . ""
-                                                . "         if (isset(\$this->task['result_upload']['error'])) {" . PHP_EOL
-                                                . "             return false;" . PHP_EOL
-                                                . "         }" . PHP_EOL
-                                                . ""
-                                                . "         \$this->task['uploaded_file'] = true;" . PHP_EOL
-                                                . ""
-                                                . "     }" . PHP_EOL
-                                                . "}" . PHP_EOL
-                                                . ""
-                                                . "/* END VALIDAÇÃO POR CALLBACK UPLOAD DE ARQUIVOS " . $_row["field_name"] . ". */" . PHP_EOL
-                                                . "" . PHP_EOL . PHP_EOL . PHP_EOL;
+                                            . "/** VALIDAÇÃO POR CALLBACK UPLOAD DE ARQUIVOS " . $_row["field_name"] . ". */" . PHP_EOL
+                                            . "public function validation_upload_files_" . $_row["field_name"] . "() {" . PHP_EOL
+                                            . ""
+                                            . "     if (!empty(\$_FILES['" . $_row["field_name"] . "']['name'])) {" . PHP_EOL
+                                            . "         \$this->task['result_upload'] = bz_upload_file('" . $_row["field_name"] . "', ___CONF_UPLOAD_FILE_DIR___ . '" . $_param_formAddEditField['form_add_edit_field_upload_arquivo_folder'] . "', '" . $_param_formAddEditField['form_add_edit_field_upload_arquivo_extensao_permitida'] . "', '" . $_param_formAddEditField['form_add_edit_field_upload_arquivo_tamanho_maximo'] . "', '', '');" . PHP_EOL
+                                            . ""
+                                            . "         if (isset(\$this->task['result_upload']['error'])) {" . PHP_EOL
+                                            . "             return false;" . PHP_EOL
+                                            . "         }" . PHP_EOL
+                                            . ""
+                                            . "         \$this->task['uploaded_file'] = true;" . PHP_EOL
+                                            . ""
+                                            . "     }" . PHP_EOL
+                                            . "}" . PHP_EOL
+                                            . ""
+                                            . "/** END VALIDAÇÃO POR CALLBACK UPLOAD DE ARQUIVOS " . $_row["field_name"] . ". */" . PHP_EOL
+                                            . "" . PHP_EOL . PHP_EOL . PHP_EOL;
                                     }
 
 
-                                    /* INPUT NOT REQUIRED */
+                                    /** INPUT NOT REQUIRED */
                                     $this->_formAddEditFields .= '
 																		                                            <?php $_error = form_error("' . $_row['field_name'] . '", "<small class=\'text-danger col-xs-12 bz-input-error\'>", "</small>"); ?>
 																		                                            <div id="' . $_row['field_name'] . '" class="form-group has-feedback ' . $this->_formAddEditConfigInputClassCSS . '">
@@ -4081,7 +4051,7 @@ class ProjectbuildCrud extends MY_Controller {
 																		                                            ' . PHP_EOL;
                                 }
 
-                                /*
+                                /**
                                  * MONTA AS VALIDAÇÕES DOS CAMPOS
                                  */
                                 if (!empty($_param_formAddEditField['form_add_edit_field_required_in_form'])) {
@@ -4090,9 +4060,9 @@ class ProjectbuildCrud extends MY_Controller {
 
                                         $this->_formAddConfigInputValidationAtributos = $this->_formAddEditConfigInputValidationAtributos;
 
-                                        /* echo 'FORM ADD<br><br>'; */
+                                        /** echo 'FORM ADD<br><br>'; */
                                     } else {
-                                        /* $this->_formAddConfigInputValidationAtributos = str_replace('required', 'add-required', $this->_formAddConfigInputValidationAtributos); */
+                                        /** $this->_formAddConfigInputValidationAtributos = str_replace('required', 'add-required', $this->_formAddConfigInputValidationAtributos); */
                                     }
                                 }
 
@@ -4101,9 +4071,9 @@ class ProjectbuildCrud extends MY_Controller {
 
                                         $this->_formEditConfigInputValidationAtributos = $this->_formAddEditConfigInputValidationAtributos;
 
-                                        /* echo 'FORM EDIT<br><br>'; */
+                                        /** echo 'FORM EDIT<br><br>'; */
                                     } else {
-                                        /* $this->_formEditConfigInputValidationAtributos = str_replace('required', 'edit-required', $this->_formEditConfigInputValidationAtributos); */
+                                        /** $this->_formEditConfigInputValidationAtributos = str_replace('required', 'edit-required', $this->_formEditConfigInputValidationAtributos); */
                                     }
                                 }
 
@@ -4124,47 +4094,49 @@ class ProjectbuildCrud extends MY_Controller {
                                 }
                             }
                             /**
-                             * 
+                             *
                              *  END MONTA O CAMPO GERADO COM AS LABELS E ATTRIBUTOS
                              */
-                            /* ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================ */
-
+                            /** ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================ */
 
 
                             /**
-                             * DADOS FILLABLE
+                             * DADOS FILLABLE BUZZA
                              */
+
                             if ($_geraFormAddDadosFillable) {
                                 $this->_formAddDadosFillable .= 'if( !empty( $_dadosFillable["' . $_row['field_name'] . '"] ) ){' . PHP_EOL
-                                        . '     $_dados["' . $_row['field_name'] . '"] = $_dadosFillable["' . $_row['field_name'] . '"];' . PHP_EOL
-                                        . '}else{' . PHP_EOL
-                                        . '     $_dados["' . $_row['field_name'] . '"] = NULL;' . PHP_EOL
-                                        . '}' . PHP_EOL . PHP_EOL;
+                                    . '     $_dados["' . $_row['field_name'] . '"] = $_dadosFillable["' . $_row['field_name'] . '"];' . PHP_EOL
+                                    . '}else{' . PHP_EOL
+                                    . '     $_dados["' . $_row['field_name'] . '"] = NULL;' . PHP_EOL
+                                    . '}' . PHP_EOL . PHP_EOL;
                             }
 
                             if ($_geraFormEditDadosFillable) {
                                 $this->_formEditDadosFillable .= 'if( !empty( $_dadosFillable["' . $_row['field_name'] . '"] ) ){' . PHP_EOL
-                                        . '     $_dados["' . $_row['field_name'] . '"] = $_dadosFillable["' . $_row['field_name'] . '"];' . PHP_EOL
-                                        . '}else{' . PHP_EOL
-                                        . '     $_dados["' . $_row['field_name'] . '"] = NULL;' . PHP_EOL
-                                        . '}' . PHP_EOL . PHP_EOL;
+                                    . '     $_dados["' . $_row['field_name'] . '"] = $_dadosFillable["' . $_row['field_name'] . '"];' . PHP_EOL
+                                    . '}else{' . PHP_EOL
+                                    . '     $_dados["' . $_row['field_name'] . '"] = NULL;' . PHP_EOL
+                                    . '}' . PHP_EOL . PHP_EOL;
                             }
+
+
                         }
-                        /* END CAMPOS QUE SERÃO MOSTRADOS NO FORM ADD/EDIT */
+                        /** END CAMPOS QUE SERÃO MOSTRADOS NO FORM ADD/EDIT */
                     }
 
-                    /*
+                    /**
                      * DIVIDE OS formAddEditFields
                      */
                     $this->_formAddFields = $this->_formAddEditFields;
                     $this->_formEditFields = $this->_formAddEditFields;
-                    /* END DIVIDE OS formAddEditFields */
+                    /** END DIVIDE OS formAddEditFields */
 
                     /**
                      * GERA CLAUSULA WHERE PARA GRAVAÇÃO DO FORM EDIT/UPDATE
                      */
                     $this->_formEditWhereUpdateFields = "'WHERE " . $this->_primary_key_field . " = \"'.\$_id.'\"';";
-                    /* END GERA CLAUSULA WHERE PARA GRAVAÇÃO DO FORM EDIT/UPDATE */
+                    /** END GERA CLAUSULA WHERE PARA GRAVAÇÃO DO FORM EDIT/UPDATE */
 
                     /**
                      * JQUERY MASK
@@ -4183,9 +4155,9 @@ class ProjectbuildCrud extends MY_Controller {
                         $_r_jquery_mask .= "-->" . PHP_EOL . PHP_EOL . PHP_EOL;
                         $this->_formAddEditConfigInputMask = $_r_jquery_mask;
                     }
-                    /* END JQUERY MASK */
+                    /** END JQUERY MASK */
 
-                    /*
+                    /**
                      * GET CODE EDITOR METODOS PHP CONTROLLER
                      */
                     $_where_getCode_ControllerMetodosPHP = array('proj_build_id' => $this->_project_id,
@@ -4221,16 +4193,16 @@ class ProjectbuildCrud extends MY_Controller {
                                 $this->_controller_onScriptEndExport = "\$this->fcn_onScriptEndExport();" . PHP_EOL;
                             }
 
-                            $this->_controller_metodos_php .= "/* METODO PHP - " . $_row_getCode_ControllerMetodosPHP->code_screen . ' */' . PHP_EOL;
+                            $this->_controller_metodos_php .= "/** METODO PHP - " . $_row_getCode_ControllerMetodosPHP->code_screen . ' */' . PHP_EOL;
                             $this->_controller_metodos_php .= "private function " . $_row_getCode_ControllerMetodosPHP->code_screen . '($_p = null) {' . PHP_EOL;
                             $this->_controller_metodos_php .= html_entity_decode(base64_decode($_row_getCode_ControllerMetodosPHP->code_script), ENT_QUOTES) . PHP_EOL;
                             $this->_controller_metodos_php .= "}" . PHP_EOL;
-                            $this->_controller_metodos_php .= "/* END METODO PHP - " . $_row_getCode_ControllerMetodosPHP->code_screen . ' */' . PHP_EOL . PHP_EOL;
+                            $this->_controller_metodos_php .= "/** END METODO PHP - " . $_row_getCode_ControllerMetodosPHP->code_screen . ' */' . PHP_EOL . PHP_EOL;
                         }
                     }
-                    /* END GET CODE EDITOR METODOS PHP CONTROLLER */
+                    /** END GET CODE EDITOR METODOS PHP CONTROLLER */
 
-                    /*
+                    /**
                      * GET CODE EDITOR METODOS PHP CONTROLLER
                      */
                     $_where_getCode_ControllerMetodosPHP = array(
@@ -4238,17 +4210,17 @@ class ProjectbuildCrud extends MY_Controller {
                     $_query_getCode_ControllerMetodosPHP = $this->db->get_where('proj_build_codeeditor', $_where_getCode_ControllerMetodosPHP)->result();
                     foreach ($_query_getCode_ControllerMetodosPHP as $_row_getCode_ControllerMetodosPHP) {
                         if (!empty(trim($_row_getCode_ControllerMetodosPHP->code_script))) {
-                            $this->_controller_metodos_php .= "/* METODO PHP - " . $_row_getCode_ControllerMetodosPHP->code_screen . ' */' . PHP_EOL;
+                            $this->_controller_metodos_php .= "/** METODO PHP - " . $_row_getCode_ControllerMetodosPHP->code_screen . ' */' . PHP_EOL;
 
                             if ($_row_getCode_ControllerMetodosPHP->code_access_ajax_only == 1) {
 
                                 $this->_controller_metodos_php .= "public function " . $_row_getCode_ControllerMetodosPHP->code_screen . '($_p = null) {' . PHP_EOL;
 
-                                $this->_controller_metodos_php .= '/*' . PHP_EOL;
+                                $this->_controller_metodos_php .= '/**' . PHP_EOL;
                                 $this->_controller_metodos_php .= ' * CERTIFICA SE O ACESSO A ESTA FUNCTION REALMENTE ESTÁ SENDO FEITO POR AJAX.' . PHP_EOL;
                                 $this->_controller_metodos_php .= ' */' . PHP_EOL;
                                 $this->_controller_metodos_php .= 'bz_check_is_ajax_request();' . PHP_EOL;
-                                $this->_controller_metodos_php .= '/* END CERTIFICA SE O ACESSO A ESTA FUNCTION REALMENTE ESTÁ SENDO FEITO POR AJAX. */' . PHP_EOL;
+                                $this->_controller_metodos_php .= '/** END CERTIFICA SE O ACESSO A ESTA FUNCTION REALMENTE ESTÁ SENDO FEITO POR AJAX. */' . PHP_EOL;
                                 $this->_controller_metodos_php .= '/**/' . PHP_EOL;
                             } else {
 
@@ -4257,12 +4229,12 @@ class ProjectbuildCrud extends MY_Controller {
 
                             $this->_controller_metodos_php .= html_entity_decode(base64_decode($_row_getCode_ControllerMetodosPHP->code_script), ENT_QUOTES) . PHP_EOL;
                             $this->_controller_metodos_php .= "}" . PHP_EOL;
-                            $this->_controller_metodos_php .= "/* END METODO PHP - " . $_row_getCode_ControllerMetodosPHP->code_screen . ' */' . PHP_EOL . PHP_EOL;
+                            $this->_controller_metodos_php .= "/** END METODO PHP - " . $_row_getCode_ControllerMetodosPHP->code_screen . ' */' . PHP_EOL . PHP_EOL;
                         }
                     }
-                    /* END GET CODE EDITOR METODOS PHP CONTROLLER */
+                    /** END GET CODE EDITOR METODOS PHP CONTROLLER */
 
-                    /*
+                    /**
                      * GET CODE EDITOR METODOS PHP MODELS
                      */
                     $_where_getCode_ModelsMetodosPHP = array(
@@ -4271,16 +4243,16 @@ class ProjectbuildCrud extends MY_Controller {
                     $_query_getCode_ModelsMetodosPHP = $this->db->get_where('proj_build_codeeditor', $_where_getCode_ModelsMetodosPHP)->result();
                     foreach ($_query_getCode_ModelsMetodosPHP as $_row_getCode_ModelsMetodosPHP) {
                         if (!empty(trim($_row_getCode_ModelsMetodosPHP->code_script))) {
-                            $this->_models_metodos_php .= "/* MODELS PHP - " . $_row_getCode_ModelsMetodosPHP->code_screen . ' */' . PHP_EOL;
+                            $this->_models_metodos_php .= "/** MODELS PHP - " . $_row_getCode_ModelsMetodosPHP->code_screen . ' */' . PHP_EOL;
                             $this->_models_metodos_php .= "public function " . $_row_getCode_ModelsMetodosPHP->code_screen . '($_p = null) {' . PHP_EOL;
                             $this->_models_metodos_php .= html_entity_decode(base64_decode($_row_getCode_ModelsMetodosPHP->code_script), ENT_QUOTES) . PHP_EOL;
                             $this->_models_metodos_php .= "}" . PHP_EOL;
-                            $this->_models_metodos_php .= "/* END MODELS PHP - " . $_row_getCode_ModelsMetodosPHP->code_screen . ' */' . PHP_EOL . PHP_EOL;
+                            $this->_models_metodos_php .= "/** END MODELS PHP - " . $_row_getCode_ModelsMetodosPHP->code_screen . ' */' . PHP_EOL . PHP_EOL;
                         }
                     }
-                    /* END GET CODE EDITOR METODOS PHP MODELS */
+                    /** END GET CODE EDITOR METODOS PHP MODELS */
 
-                    /*
+                    /**
                      * GET CODE EDITOR ON RECORD
                      */
                     $_where_getCode_onRecord = array(
@@ -4290,31 +4262,31 @@ class ProjectbuildCrud extends MY_Controller {
                     $_query_getCode_onRecord = $this->db->get_where('proj_build_codeeditor', $_where_getCode_onRecord)->result();
                     foreach ($_query_getCode_onRecord as $_row_getCode_onRecord) {
                         if (!empty(trim($_row_getCode_onRecord->code_script))) {
-                            $this->_gridListCodeEditorOnRecord .= "/* ON RECORD */" . PHP_EOL;
+                            $this->_gridListCodeEditorOnRecord .= "/** ON RECORD */" . PHP_EOL;
                             $this->_gridListCodeEditorOnRecord .= html_entity_decode(base64_decode($_row_getCode_onRecord->code_script), ENT_QUOTES) . PHP_EOL;
-                            $this->_gridListCodeEditorOnRecord .= "/* END ON RECORD */" . PHP_EOL . PHP_EOL;
+                            $this->_gridListCodeEditorOnRecord .= "/** END ON RECORD */" . PHP_EOL . PHP_EOL;
                         }
                     }
-                    /* END GET CODE EDITOR ON RECORD */
+                    /** END GET CODE EDITOR ON RECORD */
 
-                    /*
+                    /**
                      * GET CODE EDITOR ON RECORD EXPORT
                      */
                     $_where_getCode_onRecordExport = array(
                         'proj_build_id' =>
-                        $this->_project_id, 'code_type' => 'onrecordexport',
+                            $this->_project_id, 'code_type' => 'onrecordexport',
                     );
                     $_query_getCode_onRecordExport = $this->db->get_where(' proj_build_codeeditor', $_where_getCode_onRecordExport)->result();
                     foreach ($_query_getCode_onRecordExport as $_row_getCode_onRecordExport) {
                         if (!empty(trim($_row_getCode_onRecordExport->code_script))) {
-                            $this->_exportCodeEditorOnRecord .= "/* ON RECORD EXPORT */" . PHP_EOL;
+                            $this->_exportCodeEditorOnRecord .= "/** ON RECORD EXPORT */" . PHP_EOL;
                             $this->_exportCodeEditorOnRecord .= html_entity_decode(base64_decode($_row_getCode_onRecordExport->code_script), ENT_QUOTES) . PHP_EOL;
-                            $this->_exportCodeEditorOnRecord .= "/* END ON RECORD EXPORT */" . PHP_EOL . PHP_EOL;
+                            $this->_exportCodeEditorOnRecord .= "/** END ON RECORD EXPORT */" . PHP_EOL . PHP_EOL;
                         }
                     }
-                    /* END GET CODE EDITOR ON RECORD EXPORT */
+                    /** END GET CODE EDITOR ON RECORD EXPORT */
 
-                    /*
+                    /**
                      * GET CODE EDITOR FORM ADD
                      */
                     $_where_getCode_FormAddEdit = array(
@@ -4347,11 +4319,28 @@ class ProjectbuildCrud extends MY_Controller {
                             $this->_formAddCodeEditorJS .= "<!--" . PHP_EOL;
                             $this->_formAddCodeEditorJS .= " * END JQUERY SCRIPT" . PHP_EOL;
                             $this->_formAddCodeEditorJS .= "-->" . PHP_EOL . PHP_EOL . PHP_EOL;
+
+                            /**
+                             * SE A OPÇÃO "Utilizar este SCRIPT JS no FORM EDIT ?" DO Code Editor - JQUERY NO Evento: FORM ADD
+                             * ESTIVER MARCADA, O GERADOR IRÁ COPIAR AUTOMATICAMENTE O SCRIPT JS DO FORM ADD PARA O ARQUIVO JS DO FORM EDIT
+                             */
+                            if ($_row_getCode_FormAddEdit->copy_script_js_from_form_add_to_form_edit == 1) {
+                                $this->_formEditCodeEditorJS .= '<!--' . PHP_EOL;
+                                $this->_formEditCodeEditorJS .= ' * SCRIPT COPIADO AUTOMATICAMENTE DO FORM ADD SCRIPT JS' . PHP_EOL;
+                                $this->_formEditCodeEditorJS .= ' * PORQUE A OPÇÃO: "Utilizar este SCRIPT JS no FORM EDIT ?" DO Code Editor - JQUERY NO Evento: FORM ADD FOI MARCADO' . PHP_EOL;
+                                $this->_formEditCodeEditorJS .= ' -->' . PHP_EOL;
+                                $this->_formEditCodeEditorJS .= $this->_formAddCodeEditorJS . PHP_EOL;
+                                $this->_formEditCodeEditorJS .= '<!--' . PHP_EOL;
+                                $this->_formEditCodeEditorJS .= ' * END SCRIPT COPIADO AUTOMATICAMENTE DO FORM ADD SCRIPT JS' . PHP_EOL;
+                                $this->_formEditCodeEditorJS .= ' *     PORQUE A OPÇÃO: "Utilizar este SCRIPT JS no FORM EDIT ?" DO Code Editor - JQUERY NO Evento: FORM ADD FOI MARCADO' . PHP_EOL;
+                                $this->_formEditCodeEditorJS .= ' -->' . PHP_EOL . PHP_EOL . PHP_EOL;
+                            }
+
                         }
                     }
-                    /* END GET CODE EDITOR FORM ADD */
+                    /** END GET CODE EDITOR FORM ADD */
 
-                    /*
+                    /**
                      * GET CODE EDITOR FORM EDIT
                      */
                     $_where_getCode_FormAddEdit = array(
@@ -4384,7 +4373,7 @@ class ProjectbuildCrud extends MY_Controller {
                             $this->_formEditCodeEditorJS .= "-->" . PHP_EOL . PHP_EOL . PHP_EOL;
                         }
                     }
-                    /* END GET CODE EDITOR FORM ADD */
+                    /** END GET CODE EDITOR FORM ADD */
                 } else {
 
                     set_mensagem_trigger_notifi('APP Não foi Gerado.', 'warning');
@@ -4396,14 +4385,15 @@ class ProjectbuildCrud extends MY_Controller {
                 redirect(site_url('projectbuildcrud'));
                 exit;
             }
-            /* END CARREGA DADOS DO PROJETO PARA FORM ADD/EDIT */
+
+            /** END CARREGA DADOS DO PROJETO PARA FORM ADD/EDIT */
 
             /**
              * GERANDO
              */
             echo "<link href=\"" . base_url('assets/dist/css/AdminLTE.BZ.min.css') . "\" rel=\"stylesheet\" type=\"text/css\"/>";
 
-            /*
+            /**
              * GERA O CONTROLLER DO APP
              */
             echo '<div class="callout callout-success">
@@ -4411,7 +4401,7 @@ class ProjectbuildCrud extends MY_Controller {
                 </div>';
             $this->ger_controller();
 
-            /*
+            /**
              * GERA O MODEL DO APP
              */
             echo '<div class="callout callout-success">
@@ -4419,7 +4409,7 @@ class ProjectbuildCrud extends MY_Controller {
                 </div>';
             $this->ger_models();
 
-            /*
+            /**
              * GERA A VIEW LIST
              */
             echo '<div class="callout callout-success">
@@ -4427,7 +4417,7 @@ class ProjectbuildCrud extends MY_Controller {
                  </div>';
             $this->ger_gridList();
 
-            /*
+            /**
              * GERA FORM ADD
              */
             echo '<div class="callout callout-success">
@@ -4436,7 +4426,7 @@ class ProjectbuildCrud extends MY_Controller {
 
             $this->ger_formAdd();
 
-            /*
+            /**
              * GERA FORM EDIT
              */
             echo '<div class="callout callout-success">
@@ -4447,15 +4437,16 @@ class ProjectbuildCrud extends MY_Controller {
         }
     }
 
-    /* END public function build_app() */
+    /** END public function build_app() */
 
-    /*
+    /**
      * GERA O CONTROLLER DO APP BLANK
      */
 
-    private function ger_controllerBlank() {
+    private function ger_controllerBlank()
+    {
 
-        /*
+        /**
          * IMPORTA O TEMPLATE DO CONTROLLER
          */
         $_template = file(FCPATH . 'application/modules/projectbuildcrud/views/tpl/tplControllerBlank.php');
@@ -4465,42 +4456,42 @@ class ProjectbuildCrud extends MY_Controller {
             $this->_dadosController .= $_row;
         }
 
-        /*
+        /**
          * FAZ AS SUBSTITUIÇÕES DOS MARCADORES PELOS CÓDIGOS GERADOS
          */
 
-        $this->_dadosController = str_replace('{{created-date}}', date('d/m/Y'), $this->_dadosController);
-        $this->_dadosController = str_replace('{{created-time}}', date('H:i') . ((date('H') > 11) ? 'PM' : 'AM'), $this->_dadosController);
-        $this->_dadosController = str_replace('{{author-name}}', $this->session->userdata('user_login')['user_nome'], $this->_dadosController);
-        $this->_dadosController = str_replace('{{author-email}}', $this->session->userdata('user_login')['user_email'], $this->_dadosController);
+        $this->_dadosController = str_replace('"{{created-date}}"', date('d/m/Y'), $this->_dadosController);
+        $this->_dadosController = str_replace('"{{created-time}}"', date('H:i') . ((date('H') > 11) ? 'PM' : 'AM'), $this->_dadosController);
+        $this->_dadosController = str_replace('"{{author-name}}"', $this->session->userdata('user_login')['user_nome'], $this->_dadosController);
+        $this->_dadosController = str_replace('"{{author-email}}"', $this->session->userdata('user_login')['user_email'], $this->_dadosController);
         $this->_dadosController = str_replace(
-                '{{class-name}}', $this->_app_nome, $this->_dadosController);
+            'ClassNameTemplate', $this->_app_nome, $this->_dadosController);
 
-        $this->_dadosController = str_replace('{{titulo-app}}', $this->_appTitulo, $this->_dadosController);
+        $this->_dadosController = str_replace('"{{titulo-app}}"', $this->_appTitulo, $this->_dadosController);
 
         if (strlen($this->_appIcone) > 0) {
-            $this->_dadosController = str_replace('{{icone-app}}', $this->_appIcone, $this->_dadosController);
+            $this->_dadosController = str_replace('"{{icone-app}}"', $this->_appIcone, $this->_dadosController);
         } else {
-            $this->_dadosController = str_replace('{{icone-app}}', 'fa-angle-right', $this->_dadosController);
+            $this->_dadosController = str_replace('"{{icone-app}}"', 'fa-angle-right', $this->_dadosController);
         }
 
-        $this->_dadosController = str_replace('{{app-nome}}', $this->_app_nome, $this->_dadosController);
+        $this->_dadosController = str_replace('"{{app-nome}}"', $this->_app_nome, $this->_dadosController);
 
-        $this->_dadosController = str_replace('{{controller-security}}', $this->_security, $this->_dadosController);
+        $this->_dadosController = str_replace('"{{controller-security}}"', $this->_security, $this->_dadosController);
 
         if ($this->_templatePadrao == 'SIM') {
 
             $_t = "";
-            $_t .= "/* TEMPLATE QUE SERÁ USADO PELO MÓDULO DO SISTEMA */" . PHP_EOL;
+            $_t .= "/** TEMPLATE QUE SERÁ USADO PELO MÓDULO DO SISTEMA */" . PHP_EOL;
             $_t .= "\$this->dados['_conteudo_masterPageIframe'] = \$this->router->fetch_class() . '/' . 'v" . $this->_app_nome . "';" . PHP_EOL;
             $_t .= "\$this->load->view('vMasterPageIframe', \$this->dados);" . PHP_EOL;
 
-            $this->_dadosController = str_replace('{{controller-blank}}', $_t, $this->_dadosController);
+            $this->_dadosController = str_replace('"{{controller-blank}}"', $_t, $this->_dadosController);
         } else {
-            $this->_dadosController = str_replace('{{controller-blank}}', '$this->load->view("v' . $this->_app_nome . '");', $this->_dadosController);
+            $this->_dadosController = str_replace('"{{controller-blank}}"', '$this->load->view("v' . $this->_app_nome . '");', $this->_dadosController);
         }
 
-        /*
+        /**
          * GET CODE EDITOR METODOS PHP CONTROLLER
          */
         $_where_getCode_ControllerMetodosPHP = array(
@@ -4512,18 +4503,18 @@ class ProjectbuildCrud extends MY_Controller {
 
         foreach ($_query_getCode_ControllerMetodosPHP as $_row_getCode_ControllerMetodosPHP) {
             if (!empty(trim($_row_getCode_ControllerMetodosPHP->code_script))) {
-                $this->_controller_metodos_php .= "/* METODO PHP - " . $_row_getCode_ControllerMetodosPHP->code_screen . ' */' . PHP_EOL;
+                $this->_controller_metodos_php .= "/** METODO PHP - " . $_row_getCode_ControllerMetodosPHP->code_screen . ' */' . PHP_EOL;
 
                 if ($_row_getCode_ControllerMetodosPHP->code_access_ajax_only == 1) {
 
                     $this->_controller_metodos_php .= "public function " . $_row_getCode_ControllerMetodosPHP->code_screen . '($_p = null) {' . PHP_EOL;
 
-                    $this->_controller_metodos_php .= '/*' . PHP_EOL;
+                    $this->_controller_metodos_php .= '/**' . PHP_EOL;
                     $this->_controller_metodos_php .= ' * CERTIFICA SE O ACESSO A ESTA FUNCTION REALMENTE ESTÁ SENDO FEITO POR AJAX.' . PHP_EOL;
                     $this->_controller_metodos_php .= ' */' . PHP_EOL;
                     $this->_controller_metodos_php .= 'bz_check_is_ajax_request();' . PHP_EOL;
-                    $this->_controller_metodos_php .= '/* END CERTIFICA SE O ACESSO A ESTA FUNCTION REALMENTE ESTÁ SENDO FEITO POR AJAX. */' . PHP_EOL . PHP_EOL . PHP_EOL;
-                    $this->_controller_metodos_php .= '/* */' . PHP_EOL . PHP_EOL . PHP_EOL;
+                    $this->_controller_metodos_php .= '/** END CERTIFICA SE O ACESSO A ESTA FUNCTION REALMENTE ESTÁ SENDO FEITO POR AJAX. */' . PHP_EOL . PHP_EOL . PHP_EOL;
+                    $this->_controller_metodos_php .= '/** */' . PHP_EOL . PHP_EOL . PHP_EOL;
                 } else {
 
                     $this->_controller_metodos_php .= $_row_getCode_ControllerMetodosPHP->code_type_method . " function " . $_row_getCode_ControllerMetodosPHP->code_screen . '($_p = null) {' . PHP_EOL;
@@ -4531,30 +4522,135 @@ class ProjectbuildCrud extends MY_Controller {
 
                 $this->_controller_metodos_php .= html_entity_decode(base64_decode($_row_getCode_ControllerMetodosPHP->code_script), ENT_QUOTES) . PHP_EOL;
                 $this->_controller_metodos_php .= "}" . PHP_EOL;
-                $this->_controller_metodos_php .= "/* END METODO PHP - " . $_row_getCode_ControllerMetodosPHP->code_screen . ' */' . PHP_EOL . PHP_EOL;
+                $this->_controller_metodos_php .= "/** END METODO PHP - " . $_row_getCode_ControllerMetodosPHP->code_screen . ' */' . PHP_EOL . PHP_EOL;
             }
         }
-        /* END GET CODE EDITOR METODOS PHP CONTROLLER */
+        /** END GET CODE EDITOR METODOS PHP CONTROLLER */
 
-        /* MÉTODOS METODOS PHP CONTROLLER */
-        $this->_dadosController = str_replace('{{controller-metodos-php}}', $this->_controller_metodos_php, $this->_dadosController);
+        /** MÉTODOS METODOS PHP CONTROLLER */
+        $this->_dadosController = str_replace('"{{controller-metodos-php}}"', $this->_controller_metodos_php, $this->_dadosController);
 
-        /* GERA O ARQUIVO controller DO APP BLANK */
+        /** GERA O ARQUIVO controller DO APP BLANK */
         write_file($this->_directory . '/controllers/' . $this->_app_nome . '.php', bz_removeEmptyLines($this->_dadosController));
-        /* END GERA O ARQUIVO controller DO APP BLANK */
+        /** END GERA O ARQUIVO controller DO APP BLANK */
 
         $this->_dadosController = '';
     }
 
-    /* END private function ger_controllerBlank() */
+    /** END private function ger_controllerBlank() */
 
-    /*
+    /**
+     * GERA O MODEL DO APP BLANK
+     */
+
+    private
+    function ger_modelsBlank()
+    {
+
+        /**
+         * GET CODE EDITOR METODOS PHP MODELS
+         */
+        $_where_getCode_ModelsMetodosPHP = array(
+            'proj_build_id' => $this->_project_id,
+            'code_type' => 'model-php',);
+        $_query_getCode_ModelsMetodosPHP = $this->db->get_where('proj_build_codeeditor', $_where_getCode_ModelsMetodosPHP)->result();
+        foreach ($_query_getCode_ModelsMetodosPHP as $_row_getCode_ModelsMetodosPHP) {
+            if (!empty(trim($_row_getCode_ModelsMetodosPHP->code_script))) {
+                $this->_models_metodos_php .= "/** MODELS PHP - " . $_row_getCode_ModelsMetodosPHP->code_screen . ' */' . PHP_EOL;
+                $this->_models_metodos_php .= "public function " . $_row_getCode_ModelsMetodosPHP->code_screen . '($_p = null) {' . PHP_EOL;
+                $this->_models_metodos_php .= html_entity_decode(base64_decode($_row_getCode_ModelsMetodosPHP->code_script), ENT_QUOTES) . PHP_EOL;
+                $this->_models_metodos_php .= "}" . PHP_EOL;
+                $this->_models_metodos_php .= "/** END MODELS PHP - " . $_row_getCode_ModelsMetodosPHP->code_screen . ' */' . PHP_EOL . PHP_EOL;
+            }
+        }
+        /** END GET CODE EDITOR METODOS PHP MODELS */
+
+        /**
+         * TESTE O TIPO DE MODEL QUE VAI SER GERADO
+         */
+        $_modelEloquent = false;
+        if ($this->_typeModel == 'eloquent') {
+            $_modelEloquent = true;
+        }
+        /** END TESTE O TIPO DE MODEL QUE VAI SER GERADO */
+        /** GERA A MODEL */
+        $this->ger_models($_modelEloquent);
+    }
+
+    /**
+     * GERA O MODEL DO APP
+     */
+
+    private
+    function ger_models($_modelEloquent = NULL)
+    {
+        /**
+         * IMPORTA O TEMPLATE DO MODEL
+         */
+        $_template = file(FCPATH . 'application/modules/projectbuildcrud/views/tpl/tplModels.php');
+        $this->_dadosModel = '';
+
+        foreach ($_template as $_row) {
+            $this->_dadosModel .= $_row;
+        }
+
+        /**
+         * FAZ AS SUBSTITUIÇÕES DOS MARCADORES PELOS CÓDIGOS GERADOS
+         */
+
+        $this->_dadosModel = str_replace('"{{created-date}}"', date('d/m/Y'), $this->_dadosModel);
+        $this->_dadosModel = str_replace('"{{created-time}}"', date('H:i') . ((date('H') > 11) ? 'PM' : 'AM'), $this->_dadosModel);
+        $this->_dadosModel = str_replace('"{{author-name}}"', $this->session->userdata('user_login')['user_nome'], $this->_dadosModel);
+        $this->_dadosModel = str_replace('"{{author-email}}"', $this->session->userdata('user_login')['user_email'], $this->_dadosModel);
+
+        $this->_dadosModel = str_replace('"{{model-name}}"', $this->_app_nome, $this->_dadosModel);
+        $this->_dadosModel = str_replace('"{{models-metodos-php}}"', $this->_models_metodos_php, $this->_dadosModel);
+
+
+        /**
+         *
+         * ========================================================================================================================================================================
+         * QUANDO A OPÇÃO MODEL ELOQUENTE ESTIVER MARCADO
+         * ========================================================================================================================================================================
+         *
+         */
+        if ($_modelEloquent) {
+            $this->_dadosModel = str_replace('"{{model-eloquent}}"', 'Eloquent', $this->_dadosModel);
+        } else {
+            $this->_dadosModel = str_replace('"{{model-eloquent}}"', '', $this->_dadosModel);
+        }
+        /**
+         *
+         * END QUANDO A OPÇÃO MODEL ELOQUENTE ESTIVER MARCADO
+         * ========================================================================================================================================================================
+         */
+        /**
+         *
+         * ========================================================================================================================================================================
+         * GERA O ARQUIVO model DA APLICAÇÃO
+         * ========================================================================================================================================================================
+         *
+         */
+        write_file($this->_directory . '/models/' . $this->_app_nome . '_model.php', bz_removeEmptyLines($this->_dadosModel));
+
+        $this->_dadosModel = '';
+        /**
+         *
+         * END GERA O ARQUIVO model DA APLICAÇÃO
+         * ========================================================================================================================================================================
+         */
+    }
+
+    /** END private function ger_controllerBlank() */
+
+    /**
      * GERA O VIEW DO APP BLANK
      */
 
-    private function ger_viewBlank() {
+    private function ger_viewBlank()
+    {
 
-        /*
+        /**
          * IMPORTA O TEMPLATE DO CONTROLLER
          */
         if ($this->_templatePadrao == 'NAO') {
@@ -4569,30 +4665,30 @@ class ProjectbuildCrud extends MY_Controller {
             $this->_dadosController .= $_row;
         }
 
-        /*
+        /**
          * FAZ AS SUBSTITUIÇÕES DOS MARCADORES PELOS CÓDIGOS GERADOS
          */
-        $this->_dadosController = str_replace('{{created-date}}', date('d/m/Y'), $this->_dadosController);
-        $this->_dadosController = str_replace('{{created-time}}', date('H:i') . ((date('H') > 11) ? 'PM' : 'AM'), $this->_dadosController);
-        $this->_dadosController = str_replace('{{author-name}}', $this->session->userdata('user_login')['user_nome'], $this->_dadosController);
-        $this->_dadosController = str_replace('{{author-email}}', $this->session->userdata('user_login')['user_email'], $this->_dadosController);
+        $this->_dadosController = str_replace('"{{created-date}}"', date('d/m/Y'), $this->_dadosController);
+        $this->_dadosController = str_replace('"{{created-time}}"', date('H:i') . ((date('H') > 11) ? 'PM' : 'AM'), $this->_dadosController);
+        $this->_dadosController = str_replace('"{{author-name}}"', $this->session->userdata('user_login')['user_nome'], $this->_dadosController);
+        $this->_dadosController = str_replace('"{{author-email}}"', $this->session->userdata('user_login')['user_email'], $this->_dadosController);
 
-        $this->_dadosController = str_replace('{{titulo-app}}', $this->_appTitulo, $this->_dadosController);
+        $this->_dadosController = str_replace('"{{titulo-app}}"', $this->_appTitulo, $this->_dadosController);
 
         if (strlen($this->_appIcone) > 0) {
-            $this->_dadosController = str_replace('{{icone-app}}', $this->_appIcone, $this->_dadosController);
+            $this->_dadosController = str_replace('"{{icone-app}}"', $this->_appIcone, $this->_dadosController);
         } else {
-            $this->_dadosController = str_replace('{{icone-app}}', 'fa-angle-right', $this->_dadosController);
+            $this->_dadosController = str_replace('"{{icone-app}}"', 'fa-angle-right', $this->_dadosController);
         }
 
-        $this->_dadosController = str_replace('{{app-nome}}', $this->_app_nome, $this->_dadosController);
+        $this->_dadosController = str_replace('"{{app-nome}}"', $this->_app_nome, $this->_dadosController);
 
-        /*
+        /**
          * GET CODE EDITOR BLANK CODE
          */
         $_where_getCode_Blank = array(
             'proj_build_id' => $this
-            ->_project_id,
+                ->_project_id,
             'code_type' => 'blank',
         );
         $this->db->order_by('code_screen DESC');
@@ -4605,63 +4701,29 @@ class ProjectbuildCrud extends MY_Controller {
                 $this->_blankCode .= "<!-- END BLANK CODE - " . $_row_getCode_Blank->code_screen . ' -->' . PHP_EOL . PHP_EOL;
             }
         }
-        /* END GET CODE EDITOR BLANK CODE */
+        /** END GET CODE EDITOR BLANK CODE */
 
-        /* BLANK CODE */
-        $this->_dadosController = str_replace('{{blank-code}}', $this->_blankCode, $this->_dadosController);
+        /** BLANK CODE */
+        $this->_dadosController = str_replace('"{{blank-code}}"', $this->_blankCode, $this->_dadosController);
 
-        /* GERA O ARQUIVO controller DO APP BLANK */
+        /** GERA O ARQUIVO controller DO APP BLANK */
         write_file($this->_directory . '/views/v' . $this->_app_nome . '.php', bz_removeEmptyLines($this->_dadosController));
-        /* END GERA O ARQUIVO controller DO APP BLANK */
+        /** END GERA O ARQUIVO controller DO APP BLANK */
 
         $this->_dadosController = '';
     }
 
-    /*
-     * GERA O MODEL DO APP BLANK
-     */
+    /** END private function ger_controller() */
 
-    private function ger_modelsBlank() {
-
-        /*
-         * GET CODE EDITOR METODOS PHP MODELS
-         */
-        $_where_getCode_ModelsMetodosPHP = array(
-            'proj_build_id' => $this->_project_id,
-            'code_type' => 'model-php',);
-        $_query_getCode_ModelsMetodosPHP = $this->db->get_where('proj_build_codeeditor', $_where_getCode_ModelsMetodosPHP)->result();
-        foreach ($_query_getCode_ModelsMetodosPHP as $_row_getCode_ModelsMetodosPHP) {
-            if (!empty(trim($_row_getCode_ModelsMetodosPHP->code_script))) {
-                $this->_models_metodos_php .= "/* MODELS PHP - " . $_row_getCode_ModelsMetodosPHP->code_screen . ' */' . PHP_EOL;
-                $this->_models_metodos_php .= "public function " . $_row_getCode_ModelsMetodosPHP->code_screen . '($_p = null) {' . PHP_EOL;
-                $this->_models_metodos_php .= html_entity_decode(base64_decode($_row_getCode_ModelsMetodosPHP->code_script), ENT_QUOTES) . PHP_EOL;
-                $this->_models_metodos_php .= "}" . PHP_EOL;
-                $this->_models_metodos_php .= "/* END MODELS PHP - " . $_row_getCode_ModelsMetodosPHP->code_screen . ' */' . PHP_EOL . PHP_EOL;
-            }
-        }
-        /* END GET CODE EDITOR METODOS PHP MODELS */
-
-        /**
-         * TESTE O TIPO DE MODEL QUE VAI SER GERADO
-         */
-        $_modelEloquent = false;
-        if ($this->_typeModel == 'eloquent') {
-            $_modelEloquent = true;
-        }
-        /** END TESTE O TIPO DE MODEL QUE VAI SER GERADO */
-        /* GERA A MODEL */
-        $this->ger_models($_modelEloquent);
-    }
-
-    /* END private function ger_controllerBlank() */
-
-    /*
+    /**
      * GERA O CONTROLLER DO APP
      */
 
-    private function ger_controller() {
+    private
+    function ger_controller()
+    {
 
-        /*
+        /**
          * IMPORTA O TEMPLATE DO CONTROLLER
          */
         $_template = file(FCPATH . 'application/modules/projectbuildcrud/views/tpl/tplController.php');
@@ -4671,66 +4733,67 @@ class ProjectbuildCrud extends MY_Controller {
             $this->_dadosController .= $_row;
         }
 
-        /*
+        /**
          * FAZ AS SUBSTITUIÇÕES DOS MARCADORES PELOS CÓDIGOS GERADOS
          */
-        $this->_dadosController = str_replace('{{created-date}}', date('d/m/Y'), $this->_dadosController);
-        $this->_dadosController = str_replace('{{created-time}}', date('H:i') . ((date('H') > 11) ? 'PM' : 'AM' ), $this->_dadosController);
-        $this->_dadosController = str_replace('{{author-name}}', $this->session->userdata('user_login')['user_nome'], $this->_dadosController);
-        $this->_dadosController = str_replace('{{author-email}}', $this->session->userdata('user_login')['user_email'], $this->_dadosController);
+        $this->_dadosController = str_replace('"{{created-date}}"', date('d/m/Y'), $this->_dadosController);
+        $this->_dadosController = str_replace('"{{created-time}}"', date('H:i') . ((date('H') > 11) ? 'PM' : 'AM'), $this->_dadosController);
+        $this->_dadosController = str_replace('"{{author-name}}"', $this->session->userdata('user_login')['user_nome'], $this->_dadosController);
+        $this->_dadosController = str_replace('"{{author-email}}"', $this->session->userdata('user_login')['user_email'], $this->_dadosController);
 
-        $this->_dadosController = str_replace('{{class-name}}', $this->_app_nome, $this->_dadosController);
+        $this->_dadosController = str_replace('ClassNameTemplate', $this->_app_nome, $this->_dadosController);
 
-        $this->_dadosController = str_replace('{{titulo-app}}', $this->_appTitulo, $this->_dadosController);
+        $this->_dadosController = str_replace('"{{titulo-app}}"', $this->_appTitulo, $this->_dadosController);
 
         if (strlen($this->_appIcone) > 0) {
-            $this->_dadosController = str_replace('{{icone-app}}', $this->_appIcone, $this->_dadosController);
+            $this->_dadosController = str_replace('"{{icone-app}}"', $this->_appIcone, $this->_dadosController);
         } else {
-            $this->_dadosController = str_replace('{{icone-app}}', 'fa-angle-right', $this->_dadosController);
+            $this->_dadosController = str_replace('"{{icone-app}}"', 'fa-angle-right', $this->_dadosController);
         }
 
-        $this->_dadosController = str_replace('{{app-nome}}', $this->_app_nome, $this->_dadosController);
+        $this->_dadosController = str_replace('"{{app-nome}}"', $this->_app_nome, $this->_dadosController);
 
         if ($this->_formAddConvertDadosToDatabase) {
-            $this->_formAddConvertDadosToDatabase = '/* CONVERTE DADOS PARA GRAVAR NA TABELA */' . PHP_EOL . $this->_formAddConvertDadosToDatabase . PHP_EOL . '/* CONVERTE DADOS PARA GRAVAR NA TABELA */' . PHP_EOL;
+            $this->_formAddConvertDadosToDatabase = '/** CONVERTE DADOS PARA GRAVAR NA TABELA */' . PHP_EOL . $this->_formAddConvertDadosToDatabase . PHP_EOL . '/** CONVERTE DADOS PARA GRAVAR NA TABELA */' . PHP_EOL;
         }
-        $this->_dadosController = str_replace('{{form-add-convert-dados-to-database}}', $this->_formAddConvertDadosToDatabase, $this->_dadosController);
+        $this->_dadosController = str_replace('"{{form-add-convert-dados-to-database}}"', $this->_formAddConvertDadosToDatabase, $this->_dadosController);
 
-        $this->_dadosController = str_replace('{{form-add-dados-fillable}}', $this->_formAddDadosFillable, $this->_dadosController);
-        $this->_dadosController = str_replace('{{form-edit-dados-fillable}}', $this->_formEditDadosFillable, $this->_dadosController);
+        $this->_dadosController = str_replace('"{{form-add-dados-fillable}}"', $this->_formAddDadosFillable, $this->_dadosController);
+        $this->_dadosController = str_replace('"{{form-edit-dados-fillable}}"', $this->_formEditDadosFillable, $this->_dadosController);
 
         if ($this->_formEditConvertDadosToDatabase) {
-            $this->_formEditConvertDadosToDatabase = '/* CONVERTE DADOS PARA GRAVAR NA TABELA */' . PHP_EOL . $this->_formEditConvertDadosToDatabase . PHP_EOL . '/* CONVERTE DADOS PARA GRAVAR NA TABELA */' . PHP_EOL;
+            $this->_formEditConvertDadosToDatabase = '/** CONVERTE DADOS PARA GRAVAR NA TABELA */' . PHP_EOL . $this->_formEditConvertDadosToDatabase . PHP_EOL . '/** CONVERTE DADOS PARA GRAVAR NA TABELA */' . PHP_EOL;
         }
-        $this->_dadosController = str_replace('{{form-edit-convert-dados-to-database}}', $this->_formEditConvertDadosToDatabase, $this->_dadosController);
+        $this->_dadosController = str_replace('"{{form-edit-convert-dados-to-database}}"', $this->_formEditConvertDadosToDatabase, $this->_dadosController);
 
-        $this->_dadosController = str_replace('{{table-gridlist-name}}', $this->_appTableName, $this->_dadosController);
-        $this->_dadosController = str_replace('{{table-formaddedit-name}}', str_replace('vw_', '', $this->_appTableName), $this->_dadosController);
+        $this->_dadosController = str_replace('"{{table-gridlist-name}}"', $this->_appTableName, $this->_dadosController);
+        $this->_dadosController = str_replace('"{{table-formaddedit-name}}"', str_replace('vw_', '', $this->_appTableName), $this->_dadosController);
 
-        $this->_dadosController = str_replace('{{primary_key_field}}', $this->_primary_key_field, $this->_dadosController);
-        $this->_dadosController = str_replace('{{grid-list-fields-order-by}}', $this->_gridListFieldsOrderBy, $this->_dadosController);
-        $this->_dadosController = str_replace('{{grid-list-search-fields}}', $this->_gridListSearchFields, $this->_dadosController);
+        $this->_dadosController = str_replace('"{{primary_key_field}}"', $this->_primary_key_field, $this->_dadosController);
+        $this->_dadosController = str_replace('"{{grid-list-fields-order-by}}"', $this->_gridListFieldsOrderBy, $this->_dadosController);
+        $this->_dadosController = str_replace('"{{grid-list-search-fields}}"', $this->_gridListSearchFields, $this->_dadosController);
 
-        $this->_dadosController = str_replace('{{add-validation}}', $this->_formAddConfigInputValidation, $this->_dadosController);
-        $this->_dadosController = str_replace('{{edit-validation}}', $this->_formEditConfigInputValidation, $this->_dadosController);
+        $this->_dadosController = str_replace('"{{add-validation}}"', $this->_formAddConfigInputValidation, $this->_dadosController);
+        $this->_dadosController = str_replace('"{{edit-validation}}"', $this->_formEditConfigInputValidation, $this->_dadosController);
 
-        $this->_dadosController = str_replace('{{form-edit-unset-primary-key}}', $this->_formEditUnsetPrimaryKey, $this->_dadosController);
+//        $this->_dadosController = str_replace('"{{edit-validation}}"', $this->_formEditUnsetPrimaryKey, $this->_dadosController);
+        $this->_dadosController = str_replace('"{{edit-validation}}"', '', $this->_dadosController);
 
-        $this->_dadosController = str_replace('{{form-add-unset-fields}}', $this->_form_add_unset_fields, $this->_dadosController);
-        $this->_dadosController = str_replace('{{form-edit-unset-fields}}', $this->_form_edit_unset_fields, $this->_dadosController);
+        $this->_dadosController = str_replace('"{{form-add-unset-fields}}"', $this->_form_add_unset_fields, $this->_dadosController);
+        $this->_dadosController = str_replace('"{{form-edit-unset-fields}}"', $this->_form_edit_unset_fields, $this->_dadosController);
 
-        $this->_dadosController = str_replace('{{callback-validation}}', $this->_formAddEditConfigInputValidationCallback, $this->_dadosController);
+        $this->_dadosController = str_replace('"{{callback-validation}}"', $this->_formAddEditConfigInputValidationCallback, $this->_dadosController);
 
-        $this->_dadosController = str_replace('{{form-edit-where-update-fields}}', $this->_formEditWhereUpdateFields, $this->_dadosController);
+        $this->_dadosController = str_replace('"{{form-edit-where-update-fields}}"', $this->_formEditWhereUpdateFields, $this->_dadosController);
 
 
-        /* CAMPOS VIRTUAIS DA GRIDLIST */
-        $this->_dadosController = str_replace('{{controller-virtual-field}}', ( (count($this->_gridListVirtualFieldsTable) > 0) ? "'" . implode("','", $this->_gridListVirtualFieldsTable) . "'" : ''), $this->_dadosController);
-        /* END CAMPOS VIRTUAIS DA GRIDLIST */
+        /** CAMPOS VIRTUAIS DA GRIDLIST */
+        $this->_dadosController = str_replace('"{{controller-virtual-field}}"', ((count($this->_gridListVirtualFieldsTable) > 0) ? "'" . implode("','", $this->_gridListVirtualFieldsTable) . "'" : ''), $this->_dadosController);
+        /** END CAMPOS VIRTUAIS DA GRIDLIST */
 
-        /* EXPORT REPORT */
-        $this->_dadosController = str_replace('{{grid-list-header-table-export}}', $this->_gridListHeaderTableExport, $this->_dadosController);
-        $this->_dadosController = str_replace('{{grid-list-fields-table-export}}', $this->_gridListFieldsTableExport, $this->_dadosController);
+        /** EXPORT REPORT */
+        $this->_dadosController = str_replace('"{{grid-list-header-table-export}}"', $this->_gridListHeaderTableExport, $this->_dadosController);
+        $this->_dadosController = str_replace('"{{grid-list-fields-table-export}}"', $this->_gridListFieldsTableExport, $this->_dadosController);
         $this->_dadosController = str_replace("<?= ", "'.", $this->_dadosController);
         $this->_dadosController = str_replace("; ?>", ".'", $this->_dadosController);
 
@@ -4741,23 +4804,22 @@ class ProjectbuildCrud extends MY_Controller {
         $this->_exportCodeEditorOnRecord = str_replace('{{', '$_row["', $this->_exportCodeEditorOnRecord);
         $this->_exportCodeEditorOnRecord = str_replace('}}', '"]', $this->_exportCodeEditorOnRecord);
 
-        $this->_dadosController = str_replace('{{export-on-record}}', $this->_exportCodeEditorOnRecord, $this->_dadosController);
+        $this->_dadosController = str_replace('"{{export-on-record}}"', $this->_exportCodeEditorOnRecord, $this->_dadosController);
 
-        /* END EXPORT REPORT */
-
+        /** END EXPORT REPORT */
 
 
         /**
          * ########################################################################################################################################################################
-         * 
+         *
          * CALENDAR CONTROLLER/VIEW
-         * 
+         *
          * ########################################################################################################################################################################
          */
         if (!empty($this->_appCalendarInputs->calendarCheckboxAtivar) && $this->_appCalendarInputs->calendarCheckboxAtivar == 'on') {
 
             /**
-             *  IMPORTA O TEMPLATE CONTROLLER DO CALENDAR 
+             *  IMPORTA O TEMPLATE CONTROLLER DO CALENDAR
              */
             $_template = file(FCPATH . 'application/modules/projectbuildcrud/views/tpl/tplControllerCalendar.php');
             $this->_dadosControllerCalendar = '';
@@ -4766,31 +4828,30 @@ class ProjectbuildCrud extends MY_Controller {
                 $this->_dadosControllerCalendar .= $_row;
             }
 
-            /*
+            /**
              * FAZ AS SUBSTITUIÇÕES DOS MARCADORES PELOS CÓDIGOS GERADOS
              */
-            $this->_dadosController = str_replace('{{calendar-view-app}}', '$this->dados[\'_view_app_calendar\'] = \'v' . $this->_app_nome . 'Calendar\';', $this->_dadosController);
-            $this->_dadosController = str_replace('{{calendar-controller}}', $this->_dadosControllerCalendar, $this->_dadosController);
+            $this->_dadosController = str_replace('"{{calendar-view-app}}"', '$this->dados[\'_view_app_calendar\'] = \'v' . $this->_app_nome . 'Calendar\';', $this->_dadosController);
+            $this->_dadosController = str_replace('"{{calendar-controller}}"', $this->_dadosControllerCalendar, $this->_dadosController);
 
-            /* CALENDAR EVENTS */
-            $this->_dadosController = str_replace('{{calendar-input-title}}', $this->_appCalendarInputs->calendarInputTitulo, $this->_dadosController);
-            $this->_dadosController = str_replace('{{calendar-input-description}}', $this->_appCalendarInputs->calendarInputDescricao, $this->_dadosController);
-            $this->_dadosController = str_replace('{{calendar-input-date-start}}', $this->_appCalendarInputs->calendarInputDataStart, $this->_dadosController);
-            $this->_dadosController = str_replace('{{calendar-input-date-end}}', $this->_appCalendarInputs->calendarInputDataEnd, $this->_dadosController);
-            $this->_dadosController = str_replace('{{calendar-input-id}}', 'id', $this->_dadosController);
-            /* END CALENDAR EVENTS */
+            /** CALENDAR EVENTS */
+            $this->_dadosController = str_replace('"{{calendar-input-title}}"', $this->_appCalendarInputs->calendarInputTitulo, $this->_dadosController);
+            $this->_dadosController = str_replace('"{{calendar-input-description}}"', $this->_appCalendarInputs->calendarInputDescricao, $this->_dadosController);
+            $this->_dadosController = str_replace('"{{calendar-input-date-start}}"', $this->_appCalendarInputs->calendarInputDataStart, $this->_dadosController);
+            $this->_dadosController = str_replace('"{{calendar-input-date-end}}"', $this->_appCalendarInputs->calendarInputDataEnd, $this->_dadosController);
+            $this->_dadosController = str_replace('"{{calendar-input-id}}"', 'id', $this->_dadosController);
+            /** END CALENDAR EVENTS */
 
-            /* METHOD CALENDAR */
-            $this->_controller_onScriptinit .= '/* METHOD CALENDAR */' . PHP_EOL;
+            /** METHOD CALENDAR */
+            $this->_controller_onScriptinit .= '/** METHOD CALENDAR */' . PHP_EOL;
             $this->_controller_onScriptinit .= '$this->_methodCalendar = true;' . PHP_EOL . PHP_EOL;
 
 
-
-            /* ############################################################################################################################################################ */
+            /** ############################################################################################################################################################ */
 
 
             /**
-             *  IMPORTA O TEMPLATE VIEW DO CALENDAR 
+             *  IMPORTA O TEMPLATE VIEW DO CALENDAR
              */
             $_template = file(FCPATH . 'application/modules/projectbuildcrud/views/tpl/tplViewCalendar.php');
             $this->_dadosViewCalendar = '';
@@ -4799,24 +4860,24 @@ class ProjectbuildCrud extends MY_Controller {
                 $this->_dadosViewCalendar .= $_row;
             }
 
-            /*
+            /**
              * FAZ AS SUBSTITUIÇÕES DOS MARCADORES PELOS CÓDIGOS GERADOS
              */
-            $this->_dadosViewCalendar = str_replace('{{created-date}}', date('d/m/Y'), $this->_dadosViewCalendar);
-            $this->_dadosViewCalendar = str_replace('{{created-time}}', date('H:i') . ((date('H') > 11) ? 'PM' : 'AM' ), $this->_dadosViewCalendar);
-            $this->_dadosViewCalendar = str_replace('{{author-name}}', $this->session->userdata('user_login')['user_nome'], $this->_dadosViewCalendar);
-            $this->_dadosViewCalendar = str_replace('{{author-email}}', $this->session->userdata('user_login')['user_email'], $this->_dadosViewCalendar);
+            $this->_dadosViewCalendar = str_replace('"{{created-date}}"', date('d/m/Y'), $this->_dadosViewCalendar);
+            $this->_dadosViewCalendar = str_replace('"{{created-time}}"', date('H:i') . ((date('H') > 11) ? 'PM' : 'AM'), $this->_dadosViewCalendar);
+            $this->_dadosViewCalendar = str_replace('"{{author-name}}"', $this->session->userdata('user_login')['user_nome'], $this->_dadosViewCalendar);
+            $this->_dadosViewCalendar = str_replace('"{{author-email}}"', $this->session->userdata('user_login')['user_email'], $this->_dadosViewCalendar);
 
-            /* TIME REFESH SCREEN CALENDAR */
+            /** TIME REFESH SCREEN CALENDAR */
             if ($this->_appCalendarInputs->calendarInputTimeRefresh > 0) {
-                $this->_dadosViewCalendar = str_replace('{{calendar-time-refresh-screen}}', ($this->_appCalendarInputs->calendarInputTimeRefresh ? $this->_appCalendarInputs->calendarInputTimeRefresh : 0), $this->_dadosViewCalendar);
+                $this->_dadosViewCalendar = str_replace('"{{calendar-input-id}}"', ($this->_appCalendarInputs->calendarInputTimeRefresh ? $this->_appCalendarInputs->calendarInputTimeRefresh : 0), $this->_dadosViewCalendar);
             } else {
-                $this->_dadosViewCalendar = str_replace('{{calendar-time-refresh-screen}}', '0', $this->_dadosViewCalendar);
+                $this->_dadosViewCalendar = str_replace('"{{calendar-input-id}}"', '0', $this->_dadosViewCalendar);
             }
 
-            /* GERA O ARQUIVO view DO CALENDAR */
+            /** GERA O ARQUIVO view DO CALENDAR */
             write_file($this->_directory . '/views/v' . $this->_app_nome . 'Calendar.php', bz_removeEmptyLines($this->_dadosViewCalendar));
-            /* END GERA O ARQUIVO view DO CALENDAR */
+            /** END GERA O ARQUIVO view DO CALENDAR */
 
 
             $this->_dadosViewCalendar = '';
@@ -4824,129 +4885,64 @@ class ProjectbuildCrud extends MY_Controller {
 
             /**/
         } else {
-            $this->_dadosController = str_replace('{{calendar-view-app}}', '', $this->_dadosController);
-            $this->_dadosController = str_replace('{{calendar-controller}}', '', $this->_dadosController);
+            $this->_dadosController = str_replace('"{{calendar-view-app}}"', '', $this->_dadosController);
+            $this->_dadosController = str_replace('"{{calendar-controller}}"', '', $this->_dadosController);
 
             if (is_file($this->_directory . '/views/v' . $this->_app_nome . 'Calendar.php')) {
                 unlink($this->_directory . '/views/v' . $this->_app_nome . 'Calendar.php');
             }
         }
 
-        /* ########################################################################################################################################################################
+        /** ########################################################################################################################################################################
          * END CALENDAR CONTROLLER/VIEW
          * ########################################################################################################################################################################
          */
 
 
-
-
-
-        /* EXPORT REPORT */
+        /** EXPORT REPORT */
         if (!empty($this->_gridListHeaderTableExport)) {
-            $this->_controller_onScriptinit .= '/* EXPORT REPORT */' . PHP_EOL;
+            $this->_controller_onScriptinit .= '/** EXPORT REPORT */' . PHP_EOL;
             $this->_controller_onScriptinit .= '$this->_exportReport = true;' . PHP_EOL . PHP_EOL;
         }
 
 
-        /* MÉTODOS */
-        $this->_dadosController = str_replace('{{controller-metodos-php}}', $this->_controller_metodos_php, $this->_dadosController);
-        $this->_dadosController = str_replace('{{controller-onScriptInit}}', $this->_controller_onScriptinit, $this->_dadosController);
-        $this->_dadosController = str_replace('{{controller-onBeforeInsert}}', $this->_controller_onBeforeInsert, $this->_dadosController);
-        $this->_dadosController = str_replace('{{controller-onAfterInsert}}', $this->_controller_onAfterInsert, $this->_dadosController);
-        $this->_dadosController = str_replace('{{controller-onBeforeUpdate}}', $this->_controller_onBeforeUpdate, $this->_dadosController);
-        $this->_dadosController = str_replace('{{controller-onAfterUpdate}}', $this->_controller_onAfterUpdate, $this->_dadosController);
-        $this->_dadosController = str_replace('{{controller-onBeforeDelete}}', $this->_controller_onBeforeDelete, $this->_dadosController);
-        $this->_dadosController = str_replace('{{controller_DeleteFileFunction}}', $this->_controller_DeleteFileFunction, $this->_dadosController);
-        $this->_dadosController = str_replace('{{controller-onAfterDelete}}', $this->_controller_onAfterDelete, $this->_dadosController);
-        $this->_dadosController = str_replace('{{controller-onScriptInitExport}}', $this->_controller_onScriptInitExport, $this->_dadosController);
-        $this->_dadosController = str_replace('{{controller-onScriptBeforeExport}}', $this->_controller_onScriptBeforeExport, $this->_dadosController);
-        $this->_dadosController = str_replace('{{controller-onScriptAfterExport}}', $this->_controller_onScriptAfterExport, $this->_dadosController);
-        $this->_dadosController = str_replace('{{controller-onScriptEndExport}}', $this->_controller_onScriptEndExport, $this->_dadosController);
-        /* END MÉTODOS */
+        /** MÉTODOS */
+        $this->_dadosController = str_replace('"{{controller-metodos-php}}"', $this->_controller_metodos_php, $this->_dadosController);
+        $this->_dadosController = str_replace('"{{controller-onScriptInit}}"', $this->_controller_onScriptinit, $this->_dadosController);
+        $this->_dadosController = str_replace('"{{controller-onBeforeInsert}}"', $this->_controller_onBeforeInsert, $this->_dadosController);
+        $this->_dadosController = str_replace('"{{controller-onAfterInsert}}"', $this->_controller_onAfterInsert, $this->_dadosController);
+        $this->_dadosController = str_replace('"{{controller-onBeforeUpdate}}"', $this->_controller_onBeforeUpdate, $this->_dadosController);
+        $this->_dadosController = str_replace('"{{controller-onBeforeUpdate}}"', $this->_controller_onAfterUpdate, $this->_dadosController);
+        $this->_dadosController = str_replace('"{{controller-onBeforeDelete}}"', $this->_controller_onBeforeDelete, $this->_dadosController);
+        $this->_dadosController = str_replace('"{{controller_DeleteFileFunction}}"', $this->_controller_DeleteFileFunction, $this->_dadosController);
+        $this->_dadosController = str_replace('"{{controller-onAfterDelete}}"', $this->_controller_onAfterDelete, $this->_dadosController);
+        $this->_dadosController = str_replace('"{{controller-onScriptInitExport}}"', $this->_controller_onScriptInitExport, $this->_dadosController);
+        $this->_dadosController = str_replace('"{{controller-onScriptBeforeExport}}"', $this->_controller_onScriptBeforeExport, $this->_dadosController);
+        $this->_dadosController = str_replace('"{{controller-onScriptAfterExport}}"', $this->_controller_onScriptAfterExport, $this->_dadosController);
+        $this->_dadosController = str_replace('"{{controller-onScriptEndExport}}"', $this->_controller_onScriptEndExport, $this->_dadosController);
+        /** END MÉTODOS */
 
 
-        /* GERA O ARQUIVO controller DA APLICAÇÃO */
+        /** GERA O ARQUIVO controller DA APLICAÇÃO */
         write_file($this->_directory . '/controllers/' . $this->_app_nome . '.php', bz_removeEmptyLines($this->_dadosController));
-        /* END GERA O ARQUIVO controller DA APLICAÇÃO */
+        /** END GERA O ARQUIVO controller DA APLICAÇÃO */
 
 
         $this->_dadosController = '';
         $this->_dadosControllerCalendar = '';
     }
 
-    /* END private function ger_controller() */
+    /** END private function ger_models() */
 
-    /*
-     * GERA O MODEL DO APP
-     */
-
-    private function ger_models($_modelEloquent = NULL) {
-        /*
-         * IMPORTA O TEMPLATE DO MODEL
-         */
-        $_template = file(FCPATH . 'application/modules/projectbuildcrud/views/tpl/tplModels.php');
-        $this->_dadosModel = '';
-
-        foreach ($_template as $_row) {
-            $this->_dadosModel .= $_row;
-        }
-
-        /*
-         * FAZ AS SUBSTITUIÇÕES DOS MARCADORES PELOS CÓDIGOS GERADOS
-         */
-
-        $this->_dadosModel = str_replace('{{created-date}}', date('d/m/Y'), $this->_dadosModel);
-        $this->_dadosModel = str_replace('{{created-time}}', date('H:i') . ((date('H') > 11) ? 'PM' : 'AM'), $this->_dadosModel);
-        $this->_dadosModel = str_replace('{{author-name}}', $this->session->userdata('user_login')['user_nome'], $this->_dadosModel);
-        $this->_dadosModel = str_replace('{{author-email}}', $this->session->userdata('user_login')['user_email'], $this->_dadosModel);
-
-        $this->_dadosModel = str_replace('{{model-name}}', $this->_app_nome, $this->_dadosModel);
-        $this->_dadosModel = str_replace('{{models-metodos-php}}', $this->_models_metodos_php, $this->_dadosModel);
-
-
-        /**
-         * 
-         * ========================================================================================================================================================================
-         * QUANDO A OPÇÃO MODEL ELOQUENTE ESTIVER MARCADO
-         * ========================================================================================================================================================================
-         * 
-         */
-        if ($_modelEloquent) {
-            $this->_dadosModel = str_replace('{{model-eloquent}}', 'Eloquent', $this->_dadosModel);
-        } else {
-            $this->_dadosModel = str_replace('{{model-eloquent}}', '', $this->_dadosModel);
-        }
-        /**
-         * 
-         * END QUANDO A OPÇÃO MODEL ELOQUENTE ESTIVER MARCADO
-         * ========================================================================================================================================================================
-         */
-        /**
-         * 
-         * ========================================================================================================================================================================
-         * GERA O ARQUIVO model DA APLICAÇÃO
-         * ========================================================================================================================================================================
-         * 
-         */
-        write_file($this->_directory . '/models/' . $this->_app_nome . '_model.php', bz_removeEmptyLines($this->_dadosModel));
-
-        $this->_dadosModel = '';
-        /**
-         * 
-         * END GERA O ARQUIVO model DA APLICAÇÃO
-         * ========================================================================================================================================================================
-         */
-    }
-
-    /* END private function ger_models() */
-
-    /*
+    /**
      * GERA A VIEW LIST
      */
 
-    private function ger_gridList() {
+    private
+    function ger_gridList()
+    {
 
-        /*
+        /**
          * IMPORTA O TEMPLATE DO CONTROLLER
          */
         $_dados = file(FCPATH . 'application/modules/projectbuildcrud/views/tpl/tplGridList.php');
@@ -4961,44 +4957,44 @@ class ProjectbuildCrud extends MY_Controller {
         $this->_gridListCodeEditorOnRecord = str_replace('{{', '$_row["', $this->_gridListCodeEditorOnRecord);
         $this->_gridListCodeEditorOnRecord = str_replace('}}', '"]', $this->_gridListCodeEditorOnRecord);
 
-        /*
+        /**
          * FAZ AS SUBSTITUIÇÕES DOS MARCADORES PELOS CÓDIGOS GERADOS
          */
 
-        $this->_dadosView = str_replace('{{created-date}}', date('d/m/Y'), $this->_dadosView);
-        $this->_dadosView = str_replace('{{created-time}}', date('H:i') . ((date('H') > 11) ? 'PM' : 'AM'), $this->_dadosView);
-        $this->_dadosView = str_replace('{{author-name}}', $this->session->userdata('user_login')['user_nome'], $this->_dadosView);
-        $this->_dadosView = str_replace('{{author-email}}', $this->session->userdata('user_login')['user_email'], $this->_dadosView);
+        $this->_dadosView = str_replace('"{{created-date}}"', date('d/m/Y'), $this->_dadosView);
+        $this->_dadosView = str_replace('"{{created-time}}"', date('H:i') . ((date('H') > 11) ? 'PM' : 'AM'), $this->_dadosView);
+        $this->_dadosView = str_replace('"{{author-name}}"', $this->session->userdata('user_login')['user_nome'], $this->_dadosView);
+        $this->_dadosView = str_replace('"{{author-email}}"', $this->session->userdata('user_login')['user_email'], $this->_dadosView);
 
-        $this->_dadosView = str_replace('{{primary_key_field}}', $this->_primary_key_field, $this->_dadosView);
+        $this->_dadosView = str_replace('"{{primary_key_field}}"', $this->_primary_key_field, $this->_dadosView);
 
-        $this->_dadosView = str_replace('{{grid-list-header-table}}', $this->_gridListHeaderTable, $this->_dadosView);
-        $this->_dadosView = str_replace('{{grid-list-fields-table}}', $this->_gridListFieldsTable, $this->_dadosView);
+        $this->_dadosView = str_replace('"{{grid-list-header-table}}"', $this->_gridListHeaderTable, $this->_dadosView);
+        $this->_dadosView = str_replace('"{{grid-list-fields-table}}"', $this->_gridListFieldsTable, $this->_dadosView);
 
-        $this->_dadosView = str_replace('{{grid-list-on-record}}', $this->_gridListCodeEditorOnRecord, $this->_dadosView);
-
-//INPUT SEARCH E BUTTONS DA PESQUISA
-        $this->_dadosView = str_replace('{{grid-list-div-buttons}}', $this->_gridListDivButtons, $this->_dadosView);
+        $this->_dadosView = str_replace('"{{grid-list-on-record}}"', $this->_gridListCodeEditorOnRecord, $this->_dadosView);
 
 //INPUT SEARCH E BUTTONS DA PESQUISA
-        $this->_dadosView = str_replace('{{grid-list-input-search}}', $this->_gridListSearchInput, $this->_dadosView);
+        $this->_dadosView = str_replace('"{{grid-list-div-buttons}}"', $this->_gridListDivButtons, $this->_dadosView);
+
+//INPUT SEARCH E BUTTONS DA PESQUISA
+        $this->_dadosView = str_replace('"{{grid-list-input-search}}"', $this->_gridListSearchInput, $this->_dadosView);
 
 //BUTTON SEARCH
-        $this->_dadosView = str_replace('{{grid-list-button-search}}', $this->_gridListSearchButton, $this->_dadosView);
+        $this->_dadosView = str_replace('"{{grid-list-button-search}}"', $this->_gridListSearchButton, $this->_dadosView);
 
 //BUTTON CLEAR
-        $this->_dadosView = str_replace('{{grid-list-button-clear}}', $this->_gridListClearhButton, $this->_dadosView);
+        $this->_dadosView = str_replace('"{{grid-list-button-clear}}"', $this->_gridListClearhButton, $this->_dadosView);
 
-        /* CSS */
-        $this->_dadosView = str_replace('{{grid-list-scripts-css}}', "<?php \$this->load->view(\$this->router->fetch_class() . '/css/css-gridlist');?>", $this->_dadosView);
+        /** CSS */
+        $this->_dadosView = str_replace('"{{grid-list-scripts-css}}"', "<?php \$this->load->view(\$this->router->fetch_class() . '/css/css-gridlist');?>", $this->_dadosView);
 
-        /* SCRIPT JS */
-        $this->_dadosView = str_replace('{{grid-list-scripts-js}}', "<?php \$this->load->view(\$this->router->fetch_class() . '/js/js-gridlist');?>", $this->_dadosView);
+        /** SCRIPT JS */
+        $this->_dadosView = str_replace('"{{grid-list-scripts-js}}"', "<?php \$this->load->view(\$this->router->fetch_class() . '/js/js-gridlist');?>", $this->_dadosView);
 
 
-        /* GERA O ARQUIVO VIEW gridlist DA APLICAÇÃO */
+        /** GERA O ARQUIVO VIEW gridlist DA APLICAÇÃO */
         write_file($this->_directory . '/views/v' . $this->_app_nome . '.php', bz_removeEmptyLines($this->_dadosView));
-        /* EDND GERA O ARQUIVO VIEW gridlist DA APLICAÇÃO */
+        /** EDND GERA O ARQUIVO VIEW gridlist DA APLICAÇÃO */
 
         $this->_dadosView = '';
 
@@ -5018,7 +5014,7 @@ class ProjectbuildCrud extends MY_Controller {
             fwrite($_dados, "<?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>" . PHP_EOL . PHP_EOL);
             fclose($_dados);
         }
-        /* END GERA O ARQUIVO CSS */
+        /** END GERA O ARQUIVO CSS */
 
 
         /**
@@ -5036,20 +5032,22 @@ class ProjectbuildCrud extends MY_Controller {
             fwrite($_dados, "<?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>" . PHP_EOL . PHP_EOL);
             fclose($_dados);
         }
-        /* END GERA O ARQUIVO JS */
+        /** END GERA O ARQUIVO JS */
 
 
         /**/
     }
 
-    /* END private function ger_gridList() */
+    /** END private function ger_gridList() */
 
-    /*
+    /**
      * GERA O FORM ADD DO APP
      */
 
-    private function ger_formAdd() {
-        /*
+    private
+    function ger_formAdd()
+    {
+        /**
          * IMPORTA O TEMPLATE DO FORM ADD
          */
         $_template = file(FCPATH . 'application/modules/projectbuildcrud/views/tpl/tplFormAdd.php');
@@ -5059,7 +5057,7 @@ class ProjectbuildCrud extends MY_Controller {
             $this->_dadosFormAdd .= $_row;
         }
 
-        /*
+        /**
          * FAZ AS SUBSTITUIÇÕES DOS MARCADORES PELOS CÓDIGOS GERADOS
          */
 
@@ -5072,33 +5070,31 @@ class ProjectbuildCrud extends MY_Controller {
         $this->_dadosFormAdd = str_replace('disabled-formedit', '', $this->_dadosFormAdd);
         $this->_dadosFormAdd = str_replace('disabled-formadd', 'disabled', $this->_dadosFormAdd);
 
-        $this->_dadosFormAdd = str_replace('{{created-date}}', date('d/m/Y'), $this->_dadosFormAdd);
-        $this->_dadosFormAdd = str_replace('{{created-time}}', date('H:i') . ((date('H') > 11) ? 'PM' : 'AM'), $this->_dadosFormAdd);
-        $this->_dadosFormAdd = str_replace('{{author-name}}', $this->session->userdata('user_login')['user_nome'], $this->_dadosFormAdd);
-        $this->_dadosFormAdd = str_replace('{{author-email}}', $this->session->userdata('user_login')['user_email'], $this->_dadosFormAdd);
+        $this->_dadosFormAdd = str_replace('"{{created-date}}"', date('d/m/Y'), $this->_dadosFormAdd);
+        $this->_dadosFormAdd = str_replace('"{{created-time}}"', date('H:i') . ((date('H') > 11) ? 'PM' : 'AM'), $this->_dadosFormAdd);
+        $this->_dadosFormAdd = str_replace('"{{author-name}}"', $this->session->userdata('user_login')['user_nome'], $this->_dadosFormAdd);
+        $this->_dadosFormAdd = str_replace('"{{author-email}}"', $this->session->userdata('user_login')['user_email'], $this->_dadosFormAdd);
 
-        $this->_dadosFormAdd = str_replace('{{form-addedit-input-form-open}}', $this->_formAddEditConfigFormOpen, $this->_dadosFormAdd);
-        $this->_dadosFormAdd = str_replace('{{form-add-input-fields}}', $this->_formAddFields, $this->_dadosFormAdd);
-
-
-        /* CSS */
-        $this->_dadosFormAdd = str_replace('{{form-add-scripts-css}}', "<?php \$this->load->view(\$this->router->fetch_class() . '/css/css-formAdd');?>", $this->_dadosFormAdd);
-
-        /* SCRIPT JS */
-        $this->_dadosFormAdd = str_replace('{{form-add-scripts-js}}', "<?php \$this->load->view(\$this->router->fetch_class() . '/js/js-formAdd');?>", $this->_dadosFormAdd);
-
-        /* SCRIPT JQUERY MASK */
-        $this->_dadosFormAdd = str_replace('{{form-add-scripts-js-mask}}', "<?php \$this->load->view(\$this->router->fetch_class() . '/js/js-mask-formAdd');?>", $this->_dadosFormAdd);
+        $this->_dadosFormAdd = str_replace('"{{form-addedit-input-form-open}}"', $this->_formAddEditConfigFormOpen, $this->_dadosFormAdd);
+        $this->_dadosFormAdd = str_replace('"{{form-add-input-fields}}"', $this->_formAddFields, $this->_dadosFormAdd);
 
 
+        /** CSS */
+        $this->_dadosFormAdd = str_replace('"{{form-add-scripts-css}}"', "<?php \$this->load->view(\$this->router->fetch_class() . '/css/css-formAdd');?>", $this->_dadosFormAdd);
 
-        /* GERA O ARQUIVO VIEW formadd DA APLICAÇÃO */
+        /** SCRIPT JS */
+        $this->_dadosFormAdd = str_replace('"{{form-add-scripts-js}}"', "<?php \$this->load->view(\$this->router->fetch_class() . '/js/js-formAdd');?>", $this->_dadosFormAdd);
+
+        /** SCRIPT JQUERY MASK */
+        $this->_dadosFormAdd = str_replace('"{{form-add-scripts-js-mask}}"', "<?php \$this->load->view(\$this->router->fetch_class() . '/js/js-mask-formAdd');?>", $this->_dadosFormAdd);
+
+
+        /** GERA O ARQUIVO VIEW formadd DA APLICAÇÃO */
         write_file($this->_directory . '/views/v' . $this->_app_nome . 'FormAdd.php', bz_removeEmptyLines($this->_dadosFormAdd));
-        /* END GERA O ARQUIVO VIEW formadd DA APLICAÇÃO */
+        /** END GERA O ARQUIVO VIEW formadd DA APLICAÇÃO */
 
 
         $this->_dadosFormAdd = '';
-
 
 
         /**
@@ -5116,7 +5112,7 @@ class ProjectbuildCrud extends MY_Controller {
             fwrite($_dados, "<?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>" . PHP_EOL . PHP_EOL);
             fclose($_dados);
         }
-        /* END GERA O ARQUIVO CSS */
+        /** END GERA O ARQUIVO CSS */
 
 
         /**
@@ -5134,7 +5130,7 @@ class ProjectbuildCrud extends MY_Controller {
             fwrite($_dados, "<?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>" . PHP_EOL . PHP_EOL);
             fclose($_dados);
         }
-        /* END GERA O ARQUIVO JS */
+        /** END GERA O ARQUIVO JS */
 
 
         /**
@@ -5152,20 +5148,22 @@ class ProjectbuildCrud extends MY_Controller {
             fwrite($_dados, "<?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>" . PHP_EOL . PHP_EOL);
             fclose($_dados);
         }
-        /* END GERA O ARQUIVO JS JQUERY MASK */
+        /** END GERA O ARQUIVO JS JQUERY MASK */
 
 
         /**/
     }
 
-    /* END private function ger_formAdd() */
+    /** END private function ger_formAdd() */
 
-    /*
+    /**
      * GERA O FORM EDIT DO APP
      */
 
-    private function ger_formEdit() {
-        /*
+    private
+    function ger_formEdit()
+    {
+        /**
          * IMPORTA O TEMPLATE DO FORM ADD
          */
         $_template = file(FCPATH . 'application/modules/projectbuildcrud/views/tpl/tplFormEdit.php');
@@ -5175,7 +5173,7 @@ class ProjectbuildCrud extends MY_Controller {
             $this->_dadosFormEdit .= $_row;
         }
 
-        /*
+        /**
          * FAZ AS SUBSTITUIÇÕES DOS MARCADORES PELOS CÓDIGOS GERADOS
          */
 
@@ -5185,32 +5183,29 @@ class ProjectbuildCrud extends MY_Controller {
         $this->_formEditFields = str_replace('hidden-formadd', '', $this->_formEditFields);
         $this->_formEditFields = str_replace('hidden-formedit', 'hidden', $this->_formEditFields);
 
-        $this->_dadosFormEdit = str_replace('{{created-date}}', date('d/m/Y'), $this->_dadosFormEdit);
-        $this->_dadosFormEdit = str_replace('{{created-time}}', date('H:i') . ((date('H') > 11) ? 'PM' : 'AM' ), $this->_dadosFormEdit);
-        $this->_dadosFormEdit = str_replace('{{author-name}}', $this->session->userdata('user_login')['user_nome'], $this->_dadosFormEdit);
-        $this->_dadosFormEdit = str_replace('{{author-email}}', $this->session->userdata('user_login')['user_email'], $this->_dadosFormEdit);
+        $this->_dadosFormEdit = str_replace('"{{created-date}}"', date('d/m/Y'), $this->_dadosFormEdit);
+        $this->_dadosFormEdit = str_replace('"{{created-time}}"', date('H:i') . ((date('H') > 11) ? 'PM' : 'AM'), $this->_dadosFormEdit);
+        $this->_dadosFormEdit = str_replace('"{{author-name}}"', $this->session->userdata('user_login')['user_nome'], $this->_dadosFormEdit);
+        $this->_dadosFormEdit = str_replace('"{{author-email}}"', $this->session->userdata('user_login')['user_email'], $this->_dadosFormEdit);
 
-        $this->_dadosFormEdit = str_replace('{{form-addedit-input-form-open}}', $this->_formAddEditConfigFormOpen, $this->_dadosFormEdit);
-        $this->_dadosFormEdit = str_replace('{{primary_key_field}}', $this->_primary_key_field, $this->_dadosFormEdit);
+        $this->_dadosFormEdit = str_replace('"{{form-addedit-input-form-open}}"', $this->_formAddEditConfigFormOpen, $this->_dadosFormEdit);
+        $this->_dadosFormEdit = str_replace('"{{primary_key_field}}"', $this->_primary_key_field, $this->_dadosFormEdit);
 
-        $this->_dadosFormEdit = str_replace('{{form-edit-input-fields}}', $this->_formEditFields, $this->_dadosFormEdit);
+        $this->_dadosFormEdit = str_replace('"{{form-edit-input-fields}}"', $this->_formEditFields, $this->_dadosFormEdit);
 
-//        $this->_dadosFormEdit = str_replace('{{form-edit-scripts-css}}', $this->_formEditCodeEditorCSS, $this->_dadosFormEdit);
-//        $this->_dadosFormEdit = str_replace('{{form-edit-scripts-js}}', $this->_formEditCodeEditorJS, $this->_dadosFormEdit);
-//        $this->_dadosFormEdit = str_replace('{{form-edit-scripts-js-mask}}', $this->_formAddEditConfigInputMask, $this->_dadosFormEdit);
-
-
-
-        /* CSS */
-        $this->_dadosFormEdit = str_replace('{{form-edit-scripts-css}}', "<?php \$this->load->view(\$this->router->fetch_class() . '/css/css-formEdit');?>", $this->_dadosFormEdit);
-
-        /* SCRIPT JS */
-        $this->_dadosFormEdit = str_replace('{{form-edit-scripts-js}}', "<?php \$this->load->view(\$this->router->fetch_class() . '/js/js-formEdit');?>", $this->_dadosFormEdit);
-
-        /* SCRIPT JQUERY MASK */
-        $this->_dadosFormEdit = str_replace('{{form-edit-scripts-js-mask}}', "<?php \$this->load->view(\$this->router->fetch_class() . '/js/js-mask-formEdit');?>", $this->_dadosFormEdit);
+//        $this->_dadosFormEdit = str_replace('"{{form-edit-scripts-css}}"', $this->_formEditCodeEditorCSS, $this->_dadosFormEdit);
+//        $this->_dadosFormEdit = str_replace('"{{form-edit-scripts-js}}"', $this->_formEditCodeEditorJS, $this->_dadosFormEdit);
+//        $this->_dadosFormEdit = str_replace('"{{form-edit-scripts-js-mask}}"', $this->_formAddEditConfigInputMask, $this->_dadosFormEdit);
 
 
+        /** CSS */
+        $this->_dadosFormEdit = str_replace('"{{form-edit-scripts-css}}"', "<?php \$this->load->view(\$this->router->fetch_class() . '/css/css-formEdit');?>", $this->_dadosFormEdit);
+
+        /** SCRIPT JS */
+        $this->_dadosFormEdit = str_replace('"{{form-edit-scripts-js}}"', "<?php \$this->load->view(\$this->router->fetch_class() . '/js/js-formEdit');?>", $this->_dadosFormEdit);
+
+        /** SCRIPT JQUERY MASK */
+        $this->_dadosFormEdit = str_replace('"{{form-edit-scripts-js-mask}}"', "<?php \$this->load->view(\$this->router->fetch_class() . '/js/js-mask-formEdit');?>", $this->_dadosFormEdit);
 
 
         /**
@@ -5228,13 +5223,18 @@ class ProjectbuildCrud extends MY_Controller {
             fwrite($_dados, "<?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>" . PHP_EOL . PHP_EOL);
             fclose($_dados);
         }
-        /* END GERA O ARQUIVO CSS */
+        /** END GERA O ARQUIVO CSS */
 
 
         /**
          * GERA O ARQUIVO JS
          */
         $_dados = '';
+
+        /**echo '<pre>';
+         * var_dump($this->dados );
+         * echo '<pre>';*/
+
 
         if ($this->_formEditCodeEditorJS) {
             $_dados = fopen($this->_directory . '/views/js/js-formEdit.php', 'w');
@@ -5246,7 +5246,7 @@ class ProjectbuildCrud extends MY_Controller {
             fwrite($_dados, "<?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>" . PHP_EOL . PHP_EOL);
             fclose($_dados);
         }
-        /* END GERA O ARQUIVO JS */
+        /** END GERA O ARQUIVO JS */
 
 
         /**
@@ -5264,25 +5264,23 @@ class ProjectbuildCrud extends MY_Controller {
             fwrite($_dados, "<?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>" . PHP_EOL . PHP_EOL);
             fclose($_dados);
         }
-        /* END GERA O ARQUIVO JS JQUERY MASK */
+        /** END GERA O ARQUIVO JS JQUERY MASK */
 
 
         /**/
 
 
-
-
-        /* GERA O ARQUIVO VIEW formedit DA APLICAÇÃO */
+        /** GERA O ARQUIVO VIEW formedit DA APLICAÇÃO */
         write_file($this->_directory . '/views/v' . $this->_app_nome . 'FormEdit.php', bz_removeEmptyLines($this->_dadosFormEdit));
-        /* END GERA O ARQUIVO VIEW formedit DA APLICAÇÃO */
+        /** END GERA O ARQUIVO VIEW formedit DA APLICAÇÃO */
 
         $this->_dadosFormEdit = '';
     }
 
-    /* END private function ger_formAdd() */
+    /** END private function ger_formAdd() */
 }
 
-/* END class */
+/** END class */
 
 
 

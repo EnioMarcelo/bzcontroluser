@@ -1,41 +1,41 @@
 <?php
 
-/*
-  Created on : {{created-date}}, {{created-time}}
-  Author     : {{author-name}} - {{author-email}}
+/**
+ * Created on : "{{created-date}}", "{{created-time}}"
+ * Author     : "{{author-name}}" - "{{author-email}}"
  */
 
 
-  defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') OR exit('No direct script access allowed');
 
-  class {{class-name}} extends MY_Controller {
+class ClassNameTemplate extends MY_Controller
+{
 
+    /** function  __construct() */
+    public function __construct()
+    {
+        parent::__construct("{{controller-security}}");
 
-    /* function  __construct() */
-  	public function __construct() {
-        parent::__construct({{controller-security}});
+        /** LOAD MODEL */
+        $this->load->model('"{{app-nome}}"_model', 'model', TRUE);
 
-      /* LOAD MODEL */
-      $this->load->model('{{app-nome}}_model', 'model', TRUE);
-
-      /* TÍTULO DA APLICAÇÃO */
-      $this->dados['_titulo_app'] = '{{titulo-app}}';
-      $this->dados['_font_icon'] = 'fa {{icone-app}}';
-
-    }
-    /* END function __construct() */
-
-
-
-    /* function index() */
-    public function index() {
-
-        {{controller-blank}}
+        /** TÍTULO DA APLICAÇÃO */
+        $this->dados['_titulo_app'] = '"{{titulo-app}}"';
+        $this->dados['_font_icon'] = 'fa "{{icone-app}}"';
 
     }
-    /* END function index() */
+    /** END function __construct() */
 
-    {{controller-metodos-php}}
+    /** function index() */
+    public function index()
+    {
+
+        "{{controller-blank}}"
+
+    }
+    /** END function index() */
+
+"{{controller-metodos-php}}"
 
 }
-/* END class {{class-name}} */
+/** END class ClassNameTemplate */

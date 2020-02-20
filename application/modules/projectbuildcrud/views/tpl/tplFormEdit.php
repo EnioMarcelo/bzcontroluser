@@ -1,7 +1,7 @@
 <?php
-/*
-  Created on : {{created-date}}, {{created-time}}
-  Author     : {{author-name}} - {{author-email}}
+/**
+  Created on : "{{created-date}}", "{{created-time}}"
+  Author     : "{{author-name}}" - "{{author-email}}"
  */
 
 
@@ -37,7 +37,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 
 <!-- OPEN FORM -->
-<?= {{form-addedit-input-form-open}}($this->router->fetch_class() . '/edit/'. $dados->{{primary_key_field}} . '?' . bz_app_parametros_url(), 'id="IdFormEDIT_'.$this->router->fetch_class().'" name="formEDIT_'.$this->router->fetch_class().'" role="form" ' ); ?>
+<?= "{{form-addedit-input-form-open}}"($this->router->fetch_class() . '/edit/'. $dados->"{{primary_key_field}}" . '?' . bz_app_parametros_url(), 'id="IdFormEDIT_'.$this->router->fetch_class().'" name="formEDIT_'.$this->router->fetch_class().'" role="form" ' ); ?>
 
 <div class="row hide-reload-screen">
 
@@ -84,7 +84,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
                     <!-- FORM FIELDS -->
 
-                    {{form-edit-input-fields}}
+                    "{{form-edit-input-fields}}"
 
                     <!-- END FORM FIELDS -->
 
@@ -129,11 +129,11 @@ if (!empty($modalFormEdit)) {
 
 
 
-{{form-edit-scripts-css}}
+"{{form-edit-scripts-css}}"
 
-{{form-edit-scripts-js}}
+"{{form-edit-scripts-js}}"
 
-{{form-edit-scripts-js-mask}}
+"{{form-edit-scripts-js-mask}}"
 
 
 

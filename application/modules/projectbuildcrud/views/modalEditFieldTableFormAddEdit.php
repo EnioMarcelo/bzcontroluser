@@ -16,19 +16,19 @@
     }
 
     /* MODAL */
-    .bz_modal{
+    .bz_modal {
         display: block;
         position: fixed;
         left: 0;
         top: 0;
         width: 100%;
         height: 100%;
-        background: rgba(0,0,0,0.7);
+        background: rgba(0, 0, 0, 0.7);
         z-index: 98;
 
     }
 
-    .bz_modal_box{
+    .bz_modal_box {
         z-index: 99;
         display: flex;
         position: relative;
@@ -48,7 +48,7 @@
 
     }
 
-    .bz_modal_box_close{
+    .bz_modal_box_close {
         position: absolute;
         top: -8px;
         right: -8px;
@@ -59,18 +59,18 @@
         background: #000;
         border: 2px double #ccc;
         border-radius: 50%;
-        -moz-border-radius:  50%;
-        -webkit-border-radius:  50%;
+        -moz-border-radius: 50%;
+        -webkit-border-radius: 50%;
         z-index: 99;
 
     }
 
-    .bz_modal_box_close:hover{
+    .bz_modal_box_close:hover {
         background: #999999;
         color: black;
     }
 
-    .bz_modal_box .header{
+    .bz_modal_box .header {
         padding: 0px;
         color: #fff;
         /*text-align: center;*/
@@ -79,13 +79,13 @@
         -webkit-border-radius: 3px 3px 0 0;
     }
 
-    .bz_modal_box .header p{
+    .bz_modal_box .header p {
         font-weight: 500;
         font-size: 1.5em;
         text-shadow: 1px 1px 0 #555;
     }
 
-    .bz_modal_box #bz_modal_content{
+    .bz_modal_box #bz_modal_content {
         padding: 0px;
         background: #fff;
         border-radius: 0 0 3px 3px;
@@ -97,16 +97,17 @@
         width: 100%;
         text-align: center;
         box-sizing: border-box;
-        overflow:scroll;
+        overflow: scroll;
 
     }
-    #bz_modal_content *{
-        box-sizing: border-box; 
+
+    #bz_modal_content * {
+        box-sizing: border-box;
         -moz-box-sizing: border-box;
         -webkit-box-sizing: border-box;
     }
 
-    #bz_modal_content img, #bz_modal_content iframe{
+    #bz_modal_content img, #bz_modal_content iframe {
         max-width: 100%;
         width: 100%;
         height: 100%;
@@ -114,21 +115,57 @@
     }
 
     /* CORES */
-    .color_blue{color: #0E96E5;}
-    .color_green{color: #56b748;}
-    .color_yellow{color: #F2AA27;}
-    .color_red{color: #F43E33;}
-    .color_purple{color: #7551CD;}
-    .color_pink{color: #B873CD;}
+    .color_blue {
+        color: #0E96E5;
+    }
 
-    .bg_blue{background-color: #0E96E5;}
-    .bg_green{background-color: #56b748;}
-    .bg_yellow{background-color: #F2AA27;}
-    .bg_red{background-color: #F43E33;}
-    .bg_purple{background-color: #7551CD;}
-    .bg_pink{background-color: #B873CD;}
+    .color_green {
+        color: #56b748;
+    }
 
-    #modal-btn-edit-field-table-formaddedit{ display:none; }
+    .color_yellow {
+        color: #F2AA27;
+    }
+
+    .color_red {
+        color: #F43E33;
+    }
+
+    .color_purple {
+        color: #7551CD;
+    }
+
+    .color_pink {
+        color: #B873CD;
+    }
+
+    .bg_blue {
+        background-color: #0E96E5;
+    }
+
+    .bg_green {
+        background-color: #56b748;
+    }
+
+    .bg_yellow {
+        background-color: #F2AA27;
+    }
+
+    .bg_red {
+        background-color: #F43E33;
+    }
+
+    .bg_purple {
+        background-color: #7551CD;
+    }
+
+    .bg_pink {
+        background-color: #B873CD;
+    }
+
+    #modal-btn-edit-field-table-formaddedit {
+        display: none;
+    }
 
     #bz_modal_content iframe {
         display: flex;
@@ -151,13 +188,17 @@
 
         <div id="bz_modal_content">
 
-            <button type="button" class="btn btn-primary btn-show-modal-aguarde j_btn_save_form_formAddEdit pull-right margin-top-10 margin-right-25"><i class="fa fa-fw fa-save margin-right-5"></i>Salvar</button>
+            <button type="button"
+                    class="btn btn-primary btn-show-modal-aguarde j_btn_save_form_formAddEdit pull-right margin-top-10 margin-right-25">
+                <i class="fa fa-fw fa-save margin-right-5"></i>Salvar
+            </button>
 
             <div class="content">
 
                 <h4 style="margin-top:0 !important; margin-bottom:10 !important;">Form ADD/EDIT</h4>
 
-                <h3 class="border-bottom-1 padding-bottom-10 margin-top-0" >Editando Campo : <i id="form_add_edit_modal_field_name" style="font-weight: 200"></i></h3>
+                <h3 class="border-bottom-1 padding-bottom-10 margin-top-0">Editando Campo : <i
+                            id="form_add_edit_modal_field_name" style="font-weight: 200"></i></h3>
 
 
                 <div id="formaddedit" class="tab-pane fade in active text-left">
@@ -182,11 +223,14 @@
                                 <div class="form-group">
                                     <label class="margin-right-15 text-normal">
                                         SIM
-                                        <input type="radio" id="form_add_edit_field_show_on" name="form_add_edit_field_show" class="flat-green" value="on">
+                                        <input type="radio" id="form_add_edit_field_show_on"
+                                               name="form_add_edit_field_show" class="flat-green" value="on">
                                     </label>
                                     <label class="text-normal">
-                                        NÃO 
-                                        <input type="radio" id="form_add_edit_field_show_off" name="form_add_edit_field_show" class="flat-red hover checked" aria-checked="true" value="off">
+                                        NÃO
+                                        <input type="radio" id="form_add_edit_field_show_off"
+                                               name="form_add_edit_field_show" class="flat-red hover checked"
+                                               aria-checked="true" value="off">
                                     </label>
                                 </div>
                             </div>
@@ -228,30 +272,38 @@
                                 <label>Label:</label>
 
                                 <div class="input-group col-bg-12 col-md-12 col-sm-12 col-xs-12">
-                                    <div class="input-group-addon bg-green-active j-tooltip j-flag-pk" data-placement="bottom" data-toggle="tooltip" data-original-title="Chave Primária">
+                                    <div class="input-group-addon bg-green-active j-tooltip j-flag-pk"
+                                         data-placement="bottom" data-toggle="tooltip"
+                                         data-original-title="Chave Primária">
                                         <i class="fa fa-key"></i>
                                     </div>
-                                    <input class="form-control input-sm" type="text" placeholder="Label" name="form_add_edit_field_label" value="">
+                                    <input class="form-control input-sm" type="text" placeholder="Label"
+                                           name="form_add_edit_field_label" value="">
                                 </div>
                             </div>
 
                             <!--PLACEHOLDER DO CAMPO-->
                             <div class="form-group col-md-12">
                                 <label>Placeholder:</label>
-                                <input class="form-control input-sm" type="text" placeholder="Placeholder do Campo" name="form_add_edit_field_placeholder" value="">
+                                <input class="form-control input-sm" type="text" placeholder="Placeholder do Campo"
+                                       name="form_add_edit_field_placeholder" value="">
                             </div>
 
                             <!--MASCARA DO CAMPO-->
                             <div class="form-group col-md-12 hide">
-                                <label>Mascara: <span style=" font-size: 1em; font-weight: 100">Lib jQuery Mask</span></label>
-                                <input class="form-control input-sm" type="text" placeholder="Mascara do Campo" name="form_add_edit_field_mask" value="">
+                                <label>Mascara: <span
+                                            style=" font-size: 1em; font-weight: 100">Lib jQuery Mask</span></label>
+                                <input class="form-control input-sm" type="text" placeholder="Mascara do Campo"
+                                       name="form_add_edit_field_mask" value="">
                             </div>
 
 
                             <!--COMPLEMENTO DA MASCARA DO CAMPO-->
                             <div class="form-group col-md-12 hide">
                                 <label>Complemento da Mascara: <span style=" font-size: 1em; font-weight: 100">Lib jQuery Mask</span></label>
-                                <textarea class="form-control input-sm" name="form_add_edit_field_mask_complement" placeholder="Complemento da Mascara do Campo" rows="3" wrap="hard" value=""></textarea>
+                                <textarea class="form-control input-sm" name="form_add_edit_field_mask_complement"
+                                          placeholder="Complemento da Mascara do Campo" rows="3" wrap="hard"
+                                          value=""></textarea>
                             </div>
 
                             <!--SE O CAMPO FOR SELECT DROPDOWN MANUAL, VALORES DO SELECT: VALOR1|LABEL1,VALOR2|LABEL2-->
@@ -259,7 +311,10 @@
                                 <label>Valor(es) do Select. <span style=" font-size: 0.9em; font-weight: 100">Ex:VALOR1|LABEL1,VALOR2|LABEL2</span></label>
 
                                 <div class="input-group col-bg-12 col-md-12 col-sm-12 col-xs-12">
-                                    <textarea class="form-control input-sm" name="form_add_edit_field_value_select_manual" placeholder="Ex:VALOR1|LABEL1,VALOR2|LABEL2" rows="3" wrap="hard" value=""></textarea>
+                                    <textarea class="form-control input-sm"
+                                              name="form_add_edit_field_value_select_manual"
+                                              placeholder="Ex:VALOR1|LABEL1,VALOR2|LABEL2" rows="3" wrap="hard"
+                                              value=""></textarea>
                                 </div>
                             </div>
 
@@ -267,25 +322,36 @@
                             <div class="form-group col-bg-12 col-md-12 col-sm-12 col-xs-12 hide">
                                 <label>Valor(es) do Select. <span style=" font-size: 0.9em; font-weight: 100">QUERY Ex: SELECT id,profissao FROM cad_profissao ORDER BY profissao</span></label>
                                 <div class="input-group col-bg-12 col-md-12 col-sm-12 col-xs-12">
-                                    <textarea class="form-control input-sm" name="form_add_edit_field_value_select_dinamic" placeholder="QUERY Ex: SELECT id,profissao FROM cad_profissao ORDER BY profissao" rows="3" wrap="hard" value=""></textarea>
+                                    <textarea class="form-control input-sm"
+                                              name="form_add_edit_field_value_select_dinamic"
+                                              placeholder="QUERY Ex: SELECT id,profissao FROM cad_profissao ORDER BY profissao"
+                                              rows="3" wrap="hard" value=""></textarea>
                                 </div>
                             </div>
 
                             <!--SE O CAMPO FOR SELECT MULTIPLO MANUAL, VALORES DO SELECT MULTIPLO: VALOR1|LABEL1,VALOR2|LABEL2-->
                             <div class="form-group col-bg-12 col-md-12 col-sm-12 col-xs-12 hide">
-                                <label>Valor(es) do Select Multiplo Dinâmico. <span style=" font-size: 0.9em; font-weight: 100">Ex:VALOR1|LABEL1,VALOR2|LABEL2</span></label>
+                                <label>Valor(es) do Select Multiplo Dinâmico. <span
+                                            style=" font-size: 0.9em; font-weight: 100">Ex:VALOR1|LABEL1,VALOR2|LABEL2</span></label>
 
                                 <div class="input-group col-bg-12 col-md-12 col-sm-12 col-xs-12">
-                                    <textarea class="form-control input-sm" name="form_add_edit_field_value_select_multiple_manual" placeholder="Ex:VALOR1|LABEL1,VALOR2|LABEL2" rows="3" wrap="hard" value=""></textarea>
+                                    <textarea class="form-control input-sm"
+                                              name="form_add_edit_field_value_select_multiple_manual"
+                                              placeholder="Ex:VALOR1|LABEL1,VALOR2|LABEL2" rows="3" wrap="hard"
+                                              value=""></textarea>
                                 </div>
                             </div>
 
                             <!--SE O CAMPO FOR SELECT MULTIPLO DINÂMICO-->
                             <div class="form-group col-bg-12 col-md-12 col-sm-12 col-xs-12 hide">
-                                <label>Valor(es) do Select Multiplo Dinâmico. <span style=" font-size: 0.9em; font-weight: 100">QUERY Ex: SELECT id,profissao FROM cad_profissao ORDER BY profissao</span></label>
+                                <label>Valor(es) do Select Multiplo Dinâmico. <span
+                                            style=" font-size: 0.9em; font-weight: 100">QUERY Ex: SELECT id,profissao FROM cad_profissao ORDER BY profissao</span></label>
 
                                 <div class="input-group col-bg-12 col-md-12 col-sm-12 col-xs-12">
-                                    <textarea class="form-control input-sm" name="form_add_edit_field_value_select_multiple_dinamic" placeholder="QUERY Ex: SELECT id,profissao FROM cad_profissao ORDER BY profissao" rows="3" wrap="hard" value=""></textarea>
+                                    <textarea class="form-control input-sm"
+                                              name="form_add_edit_field_value_select_multiple_dinamic"
+                                              placeholder="QUERY Ex: SELECT id,profissao FROM cad_profissao ORDER BY profissao"
+                                              rows="3" wrap="hard" value=""></textarea>
                                 </div>
                             </div>
 
@@ -294,7 +360,9 @@
                                 <label>Valor do Checkbox ON:</label>
 
                                 <div class="input-group col-bg-12 col-md-12 col-sm-12 col-xs-12">
-                                    <input class="form-control input-sm" type="text" placeholder="Valor Padrão do Checkbox ON" name="form_add_edit_field_value_checkbox_manual_on" value="">
+                                    <input class="form-control input-sm" type="text"
+                                           placeholder="Valor Padrão do Checkbox ON"
+                                           name="form_add_edit_field_value_checkbox_manual_on" value="">
                                 </div>
                             </div>
 
@@ -302,7 +370,9 @@
                                 <label>Valor do Checkbox OFF:</label>
 
                                 <div class="input-group col-bg-12 col-md-12 col-sm-12 col-xs-12">
-                                    <input class="form-control input-sm" type="text" placeholder="Valor Padrão do Checkbox OFF" name="form_add_edit_field_value_checkbox_manual_off" value="">
+                                    <input class="form-control input-sm" type="text"
+                                           placeholder="Valor Padrão do Checkbox OFF"
+                                           name="form_add_edit_field_value_checkbox_manual_off" value="">
                                 </div>
                             </div>
 
@@ -311,7 +381,10 @@
                                 <label>Valor(es) do Radio Button. <span style=" font-size: 0.9em; font-weight: 100">Ex:VALOR1|LABEL1,VALOR2|LABEL2</span></label>
 
                                 <div class="input-group col-bg-12 col-md-12 col-sm-12 col-xs-12">
-                                    <textarea class="form-control input-sm" name="form_add_edit_field_value_radiobutton_manual" placeholder="Ex:VALOR1|LABEL1,VALOR2|LABEL2" rows="3" wrap="hard" value=""></textarea>
+                                    <textarea class="form-control input-sm"
+                                              name="form_add_edit_field_value_radiobutton_manual"
+                                              placeholder="Ex:VALOR1|LABEL1,VALOR2|LABEL2" rows="3" wrap="hard"
+                                              value=""></textarea>
                                 </div>
                             </div>
 
@@ -320,27 +393,38 @@
                             <div class="form-group col-bg-12 col-md-12 col-sm-12 col-xs-12 hide">
                                 <label>Valor(es) do Select. <span style=" font-size: 0.9em; font-weight: 100">QUERY Ex: SELECT id,profissao FROM cad_profissao ORDER BY profissao</span></label>
                                 <div class="input-group col-bg-12 col-md-12 col-sm-12 col-xs-12">
-                                    <textarea class="form-control input-sm" name="form_add_edit_field_value_radiobutton_dinamic" placeholder="QUERY Ex: SELECT id,profissao FROM cad_profissao ORDER BY profissao" rows="3" wrap="hard" value=""></textarea>
+                                    <textarea class="form-control input-sm"
+                                              name="form_add_edit_field_value_radiobutton_dinamic"
+                                              placeholder="QUERY Ex: SELECT id,profissao FROM cad_profissao ORDER BY profissao"
+                                              rows="3" wrap="hard" value=""></textarea>
                                 </div>
                             </div>
 
 
                             <!--SE O CAMPO FOR CHECKBOX MULTIPLO MANUAL, VALORES DO CKECKBOX: VALOR1|LABEL1,VALOR2|LABEL2-->
                             <div class="form-group col-bg-12 col-md-12 col-sm-12 col-xs-12 hide">
-                                <label>Valor(es) do Checkbox Multiplo. <span style=" font-size: 0.9em; font-weight: 100">Ex:VALOR1|LABEL1,VALOR2|LABEL2</span></label>
+                                <label>Valor(es) do Checkbox Multiplo. <span
+                                            style=" font-size: 0.9em; font-weight: 100">Ex:VALOR1|LABEL1,VALOR2|LABEL2</span></label>
 
                                 <div class="input-group col-bg-12 col-md-12 col-sm-12 col-xs-12">
-                                    <textarea class="form-control input-sm" name="form_add_edit_field_value_checkbox_multiple_manual" placeholder="Ex:VALOR1|LABEL1,VALOR2|LABEL2" rows="3" wrap="hard" value=""></textarea>
+                                    <textarea class="form-control input-sm"
+                                              name="form_add_edit_field_value_checkbox_multiple_manual"
+                                              placeholder="Ex:VALOR1|LABEL1,VALOR2|LABEL2" rows="3" wrap="hard"
+                                              value=""></textarea>
                                 </div>
                             </div>
 
 
                             <!--SE O CAMPO FOR CHECKBOX MULTIPLO DINÂMICO-->
                             <div class="form-group col-bg-12 col-md-12 col-sm-12 col-xs-12 hide">
-                                <label>Valor(es) do Checkbox Multiplo Dinâmico. <span style=" font-size: 0.9em; font-weight: 100">QUERY Ex: SELECT id,profissao FROM cad_profissao ORDER BY profissao</span></label>
+                                <label>Valor(es) do Checkbox Multiplo Dinâmico. <span
+                                            style=" font-size: 0.9em; font-weight: 100">QUERY Ex: SELECT id,profissao FROM cad_profissao ORDER BY profissao</span></label>
 
                                 <div class="input-group col-bg-12 col-md-12 col-sm-12 col-xs-12">
-                                    <textarea class="form-control input-sm" name="form_add_edit_field_value_checkbox_multiple_dinamic" placeholder="QUERY Ex: SELECT id,profissao FROM cad_profissao ORDER BY profissao" rows="3" wrap="hard" value=""></textarea>
+                                    <textarea class="form-control input-sm"
+                                              name="form_add_edit_field_value_checkbox_multiple_dinamic"
+                                              placeholder="QUERY Ex: SELECT id,profissao FROM cad_profissao ORDER BY profissao"
+                                              rows="3" wrap="hard" value=""></textarea>
                                 </div>
                             </div>
 
@@ -374,19 +458,18 @@
                             </div>
 
 
-
                             <!--UPPERCASAE / LOWERCASE-->
                             <div class="form-group col-bg-12 col-md-12 col-sm-12 col-xs-12">
                                 <label>Converte Letra:</label>
                                 <div class="input-group col-bg-12 col-md-12 col-sm-12 col-xs-12">
-                                    <select class="form-control input-sm" name="form_add_edit_field_convert_letter_into">
+                                    <select class="form-control input-sm"
+                                            name="form_add_edit_field_convert_letter_into">
                                         <option value="">Normal</option>
                                         <option value="text-uppercase">Todas em Maiusculas</option>
                                         <option value="text-lowercase">Todas em Minuscuslas</option>
                                     </select>
                                 </div>
                             </div>
-
 
 
                             <!--TIPO DE CARACTERES - SOMENTE LETRAS, SOMENTE NÚMEROS OU LETRAS E NÚMEROS-->
@@ -403,47 +486,49 @@
                             </div>
 
 
-
                             <!--MÍNIMO DE CARACTERES NO INPUT-->
                             <div class="form-group col-bg-12 col-md-12 col-sm-12 col-xs-12">
                                 <label>Mínimno de Caracteres:</label>
                                 <div class="input-group col-bg-12 col-md-12 col-sm-12 col-xs-12">
-                                    <input class="form-control input-sm" type="number" placeholder="Quantidade mínima de caracteres no campo." name="form_add_edit_field_min_length" value="" patter="[0-9]">
+                                    <input class="form-control input-sm" type="number"
+                                           placeholder="Quantidade mínima de caracteres no campo."
+                                           name="form_add_edit_field_min_length" value="" patter="[0-9]">
                                 </div>
                             </div>
-
 
 
                             <!--MÁXIMO DE CARACTERES NO INPUT-->
                             <div class="form-group col-bg-12 col-md-12 col-sm-12 col-xs-12 hide">
                                 <label>Máximo de Caracteres:</label>
                                 <div class="input-group col-bg-12 col-md-12 col-sm-12 col-xs-12">
-                                    <input class="form-control input-sm" type="number" placeholder="Quantidade máxima de caracteres no campo." name="form_add_edit_field_max_length" value="" patter="[0-9]">
+                                    <input class="form-control input-sm" type="number"
+                                           placeholder="Quantidade máxima de caracteres no campo."
+                                           name="form_add_edit_field_max_length" value="" patter="[0-9]">
                                 </div>
                             </div>
-
 
 
                             <!--ALTURA DO CKEDITOR-->
                             <div class="form-group col-bg-12 col-md-12 col-sm-12 col-xs-12 hide">
                                 <label>Altura do Editor:</label>
                                 <div class="input-group col-bg-12 col-md-12 col-sm-12 col-xs-12">
-                                    <input class="form-control input-sm" style="text-transform: lowercase;" type="text" placeholder="Altura do editor vai refletir na quantidade de linhas de texto." name="form_add_edit_field_editorhtml_ckeditor_line_height" value="">
+                                    <input class="form-control input-sm" style="text-transform: lowercase;" type="text"
+                                           placeholder="Altura do editor vai refletir na quantidade de linhas de texto."
+                                           name="form_add_edit_field_editorhtml_ckeditor_line_height" value="">
                                 </div>
                                 <span class="margin-left-0" style="font-size: 0.9em; font-weight: 100;">Unidade de Medida: px, em, vh</span>
                             </div>
-
 
 
                             <!--VALOR INICIAL DO INPUT-->
                             <div class="form-group col-bg-12 col-md-12 col-sm-12 col-xs-12">
                                 <label>Valor Inicial:</label>
                                 <div class="input-group col-bg-12 col-md-12 col-sm-12 col-xs-12">
-                                    <input class="form-control input-sm" type="text" name="form_add_edit_field_start_value" value="">
+                                    <input class="form-control input-sm" type="text"
+                                           name="form_add_edit_field_start_value" value="">
                                 </div>
                                 <span class="margin-left-0" style="font-size: 0.9em; font-weight: 100;">Para executar uma macro ou model dentro do campo digite:<p>[[ sua_macro() ]] ou [[ $this->model->sua_model() ]]</p></span>
                             </div>
-
 
 
                             <!--UPLOAD IMAGEM-->
@@ -451,43 +536,51 @@
                                 <div class="form-group col-bg-12 col-md-12 col-sm-12 col-xs-12">
                                     <label>Diretório:</label>
                                     <div class="input-group col-bg-12 col-md-12 col-sm-12 col-xs-12">
-                                        <input class="form-control input-sm" type="text" name="form_add_edit_field_upload_imagem_folder" value="">
+                                        <input class="form-control input-sm" type="text"
+                                               name="form_add_edit_field_upload_imagem_folder" value="">
                                     </div>
                                 </div>
 
                                 <div class="form-group col-bg-12 col-md-12 col-sm-12 col-xs-12">
                                     <label>Extensões Permitidas:</label>
                                     <div class="input-group col-bg-12 col-md-12 col-sm-12 col-xs-12">
-                                        <input class="form-control input-sm" type="text" name="form_add_edit_field_upload_imagem_extensao_permitida" value="">
+                                        <input class="form-control input-sm" type="text"
+                                               name="form_add_edit_field_upload_imagem_extensao_permitida" value="">
                                     </div>
                                 </div>
 
 
-                                <div class="form-group col-bg-12 col-md-12 col-sm-12 col-xs-12" style="line-height: 1.2em;">
+                                <div class="form-group col-bg-12 col-md-12 col-sm-12 col-xs-12"
+                                     style="line-height: 1.2em;">
                                     <label>Tamanho máximo do arquivo (em kilobytes):</label>
                                     <div class="input-group col-bg-12 col-md-12 col-sm-12 col-xs-12">
-                                        <input class="form-control input-sm" type="number" name="form_add_edit_field_upload_imagem_tamanho_maximo" value="">
+                                        <input class="form-control input-sm" type="number"
+                                               name="form_add_edit_field_upload_imagem_tamanho_maximo" value="">
                                     </div>
                                     <span class="margin-left-0" style="font-size: 0.9em; font-weight: 100;">Nota: A maioria das instalações do PHP tem seu próprio limite, conforme especificado no arquivo php.ini. Geralmente 2 MB (ou 2048 KB) por padrão.</span>
                                 </div>
 
                                 <div class="col-bg-12 col-md-12 col-sm-12 col-xs-12">
 
-                                    <div class="col-bg-12 col-md-12 col-sm-12 col-xs-12 margin-bottom-10" style="line-height: 0.8em">
-                                        <label>Dimensões da Imagem (em pixels).</label> <span class="margin-left-5" style=" font-size: 0.9em; font-weight: 100">Definido como zero para nenhum limite.</span>
+                                    <div class="col-bg-12 col-md-12 col-sm-12 col-xs-12 margin-bottom-10"
+                                         style="line-height: 0.8em">
+                                        <label>Dimensões da Imagem (em pixels).</label> <span class="margin-left-5"
+                                                                                              style=" font-size: 0.9em; font-weight: 100">Definido como zero para nenhum limite.</span>
                                     </div>
                                     <div class="col-bg-12 col-md-12 col-sm-12 col-xs-12">
                                         <div class="form-group col-bg-6 col-md-6 col-sm-6 col-xs-6">
                                             <label style="font-weight: normal">Largura Máxima:</label>
                                             <div class="input-group col-bg-12 col-md-12 col-sm-12 col-xs-12">
-                                                <input class="form-control input-sm" type="number" name="form_add_edit_field_upload_imagem_max_width" value="">
+                                                <input class="form-control input-sm" type="number"
+                                                       name="form_add_edit_field_upload_imagem_max_width" value="">
                                             </div>
                                         </div>
 
                                         <div class="form-group col-bg-6 col-md-6 col-sm-6 col-xs-6">
                                             <label style="font-weight: normal">Altura Máxima:</label>
                                             <div class="input-group col-bg-12 col-md-12 col-sm-12 col-xs-12">
-                                                <input class="form-control input-sm" type="number" name="form_add_edit_field_upload_imagem_max_height" value="">
+                                                <input class="form-control input-sm" type="number"
+                                                       name="form_add_edit_field_upload_imagem_max_height" value="">
                                             </div>
                                         </div>
                                     </div>
@@ -495,8 +588,6 @@
                                 </div>
 
                             </div>
-
-
 
 
                             <!--UPLOAD ARQUIVO-->
@@ -505,21 +596,25 @@
                                 <div class="form-group col-bg-12 col-md-12 col-sm-12 col-xs-12">
                                     <label>Diretório:</label>
                                     <div class="input-group col-bg-12 col-md-12 col-sm-12 col-xs-12">
-                                        <input class="form-control input-sm" type="text" name="form_add_edit_field_upload_arquivo_folder" value="">
+                                        <input class="form-control input-sm" type="text"
+                                               name="form_add_edit_field_upload_arquivo_folder" value="">
                                     </div>
                                 </div>
 
                                 <div class="form-group col-bg-12 col-md-12 col-sm-12 col-xs-12">
                                     <label>Extensões Permitidas:</label>
                                     <div class="input-group col-bg-12 col-md-12 col-sm-12 col-xs-12">
-                                        <input class="form-control input-sm" type="text" name="form_add_edit_field_upload_arquivo_extensao_permitida" value="">
+                                        <input class="form-control input-sm" type="text"
+                                               name="form_add_edit_field_upload_arquivo_extensao_permitida" value="">
                                     </div>
                                 </div>
 
-                                <div class="form-group col-bg-12 col-md-12 col-sm-12 col-xs-12" style="line-height: 1.2em;">
+                                <div class="form-group col-bg-12 col-md-12 col-sm-12 col-xs-12"
+                                     style="line-height: 1.2em;">
                                     <label>Tamanho máximo do arquivo (em kilobytes):</label>
                                     <div class="input-group col-bg-12 col-md-12 col-sm-12 col-xs-12">
-                                        <input class="form-control input-sm" type="number" name="form_add_edit_field_upload_arquivo_tamanho_maximo" value="">
+                                        <input class="form-control input-sm" type="number"
+                                               name="form_add_edit_field_upload_arquivo_tamanho_maximo" value="">
                                     </div>
                                     <span class="margin-left-0" style="font-size: 0.9em; font-weight: 100;">Nota: A maioria das instalações do PHP tem seu próprio limite, conforme especificado no arquivo php.ini. Geralmente 2 MB (ou 2048 KB) por padrão.</span>
                                 </div>
@@ -540,9 +635,13 @@
                                 <div class="form-group col-bg-12 col-md-12 col-sm-12 col-xs-12">
                                     <label>Oculto:</label>
                                     <div class="input-group col-bg-12 col-md-12 col-sm-12 col-xs-12">
-                                        <input type="checkbox" class="form-control input-sm btn_form_add_edit_field_hidden" data-toggle="toggle" data-on="ON" data-off="OFF" name="form_add_edit_field_hidden">
+                                        <input type="checkbox"
+                                               class="form-control input-sm btn_form_add_edit_field_hidden"
+                                               data-toggle="toggle" data-on="ON" data-off="OFF"
+                                               name="form_add_edit_field_hidden">
 
-                                        <select class="input-sm margin-left-20 hide" name="form_add_edit_field_hidden_in_form">
+                                        <select class="input-sm margin-left-20 hide"
+                                                name="form_add_edit_field_hidden_in_form">
                                             <option value="todos">Todos</option>
                                             <option value="formadd">Somente Form ADD</option>
                                             <option value="formedit">Somente Form EDIT</option>
@@ -556,9 +655,13 @@
                                 <div class="form-group col-bg-12 col-md-12 col-sm-12 col-xs-12">
                                     <label>Somente Leitura:</label>
                                     <div class="input-group">
-                                        <input type="checkbox" class="form-control input-sm btn_form_add_edit_field_read_only" data-toggle="toggle" data-on="ON" data-off="OFF" name="form_add_edit_field_read_only" />
+                                        <input type="checkbox"
+                                               class="form-control input-sm btn_form_add_edit_field_read_only"
+                                               data-toggle="toggle" data-on="ON" data-off="OFF"
+                                               name="form_add_edit_field_read_only"/>
 
-                                        <select class="input-sm margin-left-20 hide" name="form_add_edit_field_read_only_in_form">
+                                        <select class="input-sm margin-left-20 hide"
+                                                name="form_add_edit_field_read_only_in_form">
                                             <option value="todos">Todos</option>
                                             <option value="formadd">Somente Form ADD</option>
                                             <option value="formedit">Somente Form EDIT</option>
@@ -568,15 +671,15 @@
                                 </div>
 
 
-
-
                                 <!--REQUIRED-->
                                 <div class="form-group col-bg-12 col-md-12 col-sm-12 col-xs-12">
                                     <label>Obrigatório:</label>
                                     <div class="input-group">
-                                        <input type="checkbox" class="form-control input-sm" data-toggle="toggle" data-on="ON" data-off="OFF" name="form_add_edit_field_required" />
+                                        <input type="checkbox" class="form-control input-sm" data-toggle="toggle"
+                                               data-on="ON" data-off="OFF" name="form_add_edit_field_required"/>
 
-                                        <select class="input-sm margin-left-20 hide" name="form_add_edit_field_required_in_form">
+                                        <select class="input-sm margin-left-20 hide"
+                                                name="form_add_edit_field_required_in_form">
                                             <option value="todos">Todos</option>
                                             <option value="formadd">Somente Form ADD</option>
                                             <option value="formedit">Somente Form EDIT</option>
@@ -595,7 +698,10 @@
                                 <div class="form-group col-bg-12 col-md-12 col-sm-12 col-xs-12">
                                     <label>Multi Upload:</label>
                                     <div class="input-group col-bg-12 col-md-12 col-sm-12 col-xs-12">
-                                        <input type="checkbox" class="form-control input-sm btn_form_add_edit_active_multi_upload_imagem" data-toggle="toggle" data-on="ON" data-off="OFF" name="form_add_edit_active_multi_upload_imagem">
+                                        <input type="checkbox"
+                                               class="form-control input-sm btn_form_add_edit_active_multi_upload_imagem"
+                                               data-toggle="toggle" data-on="ON" data-off="OFF"
+                                               name="form_add_edit_active_multi_upload_imagem">
                                     </div>
                                 </div>
                             </fieldset>
@@ -606,7 +712,9 @@
                                 <div class="form-group col-bg-12 col-md-12 col-sm-12 col-xs-12">
                                     <label>Quantidade máxima de imagem para upload:</label>
                                     <div class="input-group col-bg-12 col-md-12 col-sm-12 col-xs-12">
-                                        <input type="number" class="form-control input-sm" name="form_add_edit_active_multi_upload_imagem_max_file" value="<?= ini_get('max_file_uploads'); ?>">
+                                        <input type="number" class="form-control input-sm"
+                                               name="form_add_edit_active_multi_upload_imagem_max_file"
+                                               value="<?= ini_get('max_file_uploads'); ?>">
                                     </div>
                                 </div>
                             </fieldset>
@@ -618,7 +726,10 @@
 
 
                     <div class="box-footer text-center">
-                        <button type="button" class="btn btn-primary btn-show-modal-aguarde j_btn_save_form_formAddEdit pull-right"><i class="fa fa-fw fa-save margin-right-5"></i>Salvar</button>
+                        <button type="button"
+                                class="btn btn-primary btn-show-modal-aguarde j_btn_save_form_formAddEdit pull-right"><i
+                                    class="fa fa-fw fa-save margin-right-5"></i>Salvar
+                        </button>
                     </div>
 
 
@@ -626,9 +737,6 @@
 
                 </div>
                 <!--END FORM ADD/EDIT TAB-->
-
-
-
 
 
             </div>
@@ -639,7 +747,6 @@
 
 </div>
 <!--END MODAL EDIT CAMPOS DO FORM ADD/ADIT DO APP-->
-
 
 
 <script>
@@ -690,24 +797,19 @@
             /* END CAMPO OBRIGATÓRIO */
 
 
-
             /* DESABILITA CAMPOS */
             if (_type_field == 'senha'
-                    || _type_field == 'senha'
-                    || _type_field == 'upload-arquivo'
-                    || _type_field == 'upload-imagem'
-                    || _type_field == 'select-multiple-manual'
-                    || _type_field == 'select-multiple-dinamic'
-                    || _type_field == 'checkbox-multiple-manual'
-                    || _type_field == 'checkbox-multiple-dinamic')
-            {
+                || _type_field == 'senha'
+                || _type_field == 'upload-arquivo'
+                || _type_field == 'upload-imagem'
+                || _type_field == 'select-multiple-manual'
+                || _type_field == 'select-multiple-dinamic'
+                || _type_field == 'checkbox-multiple-manual'
+                || _type_field == 'checkbox-multiple-dinamic') {
                 $('input[name="form_add_edit_field_start_value"]').parent().parent().addClass('hide');
             } else {
                 $('input[name="form_add_edit_field_start_value"]').parent().parent().removeClass('hide');
             }
-
-
-
 
 
         }
@@ -720,7 +822,13 @@
             $.ajax({
                 type: "POST",
                 url: "<?= site_url($this->router->fetch_class() . '/setup_formaddedit'); ?>",
-                data: {[csrfName]: csrfHash, task: 'get-dados', screen_type: _screen_type, projeto_id: _projeto_id, field_name: _field_name},
+                data: {
+                    [csrfName]: csrfHash,
+                    task: 'get-dados',
+                    screen_type: _screen_type,
+                    projeto_id: _projeto_id,
+                    field_name: _field_name
+                },
                 dataType: "json",
                 beforeSend: function () {
 
@@ -1077,6 +1185,30 @@
         }); // END QUANTO O BOTÃO MULTI UPLOAD IMAGEM FOR CLICADO
 
 
+        /**
+         *  QUANDO Tipo do ( Campo = Texto ) e ( Caracteres = Somente Números || Somente Letras || Letras e Número || Todos)
+         */
+        $('select[name="form_add_edit_field_type_characters"]').change(function (e) {
+
+            $('input[name="form_add_edit_field_mask"]').val('');
+            $('textarea[name="form_add_edit_field_mask_complement"]').val('');
+
+            var _selected = $(this).val();
+
+            if (_selected == 'only_numbers') {
+                $('textarea[name="form_add_edit_field_mask_complement"]').val('');
+                $('input[name="form_add_edit_field_mask"]').val('0#');
+            } else if (_selected == 'only_letters') {
+                $('input[name="form_add_edit_field_mask"]').val('Z');
+                $('textarea[name="form_add_edit_field_mask_complement"]').val('{translation: {\'Z\': {pattern: /[A-z]/, recursive: true}}}');
+            } else if (_selected == 'letters_and_numbers') {
+                $('input[name="form_add_edit_field_mask"]').val('Z');
+                $('textarea[name="form_add_edit_field_mask_complement"]').val('{translation: {\'Z\': {pattern: /[0-9A-z]/, recursive: true}}}');
+            }
+            
+        });
+        /** END */
+
 
         /**
          * QUANDO O CAMPO Tipo do Campo É SELECIONADO - ENIO
@@ -1168,7 +1300,6 @@
             }
 
 
-
             //INPUT UPLOAD IMAGEM upload-imagem
             if (_selected == 'upload-imagem') {
                 $('#id-div-upload-imagem').removeClass('hide');
@@ -1203,7 +1334,6 @@
                 $('input[name="form_add_edit_active_multi_upload_imagem_max_file"]').parent().parent().parent().addClass('hide');
                 $('input[name="form_add_edit_active_multi_upload_imagem_max_file"]').val('<?= ini_get('max_file_uploads'); ?>');
             }
-
 
 
             //INPUT UPLOAD ARQUIVO upload-arquivo
@@ -1251,7 +1381,6 @@
             }
 
 
-
             if (_selected == 'radio-manual') {
                 $('textarea[name="form_add_edit_field_value_radiobutton_manual"]').parent().parent().removeClass('hide');
             } else {
@@ -1289,8 +1418,9 @@
             }
 
         });
+        /** END */
 
-        //QUANDO ABRE A MODAL DE EDIÇÃO DOS INPUTS
+        /** QUANDO ABRE A MODAL DE EDIÇÃO DOS INPUTS */
         $('.j_btn_modal_edit_fields_table_formaddedit').click(function (e) {
             e.preventDefault();
             var _projeto_id = $(this).parent('tr:first').attr('rel-projeto-id');
@@ -1309,10 +1439,11 @@
             $('input[name="screen_type"]').val(_screen_type);
             $('input[name="primary_key"]').val(_primary_key);
             get_dados(_screen_type, _projeto_id, _field_name, _primary_key);
-        }); //END $('.j_btn_modal_edit_fields_table_formaddedit').click()
+        });
+        /** END $('.j_btn_modal_edit_fields_table_formaddedit').click() */
 
 
-        //BUTTON READ ONLY / SOMENTE LEITURA CLICK
+        /** BUTTON READ ONLY / SOMENTE LEITURA CLICK */
         $('input[name="form_add_edit_field_read_only"]').on('change', function (e) {
 
             var _r = $(this).parent().hasClass('off');
@@ -1327,8 +1458,9 @@
             }
 
         });
+        /** END */
 
-        //BUTTON HIDE / OCULTO CLICK
+        /** BUTTON HIDE / OCULTO CLICK */
         $('input[name="form_add_edit_field_hidden"]').on('change', function (e) {
 
             var _r = $(this).parent().hasClass('off');
@@ -1347,7 +1479,7 @@
             }
 
         });
-        //END BUTTON HIDE / OCULTO CLICK
+        /** END BUTTON HIDE / OCULTO CLICK */
 
 
         //BUTTON HIDE / OCULTO CLICK
@@ -1505,8 +1637,6 @@
                     triggerNotify(param);
                 }//END error
             }); //END AJAX
-
-
 
 
         }); //END $(".j_btn_save_form_GridList").click()

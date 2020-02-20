@@ -1,7 +1,7 @@
 <?php
 /*
-  Created on : {{created-date}}, {{created-time}}
-  Author     : {{author-name}} - {{author-email}}
+  Created on : "{{created-date}}", "{{created-time}}"
+  Author     : "{{author-name}}" - "{{author-email}}"
  */
 
 
@@ -55,7 +55,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
                     <div class="clearfix"></div>
 
-                    {{blank-code}}
+                    "{{blank-code}}"
 
                     <div class="clearfix"></div>
 
@@ -71,7 +71,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             <div class="text-center"></div>
         </div>
         <!-- END FOOTER -->
-
 
 
     </div><!--END BOX -->

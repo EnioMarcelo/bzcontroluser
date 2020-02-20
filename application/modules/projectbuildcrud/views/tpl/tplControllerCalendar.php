@@ -1,4 +1,4 @@
-/* CALENDAR */
+/** CALENDAR */
 
     public function calendar($_p = null) {
        
@@ -13,14 +13,14 @@
             $_arr = [];
              
             $_findWhereTable = $this->table_gridlist_name;
-            $_findWhere = "WHERE {{calendar-input-date-start}} >= '".$this->input->post('start')."' AND  {{calendar-input-date-end}} <= '".$this->input->post('end')."'";
+            $_findWhere = "WHERE "{{calendar-input-date-start}}" >= '".$this->input->post('start')."' AND  "{{calendar-input-date-end}}" <= '".$this->input->post('end')."'";
             
             $_resultCalendar = mc_selectDataDB( $_findWhereTable, (!empty($_findWhere) ? $_findWhere : ''), (!empty($_findParam) ? $_findParam : '') )->result();
             
             foreach ($_resultCalendar as $_key => $_event) {
 
-                $_dateStart = mc_format_date($_event->{{calendar-input-date-start}}, 'Y-m-d H:i');
-                $_dateEnd = mc_format_date($_event->{{calendar-input-date-end}}, 'Y-m-d H:i');
+                $_dateStart = mc_format_date($_event->"{{calendar-input-date-start}}", 'Y-m-d H:i');
+                $_dateEnd = mc_format_date($_event->"{{calendar-input-date-end}}", 'Y-m-d H:i');
                 $_dateNow = date('Y-m-d H:i');
 
                 
@@ -34,17 +34,17 @@
                 
 
                 $_arr[] = [
-                    'title' => $_event->{{calendar-input-title}},
-                    'description' => $_event->{{calendar-input-description}},
-                    'start' => str_replace('##', 'T', mc_format_date($_event->{{calendar-input-date-start}}, 'Y-m-d##H:i')),
-                    'end' => str_replace('##', 'T', mc_format_date($_event->{{calendar-input-date-end}}, 'Y-m-d##H:i')),
+                    'title' => $_event->"{{calendar-input-title}}",
+                    'description' => $_event->"{{calendar-input-description}}",
+                    'start' => str_replace('##', 'T', mc_format_date($_event->"{{calendar-input-date-start}}", 'Y-m-d##H:i')),
+                    'end' => str_replace('##', 'T', mc_format_date($_event->"{{calendar-input-date-end}}", 'Y-m-d##H:i')),
                     'backgroundColor' => $_colorEvent,
                     'borderColor' => $_colorEvent,
-                    'id' => $_event->{{calendar-input-id}},
-                    'datastart' => mc_format_date($_event->{{calendar-input-date-start}}, 'd/m/Y'),
-                    'timestart' => mc_format_date($_event->{{calendar-input-date-start}}, 'H:i'),
-                    'dataend' => mc_format_date($_event->{{calendar-input-date-end}}, 'd/m/Y'),
-                    'timeend' => mc_format_date($_event->{{calendar-input-date-end}}, 'H:i'),
+                    'id' => $_event->"{{calendar-input-id}}",
+                    'datastart' => mc_format_date($_event->"{{calendar-input-date-start}}", 'd/m/Y'),
+                    'timestart' => mc_format_date($_event->"{{calendar-input-date-start}}", 'H:i'),
+                    'dataend' => mc_format_date($_event->"{{calendar-input-date-end}}", 'd/m/Y'),
+                    'timeend' => mc_format_date($_event->"{{calendar-input-date-end}}", 'H:i'),
                 ];
             }
 
@@ -70,9 +70,9 @@
         ];
 
 
-        /* TEMPLATE QUE SERÁ USADO PELO MÓDULO DO SISTEMA */
+        /** TEMPLATE QUE SERÁ USADO PELO MÓDULO DO SISTEMA */
         $this->dados['_conteudo_masterPageIframe'] = $this->dados['_view_app_calendar'];
         $this->load->view('vMasterPageIframe', $this->dados);
     }
 
-    /* END CALENDAR */
+    /** END CALENDAR */

@@ -1,8 +1,8 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 <!--
-/*
-  Created on : {{created-date}}, {{created-time}}
-  Author     : {{author-name}} - {{author-email}}
+/**
+  Created on : "{{created-date}}", "{{created-time}}"
+  Author     : "{{author-name}}" - "{{author-email}}"
  */
 -->
 
@@ -75,14 +75,14 @@
                     <a id="buttons-loose-before-inputsearch" class="pull-right"></a>
                     <!-- BOTÕES AVULSOS -->
 
-                    {{grid-list-input-search}}
+                    "{{grid-list-input-search}}"
 
                     <!-- BOTÕES AVULSOS -->
                     <a id="buttons-loose-after-inputsearch" class="pull-right"></a>
                     <!-- BOTÕES AVULSOS -->
 
 
-                    <div class='input-group-btn {{grid-list-div-buttons}}'>
+                    <div class='input-group-btn "{{grid-list-div-buttons}}"'>
 
 
                         <!-- BOTÕES AVULSOS -->
@@ -90,9 +90,9 @@
                         <!-- BOTÕES AVULSOS -->
 
 
-                        {{grid-list-button-search}}
+                        "{{grid-list-button-search}}"
 
-                        {{grid-list-button-clear}}
+                        "{{grid-list-button-clear}}"
 
 
                         <!-- BOTÕES AVULSOS -->
@@ -125,7 +125,7 @@
                         <th class='text-center' style='width:3%;'><input class='checkbox-all flat-red' type='checkbox'></th>
                         <th class='text-center' style='width:3%;'>#</th>
 
-                        {{grid-list-header-table}}
+                        "{{grid-list-header-table}}"
 
                         <th class='col-md-1 text-center'>Ação</th>
                     </tr>
@@ -145,21 +145,21 @@
 
                         <?php $_c++; ?>
                     
-                        <?php $_edit = site_url($this->router->fetch_class() . '/edit/' . $_row['{{primary_key_field}}'] . '?' . bz_app_parametros_url()); ?>
+                        <?php $_edit = site_url($this->router->fetch_class() . '/edit/' . $_row['"{{primary_key_field}}"'] . '?' . bz_app_parametros_url()); ?>
 
                         <?php
-                            {{grid-list-on-record}}
+                            "{{grid-list-on-record}}"
                         ?>
 
-                        <tr id="<?= $_row['{{primary_key_field}}']; ?>" style="<?= $_style_tr; ?>" class="ClTableGridListTbodyTr <?= $_class_tr; ?>" data-action="<?= $_edit; ?>">
+                        <tr id="<?= $_row['"{{primary_key_field}}"']; ?>" style="<?= $_style_tr; ?>" class="ClTableGridListTbodyTr <?= $_class_tr; ?>" data-action="<?= $_edit; ?>">
                             <!-- MARCA REGISTRO PARA SER DELETADO -->
-                            <td class="text-center" style='width:3%;'><input class="checkbox checkbox-unit flat-red text-center" type="checkbox" name="btn-delete[]" value="<?= $_row['{{primary_key_field}}']; ?>"></td>
+                            <td class="text-center" style='width:3%;'><input class="checkbox checkbox-unit flat-red text-center" type="checkbox" name="btn-delete[]" value="<?= $_row['"{{primary_key_field}}"']; ?>"></td>
                             <!-- END MARCA REGISTRO PARA SER DELETADO -->
 
                             <td class='text-center'><?= $_c; ?></td>
 
                             <!-- CAMPOS DA TABLE -->
-                            {{grid-list-fields-table}}
+                            "{{grid-list-fields-table}}"
                             <!-- CAMPOS DA TABLE -->
 
                             <!-- BTN ACTION'S -->
@@ -228,7 +228,7 @@
 </div>
 
 
-{{grid-list-scripts-css}}
+"{{grid-list-scripts-css}}"
 
-{{grid-list-scripts-js}}
+"{{grid-list-scripts-js}}"
 
