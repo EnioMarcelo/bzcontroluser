@@ -131,7 +131,7 @@ if (mc_contains_in_string('metodo', $_parametros['code_type'])) {
                 </button>
 
                     <ul class="dropdown-menu dropdown-menu-right bz-scroll" role="button">
-                        <?php foreach ($_cvs_code_script as $_key => $_c): ?>
+                        <?php foreach ($_git_code_script as $_key => $_c): ?>
                             <li>
                                 <a class="mouse-cursor-pointer"
                                    data-clipboard-message="Copiado com sucesso."
@@ -226,7 +226,7 @@ if (mc_contains_in_string('metodo', $_parametros['code_type'])) {
         <input type="hidden" name="proj_build_id" value="<?= $_dados_projeto->id; ?>">
         <input type="hidden" name="code_screen" value="<?= $_parametros['code_screen']; ?>">
         <input type="hidden" name="code_type" value="<?= $_parametros['code_type']; ?>">
-        <input type="hidden" name="cvs_code" value="<?= $_cvs_code; ?>">
+        <input type="hidden" name="cvs_code" value="<?= $_git_code; ?>">
         <input type="hidden" name="btn-save-code-editor" value="btn-save-code-editor">
 
         <textarea id="codeeditor_1" class="col-xs-12" name="code_script" rows="30" width=="100%"

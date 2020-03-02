@@ -828,28 +828,28 @@ class ProjectbuildCrud extends MY_Controller
                             $_query = $this->read->exec('proj_build_codeeditor', $_whereCodeEditor);
 
                             /**
-                             * GRAVA O CVS CODE
+                             * GRAVA O GIT CODE
                              */
                             if ($_query->result_array() && !empty($_query->row()->code_script) && !empty($_dadosCodeEditor['code_script'])) {
 
-                                $_code_CVS = '';
+                                $_code_git = '';
                                 if (!empty($_SERVER['PATH_INFO'])) {
-                                    $_code_CVS = md5($_SERVER['PATH_INFO']);
+                                    $_code_git = md5($_SERVER['PATH_INFO']);
                                 }
 
                                 if ($_query->row()->code_script !== $_dadosCodeEditor['code_script']) {
 
                                     $this->create->exec(
-                                        'proj_build_cvs',
+                                        'proj_build_git',
                                         [
-                                            'code_cvs' => $_code_CVS,
+                                            'code_cvs' => $_code_git,
                                             'proj_build_id' => $_query->row()->proj_build_id,
                                             'code_script' => $_query->row()->code_script
                                         ]
                                     );
                                 }
                             }
-                            /** END GRAVA O CVS CODE */
+                            /** END GRAVA O GIT CODE */
 
 
                             $this->update->exec('proj_build_codeeditor', $_dadosCodeEditor, $_whereCodeEditor);
@@ -925,20 +925,20 @@ class ProjectbuildCrud extends MY_Controller
                 if ($this->dados['dados']->type_project == 'blank') {
 
                     /**
-                     * GET CVS DO CÓDIGO
+                     * GET GIT DO CÓDIGO
                      */
-                    $_code_CVS = md5($_SERVER['PATH_INFO']);
-                    $this->dados['_cvs_code_script'] = [];
-                    $this->dados['_cvs_code'] = $_code_CVS;
+                    $_code_git = md5($_SERVER['PATH_INFO']);
+                    $this->dados['_git_code_script'] = [];
+                    $this->dados['_git_code'] = $_code_git;
 
-                    $_result_code_CVS = $this->read->exec("proj_build_cvs", "WHERE proj_build_id = $_id  AND
-                      code_cvs = '$_code_CVS' ORDER BY created_at DESC")->result();
+                    $_result_code_git = $this->read->exec("proj_build_git", "WHERE proj_build_id = $_id  AND
+                      code_cvs = '$_code_git' ORDER BY created_at DESC")->result();
 
-                    if ($_result_code_CVS) {
-                        $this->dados['_cvs_code_script'] = $_result_code_CVS;
+                    if ($_result_code_git) {
+                        $this->dados['_git_code_script'] = $_result_code_git;
                     }
 
-                    /** END GET CVS DO CÓDIGO */
+                    /** END GET GIT DO CÓDIGO */
 
                     $_whereCodeEditorBlank = 'WHERE proj_build_id = "' . $_id . '" AND code_type = "blank" AND code_screen = "blank" LIMIT 1';
                     $_resultCodeEditorBlank = $this->read->exec('proj_build_codeeditor', $_whereCodeEditorBlank);
@@ -1486,7 +1486,7 @@ class ProjectbuildCrud extends MY_Controller
                      */
                     $this->db->where('proj_build_id', $_dados_del_code['proj_build_id']);
                     $this->db->where('code_cvs', $_dados_del_code['cvs_code']);
-                    $this->db->delete('proj_build_cvs');
+                    $this->db->delete('proj_build_git');
                     /** END DELETA O CVS CODE */
 
                     set_mensagem_trigger_notifi(strtoupper(str_replace('-', ' ', $_dados_del_code['code_type'])) . ': ' . $_dados_del_code['code_screen'] . ' () Deletado com Sucesso.', 'success');
@@ -1506,27 +1506,27 @@ class ProjectbuildCrud extends MY_Controller
                 $_query = $this->read->exec('proj_build_codeeditor', $_where);
 
                 /**
-                 * GRAVA O CVS CODE
+                 * GRAVA O GIT CODE
                  */
                 if ($_query->result_array() && !empty($_query->row()->code_script)) {
-                    $_code_CVS = '';
+                    $_code_git = '';
                     if (!empty($_SERVER['PATH_INFO'])) {
-                        $_code_CVS = md5($_SERVER['PATH_INFO']);
+                        $_code_git = md5($_SERVER['PATH_INFO']);
                     }
 
                     if ($_query->row()->code_script !== base64_encode($this->input->post('code_script', false))) {
 
                         $this->create->exec(
-                            'proj_build_cvs',
+                            'proj_build_git',
                             [
-                                'code_cvs' => $_code_CVS,
+                                'code_cvs' => $_code_git,
                                 'proj_build_id' => $_query->row()->proj_build_id,
                                 'code_script' => $_query->row()->code_script
                             ]
                         );
                     }
                 }
-                /** END GRAVA O CVS CODE */
+                /** END GRAVA O GIT CODE */
 
 
                 if ($_query->result_array()) {
@@ -1628,22 +1628,22 @@ class ProjectbuildCrud extends MY_Controller
 
 
             /**
-             * GET CVS DO CÓDIGO
+             * GET GIT DO CÓDIGO
              */
-            $_code_CVS = md5($_SERVER['PATH_INFO']);
-            $this->dados['_cvs_code_script'] = [];
-            $this->dados['_cvs_code'] = $_code_CVS;
+            $_code_git = md5($_SERVER['PATH_INFO']);
+            $this->dados['_git_code_script'] = [];
+            $this->dados['_git_code'] = $_code_git;
 
-            $_result_code_CVS = $this->read->exec("proj_build_cvs", "
+            $_result_code_git = $this->read->exec("proj_build_git", "
                 WHERE proj_build_id = $_idProjeto  AND
-                      code_cvs = '$_code_CVS' ORDER BY created_at DESC
+                      code_cvs = '$_code_git' ORDER BY created_at DESC
             ")->result();
 
-            if ($_result_code_CVS) {
-                $this->dados['_cvs_code_script'] = $_result_code_CVS;
+            if ($_result_code_git) {
+                $this->dados['_git_code_script'] = $_result_code_git;
             }
 
-            /** END GET CVS DO CÓDIGO */
+            /** END GET GIT DO CÓDIGO */
 
         } else {
 
