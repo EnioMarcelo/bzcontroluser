@@ -41,12 +41,16 @@ $(function () {
         $('.alert').fadeOut(1000);
     }, 3000);
 });
+
+
 /*
  * TOOLTIP
  */
 $(function () {
     $('.j-tooltip').tooltip({html: true});
 });
+
+
 /*
  * POPOVER
  */
@@ -60,6 +64,8 @@ $(function () {
         });
     });
 });
+
+
 /**
  * LIGHTBOX POPUP
  */

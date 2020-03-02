@@ -244,7 +244,7 @@
                                     <span class="caret"></span>
                                     <span class="sr-only">Toggle Dropdown</span>
                                 </button>
-                                <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                                <ul class="dropdown-menu dropdown-menu-right bz-scroll" role="menu">
                                     <?php foreach ($_cvs_code_script as $_key => $_c): ?>
                                         <li>
                                             <a class="mouse-cursor-pointer"
