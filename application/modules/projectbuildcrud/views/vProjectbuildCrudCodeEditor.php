@@ -76,6 +76,7 @@ if (mc_contains_in_string('metodo', $_parametros['code_type'])) {
                 </button>
             <?php endif; ?>
 
+
             <!-- BTN SIDEBAR INPUT FILDS-->
             <?php if ($_parametros['code_type'] == 'onrecord' || $_parametros['code_type'] == 'onrecordexport'): ?>
                 <a id="j-btn-control-sidebar-fields-database" class="btn btn-sm bg-black margin-left-20 j-tooltip"
@@ -116,6 +117,37 @@ if (mc_contains_in_string('metodo', $_parametros['code_type'])) {
                       data-original-title="Executar Aplicação"></span>
             </a>
             <!-- END BTN EXECUTAR APLICAÇÃO-->
+
+
+            <!-- BTN ÚLTIMAS VERSÕES DO CÓDIGO -->
+
+
+            <div class="btn-group btn-sm" data-toggle="tooltip" data-original-title="Rollback do Código">
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+                        aria-expanded="false">
+                    <i class="fa fa-undo margin-right-5"></i>
+                    <span class="caret"></span>
+                    <span class="sr-only">Toggle Dropdown</span>
+                </button>
+
+                    <ul class="dropdown-menu dropdown-menu-right bz-scroll" role="button">
+                        <?php foreach ($_cvs_code_script as $_key => $_c): ?>
+                            <li>
+                                <a class="mouse-cursor-pointer"
+                                   data-clipboard-message="Copiado com sucesso."
+                                   data-clipboard-text="<?= $_c->code_script; ?>" data-clipboard-clear="true">
+                                    <i style="font-weight: 100" class="margin-right-5"><?= $_key + 1; ?> - </i><i
+                                            style="margin-right: 3px; font-weight: bold"
+                                            class="fa fa-clock-o"></i><?= mc_format_date($_c->created_at, 'H:i:s'); ?>
+                                    <i style="margin-right: 3px; font-weight: bold"
+                                       class="fa fa-calendar-check-o margin-left-10"></i><?= mc_format_date($_c->created_at, 'd/m/Y'); ?>
+                                </a>
+                            </li>
+                        <?php endforeach; ?>
+                    </ul>
+
+            </div>
+            <!-- END BTN ÚLTIMAS VERSÕES DO CÓDIGO -->
 
         </div>
 
@@ -194,6 +226,7 @@ if (mc_contains_in_string('metodo', $_parametros['code_type'])) {
         <input type="hidden" name="proj_build_id" value="<?= $_dados_projeto->id; ?>">
         <input type="hidden" name="code_screen" value="<?= $_parametros['code_screen']; ?>">
         <input type="hidden" name="code_type" value="<?= $_parametros['code_type']; ?>">
+        <input type="hidden" name="cvs_code" value="<?= $_cvs_code; ?>">
         <input type="hidden" name="btn-save-code-editor" value="btn-save-code-editor">
 
         <textarea id="codeeditor_1" class="col-xs-12" name="code_script" rows="30" width=="100%"

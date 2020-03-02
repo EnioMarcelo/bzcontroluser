@@ -820,7 +820,38 @@ class ProjectbuildCrud extends MY_Controller
                          */
                         if ($this->input->post('type_project') == 'blank') {
 
+                            /**
+                             * CHECK SE EXISTE O REGISTRO GRAVADO
+                             */
                             $_whereCodeEditor = 'WHERE proj_build_id = "' . $this->input->post('id') . '" AND code_type = "blank" AND code_screen = "blank"';
+
+                            $_query = $this->read->exec('proj_build_codeeditor', $_whereCodeEditor);
+
+                            /**
+                             * GRAVA O CVS CODE
+                             */
+                            if ($_query->result_array() && !empty($_query->row()->code_script) && !empty($_dadosCodeEditor['code_script'])) {
+
+                                $_code_CVS = '';
+                                if (!empty($_SERVER['PATH_INFO'])) {
+                                    $_code_CVS = md5($_SERVER['PATH_INFO']);
+                                }
+
+                                if ($_query->row()->code_script !== $_dadosCodeEditor['code_script']) {
+
+                                    $this->create->exec(
+                                        'proj_build_cvs',
+                                        [
+                                            'code_cvs' => $_code_CVS,
+                                            'proj_build_id' => $_query->row()->proj_build_id,
+                                            'code_script' => $_query->row()->code_script
+                                        ]
+                                    );
+                                }
+                            }
+                            /** END GRAVA O CVS CODE */
+
+
                             $this->update->exec('proj_build_codeeditor', $_dadosCodeEditor, $_whereCodeEditor);
 
                             /**/
@@ -893,9 +924,26 @@ class ProjectbuildCrud extends MY_Controller
                  */
                 if ($this->dados['dados']->type_project == 'blank') {
 
+                    /**
+                     * GET CVS DO CÓDIGO
+                     */
+                    $_code_CVS = md5($_SERVER['PATH_INFO']);
+                    $this->dados['_cvs_code_script'] = [];
+                    $this->dados['_cvs_code'] = $_code_CVS;
+
+                    $_result_code_CVS = $this->read->exec("proj_build_cvs", "WHERE proj_build_id = $_id  AND
+                      code_cvs = '$_code_CVS' ORDER BY created_at DESC")->result();
+
+                    if ($_result_code_CVS) {
+                        $this->dados['_cvs_code_script'] = $_result_code_CVS;
+                    }
+
+                    /** END GET CVS DO CÓDIGO */
+
                     $_whereCodeEditorBlank = 'WHERE proj_build_id = "' . $_id . '" AND code_type = "blank" AND code_screen = "blank" LIMIT 1';
                     $_resultCodeEditorBlank = $this->read->exec('proj_build_codeeditor', $_whereCodeEditorBlank);
                     $this->dados['dados']->_codeEditorBlank = $_resultCodeEditorBlank->row();
+
                 }
                 /** END GET DADOS CODE EDITOR APP BLANK */
 
@@ -1386,6 +1434,7 @@ class ProjectbuildCrud extends MY_Controller
         if (($_code_type == 'metodo-php' || 'model-php' || $_code_type == 'evento-php' || $_code_type == 'blank') && !empty($_idProjeto)) {
 
             $this->dados['_parametros']['code_screen_title'] = ' [' . $_code_screen . ' ($_p = null)]';
+
         } else {
 
             if (empty($_idProjeto) || empty($_code_screen) || empty($_code_type)) {
@@ -1416,10 +1465,10 @@ class ProjectbuildCrud extends MY_Controller
          */
         if ($this->input->post()) {
 
-            /**
-             * SAVE DADOS DO EDITOR DE CÓDIGOS
-             */
             if ($this->input->post('btn-del-code-editor')) {
+                /**
+                 * DELETE DADOS DO EDITOR DE CÓDIGOS
+                 */
 
                 $_dados_del_code = $this->input->post();
                 unset($_dados_del_code['btn-del-code-editor']);
@@ -1431,11 +1480,21 @@ class ProjectbuildCrud extends MY_Controller
                 $_r_del_code_editor = $this->db->delete('proj_build_codeeditor');
 
                 if ($_r_del_code_editor) {
+
+                    /**
+                     * DELETA O CVS CODE
+                     */
+                    $this->db->where('proj_build_id', $_dados_del_code['proj_build_id']);
+                    $this->db->where('code_cvs', $_dados_del_code['cvs_code']);
+                    $this->db->delete('proj_build_cvs');
+                    /** END DELETA O CVS CODE */
+
                     set_mensagem_trigger_notifi(strtoupper(str_replace('-', ' ', $_dados_del_code['code_type'])) . ': ' . $_dados_del_code['code_screen'] . ' () Deletado com Sucesso.', 'success');
                     redirect('projectbuildcrud/edit/' . $_dados_del_code['proj_build_id'] . '?tab = gridlist');
-                } else {
 
                 }
+
+
             } elseif ($this->input->post('btn-save-code-editor')) {
                 /**
                  * CHECK SE EXISTE O REGISTRO GRAVADO
@@ -1445,6 +1504,30 @@ class ProjectbuildCrud extends MY_Controller
                     'code_type = "' . $this->input->post('code_type') . '"';
 
                 $_query = $this->read->exec('proj_build_codeeditor', $_where);
+
+                /**
+                 * GRAVA O CVS CODE
+                 */
+                if ($_query->result_array() && !empty($_query->row()->code_script)) {
+                    $_code_CVS = '';
+                    if (!empty($_SERVER['PATH_INFO'])) {
+                        $_code_CVS = md5($_SERVER['PATH_INFO']);
+                    }
+
+                    if ($_query->row()->code_script !== base64_encode($this->input->post('code_script', false))) {
+
+                        $this->create->exec(
+                            'proj_build_cvs',
+                            [
+                                'code_cvs' => $_code_CVS,
+                                'proj_build_id' => $_query->row()->proj_build_id,
+                                'code_script' => $_query->row()->code_script
+                            ]
+                        );
+                    }
+                }
+                /** END GRAVA O CVS CODE */
+
 
                 if ($_query->result_array()) {
                     /**
@@ -1483,6 +1566,7 @@ class ProjectbuildCrud extends MY_Controller
                 }
             }
         }
+        /** END CHECK POST SAVE */
 
         /**
          * PARÂMETROS
@@ -1491,9 +1575,11 @@ class ProjectbuildCrud extends MY_Controller
 
         if (($_code_screen == 'gridlist')) {
             $this->dados['_parametros']['code_screen_title'] = 'GRID LIST';
-        } elseif (($_code_screen == 'formadd')) {
+        } elseif
+        (($_code_screen == 'formadd')) {
             $this->dados['_parametros']['code_screen_title'] = 'FORM ADD';
-        } elseif (($_code_screen == 'formedit')) {
+        } elseif
+        (($_code_screen == 'formedit')) {
             $this->dados['_parametros']['code_screen_title'] = 'FORM EDIT';
         }
 
@@ -1539,6 +1625,26 @@ class ProjectbuildCrud extends MY_Controller
                 $this->dados['_parametros']['code_script'] = $_r_CodeEditor['code_script'];
                 $this->dados['_parametros']['type_project'] = $this->dados['_dados_projeto']->type_project;
             }
+
+
+            /**
+             * GET CVS DO CÓDIGO
+             */
+            $_code_CVS = md5($_SERVER['PATH_INFO']);
+            $this->dados['_cvs_code_script'] = [];
+            $this->dados['_cvs_code'] = $_code_CVS;
+
+            $_result_code_CVS = $this->read->exec("proj_build_cvs", "
+                WHERE proj_build_id = $_idProjeto  AND
+                      code_cvs = '$_code_CVS' ORDER BY created_at DESC
+            ")->result();
+
+            if ($_result_code_CVS) {
+                $this->dados['_cvs_code_script'] = $_result_code_CVS;
+            }
+
+            /** END GET CVS DO CÓDIGO */
+
         } else {
 
             set_mensagem_trigger_notifi('O parâmetro passado para Editor de Códigos do Projeto não confere.', 'warning');
@@ -1565,7 +1671,8 @@ class ProjectbuildCrud extends MY_Controller
      * CHECK SE O NOME DO APP EXISTE NA TABELA
      */
 
-    public function check_name_app_exist()
+    public
+    function check_name_app_exist()
     {
 
         $this->load->helper('file');
@@ -1643,7 +1750,8 @@ class ProjectbuildCrud extends MY_Controller
      * GERA O APP
      */
 
-    public function build_app($_projectID)
+    public
+    function build_app($_projectID)
     {
 
         /**
@@ -4101,7 +4209,7 @@ class ProjectbuildCrud extends MY_Controller
 
 
                             /**
-                             * DADOS FILLABLE BUZZA
+                             * DADOS FILLABLE
                              */
 
                             if ($_geraFormAddDadosFillable) {
@@ -4443,7 +4551,8 @@ class ProjectbuildCrud extends MY_Controller
      * GERA O CONTROLLER DO APP BLANK
      */
 
-    private function ger_controllerBlank()
+    private
+    function ger_controllerBlank()
     {
 
         /**

@@ -10,6 +10,7 @@ $(function () {
         });
     });
 });
+
 function fcnShowModalAguarde() {
 
     $('#modal-aguarde').modal({
@@ -20,17 +21,16 @@ function fcnShowModalAguarde() {
 }
 
 
-
 /**
  * DESLIGA O MODAL DE AGUARDE DEPOIS QUE CARREGA TODO O CONTEÚDO
  */
 $(function () {
     parent.$('#modal-aguarde').modal('hide');
 });
+
 function fcnHideModalAguarde() {
     $('#modal-aguarde').modal('hide');
 }
-
 
 
 /*
