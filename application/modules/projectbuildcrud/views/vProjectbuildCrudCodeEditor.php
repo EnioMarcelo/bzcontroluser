@@ -194,10 +194,10 @@ if (mc_contains_in_string('metodo', $_parametros['code_type'])) {
             <?php endif; ?>
 
             <?php if ($_parametros['code_type'] !== 'onrecord' && $_parametros['code_type'] !== 'onrecordexport'): ?>
-                <div class="col-md-3"><b>Evento: </b> <?= $_parametros['code_screen_title']; ?></div>
+                <div class="col-md-2"><b>Evento: </b> <?= $_parametros['code_screen_title']; ?></div>
 
                 <?php if ($_parametros['code_screen_title'] == 'FORM ADD'): ?>
-                    <div class="col-md-3"
+                    <div class="col-md-4"
                     <div class="form-group">
                         <label class="" style="">
                             <input <?= $_parametros['copy_script_js_from_form_add_to_form_edit']; ?> type="checkbox"
@@ -208,7 +208,7 @@ if (mc_contains_in_string('metodo', $_parametros['code_type'])) {
                                                                                                      kl_vkbd_parsed="true">
                         </label>
                         <label>
-                            &nbsp;Utilizar este SCRIPT JS no FORM EDIT ?
+                            &nbsp;Utilizar este SCRIPT JQUERY no FORM EDIT ?
                         </label>
                     </div>
                 <?php endif; ?>

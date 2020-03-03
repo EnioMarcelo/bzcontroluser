@@ -125,6 +125,11 @@ class ProjectbuildCrud extends MY_Controller
          * TABELA QUE SERÁ USADO PELO MÓDULO DO SISTEMA
          */
         $this->table_name = 'proj_build';
+
+        /**
+         * LOAD MODEL
+         */
+        $this->load->model('Projectbuildcrud_model', 'model');
     }
 
     /** END function __construct() */
@@ -839,14 +844,15 @@ class ProjectbuildCrud extends MY_Controller
 
                                 if ($_query->row()->code_script !== $_dadosCodeEditor['code_script']) {
 
-                                    $this->create->exec(
-                                        'proj_build_git',
-                                        [
-                                            'code_cvs' => $_code_git,
-                                            'proj_build_id' => $_query->row()->proj_build_id,
-                                            'code_script' => $_query->row()->code_script
-                                        ]
-                                    );
+                                    $this->model->limit_code_git($_code_git, $_query->row()->proj_build_id, 15);
+
+                                    $this->model->save_code_git([
+                                        'code_git' => $_code_git,
+                                        'proj_build_id' => $_query->row()->proj_build_id,
+                                        'code_script' => $_query->row()->code_script
+                                    ]);
+
+
                                 }
                             }
                             /** END GRAVA O GIT CODE */
@@ -931,8 +937,7 @@ class ProjectbuildCrud extends MY_Controller
                     $this->dados['_git_code_script'] = [];
                     $this->dados['_git_code'] = $_code_git;
 
-                    $_result_code_git = $this->read->exec("proj_build_git", "WHERE proj_build_id = $_id  AND
-                      code_cvs = '$_code_git' ORDER BY created_at DESC")->result();
+                    $_result_code_git = $this->model->get_code_git($_id, $_code_git);
 
                     if ($_result_code_git) {
                         $this->dados['_git_code_script'] = $_result_code_git;
@@ -1069,6 +1074,13 @@ class ProjectbuildCrud extends MY_Controller
                 $this->db->delete($this->table_name);
 
                 if ($this->db->affected_rows()) {
+
+                    /**
+                     * DELETE O GIT CODE DO PROJETO
+                     */
+                    $this->model->delete_code_git_by_proj_build_id($_rowdel);
+                    /** END DELETE O GIT CODE DO PROJETO */
+
                     if (count($_dados) > 1) {
                         set_mensagem_trigger_notifi(str_replace('Registro Deletado', 'Registros Deletados', ___MSG_DEL_REGISTRO___), 'success');
                         $dados_auditoria['description'] = str_replace('Registro Deletado', 'Registros Deletados', ___MSG_AUDITORIA_DEL_SUCCESS___);
@@ -1482,12 +1494,10 @@ class ProjectbuildCrud extends MY_Controller
                 if ($_r_del_code_editor) {
 
                     /**
-                     * DELETA O CVS CODE
+                     * DELETA O GIT CODE
                      */
-                    $this->db->where('proj_build_id', $_dados_del_code['proj_build_id']);
-                    $this->db->where('code_cvs', $_dados_del_code['cvs_code']);
-                    $this->db->delete('proj_build_git');
-                    /** END DELETA O CVS CODE */
+                    $this->model->delete_code_git($_dados_del_code['proj_build_id'], $_dados_del_code['cvs_code']);
+                    /** END DELETA O GIT CODE */
 
                     set_mensagem_trigger_notifi(strtoupper(str_replace('-', ' ', $_dados_del_code['code_type'])) . ': ' . $_dados_del_code['code_screen'] . ' () Deletado com Sucesso.', 'success');
                     redirect('projectbuildcrud/edit/' . $_dados_del_code['proj_build_id'] . '?tab = gridlist');
@@ -1516,14 +1526,14 @@ class ProjectbuildCrud extends MY_Controller
 
                     if ($_query->row()->code_script !== base64_encode($this->input->post('code_script', false))) {
 
-                        $this->create->exec(
-                            'proj_build_git',
-                            [
-                                'code_cvs' => $_code_git,
-                                'proj_build_id' => $_query->row()->proj_build_id,
-                                'code_script' => $_query->row()->code_script
-                            ]
-                        );
+                        $this->model->limit_code_git($_code_git, $_query->row()->proj_build_id, 15);
+
+                        $this->model->save_code_git([
+                            'code_git' => $_code_git,
+                            'proj_build_id' => $_query->row()->proj_build_id,
+                            'code_script' => $_query->row()->code_script
+                        ]);
+
                     }
                 }
                 /** END GRAVA O GIT CODE */
@@ -1634,10 +1644,7 @@ class ProjectbuildCrud extends MY_Controller
             $this->dados['_git_code_script'] = [];
             $this->dados['_git_code'] = $_code_git;
 
-            $_result_code_git = $this->read->exec("proj_build_git", "
-                WHERE proj_build_id = $_idProjeto  AND
-                      code_cvs = '$_code_git' ORDER BY created_at DESC
-            ")->result();
+            $_result_code_git = $this->model->get_code_git($_idProjeto, $_code_git);
 
             if ($_result_code_git) {
                 $this->dados['_git_code_script'] = $_result_code_git;

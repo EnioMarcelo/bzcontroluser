@@ -474,6 +474,15 @@
                                         Form Add/Edit
                                     </button>
                                 </li>
+
+                                <li>
+                                    <button type="button"
+                                            class="btn btn-default btn-block margin-bottom-3 j-btn-sidebar-database-insert"
+                                            data-toggle="control-sidebar"
+                                            data-clipboard-message="Copiado com sucesso."
+                                            data-clipboard-text="<?= ___MACRO_JS_REMOVE_JQUERY_MASK_ON_SAVE_OR_EDIT___; ?>">Remove Input Mask<br/>SAVE/EDIT
+                                    </button>
+                                </li>
                             <?php endif; ?>
                         </ul>
 
