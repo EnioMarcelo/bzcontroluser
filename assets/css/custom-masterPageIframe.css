@@ -106,8 +106,8 @@ input[name=id] {
  * SCROLL BAR
  */
 .bz-scroll {
-    height:350px;
-    max-height: 350px;
+    height:402px;
+    max-height: 402px;
     overflow-y: scroll;
 }
 

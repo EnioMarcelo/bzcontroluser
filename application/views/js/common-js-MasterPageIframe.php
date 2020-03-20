@@ -176,7 +176,6 @@
 
         $.ajax({
             url: _url,
-            async: false,
             type: "POST",
             dataType: "json",
             data: {'<?php echo $this->security->get_csrf_token_name(); ?>': '<?php echo $this->security->get_csrf_hash(); ?>', 'data': _data},
@@ -266,7 +265,7 @@
                     }
 
                     if (_param['title'] == 'undefined' || _param['title'] == null || _param['title'] == '') {
-                        _param['title'] = 'xxxx ---- Faltou informar o texto.';
+                        _param['title'] = 'Faltou informar o texto.';
                     }
 
                     if (_param['timer'] == 'undefined' || _param['timer'] == null || _param['timer'] == '') {
@@ -340,7 +339,7 @@
                 modalAguardeOff();
             },
             error: function () {
-                var message = "Desculpe mas não foi possível processar a requisição. Avise o responsável pelo sistema !";
+                var message = "Desculpe mas não foi possível processar a requisição ajax. Avise o responsável pelo sistema !";
                 swal('ATENÇÃO !!!', message, 'error');
             }
         });

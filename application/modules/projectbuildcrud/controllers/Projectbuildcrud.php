@@ -674,6 +674,18 @@ class ProjectbuildCrud extends MY_Controller
         $_fields = $this->db->field_data($_tabela);
 
         /**
+         * OBTEM TODOS OS CAMPOS DO PROJETO GRAVADOS EM proj_build_fields
+         */
+        $_fieldsTable = $this->read->exec('proj_build_fields', 'WHERE proj_build_id = ' . $_proj_build_id)->result();
+
+        /** SE EXISTIR FIELD GRAVADO PARA O PROJETO, OS PRÓXIMOS FIELDS GRAVADOS SERÃO DESLIGADOS  */
+        $_fieldShow = 'on';
+        if ($_fieldsTable) {
+            $_fieldShow = 'off';
+        }
+
+
+        /**
          * VERIFICA SE A CAMPO DA TABELA ESTÁ CADASTRADO NA GRIDLIST E FORMADDEDIT
          */
         foreach ($_fields as $_field) {
@@ -720,9 +732,9 @@ class ProjectbuildCrud extends MY_Controller
                  * PARÂMETROS DO CAMPO
                  */
                 if ($_screen_type == 'gridlist') {
-                    $_dadosTable['param_gridlist'] = '{"grid_list_show":"on", "grid_list_search":"on", "grid_list_export":"on", "grid_list_field_input_type":"' . $_input_type . '", "grid_list_label":"' . $_dadosTable['field_name'] . '", "grid_list_aligne_label":"text-left", "grid_list_field_length":"", "grid_list_field_aligne":"text-left","form_add_edit_field_start_value":""}';
+                    $_dadosTable['param_gridlist'] = '{"grid_list_show":"' . $_fieldShow . '", "grid_list_search":"' . $_fieldShow . '", "grid_list_export":"' . $_fieldShow . '", "grid_list_field_input_type":"' . $_input_type . '", "grid_list_label":"' . $_dadosTable['field_name'] . '", "grid_list_aligne_label":"text-left", "grid_list_field_length":"", "grid_list_field_aligne":"text-left","form_add_edit_field_start_value":""}';
                 } elseif ($_screen_type == 'formaddedit') {
-                    $_dadosTable['param_formaddedit'] = '{"form_add_edit_field_show":"on", "form_add_edit_field_type":"' . $_input_type . '", "form_add_edit_field_label":"' . $_dadosTable['field_name'] . '", "form_add_edit_field_placeholder":"", "form_add_edit_field_max_length":"' . (($_dadosTable['field_length'] > 0) ? $_dadosTable['field_length'] : '') . '","form_add_edit_field_start_value":""}';
+                    $_dadosTable['param_formaddedit'] = '{"form_add_edit_field_show":"' . $_fieldShow . '", "form_add_edit_field_type":"' . $_input_type . '", "form_add_edit_field_label":"' . $_dadosTable['field_name'] . '", "form_add_edit_field_placeholder":"", "form_add_edit_field_max_length":"' . (($_dadosTable['field_length'] > 0) ? $_dadosTable['field_length'] : '') . '","form_add_edit_field_start_value":""}';
                 }
                 /** END PARÂMETROS DO CAMPO */
 
