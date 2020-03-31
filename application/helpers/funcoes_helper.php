@@ -769,7 +769,14 @@ function bz_paginacao($param = array()) {
         }
 
         if (!empty($_search)) {
-            $CI->db->where("CONCAT_WS('|'," . $_search['_concat_fields'] . ") LIKE '%" . $_search['_string'] . "%'", NULL, FALSE);
+
+            $_fields = explode(',', $_search['_concat_fields']);
+
+            foreach ( $_fields as $_f) {
+                $CI->db->or_like( 'LOWER(' . $_f . ')', mb_strtolower($_search['_string']) );
+            }
+
+
         }
     }
 
@@ -863,7 +870,13 @@ function bz_paginacao($param = array()) {
         }
 
         if (!empty($_search['_string'])) {
-            $CI->db->where("CONCAT_WS('|'," . $_search['_concat_fields'] . ") LIKE '%" . $_search['_string'] . "%'", NULL, FALSE);
+
+            $_fields = explode(',', $_search['_concat_fields']);
+
+            foreach ( $_fields as $_f) {
+                $CI->db->or_like( 'LOWER(' . $_f . ')', mb_strtolower($_search['_string']) );
+            }
+
         }
     }
 
