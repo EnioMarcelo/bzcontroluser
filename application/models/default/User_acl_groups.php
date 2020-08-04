@@ -29,8 +29,8 @@ class User_acl_groups extends MY_model {
 
         if (is_array($_p)) {
 
-            $this->db->select('u.id as usuario_id, u.nome as usuario_nome, u.email as usuario_email, u.ativo as usuario_ativo, '
-                    . 'g.id as grupo_id, g.ativo as grupo_ativo, g.descricao as grupo_descricao, '
+            $this->db->select('u.id as usuario_id, u.nome as usuario_nome, u.email as usuario_email, u.ativo as usuario_ativo, u.app_inicial as usuario_app_inicial, '
+                    . 'g.id as grupo_id, g.ativo as grupo_ativo, g.descricao as grupo_descricao, g.app_inicial as grupo_app_inicial,'
                     . 'a.app_descricao as app_descricao, LOWER(a.app_name) as app_name, a.app_ativo as app_ativo');
 
             $this->db->from('sec_usuarios u');
@@ -70,8 +70,8 @@ class User_acl_groups extends MY_model {
 
     public function _get_acl_user_by_email($_email) {
 
-        $this->db->select('sec_usuarios.id as usuario_id, sec_usuarios.nome as usuario_nome, sec_usuarios.email as usuario_email, '
-                . 'sec_grupos.id as grupo_id, sec_grupos.descricao as grupo_descricao,'
+        $this->db->select('sec_usuarios.id as usuario_id, sec_usuarios.nome as usuario_nome, sec_usuarios.email as usuario_email, sec_usuarios.app_inicial as usuario_app_inicial, '
+                . 'sec_grupos.id as grupo_id, sec_grupos.descricao as grupo_descricao, sec_grupos.app_inicial as grupo_app_inicial,'
                 . 'sec_aplicativos.app_name as app_name, sec_aplicativos.app_descricao as app_descricao');
         $this->db->from('sec_usuarios');
         $this->db->join('sec_usuarios_has_sec_grupos', 'sec_usuarios.id = sec_usuarios_has_sec_grupos.sec_usuarios_id', 'inner');
@@ -98,8 +98,8 @@ class User_acl_groups extends MY_model {
 
     public function _get_acl_apps_user($_email, $_app) {
 
-        $this->db->select('sec_usuarios.id as usuario_id, sec_usuarios.nome as usuario_nome, sec_usuarios.email as usuario_email, '
-                . 'sec_grupos.id as grupo_id, sec_grupos.descricao as grupo_descricao,'
+        $this->db->select('sec_usuarios.id as usuario_id, sec_usuarios.nome as usuario_nome, sec_usuarios.email as usuario_email, sec_usuarios.app_inicial as usuario_app_inicial, '
+                . 'sec_grupos.id as grupo_id, sec_grupos.descricao as grupo_descricao, g.app_inicial as grupo_app_inicial,'
                 . 'sec_aplicativos.app_name as app_name, sec_aplicativos.app_descricao as app_descricao');
         $this->db->from('sec_usuarios');
         $this->db->join('sec_usuarios_has_sec_grupos', 'sec_usuarios.id = sec_usuarios_has_sec_grupos.sec_usuarios_id', 'inner');

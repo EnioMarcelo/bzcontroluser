@@ -36,7 +36,7 @@ class Userprofile extends MY_Controller {
                  * VALIDAÇÃO DOS DADOS DO FORMULÁRIO
                  */
                 $this->form_validation->set_rules('nome', '<b>Nome</b>', 'trim|required|min_length[10]|max_length[250]|xss_clean');
-                $this->form_validation->set_rules('sexo', '<b>Sexo</b>', 'trim|required|xss_clean');
+//                $this->form_validation->set_rules('sexo', '<b>Sexo</b>', 'trim|required|xss_clean');
 
                 if ($this->form_validation->run() == TRUE) {
 
@@ -134,7 +134,7 @@ class Userprofile extends MY_Controller {
         $_dados = [];
 
         $_dados["nome"] = $_dadosFillable["nome"];
-        $_dados["sexo"] = $_dadosFillable["sexo"];
+//        $_dados["sexo"] = $_dadosFillable["sexo"];
 
         /* END DADOS FILLABLE */
 

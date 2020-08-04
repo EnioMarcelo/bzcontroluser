@@ -8,11 +8,14 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Dashboard extends MY_Controller {
+class Dashboard extends MY_Controller
+{
 
     private $menuUsuario = '';
+    private $appStart = '';
 
-    function __construct() {
+    function __construct()
+    {
         parent::__construct();
 
         /**
@@ -50,33 +53,64 @@ class Dashboard extends MY_Controller {
 
         $this->menuUsuario = $_menu;
 
-        /* END CARREGA OS MENUS QUE O USUÁRIO LOGADO TEM ACESSO */
+        /**
+         * END CARREGA OS MENUS QUE O USUÁRIO LOGADO TEM ACESSO
+         */
+
+
+        /**
+         * CARREGA APP INICIAL NA DASHBOARD
+         */
+
+        /** Busca o APP START do Grupo dos Usuários */
+
+
+        if (!empty($_acl_user[0]['usuario_app_inicial'])) {
+            $this->appStart = $_acl_user[0]['usuario_app_inicial'];
+        } elseif (!empty($_acl_user[0]['grupo_app_inicial'])) {
+            $this->appStart = $_acl_user[0]['grupo_app_inicial'];
+        }
+
+
+//        echo "<pre class='vardump'>";
+//        var_dump( $_acl_user[0]['usuario_app_inicial'] );
+//        echo "</pre>";
+
+
+        /** END Busca o APP START do Grupo dos Usuários */
+
+        /**
+         * END CARREGA APP INICIAL NA DASHBOARD
+         */
+
+
     }
 
     /** END function __construct() * */
-    public function index() {
+    public function index()
+    {
         //$this->load->view('welcome_message');
         /*
          * TEMPLATE QUE SERÁ USADO PELO MÓDULO DO SISTEMA
          */
         $this->dados['_conteudo_masterPage'] = 'vDashboard';
         $this->dados['_menu_usuario'] = $this->menuUsuario;
+        $this->dados['_app_start'] = $this->appStart;
         $this->load->view('vMasterPage', $this->dados);
 
         /**
          * MOSTRA TODAS AS CONSTANTES DO SISTEMA
          */
-//            echo '<pre class="vardump">';
-//            var_dump(get_defined_constants(true)['user']);
-//            echo '</pre>';
-        /** END MOSTRA TODAS AS CONSTANTES DO SISTEMA * */
+//        mc_constants_system();
+        /** END MOSTRA TODAS AS CONSTANTES DO SISTEMA */
     }
 
     /*
      * GRAVA AS CONFIGURAÇÕES PADRÃO DO SISTEMA sec_settings
      */
 
-    public function formSettings() {
+    public function formSettings()
+    {
 
         /*
          * CERTIFICA SE O ACESSO A ESTA FUNCTION REALMENTE ESTÁ SENDO FEITO POR AJAX.

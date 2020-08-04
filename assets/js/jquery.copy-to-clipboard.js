@@ -7,23 +7,27 @@
  * https://www.jqueryscript.net/text/jQuery-Plugin-To-Copy-Any-Text-Into-Your-Clipboard-Copy-to-Clipboard.html
  *
  */
-$.fn.CopyToClipboard = function () {
+$.fn.CopyToClipboard = function (_msg) {
+
     var textToCopy = false;
     if (this.is('select') || this.is('textarea') || this.is('input')) {
         textToCopy = this.val();
     } else {
         textToCopy = this.text();
     }
-    CopyToClipboard(textToCopy);
+
+    CopyToClipboard(textToCopy, _msg);
 
 };
 
 function CopyToClipboard(val, _msg, _clear = false) {
 
-    val = b64DecodeUnicode(val);
-
     var param = [];
-    param['title'] = "Copiado com sucesso!";
+    if (_msg) {
+        param['title'] = _msg;
+    } else {
+        param['title'] = "Copiado com sucesso!";
+    }
     param['color'] = "success";
     param['timer'] = 3000;
 
@@ -43,6 +47,8 @@ function CopyToClipboard(val, _msg, _clear = false) {
 
     if ($("#codeeditor_1").length) {
 
+        val = b64DecodeUnicode(val);
+
         if (_clear) {
             editAreaLoader.setValue('codeeditor_1', '');
         }
@@ -58,6 +64,7 @@ $(function () {
             $($(this).data('clipboard-target')).CopyToClipboard();
         });
     });
+
     $('[data-clipboard-text]').each(function () {
         $(this).click(function () {
             CopyToClipboard($(this).data('clipboard-text'), $(this).data('clipboard-message'), $(this).data('clipboard-clear'));

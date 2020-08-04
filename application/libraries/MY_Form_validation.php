@@ -7,16 +7,24 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class MY_Form_validation extends CI_Form_validation {
+/**
+ * Class MY_Form_validation
+ */
+class MY_Form_validation extends CI_Form_validation
+{
 
+    /**
+     * @var
+     */
     public $CI;
 
     /**
      * clear_field_data
-     * 
+     *
      * @return $this
      */
-    public function clear_field_data() {
+    public function clear_field_data()
+    {
 
         $_POST = array();
         $this->_field_data = array();
@@ -25,17 +33,39 @@ class MY_Form_validation extends CI_Form_validation {
 
     /* END function clear_field_data() */
 
+
+    /**
+     * @param $str
+     * @return false|string|string[]|null
+     */
+    function strtoupper($str)
+    {
+        return mb_strtoupper($str);
+    }
+
+
+    /**
+     * @param $str
+     * @return false|string|string[]|null
+     */
+    function strtolower($str)
+    {
+        return mb_strtolower($str);
+
+    }
+
     /**
      * is_unique
      *
      * Check if the input value doesn't already exist
      * in the specified database field.
      *
-     * @param   string  $str
-     * @param   string  $field
+     * @param string $str
+     * @param string $field
      * @return  bool
      */
-    public function is_unique($str, $field) {
+    public function is_unique($str, $field)
+    {
         sscanf($field, '%[^.].%[^.]', $table, $field);
         //return isset($this->CI->db)
         return is_object($this->CI->db) ? ($this->CI->db->limit(1)->get_where($table, array($field => $str))->num_rows() === 0) : FALSE;
@@ -45,13 +75,14 @@ class MY_Form_validation extends CI_Form_validation {
 
     /**
      * valid_cpf
-     * 
+     *
      * VERIFICA SE O CPF INFORMADO É VALIDO
      *
      * @param type $cpf
      * @return boolean
      */
-    function valid_cpf($cpf) {
+    function valid_cpf($cpf)
+    {
 
         $this->CI->form_validation->set_message('valid_cpf', 'O campo {field} não contém um CPF válido.');
 
@@ -60,16 +91,16 @@ class MY_Form_validation extends CI_Form_validation {
 
         // Verifica se nenhuma das sequências abaixo foi digitada, caso seja, retorna falso
         if (strlen($cpf) != 11 ||
-                $cpf == '00000000000' ||
-                $cpf == '11111111111' ||
-                $cpf == '22222222222' ||
-                $cpf == '33333333333' ||
-                $cpf == '44444444444' ||
-                $cpf == '55555555555' ||
-                $cpf == '66666666666' ||
-                $cpf == '77777777777' ||
-                $cpf == '88888888888' ||
-                $cpf == '99999999999') {
+            $cpf == '00000000000' ||
+            $cpf == '11111111111' ||
+            $cpf == '22222222222' ||
+            $cpf == '33333333333' ||
+            $cpf == '44444444444' ||
+            $cpf == '55555555555' ||
+            $cpf == '66666666666' ||
+            $cpf == '77777777777' ||
+            $cpf == '88888888888' ||
+            $cpf == '99999999999') {
             return FALSE;
         } else {
             // Calcula os números para verificar se o CPF é verdadeiro
@@ -93,12 +124,13 @@ class MY_Form_validation extends CI_Form_validation {
      * valid_cep
      *
      * VERIFICA SE CEP É VÁLIDO
-     * 
-     * @access	public
-     * @param	string
-     * @return	bool
+     *
+     * @access    public
+     * @param string
+     * @return    bool
      */
-    function valid_cep($cep) {
+    function valid_cep($cep)
+    {
 
         $this->CI->form_validation->set_message('valid_cep', 'O campo {field} não contém um CEP válido.');
 
@@ -129,13 +161,14 @@ class MY_Form_validation extends CI_Form_validation {
 
     /**
      * valid_cnpj
-     * 
+     *
      * Verifica se o CNPJ é valido
-     * 
-     * @param     string
+     *
+     * @param string
      * @return     bool
      */
-    function valid_cnpj($str) {
+    function valid_cnpj($str)
+    {
 
         $this->CI->form_validation->set_message('valid_cnpj', 'O campo {field} não contém um CNPJ valido.');
 
@@ -150,15 +183,15 @@ class MY_Form_validation extends CI_Form_validation {
 
         // Elimina CNPJs invalidos conhecidos
         if ($cnpj == "00000000000000" ||
-                $cnpj == "11111111111111" ||
-                $cnpj == "22222222222222" ||
-                $cnpj == "33333333333333" ||
-                $cnpj == "44444444444444" ||
-                $cnpj == "55555555555555" ||
-                $cnpj == "66666666666666" ||
-                $cnpj == "77777777777777" ||
-                $cnpj == "88888888888888" ||
-                $cnpj == "99999999999999")
+            $cnpj == "11111111111111" ||
+            $cnpj == "22222222222222" ||
+            $cnpj == "33333333333333" ||
+            $cnpj == "44444444444444" ||
+            $cnpj == "55555555555555" ||
+            $cnpj == "66666666666666" ||
+            $cnpj == "77777777777777" ||
+            $cnpj == "88888888888888" ||
+            $cnpj == "99999999999999")
             return false;
 
         // Valida primeiro dígito verificador

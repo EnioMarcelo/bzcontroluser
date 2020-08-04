@@ -8,9 +8,11 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Grupos extends MY_Controller {
+class Grupos extends MY_Controller
+{
 
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct();
 
         /*
@@ -35,7 +37,8 @@ class Grupos extends MY_Controller {
 // END function __construct()
 
 
-    public function index() {
+    public function index()
+    {
         $this->session->set_flashdata('btn_voltar_link', site_url($this->router->fetch_class()) . '?' . bz_app_parametros_url());
         /*
          * CARREGA OS REGISTROS COM PAGINAÇÃO
@@ -56,12 +59,29 @@ class Grupos extends MY_Controller {
      * FUNÇÃO CADASTRO
      */
 
-    public function add() {
+    public function add()
+    {
 
         /*
          * CARREGA OS DADOS DOS APLICATIVOS
          */
         $this->dados['_apps']['_result'] = $this->read->exec('sec_aplicativos', 'ORDER BY app_descricao')->result();
+
+        /** CARREGA APPs PARA DROPDOWN*/
+        $this->dados['_app_inicial']['_result'] = $this->db
+            ->select('app_name,app_descricao')
+            ->order_by('app_descricao')
+            ->get('sec_aplicativos')
+            ->result_array();
+
+        if ($this->dados['_app_inicial']['_result']) {
+            $this->dados['_app_inicial']['_dropdown'][''] = 'Nenhum';
+            foreach ($this->dados['_app_inicial']['_result'] as $_value) {
+                $this->dados['_app_inicial']['_dropdown'][$_value['app_name']] = $_value['app_descricao'];
+            }
+        } else {
+            $this->dados['_app_inicial']['_dropdown'][''] = 'Não existem APPs cadastrados até o momento';
+        }
 
         if ($this->input->post()) {
 
@@ -100,6 +120,12 @@ class Grupos extends MY_Controller {
                     $_dados["descricao"] = NULL;
                 }
 
+                if (!empty($_dadosFillable["app_inicial"])) {
+                    $_dados["app_inicial"] = $_dadosFillable["app_inicial"];
+                } else {
+                    $_dados["app_inicial"] = NULL;
+                }
+
                 if (!empty($_dadosFillable["ativo"])) {
                     $_dados["ativo"] = $_dadosFillable["ativo"];
                 } else {
@@ -107,7 +133,6 @@ class Grupos extends MY_Controller {
                 }
 
                 /* END DADOS FILLABLE */
-
 
 
                 /**
@@ -176,12 +201,29 @@ class Grupos extends MY_Controller {
      * FUNÇÃO EDIÇÃO
      */
 
-    public function edit() {
+    public function edit()
+    {
 
         /*
          * CARREGA OS DADOS DOS APLICATIVOS
          */
         $this->dados['_apps']['_result'] = $this->read->exec('sec_aplicativos', 'ORDER BY app_descricao')->result();
+
+        /** CARREGA APPs PARA DROPDOWN*/
+        $this->dados['_app_inicial']['_result'] = $this->db
+            ->select('app_name,app_descricao')
+            ->order_by('app_descricao')
+            ->get('sec_aplicativos')
+            ->result_array();
+
+        if ($this->dados['_app_inicial']['_result']) {
+            $this->dados['_app_inicial']['_dropdown'][''] = 'Nenhum';
+            foreach ($this->dados['_app_inicial']['_result'] as $_value) {
+                $this->dados['_app_inicial']['_dropdown'][$_value['app_name']] = $_value['app_descricao'];
+            }
+        } else {
+            $this->dados['_app_inicial']['_dropdown'][''] = 'Nao existem APPs cadastrados até o momento';
+        }
 
         if ($this->input->post()) {
 
@@ -225,6 +267,12 @@ class Grupos extends MY_Controller {
                         $_dados["descricao"] = NULL;
                     }
 
+                    if (!empty($_dadosFillable["app_inicial"])) {
+                        $_dados["app_inicial"] = $_dadosFillable["app_inicial"];
+                    } else {
+                        $_dados["app_inicial"] = NULL;
+                    }
+
                     if (!empty($_dadosFillable["ativo"])) {
                         $_dados["ativo"] = $_dadosFillable["ativo"];
                     } else {
@@ -238,13 +286,12 @@ class Grupos extends MY_Controller {
 
                     if ($this->update->exec($this->table_name, $_dados, $_where)) {
 
-/* GRAVA AUDITORIA */
+                        /* GRAVA AUDITORIA */
                         $dados_auditoria['creator'] = 'user';
                         $dados_auditoria['action'] = 'edit';
                         $dados_auditoria['description'] = ___MSG_AUDITORIA_UPDATE_SUCCESS___;
                         $dados_auditoria['last_query'] = $this->db->last_query();
                         add_auditoria($dados_auditoria);
-
 
 
                         /**
@@ -282,7 +329,7 @@ class Grupos extends MY_Controller {
 //set_mensagem_toastr('<i class="fa fa-fw fa-thumbs-o-up" style="font-size: 1.5em"></i>', _MSG_UPDATE_REGISTRO_, 'success', 'top-center');
                         set_mensagem_trigger_notifi(___MSG_UPDATE_REGISTRO___, 'success');
                     } else {
-/* GRAVA AUDITORIA */
+                        /* GRAVA AUDITORIA */
                         $dados_auditoria['creator'] = 'system';
                         $dados_auditoria['action'] = 'error edit';
                         $dados_auditoria['description'] = ___MSG_AUDITORIA_UPDATE_ERROR___;
@@ -342,7 +389,8 @@ class Grupos extends MY_Controller {
      * FUNÇÃO DELETAR
      */
 
-    public function del() {
+    public function del()
+    {
 
         /*
          * CERTIFICA SE O ACESSO A ESTA FUNCTION REALMENTE ESTÁ SENDO FEITO POR AJAX.
@@ -399,7 +447,7 @@ class Grupos extends MY_Controller {
                     $dados_auditoria['description'] = ___MSG_AUDITORIA_DEL_SUCCESS___;
                 }
 
-/* GRAVA AUDITORIA */
+                /* GRAVA AUDITORIA */
                 $dados_auditoria['creator'] = 'user';
                 $dados_auditoria['action'] = 'del';
                 $dados_auditoria['last_query'] = $this->db->last_query();
@@ -423,7 +471,8 @@ class Grupos extends MY_Controller {
      * FUNÇÃO  ATIVA/DESATIVA STATUS
      */
 
-    public function status() {
+    public function status()
+    {
 
 
         $_id = $this->uri->segment(3);
@@ -446,7 +495,7 @@ class Grupos extends MY_Controller {
                 $_where = 'WHERE id = "' . $_result->row()->id . '"';
 
                 if ($this->update->exec($this->table_name, $dados, $_where)) {
-/* GRAVA AUDITORIA */
+                    /* GRAVA AUDITORIA */
                     $dados_auditoria['creator'] = 'user';
                     $dados_auditoria['action'] = 'status change';
                     $dados_auditoria['description'] = ___MSG_AUDITORIA_STATUS_REGISTRO_SUCCESS___;
@@ -456,7 +505,7 @@ class Grupos extends MY_Controller {
 //set_mensagem_toastr('<i class="fa fa-fw fa-thumbs-o-up" style="font-size: 1.5em"></i>', _MSG_STATUS_REGISTRO_, 'success', 'top-center');
                     set_mensagem_trigger_notifi(___MSG_STATUS_REGISTRO___, 'success');
                 } else {
-/* GRAVA AUDITORIA */
+                    /* GRAVA AUDITORIA */
                     $dados_auditoria['creator'] = 'system';
                     $dados_auditoria['action'] = 'error status change';
                     $dados_auditoria['description'] = ___MSG_AUDITORIA_STATUS_REGISTRO_ERROR___;
@@ -467,7 +516,7 @@ class Grupos extends MY_Controller {
                     set_mensagem_trigger_notifi(___MSG_ERROR_STATUS_REGISTRO___, 'error');
                 }
             } else {
-/* GRAVA AUDITORIA */
+                /* GRAVA AUDITORIA */
                 $dados_auditoria['creator'] = 'system';
                 $dados_auditoria['action'] = 'error status change';
                 $dados_auditoria['description'] = ___MSG_AUDITORIA_NOT_FIND_REGISTRO___;
@@ -492,7 +541,8 @@ class Grupos extends MY_Controller {
     /*
      * VALIDA POR CALLBACK O CAMPO APPS DO FORM
      */
-    public function valid_apps() {
+    public function valid_apps()
+    {
 
         $p = $this->input->post('apps');
         $r = $result = count($p);
@@ -511,7 +561,8 @@ class Grupos extends MY_Controller {
     /*
      * CARREGA REGISTROS COM PAGINAÇÃO
      */
-    private function get_paginacao() {
+    private function get_paginacao()
+    {
 
         $_filter = $this->input->get();
         unset($_filter['pg']);

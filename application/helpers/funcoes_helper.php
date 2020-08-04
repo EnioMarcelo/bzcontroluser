@@ -10,10 +10,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 /**
  * BOX COLOR FUNCTION
- * 
+ *
  * @param type $color
  */
-function bz_box_color($color) {
+function bz_box_color($color)
+{
 
     $_box = 'box-';
 
@@ -35,9 +36,10 @@ function bz_box_color($color) {
 /**
  * GET TABELAS DO SISTEMA
  */
-function get_tables_system() {
+function get_tables_system()
+{
 
-    $CI = & get_instance();
+    $CI = &get_instance();
 
     $_tabelas = $CI->db->list_tables();
 
@@ -55,12 +57,13 @@ function get_tables_system() {
 
 /**
  * GET FIELDS GRIDLIST TABLE PROJECT
- * 
+ *
  * @param type $_table
  * @return type
  */
-function get_fields_gridlist_project($_id) {
-    $CI = & get_instance();
+function get_fields_gridlist_project($_id)
+{
+    $CI = &get_instance();
 
     $_fields = $CI->db->from('proj_build_fields')->where(array('proj_build_id' => $_id, 'screen_type' => 'gridlist'))->order_by('order_field_gridlist')->get()->result();
 
@@ -83,9 +86,10 @@ function get_fields_gridlist_project($_id) {
 /**
  * CHECK SE USUÁRIO É SUPER ADMIN
  */
-function check_is_user_super_admin() {
+function check_is_user_super_admin()
+{
 
-    $CI = & get_instance();
+    $CI = &get_instance();
 
     if ($CI->session->userdata('user_login')['user_super_admin'] == 'Y') {
         return true;
@@ -99,8 +103,9 @@ function check_is_user_super_admin() {
 /**
  * CHECK SE USUÁRIO ESTÁ LOGADO NO SISTEMA
  */
-function check_is_user_login() {
-    $CI = & get_instance();
+function check_is_user_login()
+{
+    $CI = &get_instance();
 
     return $CI->session->has_userdata('user_login');
 }
@@ -110,8 +115,9 @@ function check_is_user_login() {
 /**
  * CHECK SE SISTEMA ESTÁ EM MANUTENÇÃO
  */
-function check_system_is_manutencao() {
-    $CI = & get_instance();
+function check_system_is_manutencao()
+{
+    $CI = &get_instance();
 
     if (get_setting('em_manutencao') == 'SIM') {
         return true;
@@ -132,22 +138,22 @@ function check_system_is_manutencao() {
  * @param type $duration
  * @return string
  */
-function set_mensagem_trigger_notifi($mensagem = 'Sua mensagem aqui.', $tipo = 'info', $duration = 3200) {
-    $CI = & get_instance();
+function set_mensagem_trigger_notifi($mensagem = 'Sua mensagem aqui.', $tipo = 'info', $duration = 3200)
+{
+    $CI = &get_instance();
 
     $result = "<script>" . PHP_EOL
-            . "     $(window).on('pageshow',function(){ " . PHP_EOL
-            . "         var param_" . $tipo . " = [];" . PHP_EOL
-            . "         param_" . $tipo . "['title'] = '" . $mensagem . "';" . PHP_EOL
-            . "         param_" . $tipo . "['icon'] = '';" . PHP_EOL
-            . "         param_" . $tipo . "['color'] = '" . $tipo . "';" . PHP_EOL
-            . "         param_" . $tipo . "['timer'] = " . $duration . ";" . PHP_EOL
-            . ""
-            . "         triggerNotify(param_" . $tipo . ");" . PHP_EOL
-            . ""
-            . "     });" . PHP_EOL
-            . "</script>" . PHP_EOL;
-
+        . "     $(window).on('pageshow',function(){ " . PHP_EOL
+        . "         var param_" . $tipo . " = [];" . PHP_EOL
+        . "         param_" . $tipo . "['title'] = '" . $mensagem . "';" . PHP_EOL
+        . "         param_" . $tipo . "['icon'] = '';" . PHP_EOL
+        . "         param_" . $tipo . "['color'] = '" . $tipo . "';" . PHP_EOL
+        . "         param_" . $tipo . "['timer'] = " . $duration . ";" . PHP_EOL
+        . ""
+        . "         triggerNotify(param_" . $tipo . ");" . PHP_EOL
+        . ""
+        . "     });" . PHP_EOL
+        . "</script>" . PHP_EOL;
 
 
     $CI->session->set_flashdata('mensagem_sistema', $result);
@@ -160,15 +166,16 @@ function set_mensagem_trigger_notifi($mensagem = 'Sua mensagem aqui.', $tipo = '
  * Type : info, error, warning, success
  * Position: tr=Top Right, tr=Top Left, tc=Top Center
  *           br=Bottom Right, br=Bottom Left, bc=Bottom Center
- * 
+ *
  * @param type $titulo
  * @param type $mensagem
  * @param string $tipo
  * @param type $position
  * @return boolean
  */
-function set_mensagem_nice($titulo = NULL, $mensagem = NULL, $tipo = 'info', $position = 'br', $duration = 3200) {
-    $CI = & get_instance();
+function set_mensagem_nice($titulo = NULL, $mensagem = NULL, $tipo = 'info', $position = 'br', $duration = 3200)
+{
+    $CI = &get_instance();
     if (empty($mensagem)) {
         return false;
     }
@@ -186,15 +193,15 @@ function set_mensagem_nice($titulo = NULL, $mensagem = NULL, $tipo = 'info', $po
     }
 
     $result = "<script>"
-            . "$(function () {"
-            . "     $.HP" . $_tipo . "({"
-            . "         message: '" . $mensagem . "',"
-            . "         title: '" . $titulo . "',"
-            . "         location: '" . $position . "',"
-            . "         duration:  " . $duration
-            . "     });"
-            . "});"
-            . "</script>";
+        . "$(function () {"
+        . "     $.HP" . $_tipo . "({"
+        . "         message: '" . $mensagem . "',"
+        . "         title: '" . $titulo . "',"
+        . "         location: '" . $position . "',"
+        . "         duration:  " . $duration
+        . "     });"
+        . "});"
+        . "</script>";
 
     $CI->session->set_flashdata('mensagem_sistema', $result);
 
@@ -204,12 +211,13 @@ function set_mensagem_nice($titulo = NULL, $mensagem = NULL, $tipo = 'info', $po
 /**
  * SETA OS ALERTAS DO SISTEMA EM NOTFIT MESSENGER
  * info, error, warning, success
- * @param string $mensagem      Mensagem de erro ou aviso
- * @param string $tipo          Informa o tipo de mensagem a ser mostrado: info, warning, error, success
+ * @param string $mensagem Mensagem de erro ou aviso
+ * @param string $tipo Informa o tipo de mensagem a ser mostrado: info, warning, error, success
  *
  */
-function set_mensagem_notfit($mensagem = NULL, $tipo = 'info') {
-    $CI = & get_instance();
+function set_mensagem_notfit($mensagem = NULL, $tipo = 'info')
+{
+    $CI = &get_instance();
     if (empty($mensagem) or empty($tipo)) {
         return false;
     }
@@ -223,20 +231,21 @@ function set_mensagem_notfit($mensagem = NULL, $tipo = 'info') {
     return;
 }
 
-//END set_mensagem_sweetalert()
+//END set_mensagem_notfit()
 
 /**
  * SETA OS ALERTAS DO SISTEMA EM SWEET ALERT
  * error, warning, success
- * @param string $titulo        Informa o titulo da mensagem
- * @param string $mensagem      Mensagem de erro ou aviso
- * @param string $tipo          Informa o tipo de mensagem a ser mostrado: info, warning, error, success
+ * @param string $titulo Informa o titulo da mensagem
+ * @param string $mensagem Mensagem de erro ou aviso
+ * @param string $tipo Informa o tipo de mensagem a ser mostrado: info, warning, error, success
  *
  * https://sweetalert.js.org/guides/
  *
  */
-function set_mensagem_sweetalert($titulo = NULL, $mensagem = NULL, $tipo = 'info') {
-    $CI = & get_instance();
+function set_mensagem_sweetalert($titulo = NULL, $mensagem = NULL, $tipo = 'info')
+{
+    $CI = &get_instance();
     if (empty($mensagem) or empty($titulo) or empty($tipo)) {
         return false;
     }
@@ -255,12 +264,13 @@ function set_mensagem_sweetalert($titulo = NULL, $mensagem = NULL, $tipo = 'info
 /**
  * SETA OS ALERTAS DO SISTEMA EM TOASTR
  * error, warning, success
- * @param string $titulo        Informa o titulo da mensagem
- * @param string $mensagem      Mensagem de erro ou aviso
- * @param string $tipo          Informa o tipo de mensagem a ser mostrado: info, warning, error, success
+ * @param string $titulo Informa o titulo da mensagem
+ * @param string $mensagem Mensagem de erro ou aviso
+ * @param string $tipo Informa o tipo de mensagem a ser mostrado: info, warning, error, success
  */
-function set_mensagem_toastr($titulo = NULL, $mensagem = NULL, $tipo = 'info', $position = 'top-right') {
-    $CI = & get_instance();
+function set_mensagem_toastr($titulo = NULL, $mensagem = NULL, $tipo = 'info', $position = 'top-right')
+{
+    $CI = &get_instance();
     if (empty($mensagem) or empty($titulo) or empty($tipo)) {
         return false;
     }
@@ -284,7 +294,7 @@ function set_mensagem_toastr($titulo = NULL, $mensagem = NULL, $tipo = 'info', $
         position: '" . $position . "',
         icon: '" . $tipo . "',
         loaderBg: '" . $_loaderBg . "'
-    })
+    });
 
     </script>";
 
@@ -300,11 +310,12 @@ function set_mensagem_toastr($titulo = NULL, $mensagem = NULL, $tipo = 'info', $
  * danger, warning, success, info
  * @param string $titulo Informa o titulo da mensagem
  * @param string $mensagem Mensagem de erro ou aviso
- * @param string $fa-icon Icone Font-awesome
+ * @param string $fa -icon Icone Font-awesome
  * @param string $tipo Informa o tipo de mensagem a ser mostrado: danger, warning, success, info
  */
-function set_mensagem($titulo = NULL, $mensagem = NULL, $fa_icon = 'fa-times', $tipo = NULL) {
-    $CI = & get_instance();
+function set_mensagem($titulo = NULL, $mensagem = NULL, $fa_icon = 'fa-times', $tipo = NULL)
+{
+    $CI = &get_instance();
     if (empty($mensagem) or empty($tipo)) {
         return false;
     }
@@ -332,8 +343,9 @@ function set_mensagem($titulo = NULL, $mensagem = NULL, $fa_icon = 'fa-times', $
 /**
  * PEGA OS ALERTAS DO SISTEMA QUE FORAM SETADOS PELO set_mensagem()
  */
-function get_mensagem() {
-    $CI = & get_instance();
+function get_mensagem()
+{
+    $CI = &get_instance();
 
     if ($CI->session->flashdata('mensagem_sistema')) {
         $result = $CI->session->flashdata('mensagem_sistema');
@@ -347,9 +359,10 @@ function get_mensagem() {
 /**
  * CHECK SE O ACESSO A ALGUMA FUNCTION AJAX ESTÁ SENDO DIRETO PELA URL OU POR AJAX MESMO.
  */
-function bz_check_is_ajax_request() {
+function bz_check_is_ajax_request()
+{
 
-    $CI = & get_instance();
+    $CI = &get_instance();
 
     if (!$CI->input->is_ajax_request()) {
         exit('<pre>eingang verboten.</pre><pre>unauthorized access.</pre><pre>acesso não permitido.</pre>');
@@ -361,14 +374,15 @@ function bz_check_is_ajax_request() {
 /**
  * FUNÇÃO PARA ENVIAR EMAIL.
  *
- * @param string $para              Para quem vai ser mandado este email - DESTINO
- * @param string $assunto           Qual o assunto do email
- * @param string $mensagem          Mensagem/Corpo do email
- * @param string $formato           Por padrão será HTML
+ * @param string $para Para quem vai ser mandado este email - DESTINO
+ * @param string $assunto Qual o assunto do email
+ * @param string $mensagem Mensagem/Corpo do email
+ * @param string $formato Por padrão será HTML
  */
-function bz_enviar_email($para, $assunto, $mensagem, $formato = 'html') {
+function bz_enviar_email($para, $assunto, $mensagem, $formato = 'html')
+{
 
-    $CI = & get_instance();
+    $CI = &get_instance();
 
     $CI->load->library('email');
 
@@ -378,10 +392,10 @@ function bz_enviar_email($para, $assunto, $mensagem, $formato = 'html') {
     $config['mailtype'] = $formato;
 
     if (strlen($CI->config->item('config_email')['CONF_EMAIL_SMTP_HOST']) > 0 AND
-            strlen($CI->config->item('config_email')['CONF_EMAIL_SMTP_HOST']) > 0 AND
-            strlen($CI->config->item('config_email')['CONF_EMAIL_SMTP_USER']) > 0 AND
-            strlen($CI->config->item('config_email')['CONF_EMAIL_SMTP_PASS']) > 0 AND
-            strlen($CI->config->item('config_email')['CONF_EMAIL_FROM_EMAIL']) > 0) {
+        strlen($CI->config->item('config_email')['CONF_EMAIL_SMTP_HOST']) > 0 AND
+        strlen($CI->config->item('config_email')['CONF_EMAIL_SMTP_USER']) > 0 AND
+        strlen($CI->config->item('config_email')['CONF_EMAIL_SMTP_PASS']) > 0 AND
+        strlen($CI->config->item('config_email')['CONF_EMAIL_FROM_EMAIL']) > 0) {
         $servidor_email = true;
     }
     /**/
@@ -427,14 +441,15 @@ function bz_enviar_email($para, $assunto, $mensagem, $formato = 'html') {
 //END bz_enviar_email()
 
 /**
- * PROCURA UMA OCORRÊNCIA EXATA DENTRO DE UM ARRAY E RETORNA UM ARRAY 
+ * PROCURA UMA OCORRÊNCIA EXATA DENTRO DE UM ARRAY E RETORNA UM ARRAY
  * COM OS DADOS FILTRADOS.
- * 
+ *
  * @param type $elem
  * @param type $array
  * @return boolean
  */
-function bz_find_in_multiarray($elem, $array) {
+function bz_find_in_multiarray($elem, $array)
+{
 
     $_new_array = array();
 
@@ -455,13 +470,14 @@ function bz_find_in_multiarray($elem, $array) {
 /**
  * FUNÇÃO QUE FILTRA O CONTEUDO DE UM ARRAY.
  *
- * @param string $_p['array']       Passa o ARRAY para ser filtrado
- * @param string $_p['field']       Passa o NOME DO CAMPO que contém o valor a ser filtrado
- * @param string $_p['value']       Passa o VALOR do CAMPO a ser filtrado
- * @param string $_p['like_value']  Y = Se contém a ocorrência no campo ou N = Procura pelo valor exato da ocorrência no campo
+ * @param string $_p ['array']       Passa o ARRAY para ser filtrado
+ * @param string $_p ['field']       Passa o NOME DO CAMPO que contém o valor a ser filtrado
+ * @param string $_p ['value']       Passa o VALOR do CAMPO a ser filtrado
+ * @param string $_p ['like_value']  Y = Se contém a ocorrência no campo ou N = Procura pelo valor exato da ocorrência no campo
  *
  */
-function bz_filter_array($_p = array()) {
+function bz_filter_array($_p = array())
+{
 
     if (array($_p)) {
 
@@ -508,7 +524,8 @@ function bz_filter_array($_p = array()) {
  * @param string $include_special_chars = false     Se vai ter caracteres especiais na string
  * @return type
  */
-function mc_random_number($chars_min = 6, $chars_max = 6, $use_upper_case = false, $include_letter = false, $include_numbers = true, $include_special_chars = false) {
+function mc_random_number($chars_min = 6, $chars_max = 6, $use_upper_case = false, $include_letter = false, $include_numbers = true, $include_special_chars = false)
+{
     $length = mt_rand($chars_min, $chars_max);
     $selection = '';
     if ($include_letter) {
@@ -523,10 +540,10 @@ function mc_random_number($chars_min = 6, $chars_max = 6, $use_upper_case = fals
 
     $_string = "";
     for ($i = 0; $i < $length; $i++) {
-        $current_letter = $use_upper_case ? (mt_rand(0, 1) ? strtoupper($selection[(mt_rand() % strlen($selection))]) : $selection[(mt_rand() % strlen($selection))]) : $selection[(mt_rand() % strlen($selection))];
+        $current_letter = $use_upper_case ? (mt_rand(0, 1) ? mb_strtoupper($selection[(mt_rand() % strlen($selection))]) : $selection[(mt_rand() % strlen($selection))]) : $selection[(mt_rand() % strlen($selection))];
 
         if ($use_upper_case) {
-            $current_letter = strtoupper($current_letter);
+            $current_letter = mb_strtoupper($current_letter);
         }
 
         $_string .= $current_letter;
@@ -540,9 +557,10 @@ function mc_random_number($chars_min = 6, $chars_max = 6, $use_upper_case = fals
  * FUNÇÃO QUE PEGA URL DO APP COM OS PARÂMETROS.
  *
  */
-function bz_app_parametros_url() {
+function bz_app_parametros_url()
+{
 
-    $CI = & get_instance();
+    $CI = &get_instance();
 
     if (strrchr($_SERVER['REQUEST_URI'], "?")) {
         $pos = strpos($_SERVER['REQUEST_URI'], '?') + 1;
@@ -559,7 +577,8 @@ function bz_app_parametros_url() {
  * FUNÇÃO QUE RETORNA O CAMINHO ABSOLUTO DO SERVIDOR ONDE ESTÁ SUA APLICAÇÃO HOSPEDADA.
  *
  */
-function bz_absolute_path($_param = '') {
+function bz_absolute_path($_param = '')
+{
 //    return $_SERVER['DOCUMENT_ROOT'] . $_param;
     return ___CONF_APP_ABSOLUTE_PATH___ . $_param;
 }
@@ -569,15 +588,16 @@ function bz_absolute_path($_param = '') {
 /**
  * FUNÇÃO QUE GERA UM INPUT SELECT.
  *
- * @param string $table         Nome do Campo
+ * @param string $table Nome do Campo
  * @param string $field
- * @param string $pk            Chave Primária do Registro ou ID
- * @param string $selected      ID do Registro SELECIONADO
+ * @param string $pk Chave Primária do Registro ou ID
+ * @param string $selected ID do Registro SELECIONADO
  *
  */
-function ger_select_input($name, $table, $field, $pk, $selected = "") {
+function ger_select_input($name, $table, $field, $pk, $selected = "")
+{
 
-    $CI = & get_instance();
+    $CI = &get_instance();
     $select = '<select id="' . $name . '"  name="' . $name . '" class="form-control">';
     $data = $CI->db->get($table)->result();
 
@@ -587,7 +607,7 @@ function ger_select_input($name, $table, $field, $pk, $selected = "") {
 
         $select .= "<option value='" . $d->$pk . "'";
         $select .= $selected == $d->$pk ? " selected='selected'" : "";
-        $select .= ">" . strtoupper($d->$field) . "</option>";
+        $select .= ">" . mb_strtoupper($d->$field) . "</option>";
     }
 
     $select .= "</select>";
@@ -600,11 +620,12 @@ function ger_select_input($name, $table, $field, $pk, $selected = "") {
 /**
  * Converte valor monetário para o padrão Brasileiro
  *
- * @param string $get_valor         Valor a ser convertido
- * @param string $decimal           Casas Decimais - Default é 2
- * @param string $cifrap            Cifrão Monetário: Brasil R$, EUA U$...
+ * @param string $get_valor Valor a ser convertido
+ * @param string $decimal Casas Decimais - Default é 2
+ * @param string $cifrap Cifrão Monetário: Brasil R$, EUA U$...
  */
-function bz_converteMoedaBrasil($get_valor, $decimal = 2, $cifrao = null) {
+function bz_converteMoedaBrasil($get_valor, $decimal = 2, $cifrao = null)
+{
     $valor = number_format($get_valor, $decimal, ',', '.');
 
     if ($cifrao) {
@@ -619,11 +640,12 @@ function bz_converteMoedaBrasil($get_valor, $decimal = 2, $cifrao = null) {
 /**
  * Converte valor monetário para o padrão Americano
  *
- * @param string $get_valor         Valor a ser convertido
- * @param string $decimal           Casas Decimais - Default é 2
- * @param string $cifrap            Cifrão Monetário: Brasil R$, EUA U$...
+ * @param string $get_valor Valor a ser convertido
+ * @param string $decimal Casas Decimais - Default é 2
+ * @param string $cifrap Cifrão Monetário: Brasil R$, EUA U$...
  */
-function bz_converteMoedaAmericana($get_valor, $decimal = 2, $cifrao = null) {
+function bz_converteMoedaAmericana($get_valor, $decimal = 2, $cifrao = null)
+{
     $source = array('.', ',');
     $replace = array('', '.');
     $valor = str_replace($source, $replace, $get_valor);
@@ -639,14 +661,15 @@ function bz_converteMoedaAmericana($get_valor, $decimal = 2, $cifrao = null) {
 
 /**
  * PESQUISA UM OCORRÊNCIA DENTRO DE UMA STRING
- * 
+ *
  * Usando a analogia de encontrar uma agulha em um palheiro.
- * 
- * @param string $_agulha         Agulha - O quê vc deseja encontrar
- * @param string $_palheiro       Palheiro - Onde você deseja encontrar
+ *
+ * @param string $_agulha Agulha - O quê vc deseja encontrar
+ * @param string $_palheiro Palheiro - Onde você deseja encontrar
  * @return boolean
  */
-function mc_contains_in_string($_agulha, $_palheiro) {
+function mc_contains_in_string($_agulha, $_palheiro)
+{
     $_r = strstr($_palheiro, $_agulha);
 
     if ($_r) {
@@ -658,15 +681,16 @@ function mc_contains_in_string($_agulha, $_palheiro) {
 
 /**
  * MACRO QUE PREENCHE UMA STRING COM CARACTERES
- * 
- * @param string $string            Passa a string com os dados
- * @param string $orientacao        Esquerda LEFT, Diretia RIGHT. Por padrão será LEFT
- * @param string $caracter          Qual o tipo de caractar que será adicionado a String. Por padrão será *
- * @param string $quantidade        Quantidade de caractar que será adicionado a String
+ *
+ * @param string $string Passa a string com os dados
+ * @param string $orientacao Esquerda LEFT, Diretia RIGHT. Por padrão será LEFT
+ * @param string $caracter Qual o tipo de caractar que será adicionado a String. Por padrão será *
+ * @param string $quantidade Quantidade de caractar que será adicionado a String
  */
-function mc_fill_string($string = '', $orientacao = "LEFT", $caracter = "*", $quantidade = '10') {
+function mc_fill_string($string = '', $orientacao = "LEFT", $caracter = "*", $quantidade = '10')
+{
     $tamanhoString = strlen(trim($string));
-    $quantidade = ( $quantidade - $tamanhoString ) + 3;
+    $quantidade = ($quantidade - $tamanhoString) + 3;
     $retorno = $string;
 
     if ($orientacao == 'LEFT') {
@@ -685,10 +709,11 @@ function mc_fill_string($string = '', $orientacao = "LEFT", $caracter = "*", $qu
  *
  * Exemplo : _queryResultExcluideCol('Array com o resultado da query', 'Nome da Coluna que será excluiuda da query')
  *
- * @param string $_query_result     Passa o resultado da query select o result_array() como parâmetro.
- * @param string $_ColumnExclude    Nome da Coluna/Campo da query result que será exluida do array.
+ * @param string $_query_result Passa o resultado da query select o result_array() como parâmetro.
+ * @param string $_ColumnExclude Nome da Coluna/Campo da query result que será exluida do array.
  */
-function bz_queryResultExcludeCol($_query_result = array(), $_ColumnExclude = NULL) {
+function bz_queryResultExcludeCol($_query_result = array(), $_ColumnExclude = NULL)
+{
 
     foreach ($_query_result as $key => $value) {
         unset($_query_result[$key][$_ColumnExclude]);
@@ -704,10 +729,11 @@ function bz_queryResultExcludeCol($_query_result = array(), $_ColumnExclude = NU
  *
  * Exemplo : bz_formatdata(DATA,'d/m/Y H:i:s')
  *
- * @param string $data              Passa a string com a data
- * @param string $mascara           Como a data será formatada. Exemplo: 'd/m/Y H:i:s'
+ * @param string $data Passa a string com a data
+ * @param string $mascara Como a data será formatada. Exemplo: 'd/m/Y H:i:s'
  */
-function bz_formatdata($data, $mascara = 'd/m/Y') {
+function bz_formatdata($data, $mascara = 'd/m/Y')
+{
 
     if (date('Y', strtotime(str_replace('/', '-', $data))) == '-0001' || empty($data)) {
         return;
@@ -740,9 +766,10 @@ function bz_formatdata($data, $mascara = 'd/m/Y') {
  *
  *
  */
-function bz_paginacao($param = array()) {
+function bz_paginacao($param = array())
+{
 
-    $CI = & get_instance();
+    $CI = &get_instance();
 
     $_current_page = ($CI->input->get('pg', TRUE) - 1);
     $_tabela = $param['table'];
@@ -772,8 +799,8 @@ function bz_paginacao($param = array()) {
 
             $_fields = explode(',', $_search['_concat_fields']);
 
-            foreach ( $_fields as $_f) {
-                $CI->db->or_like( 'LOWER(' . $_f . ')', mb_strtolower($_search['_string']) );
+            foreach ($_fields as $_f) {
+                $CI->db->or_like('LOWER(' . $_f . ')', mb_strtolower($_search['_string']));
             }
 
 
@@ -873,8 +900,8 @@ function bz_paginacao($param = array()) {
 
             $_fields = explode(',', $_search['_concat_fields']);
 
-            foreach ( $_fields as $_f) {
-                $CI->db->or_like( 'LOWER(' . $_f . ')', mb_strtolower($_search['_string']) );
+            foreach ($_fields as $_f) {
+                $CI->db->or_like('LOWER(' . $_f . ')', mb_strtolower($_search['_string']));
             }
 
         }
@@ -918,14 +945,15 @@ function bz_paginacao($param = array()) {
  * Ex: bz_delete_file_for_expired_lifetime('folder-name',5);
  * Este exemplo irá apagar todos os arquivos que tem seu tempo de criação maior ou igual a 5 minutos.
  * Se não informar o último parâmetro o padrão será 1 minuto.
- * 
+ *
  * @param type $_source_dir
  * @param type $_minutes
  * @return type
  */
-function bz_delete_file_for_expired_lifetime($_source_dir, $_minutes = 1) {
+function bz_delete_file_for_expired_lifetime($_source_dir, $_minutes = 1)
+{
 
-    $CI = & get_instance();
+    $CI = &get_instance();
     $CI->load->helper('directory');
 
     $_diretoryMap = directory_map(FCPATH . $_source_dir, 1);
@@ -949,14 +977,14 @@ function bz_delete_file_for_expired_lifetime($_source_dir, $_minutes = 1) {
 /**
  * FUNÇÃO QUE DELETA ARQUIVOS QUE ESTÃO SEM CADASTRO EM UMA TABELA, ÓRFÃOS.
  *
- * @param string $_path_file            Caminho absoluto onde está o arquivo
- * @param string $_table_name           Tabela onde será procurado o arquivo
- * @param string $_field_name           Nome do campo onde está gravado o nome do arquivo
+ * @param string $_path_file Caminho absoluto onde está o arquivo
+ * @param string $_table_name Tabela onde será procurado o arquivo
+ * @param string $_field_name Nome do campo onde está gravado o nome do arquivo
  *
  */
-function bz_delete_files_orphans($_path_file, $_table_name, $_field_name) {
-
-    $CI = & get_instance();
+function bz_delete_files_orphans($_path_file, $_table_name, $_field_name)
+{
+    $CI = &get_instance();
     $CI->load->helper('directory');
 
     $_scan = directory_map($_path_file);
@@ -991,11 +1019,12 @@ function bz_delete_files_orphans($_path_file, $_table_name, $_field_name) {
  *
  * Os parametros são passados em array(''=>'').
  *
- * @param string $_param['path_file']            Caminho Absoluto onde está o arquivo
- * @param string $_param['name_file']           Nome do Arquivo
+ * @param string $_param ['path_file']            Caminho Absoluto onde está o arquivo
+ * @param string $_param ['name_file']           Nome do Arquivo
  *
  */
-function bz_extension_file($_param = array()) {
+function bz_extension_file($_param = array())
+{
 
     if ($_param['path_file'] && $_param['name_file']) {
         return pathinfo($_param['path_file'] . $_param['name_file'], PATHINFO_EXTENSION);
@@ -1011,7 +1040,8 @@ function bz_extension_file($_param = array()) {
  * RECUPERAR O IP REAL DO USUÁRIO
  *
  */
-function bz_get_client_ip() {
+function bz_get_client_ip()
+{
     if (!empty($_SERVER['HTTP_CLIENT_IP'])) {   //check ip from share internet
         $ip = $_SERVER['HTTP_CLIENT_IP'];
     } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {   //to check ip is pass from proxy
@@ -1028,8 +1058,9 @@ function bz_get_client_ip() {
 /*
  * Salva ou atualiza uma config no BD
  */
-function set_setting($nome, $valor = '') {
-    $CI = & get_instance();
+function set_setting($nome, $valor = '')
+{
+    $CI = &get_instance();
     $CI->load->model('settings_model', 'settings');
     if ($CI->settings->get_bynome($nome)->num_rows() == 1) {
         if (trim($valor) == '') {
@@ -1059,8 +1090,9 @@ function set_setting($nome, $valor = '') {
  *   }
  */
 
-function get_setting($nome) {
-    $CI = & get_instance();
+function get_setting($nome)
+{
+    $CI = &get_instance();
     $CI->load->model('settings_model', 'settings');
     $setting = $CI->settings->get_bynome($nome);
     if ($setting->num_rows() == 1) {
@@ -1074,13 +1106,13 @@ function get_setting($nome) {
 //END get_setting()
 
 
-
 /*
  * CRIA O FORM COM AS CONFIGURAÇÕES GERAIS DO SISTEMA sec_settings
  */
 
-function settingsConfig($_p) {
-    $CI = & get_instance();
+function settingsConfig($_p)
+{
+    $CI = &get_instance();
     $dadosForm = '';
 
     /*
@@ -1111,7 +1143,6 @@ function settingsConfig($_p) {
             </div>
             ';
         /* END Campo Modo Debug da Aplicação */
-
 
 
         /*
@@ -1215,10 +1246,6 @@ function settingsConfig($_p) {
     /*
      * END FORM Configurações Gerais - Carrega.
      */
-
-
-
-
 
 
     /*
@@ -1361,10 +1388,6 @@ function settingsConfig($_p) {
      */
 
 
-
-
-
-
     /*
      * FORM Configurações de Layout do Sistema
      */
@@ -1400,9 +1423,6 @@ function settingsConfig($_p) {
      */
 
 
-
-
-
     return $dadosForm;
 }
 
@@ -1412,9 +1432,10 @@ function settingsConfig($_p) {
 /*
  * GRAVA UMA AUDITORIA
  */
-function add_auditoria($dados = array()) {
+function add_auditoria($dados = array())
+{
 
-    $CI = & get_instance();
+    $CI = &get_instance();
 
     if (!is_array($dados)) {
         return FALSE;
@@ -1454,9 +1475,10 @@ function add_auditoria($dados = array()) {
  * RENOMEIA DIRETÓRIO PARA SER DELETADO ACRESCENTANDO A PALAVRA DELETE NO NOME DO DIRETÓRIO
  */
 
-function bz_renamedir($dir, $file) {
+function bz_renamedir($dir, $file)
+{
 
-    $CI = & get_instance();
+    $CI = &get_instance();
     $CI->load->helper('date_helper');
 
     $_dateTime = time();
@@ -1476,7 +1498,8 @@ function bz_renamedir($dir, $file) {
 /**
  * FAZ UMA LIMPEZA NA STRING DEIXANDO SOMENTE LETRAS, NÚMERO E UNDERLINE
  */
-function bz_limpa_string($str) {
+function bz_limpa_string($str)
+{
     $str = str_replace(' ', '_', $str);
     return preg_replace("/[^A-Za-z0-9_]/", "", $str);
 }
@@ -1487,9 +1510,10 @@ function bz_limpa_string($str) {
 /*
  * Pega o AgetUser e o Sistema Operacional que está sendo utilizado.
  */
-function getAgentUser($auditoria = FALSE) {
+function getAgentUser($auditoria = FALSE)
+{
 
-    $CI = & get_instance();
+    $CI = &get_instance();
 
     if ($CI->agent->is_browser()) {
         $agent = $CI->agent->browser() . ' ' . $CI->agent->version();
@@ -1521,7 +1545,8 @@ function getAgentUser($auditoria = FALSE) {
  * @return boolean|string
  */
 
-function mc_month_date($data = null, $extenso = FALSE) {
+function mc_month_date($data = null, $extenso = FALSE)
+{
 
     if ($data != NULL) {
         $data = bz_formatdata($data, 'Y-m-d');
@@ -1550,7 +1575,8 @@ function mc_month_date($data = null, $extenso = FALSE) {
  * @return boolean|string
  */
 
-function mc_cut_word_string($string = NULL, $palavras = 50, $decodifica_html = TRUE, $remove_tags = TRUE) {
+function mc_cut_word_string($string = NULL, $palavras = 50, $decodifica_html = TRUE, $remove_tags = TRUE)
+{
     if ($string != NULL) {
         if ($decodifica_html)
             $string = to_html($string);
@@ -1558,7 +1584,7 @@ function mc_cut_word_string($string = NULL, $palavras = 50, $decodifica_html = T
             $string = strip_tags($string);
         $retorno = word_limiter($string, $palavras);
         return $retorno;
-    }else {
+    } else {
         return FALSE;
     }
 }
@@ -1566,16 +1592,15 @@ function mc_cut_word_string($string = NULL, $palavras = 50, $decodifica_html = T
 //END mc_cut_word_string() MACRO CORTA PALAVRAS DE UMA STRING
 
 
-
 /*
  * Converter dados do bd para html válido
  */
-function to_html($string = NULL) {
+function to_html($string = NULL)
+{
     return html_entity_decode($string);
 }
 
 //END Converter dados do bd para html válido
-
 
 
 /*
@@ -1592,7 +1617,8 @@ function to_html($string = NULL) {
  * //Vai exibir na tela "duas mil e setecentas e oitenta e sete"
  * echo valorPorExtenso("2787", false, true);ENIO
  */
-function mc_extensive_value($valor = 0, $bolExibirMoeda = true, $bolPalavraFeminina = false) {
+function mc_extensive_value($valor = 0, $bolExibirMoeda = true, $bolPalavraFeminina = false)
+{
 
     $source = array('.', ',');
     $replace = array('', '.');
@@ -1657,27 +1683,27 @@ function mc_extensive_value($valor = 0, $bolExibirMoeda = true, $bolPalavraFemin
             $z--;
 
         if (($t == 1) && ($z > 0) && ($inteiro[0] > 0))
-            $r .= ( ($z > 1) ? " de " : "") . $plural[$t];
+            $r .= (($z > 1) ? " de " : "") . $plural[$t];
 
         if ($r)
-            $rt = $rt . ((($i > 0) && ($i <= $fim) && ($inteiro[0] > 0) && ($z < 1)) ? ( ($i < $fim) ? ", " : " e ") : " ") . $r;
+            $rt = $rt . ((($i > 0) && ($i <= $fim) && ($inteiro[0] > 0) && ($z < 1)) ? (($i < $fim) ? ", " : " e ") : " ") . $r;
     }
 
     $rt = mb_substr($rt, 1);
 
-    return($rt ? trim($rt) : "zero");
+    return ($rt ? trim($rt) : "zero");
 }
 
 //END Escreve um valor por extenso.
 
 /**
  * CREATE MODAL
- * 
- * @param type $_p
+ *
+ * @param array $_p
  * @return string
- * 
+ *
  * PARÂMETROS PASSADOS COMO ARRAY. Ex: $config['modalName'] = 'modalDeTeste';
- * 
+ *
  * modalName            Nome da Modal, se não for informado o nome padrão será bzModal
  * modalClass           Para adicionar uma classe CSS na modal
  * modalSize            Determina o tamanho da modal - Ex: large para Grande, small para Pequeno. Se não for informado nada o tamnho padrão será Médio
@@ -1689,9 +1715,11 @@ function mc_extensive_value($valor = 0, $bolExibirMoeda = true, $bolPalavraFemin
  * modalBtnClose        Texto do botão que fecha a Modal
  * modalBtnConfirm      Texto o botão de confirmação da Modal
  * modalShow            Se informado como TRUE a Modal é executada automaticamente
- * 
+ *
  */
-function bz_modal($_p = []) {
+
+function bz_modal($_p = [])
+{
 
     if (empty($_p['modalTitle'])) {
         $_p['modalTitle'] = '<p></p>';
@@ -1757,11 +1785,12 @@ function bz_modal($_p = []) {
 
 /**
  * REMOVE THE HTML TAGS ALONG WITH THEIR CONTENTS
- * 
+ *
  * @param type $string
  * @return type
  */
-function bz_remove_strip_tags_content($string) {
+function bz_remove_strip_tags_content($string)
+{
 
 // ----- remove HTML TAGs ----- 
     $string = preg_replace('/<[^>]*>/', ' ', $string);
@@ -1778,9 +1807,9 @@ function bz_remove_strip_tags_content($string) {
 
 /**
  * UPLOAD IMAGE
- * 
+ *
  * PASSA UM ARRAY COMO PARÂMETRO
- * 
+ *
  * @param type $_file_name
  * @param type $_upload_path
  * @param type $_allowed_types
@@ -1789,20 +1818,30 @@ function bz_remove_strip_tags_content($string) {
  * @param type $_max_height
  * @return string
  */
-function bz_upload_file($_file_name, $_upload_path, $_allowed_types, $_max_size = 1024, $_max_width = 0, $_max_height = 0) {
+function bz_upload_file($_file_name, $_file, $_upload_path, $_allowed_types, $_max_size = 1024, $_max_width = 0, $_max_height = 0)
+{
 
     /* VALIDATION UPLOAD FILE */
-    if (empty($_file_name)) {
+    if (empty($_file_name) || empty($_file)) {
         $_error['error']['message'] = 'Nenhum arquivo enviado para Upload.';
         return $_error;
     }
     /* END VALIDATION UPLOAD FILE */
 
-    $CI = & get_instance();
+    $_original_files = $_FILES;
+    $_FILES = $_file;
+
+    $CI = &get_instance();
 
     $_FILES[$_file_name]['name'] = $CI->security->sanitize_filename($_FILES[$_file_name]['name']);
 
     $config['upload_path'] = bz_absolute_path() . ___CONF_UPLOAD_DIR___ . $_upload_path;
+
+    /** CHECK SE EXISTE A PASTA PARA DOWNLOAD, SE NÃO EXISTIR, CRIA A PASTA */
+    if (!is_dir($config['upload_path'])) {
+        bz_createFolder($config['upload_path']);
+    }
+    /** END CHECK SE EXISTE A PASTA PARA DOWNLOAD, SE NÃO EXISTIR, CRIA A PASTA */
 
     $config['allowed_types'] = $_allowed_types;
     $config['max_size'] = $_max_size;
@@ -1824,13 +1863,18 @@ function bz_upload_file($_file_name, $_upload_path, $_allowed_types, $_max_size 
 
     if (!$CI->upload->do_upload($_file_name)) {
 
+        $_FILES = $_original_files;
+
         $_error['error']['file'] = $_file_name;
         $_error['error']['message'] = trim($CI->upload->display_errors());
 
         return $_error;
     } else {
 
-        return $CI->upload->data();
+        $_rUp = $CI->upload->data();
+        $_FILES = $_original_files;
+
+        return $_rUp;
     }
 }
 
@@ -1842,8 +1886,9 @@ function bz_upload_file($_file_name, $_upload_path, $_allowed_types, $_max_size 
  * @return boolean
  *
  */
-function bz_delete_file($_file_name, $_file_path) {
-    $CI = & get_instance();
+function bz_delete_file($_file_name, $_file_path)
+{
+    $CI = &get_instance();
     $CI->load->helper("file");
     $CI->load->helper("directory");
 
@@ -1893,8 +1938,9 @@ function bz_delete_file($_file_name, $_file_path) {
  * @param type $mask
  * @return boolean
  */
-function bz_createFolder($p, $mask = 0777) {
-// Get the CodeIgniter super object ENIO
+function bz_createFolder($p, $mask = 0777)
+{
+    /** Get the CodeIgniter super object */
     $CI = &get_instance();
 
     if (empty($p)) {
@@ -1902,7 +1948,6 @@ function bz_createFolder($p, $mask = 0777) {
     }
 
     if (!is_dir($p)) {
-
         if (mkdir($p, $mask, TRUE)) {
             $CI->load->helper('file');
             $paths = explode('/', $p);
@@ -1930,13 +1975,14 @@ function bz_createFolder($p, $mask = 0777) {
  * @param type $height
  * @return string
  */
-function bz_thumb($absPathFileOrg, $fullname, $width, $height, $relatPathThumbDest = '/assets/cache/thumb') {
-// Path to image thumbnail in your root
+function bz_thumb($absPathFileOrg, $fullname, $width, $height, $relatPathThumbDest = '/assets/cache/thumb')
+{
+    /** Path to image thumbnail in your root */
     $dir = $absPathFileOrg . '/';
     $url = base_url() . $absPathFileOrg;
-// Get the CodeIgniter super object
+    /** Get the CodeIgniter super object */
     $CI = &get_instance();
-// get src file's extension and file name
+    /** get src file's extension and file name */
     $extension = pathinfo($fullname, PATHINFO_EXTENSION);
     $filename = pathinfo($fullname, PATHINFO_FILENAME);
     $image_org = bz_absolute_path() . $dir . $filename . "." . $extension;
@@ -1949,10 +1995,10 @@ function bz_thumb($absPathFileOrg, $fullname, $width, $height, $relatPathThumbDe
     bz_createFolder($relatPathThumbDest);
 
     if (!file_exists($image_thumb)) {
-// LOAD LIBRARY
+        /** LOAD LIBRARY */
         $CI->load->library('image_lib');
 
-// CONFIGURE IMAGE LIBRARY
+        /** CONFIGURE IMAGE LIBRARY */
         $config['source_image'] = $image_org;
         $config['new_image'] = $image_thumb;
         $config['x_axis'] = '10';
@@ -1970,11 +2016,12 @@ function bz_thumb($absPathFileOrg, $fullname, $width, $height, $relatPathThumbDe
 
 /**
  * REMOVE A TAG HTTP OU HTTPS DA URL
- * 
+ *
  * @param type $url
  * @return type
  */
-function bz_remove_http($url = '') {
+function bz_remove_http($url = '')
+{
     if ($url == 'http://' OR $url == 'https://') {
         return $url;
     }
@@ -2001,7 +2048,8 @@ function bz_remove_http($url = '') {
  * @return String containing either just a URL or a complete image tag
  * @source https://gravatar.com/site/implement/images/php/
  */
-function bz_get_gravatar($email, $s = 80, $d = 'mp', $r = 'g', $img = false, $atts = array()) {
+function bz_get_gravatar($email, $s = 80, $d = 'mp', $r = 'g', $img = false, $atts = array())
+{
     $url = 'https://s.gravatar.com/avatar/';
     $url .= md5(strtolower(trim($email)));
     $url .= "?s=$s&d=$d&r=$r";
@@ -2016,11 +2064,12 @@ function bz_get_gravatar($email, $s = 80, $d = 'mp', $r = 'g', $img = false, $at
 
 /**
  * REMOVE LINHAS EM BRANCO DE UM ARQUIVO
- * 
+ *
  * @param type $string
  * @return mixed
  */
-function bz_removeEmptyLines($string) {
+function bz_removeEmptyLines($string)
+{
 
     if (empty($string)) {
         return false;
@@ -2033,14 +2082,15 @@ function bz_removeEmptyLines($string) {
 }
 
 /**
- * 
+ *
  * MACRO QUE CARREGA UM TEMPLATE
  *
  * @param string $_pathTemplate - Caminho Relativo onde está o template
- * @param array $_dados         - Dados do template
+ * @param array $_dados - Dados do template
  *
  */
-function mc_load_view_template($bzPathTemplate, $bzDados = array()) {
+function mc_load_view_template($bzPathTemplate, $bzDados = array())
+{
 
     if (empty($bzPathTemplate)) {
         return false;

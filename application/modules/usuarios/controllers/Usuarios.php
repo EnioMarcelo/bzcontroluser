@@ -8,14 +8,14 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Usuarios extends MY_Controller {
+class Usuarios extends MY_Controller
+{
 
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct();
 
-        /*
-         * TÍTULO DA APLICAÇÃO
-         */
+        /** TÍTULO DA APLICAÇÃO */
         $this->dados['_titulo_app'] = 'Cadastro de Usuários';
         $this->dados['_font_icon'] = 'fa fa-user';
 
@@ -32,14 +32,13 @@ class Usuarios extends MY_Controller {
         $this->table_name = 'sec_usuarios';
     }
 
-// END function __construct()
+    /** END function __construct() */
 
 
-    public function index() {
+    public function index()
+    {
         $this->session->set_flashdata('btn_voltar_link', site_url($this->router->fetch_class()) . '?' . bz_app_parametros_url());
-        /*
-         * CARREGA OS REGISTROS COM PAGINAÇÃO
-         */
+        /** CARREGA OS REGISTROS COM PAGINAÇÃO */
         $this->dados['_result'] = $this->get_paginacao();
 
         /*
@@ -49,29 +48,42 @@ class Usuarios extends MY_Controller {
         $this->load->view('vMasterPageIframe', $this->dados);
     }
 
-// END function index()
+    /** END function index() */
 
 
-    /*
+    /**
      * FUNÇÃO CADASTRO
      */
 
-    public function add() {
+    public function add()
+    {
 
-        /*
-         * CARREGA OS DADOS DOS GRUPOS
-         */
+        /** CARREGA OS DADOS DOS GRUPOS */
         $this->dados['_grupos']['_result'] = $this->read->exec('sec_grupos', 'ORDER BY descricao')->result();
+
+        /** CARREGA APPs PARA DROPDOWN*/
+        $this->dados['_app_inicial']['_result'] = $this->db
+            ->select('app_name,app_descricao')
+            ->order_by('app_descricao')
+            ->get('sec_aplicativos')
+            ->result_array();
+
+        if ($this->dados['_app_inicial']['_result']) {
+            $this->dados['_app_inicial']['_dropdown'][''] = 'Nenhum';
+            foreach ($this->dados['_app_inicial']['_result'] as $_value) {
+                $this->dados['_app_inicial']['_dropdown'][$_value['app_name']] = $_value['app_descricao'];
+            }
+        } else {
+            $this->dados['_app_inicial']['_dropdown'][''] = 'Não existem APPs cadastrados até o momento';
+        }
 
 
         if ($this->input->post()) {
 
-            /*
-             * VALIDAÇÃO DOS CAMPOS
-             */
+            /** VALIDAÇÃO DOS CAMPOS */
             $this->form_validation->set_rules('nome', '<b>NOME DO USUÁRIO</b>', 'trim|required|min_length[5]|max_length[250]');
             $this->form_validation->set_rules('email', '<b>EMAIL</b>', 'trim|required|valid_email|is_unique[sec_usuarios.email]|min_length[10]|min_length[10]|max_length[250]');
-            $this->form_validation->set_rules('sexo', '<b>SEXO</b>', 'trim|required');
+//            $this->form_validation->set_rules('sexo', '<b>SEXO</b>', 'trim|required');
 //            $this->form_validation->set_rules('grupos', '<b>GRUPOS</b>', 'callback_valid_grupos');
 
             if ($this->form_validation->run() == TRUE) {
@@ -106,15 +118,11 @@ class Usuarios extends MY_Controller {
                     $_dados['ativo'] = 'N';
                 }
 
-                /*
-                 * GERA UMA SENHA RANDOMINCA
-                 */
+                /** GERA UMA SENHA RANDOMINCA */
                 $_senha = mc_random_number(6, 6, false, true, true);
                 $_dados['senha'] = password_hash($_senha, PASSWORD_DEFAULT);
 
-                /**
-                 * DADOS FILLABLE
-                 */
+                /** DADOS FILLABLE */
                 $_dadosFillable = $_dados;
                 $_dados = [];
                 if (!empty($_dadosFillable["nome"])) {
@@ -129,11 +137,17 @@ class Usuarios extends MY_Controller {
                     $_dados["email"] = NULL;
                 }
 
-                if (!empty($_dadosFillable["sexo"])) {
-                    $_dados["sexo"] = $_dadosFillable["sexo"];
+                if (!empty($_dadosFillable["app_inicial"])) {
+                    $_dados["app_inicial"] = $_dadosFillable["app_inicial"];
                 } else {
-                    $_dados["sexo"] = NULL;
+                    $_dados["app_inicial"] = NULL;
                 }
+
+//                if (!empty($_dadosFillable["sexo"])) {
+//                    $_dados["sexo"] = $_dadosFillable["sexo"];
+//                } else {
+//                    $_dados["sexo"] = NULL;
+//                }
 
                 if (!empty($_dadosFillable["super_admin"])) {
                     $_dados["super_admin"] = $_dadosFillable["super_admin"];
@@ -153,17 +167,15 @@ class Usuarios extends MY_Controller {
                     $_dados["senha"] = NULL;
                 }
 
-                /* END DADOS FILLABLE */
+                /** END DADOS FILLABLE */
 
 
-                /**
-                 * Grava registro
-                 */
+                /** Grava registro */
                 $result = $this->create->exec($this->table_name, $_dados);
 
                 if ($result) {
 
-                    /* GRAVA AUDITORIA */
+                    /** GRAVA AUDITORIA */
                     $dados_auditoria['creator'] = 'user';
                     $dados_auditoria['action'] = 'add';
                     $dados_auditoria['description'] = ___MSG_AUDITORIA_ADD_SUCCESS___;
@@ -173,9 +185,7 @@ class Usuarios extends MY_Controller {
 
                     add_auditoria($dados_auditoria);
 
-                    /**
-                     * GRAVA RELACIONAMENTO COM TABELA sec_agrupos
-                     */
+                    /** GRAVA RELACIONAMENTO COM TABELA sec_agrupos */
                     $_last_id_add_usuario = $result['last_id_add'];
                     $this->db->trans_start();
                     foreach ($_grupos as $_value) {
@@ -183,9 +193,7 @@ class Usuarios extends MY_Controller {
                     }
                     $this->db->trans_complete();
 
-                    /*
-                     * GRAVA A DESCRIÇÃO DOS GRUPOS E OS NOMES DOS APPS QUE O USUÁRIO PERTENCE PARA UTILIZAR NA FILTRAGEM DA PAGINAÇÃO E FILTRAGEM DE GRID/LIST
-                     */
+                    /** GRAVA A DESCRIÇÃO DOS GRUPOS E OS NOMES DOS APPS QUE O USUÁRIO PERTENCE PARA UTILIZAR NA FILTRAGEM DA PAGINAÇÃO E FILTRAGEM DE GRID/LIST */
                     $_acl_user = $this->user_acl_groups->_get_acl_user_by_email($_dados['email']);
 
                     $_a = '';
@@ -206,13 +214,10 @@ class Usuarios extends MY_Controller {
                     $this->db->set('grupo_descricao', $_g);
                     $this->db->where('id', $_last_id_add_usuario);
                     $this->db->update($this->table_name);
-                    /*
-                     *  END GRAVA A DESCRIÇÃO DOS GRUPOS E OS NOMES DOS APPS QUE O USUÁRIO PERTENCE PARA UTILIZAR NA FILTRAGEM DA PAGINAÇÃO E FILTRAGEM DE GRID/LIST
-                     */
+                    /**  END GRAVA A DESCRIÇÃO DOS GRUPOS E OS NOMES DOS APPS QUE O USUÁRIO PERTENCE PARA UTILIZAR NA FILTRAGEM DA PAGINAÇÃO E FILTRAGEM DE GRID/LIST */
 
 
-
-                    /* GRAVA AUDITORIA */
+                    /** GRAVA AUDITORIA */
                     $this->db->reset_query();
                     $this->db->where('sec_usuarios_id', $_last_id_add_usuario);
                     $_r = $this->db->get('sec_usuarios_has_sec_grupos');
@@ -233,33 +238,46 @@ class Usuarios extends MY_Controller {
         }
 
 
-        /*
-         * TEMPLATE QUE SERÁ USADO PELO MÓDULO DO SISTEMA
-         */
+        /** TEMPLATE QUE SERÁ USADO PELO MÓDULO DO SISTEMA */
         $this->dados['_conteudo_masterPageIframe'] = $this->dados['_view_app_add'];
         $this->load->view('vMasterPageIframe', $this->dados);
     }
 
-// END public function add()    
+    /** END public function add() */
 
 
-    /*
+    /**
      * FUNÇÃO EDIÇÃO
      */
 
-    public function edit() {
+    public function edit()
+    {
 
-        /*
-         * CARREGA OS DADOS DOS GRUPOS
-         */
+        /** CARREGA OS DADOS DOS GRUPOS  */
         $this->dados['_grupos']['_result'] = $this->read->exec('sec_grupos', 'ORDER BY descricao')->result();
+
+        /** CARREGA APPs PARA DROPDOWN*/
+        $this->dados['_app_inicial']['_result'] = $this->db
+            ->select('app_name,app_descricao')
+            ->order_by('app_descricao')
+            ->get('sec_aplicativos')
+            ->result_array();
+
+        if ($this->dados['_app_inicial']['_result']) {
+            $this->dados['_app_inicial']['_dropdown'][''] = 'Nenhum';
+            foreach ($this->dados['_app_inicial']['_result'] as $_value) {
+                $this->dados['_app_inicial']['_dropdown'][$_value['app_name']] = $_value['app_descricao'];
+            }
+        } else {
+            $this->dados['_app_inicial']['_dropdown'][''] = 'Nao existem APPs cadastrados até o momento';
+        }
 
         if ($this->input->post()) {
 
             if ($this->input->post('btn-editar') == 'btn-editar') {
 
                 $this->form_validation->set_rules('nome', '<b>NOME DO USUÁRIO</b>', 'trim|required|min_length[5]|max_length[250]');
-                $this->form_validation->set_rules('sexo', '<b>SEXO</b>', 'trim|required');
+//                $this->form_validation->set_rules('sexo', '<b>SEXO</b>', 'trim|required');
 //                $this->form_validation->set_rules('grupos', '<b>GRUPOS</b>', 'callback_valid_grupos');
 
                 if ($this->form_validation->run() == TRUE) {
@@ -275,9 +293,7 @@ class Usuarios extends MY_Controller {
                     unset($_dados['email']);
 
 
-                    /*
-                     * GRAVA ALTERAÇÃO DOS DADOS DO GRUPO
-                     */
+                    /** GRAVA ALTERAÇÃO DOS DADOS DO GRUPO */
 
                     if (isset($_dados['super_admin'])) {
                         if ($_dados['super_admin'] == 'on') {
@@ -301,21 +317,15 @@ class Usuarios extends MY_Controller {
                     }
 
 
-                    /*
-                     * SE O USUÁRIO FOR O USUÁRIO CORRENTE/LOGADO DO SISTEMA, ELE NÃO PODERÁ PERDER O STATUS DE SUPER ADMIN NEM SER DESATIVADO DO SISTEMA
-                     */
+                    /** SE O USUÁRIO FOR O USUÁRIO CORRENTE/LOGADO DO SISTEMA, ELE NÃO PODERÁ PERDER O STATUS DE SUPER ADMIN NEM SER DESATIVADO DO SISTEMA */
                     if ($this->current_super_admin($this->input->post('id')) == FALSE) {
                         $_dados['super_admin'] = 'Y';
                         $_dados['ativo'] = 'Y';
                     }
-                    /*
-                     * END SE O USUÁRIO FOR O USUÁRIO CORRENTE/LOGADO DO SISTEMA, ELE NÃO PODERÁ PERDER O STATUS DE SUPER ADMIN NEM SER DESATIVADO DO SISTEMA
-                     */
+                    /** END SE O USUÁRIO FOR O USUÁRIO CORRENTE/LOGADO DO SISTEMA, ELE NÃO PODERÁ PERDER O STATUS DE SUPER ADMIN NEM SER DESATIVADO DO SISTEMA */
 
 
-                    /**
-                     * DADOS FILLABLE
-                     */
+                    /** DADOS FILLABLE */
                     $_dadosFillable = $_dados;
                     $_dados = [];
 
@@ -327,11 +337,11 @@ class Usuarios extends MY_Controller {
                         $_dados["nome"] = NULL;
                     }
 
-                    if (!empty($_dadosFillable["sexo"])) {
-                        $_dados["sexo"] = $_dadosFillable["sexo"];
-                    } else {
-                        $_dados["sexo"] = NULL;
-                    }
+//                    if (!empty($_dadosFillable["sexo"])) {
+//                        $_dados["sexo"] = $_dadosFillable["sexo"];
+//                    } else {
+//                        $_dados["sexo"] = NULL;
+//                    }
 
                     if (!empty($_dadosFillable["super_admin"])) {
                         $_dados["super_admin"] = $_dadosFillable["super_admin"];
@@ -345,7 +355,13 @@ class Usuarios extends MY_Controller {
                         $_dados["ativo"] = NULL;
                     }
 
-                    /* END DADOS FILLABLE */
+                    if (!empty($_dadosFillable["app_inicial"])) {
+                        $_dados["app_inicial"] = $_dadosFillable["app_inicial"];
+                    } else {
+                        $_dados["app_inicial"] = NULL;
+                    }
+
+                    /** END DADOS FILLABLE */
 
 
                     $_where = 'WHERE id = "' . $this->input->post('id') . '"';
@@ -359,9 +375,7 @@ class Usuarios extends MY_Controller {
                         $dados_auditoria['last_query'] = $this->db->last_query();
                         add_auditoria($dados_auditoria);
 
-                        /**
-                         * GRAVA ALTERAÇÕES NA TABELA FILHO sec_usuarios_has_sec_grupos
-                         */
+                        /** GRAVA ALTERAÇÕES NA TABELA FILHO sec_usuarios_has_sec_grupos */
                         /* DELETA OS REGISTROS QUE FORAM REMOVIDOS DO CADASTRO */
                         $this->db->trans_start();
                         $this->db->reset_query();
@@ -371,7 +385,7 @@ class Usuarios extends MY_Controller {
                         $this->db->trans_complete();
 
 
-                        /* GRAVA OS REGISTRO NOVOS */
+                        /** GRAVA OS REGISTRO NOVOS */
                         $this->db->trans_start();
                         $this->db->reset_query();
                         foreach ($_grupos as $_value) {
@@ -382,7 +396,8 @@ class Usuarios extends MY_Controller {
                         $this->db->reset_query();
                         $this->db->where('sec_usuarios_id', $this->input->post('id'));
                         $_r = $this->db->get('sec_usuarios_has_sec_grupos');
-                        /* GRAVA AUDITORIA */
+
+                        /** GRAVA AUDITORIA */
                         $dados_auditoria['creator'] = 'user';
                         $dados_auditoria['action'] = 'update acl groups';
                         $dados_auditoria['description'] = 'ACL Grupo de Acesso';
@@ -390,10 +405,7 @@ class Usuarios extends MY_Controller {
                         add_auditoria($dados_auditoria);
 
 
-
-                        /*
-                         * GRAVA A DESCRIÇÃO DOS GRUPOS E OS NOMES DOS APPS QUE O USUÁRIO PERTENCE PARA UTILIZAR NA FILTRAGEM DA PAGINAÇÃO E FILTRAGEM DE GRID/LIST
-                         */
+                        /** GRAVA A DESCRIÇÃO DOS GRUPOS E OS NOMES DOS APPS QUE O USUÁRIO PERTENCE PARA UTILIZAR NA FILTRAGEM DA PAGINAÇÃO E FILTRAGEM DE GRID/LIST */
                         $_acl_user = $this->user_acl_groups->_get_acl_user_by_email($_email);
 
                         $_a = '';
@@ -414,14 +426,13 @@ class Usuarios extends MY_Controller {
                         $this->db->set('grupo_descricao', $_g);
                         $this->db->where('id', $this->input->post('id'));
                         $this->db->update($this->table_name);
-                        /*
-                         * END GRAVA A DESCRIÇÃO DOS GRUPOS E OS NOMES DOS APPS QUE O USUÁRIO PERTENCE PARA UTILIZAR NA FILTRAGEM DA PAGINAÇÃO E FILTRAGEM DE GRID/LIST
-                         */
-
+                        /** END GRAVA A DESCRIÇÃO DOS GRUPOS E OS NOMES DOS APPS QUE O USUÁRIO PERTENCE PARA UTILIZAR NA FILTRAGEM DA PAGINAÇÃO E FILTRAGEM DE GRID/LIST */
 
                         set_mensagem_trigger_notifi(___MSG_UPDATE_REGISTRO___, 'success');
+
                     } else {
-                        /* GRAVA AUDITORIA */
+
+                        /** GRAVA AUDITORIA */
                         $dados_auditoria['creator'] = 'system';
                         $dados_auditoria['action'] = 'error edit';
                         $dados_auditoria['description'] = ___MSG_AUDITORIA_UPDATE_ERROR___;
@@ -439,18 +450,14 @@ class Usuarios extends MY_Controller {
 
         if ($_id) {
 
-            /*
-             * BUSCA OS DADOS
-             */
+            /** BUSCA OS DADOS */
             $_where = 'WHERE id = "' . $_id . '" LIMIT 1';
             $_result = $this->read->exec($this->table_name, $_where);
 
             if ($_result->result()) {
                 $this->dados['dados'] = $_result->row();
 
-                /**
-                 * GET DADOS DOS GRUPOS RELACIONADOS COM A TEBALA sec_usuarios
-                 */
+                /** GET DADOS DOS GRUPOS RELACIONADOS COM A TEBALA sec_usuarios */
                 $this->db->where('sec_usuarios_id', $_id);
                 $this->dados['_grupos']['_relat'] = $this->db->get('sec_usuarios_has_sec_grupos')->result();
                 $_r = [];
@@ -468,25 +475,22 @@ class Usuarios extends MY_Controller {
             redirect($this->_redirect_parametros_url);
         }
 
-        /*
-         * TEMPLATE QUE SERÁ USADO PELO MÓDULO DO SISTEMA
-         */
+        /** TEMPLATE QUE SERÁ USADO PELO MÓDULO DO SISTEMA */
         $this->dados['_conteudo_masterPageIframe'] = $this->dados['_view_app_edit'];
         $this->load->view('vMasterPageIframe', $this->dados);
     }
 
-// END public function edit()
+    /** END public function edit() */
 
 
-    /*
+    /**
      * FUNÇÃO DELETAR
      */
 
-    public function del() {
+    public function del()
+    {
 
-        /*
-         * CERTIFICA SE O ACESSO A ESTA FUNCTION REALMENTE ESTÁ SENDO FEITO POR AJAX.
-         */
+        /** CERTIFICA SE O ACESSO A ESTA FUNCTION REALMENTE ESTÁ SENDO FEITO POR AJAX */
         bz_check_is_ajax_request();
 
         $this->form_validation->set_rules('btndel', '<b>BTN Del</b>', 'trim|required');
@@ -499,24 +503,16 @@ class Usuarios extends MY_Controller {
             $_dados = explode(',', $_dados);
 
 
-            /*
-             * SE O USUÁRIO FOR O USUÁRIO CORRENTE/LOGADO DO SISTEMA, ELE NÃO PODERÁ SER DELETADO
-             */
+            /** SE O USUÁRIO FOR O USUÁRIO CORRENTE/LOGADO DO SISTEMA, ELE NÃO PODERÁ SER DELETADO */
             foreach ($_dados as $_vId) {
                 if ($this->current_super_admin($_vId) == FALSE) {
                     set_mensagem_trigger_notifi('Este USUÁRIO [ ID:' . $_vId . ' ] não pode ser DELETADO.', 'warning');
                     return false;
                 }
             }
-            /*
-             * END SE O USUÁRIO FOR O USUÁRIO CORRENTE/LOGADO DO SISTEMA, ELE NÃO PODERÁ SER DELETADO
-             */
+            /** END SE O USUÁRIO FOR O USUÁRIO CORRENTE/LOGADO DO SISTEMA, ELE NÃO PODERÁ SER DELETADO */
 
-
-
-            /*
-             * DELETA OS REGISTROS
-             */
+            /** DELETA OS REGISTROS */
             $this->db->where_in('id', $_dados);
             $this->db->delete($this->table_name);
 
@@ -549,50 +545,40 @@ class Usuarios extends MY_Controller {
         exit;
     }
 
-//END public function del()
+    /** END public function del() */
 
 
-    /*
+    /**
      * FUNÇÃO  ATIVA/DESATIVA STATUS
      */
 
-    public function status() {
-
+    public function status()
+    {
 
         $_id = $this->uri->segment(3);
 
         if ($_id) {
 
-            /*
-             * SE O USUÁRIO FOR O USUÁRIO CORRENTE/LOGADO DO SISTEMA, ELE NÃO PODERÁ SER DESATIVADO
-             */
+            /** SE O USUÁRIO FOR O USUÁRIO CORRENTE/LOGADO DO SISTEMA, ELE NÃO PODERÁ SER DESATIVADO */
             if ($this->current_super_admin($_id) == FALSE) {
                 set_mensagem_trigger_notifi('Este USUÁRIO [ ID:' . $_id . ' ] não pode ser DESATIVADO.', 'warning');
 
-                /*
-                 * CARREGA OS REGISTROS COM PAGINAÇÃO
-                 */
+                /** CARREGA OS REGISTROS COM PAGINAÇÃO */
                 $_result_paginacao = $this->get_paginacao();
                 redirect($this->_redirect_parametros_url);
 
                 return false;
             }
-            /*
-             * END SE O USUÁRIO FOR O USUÁRIO CORRENTE/LOGADO DO SISTEMA, ELE NÃO PODERÁ SER DESATIVADO
-             */
+            /** END SE O USUÁRIO FOR O USUÁRIO CORRENTE/LOGADO DO SISTEMA, ELE NÃO PODERÁ SER DESATIVADO */
 
 
-            /*
-             * BUSCA O USUÁRIO NO SISTEMA PARA CONSULTAR SE ESTÁ ATIVO OU INATIVO NO SISTEMA
-             */
+            /** BUSCA O USUÁRIO NO SISTEMA PARA CONSULTAR SE ESTÁ ATIVO OU INATIVO NO SISTEMA */
             $_where = 'WHERE id = "' . $_id . '" LIMIT 1';
             $_result = $this->read->exec($this->table_name, $_where);
 
             if ($_result->result()) {
 
-                /*
-                 * GRAVA ALTERAÇÃO DO STATUS
-                 */
+                /** GRAVA ALTERAÇÃO DO STATUS */
                 $dados['ativo'] = ($_result->row()->ativo == 'Y') ? 'N' : 'Y';
                 $dados['id'] = $_result->row()->id;
                 $_where = 'WHERE id = "' . $_result->row()->id . '"';
@@ -608,7 +594,7 @@ class Usuarios extends MY_Controller {
 //set_mensagem_toastr('<i class="fa fa-fw fa-thumbs-o-up" style="font-size: 1.5em"></i>', _MSG_STATUS_REGISTRO_, 'success', 'top-center');
                     set_mensagem_trigger_notifi(___MSG_STATUS_REGISTRO___, 'success');
                 } else {
-                    /* GRAVA AUDITORIA */
+                    /** GRAVA AUDITORIA */
                     $dados_auditoria['creator'] = 'system';
                     $dados_auditoria['action'] = 'error status change';
                     $dados_auditoria['description'] = ___MSG_AUDITORIA_STATUS_REGISTRO_ERROR___;
@@ -619,7 +605,7 @@ class Usuarios extends MY_Controller {
                     set_mensagem_trigger_notifi(___MSG_ERROR_STATUS_REGISTRO___, 'error');
                 }
             } else {
-                /* GRAVA AUDITORIA */
+                /** GRAVA AUDITORIA */
                 $dados_auditoria['creator'] = 'system';
                 $dados_auditoria['action'] = 'error status change';
                 $dados_auditoria['description'] = ___MSG_AUDITORIA_NOT_FIND_REGISTRO___;
@@ -631,21 +617,20 @@ class Usuarios extends MY_Controller {
             }
 
 
-            /*
-             * CARREGA OS REGISTROS COM PAGINAÇÃO
-             */
+            /** CARREGA OS REGISTROS COM PAGINAÇÃO */
             $_result_paginacao = $this->get_paginacao();
             redirect($this->_redirect_parametros_url);
         }
     }
 
-//END public function status()      
+    /** END public function status() */
 
 
     /*
      * VALIDA POR CALLBACK O CAMPO GRUPOS DO FORM
      */
-    public function valid_grupos() {
+    public function valid_grupos()
+    {
 
         $p = $this->input->post('grupos');
         $r = $result = count($p);
@@ -658,14 +643,15 @@ class Usuarios extends MY_Controller {
         return false;
     }
 
-// END public function valid_grupos()
+    /** END public function valid_grupos() */
 
 
-    /*
+    /**
      * DESCONECTA USUÁRIO DO SISTEMA
      */
 
-    public function poweroff() {
+    public function poweroff()
+    {
 
         $_r = array('success' => 'false');
 
@@ -682,7 +668,6 @@ class Usuarios extends MY_Controller {
                 echo json_encode($_r);
                 exit;
             } else {
-
 
                 $this->db->like('data', $_email);
                 $this->db->delete('ci_sessions');
@@ -708,18 +693,17 @@ class Usuarios extends MY_Controller {
         exit;
     }
 
-// END public function poweroff()
+    /** END public function poweroff() */
 
 
-    /*
+    /**
      * CHANGE PASS - ALTERA A SENHA DO USUÁRIO
      */
 
-    public function changepass() {
+    public function changepass()
+    {
 
-        /*
-         * CERTIFICA SE O ACESSO A ESTA FUNCTION REALMENTE ESTÁ SENDO FEITO POR AJAX.
-         */
+        /** CERTIFICA SE O ACESSO A ESTA FUNCTION REALMENTE ESTÁ SENDO FEITO POR AJAX */
         bz_check_is_ajax_request();
 
         $_r = array('success' => 'false');
@@ -730,15 +714,13 @@ class Usuarios extends MY_Controller {
             $_email = $this->input->post('email');
             $_pass = password_hash($this->input->post('pass'), PASSWORD_DEFAULT);
 
-            /*
-             * BUSCA OS DADOS
-             */
+            /** BUSCA OS DADOS */
             $_where = 'WHERE id = ' . $_id . ' AND email = "' . $_email . '" LIMIT 1';
             $_result = $this->read->exec($this->table_name, $_where);
 
             if ($_result->result()) {
 
-// ALTERA A SENHA DO USUÁRIO
+                /** ALTERA A SENHA DO USUÁRIO */
 
                 $_dados['senha'] = $_pass;
 
@@ -760,22 +742,21 @@ class Usuarios extends MY_Controller {
         exit;
     }
 
-// END public function changepass()
+    /** END public function changepass() */
 
 
-    /*
+    /**
      * CARREGA REGISTROS COM PAGINAÇÃO
      */
 
-    private function get_paginacao() {
+    private function get_paginacao()
+    {
 
         $_filter = $this->input->get();
         unset($_filter['pg']);
         unset($_filter['search']);
 
-        /*
-         * DADOS PARA PAGINAÇÃO
-         */
+        /** DADOS PARA PAGINAÇÃO */
         $_dados_pag['table'] = $this->table_name;
         if ($this->input->get('search', TRUE)) {
             $_dados_pag['search'] = array('_concat_fields' => 'nome, email, super_admin, ativo, id, app_name, grupo_descricao', '_string' => $this->input->get('search', TRUE));
@@ -790,13 +771,14 @@ class Usuarios extends MY_Controller {
         return $_result_pag;
     }
 
-// END private function get_paginacao()       
+    /** END private function get_paginacao() */
 
 
-    /*
+    /**
      * SUPER ADMIN COUNT
      */
-    private function current_super_admin($_id) {
+    private function current_super_admin($_id)
+    {
 
         $_where = 'WHERE id = "' . $_id . '"';
         $_result = $this->read->exec($this->table_name, $_where)->row();
@@ -815,9 +797,9 @@ class Usuarios extends MY_Controller {
         }
     }
 
-// END private function current_super_admin()
+    /** END private function current_super_admin() */
 }
 
-//END class 
+/** END class */
 
 

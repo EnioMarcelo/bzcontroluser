@@ -101,27 +101,27 @@
                     </div>
 
                     <!-- SEXO -->
-                    <?php $_error = form_error("sexo", "<small class='text-danger col-xs-12 bz-input-error'>", "</small>"); ?>
-                    <div class="form-group has-feedback">
-                        <label for="sexo"><i class="fa fa-asterisk margin-right-5 text-error"
-                                             style="font-size: 0.7em;"></i>Sexo</label>
-                        <?php
-                        $options = array(
-                            ' ' => 'Selecione...',
-                            'M' => 'MASCULINO',
-                            'F' => 'FEMININO',
-                        );
-                        echo form_dropdown('sexo', $options, set_value('sexo'), 'class="form-control select2"');
-                        ?>
-                        <?= $_error; ?>
-                    </div>
+                    <!--                    --><?php //$_error = form_error("sexo", "<small class='text-danger col-xs-12 bz-input-error'>", "</small>"); ?>
+                    <!--                    <div class="form-group has-feedback">-->
+                    <!--                        <label for="sexo"><i class="fa fa-asterisk margin-right-5 text-error"-->
+                    <!--                                             style="font-size: 0.7em;"></i>Sexo</label>-->
+                    <!--                        --><?php
+                    //                        $options = array(
+                    //                            ' ' => 'Selecione...',
+                    //                            'M' => 'MASCULINO',
+                    //                            'F' => 'FEMININO',
+                    //                        );
+                    //                        echo form_dropdown('sexo', $options, set_value('sexo'), 'class="form-control select2"');
+                    //                        ?>
+                    <!--                        --><? //= $_error; ?>
+                    <!--                    </div>-->
 
                     <!-- GRUPOS -->
                     <?php $_error = form_error("grupos", "<small class='text-danger col-xs-12 bz-input-error'>", "</small>"); ?>
                     <div class="form-group has-feedback">
                         <label for="grupos">Grupos</label>
                         <select name="grupos[]" class="form-control select2-multiple-selection " multiple="true"
-                                data-placeholder="Selecione Grupos" style="width: 100%;" tabindex="-1"
+                                data-placeholder=" Selecione..." style="width: 100%;" tabindex="-1"
                                 aria-hidden="true" value="<?= set_value('grupos'); ?>">
                             <span class="input-group-addon"><i class="fa fa-venus-mars"></i></span>
                             <?php
@@ -145,6 +145,14 @@
                         </select>
                         <?= $_error; ?>
                     </div>
+
+
+                    <!-- DROPDOWN APP INICIAL -->
+                    <div class="form-group has-feedback">
+                        <label for="grupos">Aplicativo Inicial</label>
+                        <?php echo form_dropdown('app_inicial', $_app_inicial['_dropdown'], '', 'class="form-control select"'); ?>
+                    </div>
+
 
                     <div class="container-fluid padding-top-15">
                         <!-- SUPER ADMIN -->

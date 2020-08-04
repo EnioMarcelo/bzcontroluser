@@ -27,11 +27,18 @@ input[name=id] {
     /*font-size: 1.3em !important;*/
 }
 
-.select2-container--default .select2-selection--single .select2-selection__rendered, .select2-selection__placeholder {
+.select2-container--default .select2-selection--single .select2-selection__rendered,
+.select2-container--default .select2-selection--single .select2-selection__placeholder,
+.select2-container--default ::placeholder{
     color: #86AA35 !important;
     font-weight: bold !important;
 }
 
+
+select {
+    color: #86AA35 !important;
+    font-weight: bold !important;
+}
 
 /*
  * TABLE GRID LIST
@@ -106,7 +113,7 @@ input[name=id] {
  * SCROLL BAR
  */
 .bz-scroll {
-    height:402px;
+    height: 402px;
     max-height: 402px;
     overflow-y: scroll;
 }

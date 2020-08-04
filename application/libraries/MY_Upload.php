@@ -17,10 +17,11 @@ class MY_Upload extends CI_Upload {
     public function __construct($config = array()) {
 
         parent::__construct($config);
-        
-        if (!file_exists($config['upload_path'])) {
-            bz_createFolder($config['upload_path']);
-        }
+
+//        if (!file_exists($config['upload_path'])) {
+//            bz_createFolder($config['upload_path']);
+//        }
+
     }
 
 }

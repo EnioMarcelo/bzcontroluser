@@ -39,11 +39,8 @@
     }
 
 
-
-
-
     /**
-     * 
+     *
      * FUNCTION DELETE IMAGE AJAX - MULTI UPLOAD IMAGE
      */
     $(function () {
@@ -62,34 +59,81 @@
                 buttons: true,
                 dangerMode: true,
             })
-                    .then((willDelete) => {
-                        if (willDelete) {
+                .then((willDelete) => {
+                    if (willDelete) {
 
-                            /**
-                             * MACRO AJAX
-                             */
-                            var _method = '/del_image';
-                            var _route = '<?= site_url() . $this->router->fetch_class(); ?>' + _method;
-                            var _data_json = {'id': _image.data('id'),
-                                'image': _image.data('image')
-                            };
-                            mc_ajax_post(_route, _data_json, 'retorno_del_imagem');
-                            /** END MACRO AJAX */
+                        /**
+                         * MACRO AJAX
+                         */
+                        var _method = '/del_image';
+                        var _url = '<?= site_url() . $this->router->fetch_class(); ?>' + _method;
+                        var _data = {
+                            'id': _image.data('id'),
+                            'field_name': _image.data('field_name'),
+                            'folder_image': _image.data('folder_image'),
+                            'image': _image.data('image')
+                        };
 
-                            if (response_ajax['retorno_del_imagem'] == 'OK') {
-                                _image.parent().fadeOut(500, function () {
-                                    _image.remove();
-                                });
-                            }
+                        $.post(_url, {
+                                '<?php echo $this->security->get_csrf_token_name(); ?>': '<?php echo $this->security->get_csrf_hash(); ?>',
+                                'data': _data
+                            },
+                            function (response) {
 
-                            modalAguardeOff();
+                                //message trigger notfiti
+                                if (response.message && response.message.triggernotifi) {
 
-                        } else {
+                                    var _param = [];
+                                    _param['color'] = response.message.triggernotifi.tipo;
+                                    _param['title'] = response.message.triggernotifi.mensagem;
+                                    _param['timer'] = response.message.triggernotifi.timer;
+                                    if (_param['color'] == 'undefined' || _param['color'] == null || _param['color'] == '') {
+                                        _param['color'] = 'info';
+                                    }
 
-                            modalAguardeOff();
+                                    if (_param['title'] == 'undefined' || _param['title'] == null || _param['title'] == '') {
+                                        _param['title'] = 'Faltou informar o texto.';
+                                    }
 
-                        }
-                    });
+                                    if (_param['timer'] == 'undefined' || _param['timer'] == null || _param['timer'] == '') {
+                                        _param['timer'] = 3200;
+                                    }
+
+                                    triggerNotify(_param);
+                                }
+                                //end message trigger notfiti¸
+
+                            }, "json")
+                            .done(function (response) {
+
+                                if (response['data'] == 'OK') {
+                                    _image.parent().fadeOut(500, function () {
+                                        _image.remove();
+                                    });
+                                }
+
+                            })
+                            .fail(function () {
+
+                                var message = "Desculpe mas não foi possível processar a requisição ajax. Avise o responsável pelo sistema !";
+                                swal('ATENÇÃO !!!', message, 'error');
+
+                            })
+                            .always(function () {
+
+                                modalAguardeOff();
+
+                            });
+
+                        /** END MACRO AJAX */
+
+
+                    } else {
+
+                        modalAguardeOff();
+
+                    }
+                });
 
         });
 
@@ -98,26 +142,17 @@
     /* END FUNCTION DELETE IMAGE AJAX - MULTI UPLOAD IMAGE */
 
 
-
-
-
-
-
-
-
-
-
     /**
-     * 
+     *
      * FUNÇÃO QUE DISPARA UM AJAX POST
-     * 
+     *
      * @param {type} _url
      * @param {type} _data
      * @param {type} _arr
      * @returns {undefined}
-     * 
-     * 
-     * 
+     *
+     *
+     *
      * Exemplos de Uso:
      *
      * DENTRO DE UMA FUNCTION NO CONTROLLER
@@ -142,7 +177,7 @@
      *
      * $json['message']['notfit']['mensagem'] = 'POST OK';
      * $json['message']['notfit']['tipo'] = 'info';
-     * 
+     *
      * $json['message']['nice']['title'] = 'Titulo';
      * $json['message']['nice']['text'] = 'POST OK';
      * $json['message']['nice']['tipo'] = 'info';
@@ -163,187 +198,190 @@
      * set_mensagem_sweetalert('TITULO', 'MENSAGEM', 'warning');
      *
      * set_mensagem_notfit('MENSAGEM', 'info');
-     * 
+     *
      * set_mensagem_trigger_notifi('MENSAGEM', 'info' );
      *
      * set_mensagem('TITULO','MENSAGEM', 'fa-times', 'info');
      *
      * echo json_encode( $json );
      *
+     *
+     *      DEPRECATED -DEPRECATED -DEPRECATED -DEPRECATED -DEPRECATED -DEPRECATED -DEPRECATED -DEPRECATED -DEPRECATED -DEPRECATED -DEPRECATED
+     *
      */
-    var response_ajax = new Array();
-    var mc_ajax_post = function (_url, _data, _arr) {
-
-        $.ajax({
-            url: _url,
-            type: "POST",
-            dataType: "json",
-            data: {'<?php echo $this->security->get_csrf_token_name(); ?>': '<?php echo $this->security->get_csrf_hash(); ?>', 'data': _data},
-            beforeSend: function () {
-                modalAguardeOn();
-            },
-            success: function (response) {
-
-                //redirect
-                if (response.redirect) {
-                    window.location.href = response.redirect;
-                }
-
-                //reload
-                if (response.reload) {
-                    window.location.reload();
-                }
-
-                //debug
-                if (response.debug) {
-                    console.log('Debug:');
-                    console.log(response.debug);
-                }
-
-                //data
-                if (response.data) {
-                    response_ajax[_arr] = response.data;
-                }
-
-
-                //message toastr
-                if (response.message && response.message.toastr) {
-                    var icon = '';
-                    if (response.message.toastr.icon) {
-                        icon = response.message.toastr.icon;
-                    } else {
-                        icon = 'fa-info-circle';
-                    }
-
-                    if (icon.length) {
-                    } else {
-                        icon = 'fa-circle';
-                    }
-                    var msg = '<div class="alert alert-' + response.message.toastr.tipo + '" role="alert">' +
-                            '<button type="button" class="close" data-dismiss="alert" aria-label="Close">' +
-                            '<span aria-hidden="true">&times;</span>' +
-                            '</button>' +
-                            '<h4 class="alert-heading"><i class = "margin-right-5 fa ' + icon + '"></i>' + response.message.toastr.titulo + '</h4>' + response.message.toastr.mensagem + '<br /></div>';
-                    $('.message-toastr').html(msg);
-                    setTimeout(function () {
-                        $('.alert').fadeOut(1000);
-                    }, 3000);
-                }//end message toastr
-
-
-
-                //message swal
-                if (response.message && response.message.swal) {
-                    swal(response.message.swal.titulo, response.message.swal.mensagem, response.message.swal.tipo);
-                }//end message swal
-
-
-
-                //message notfit
-                if (response.message && response.message.notfit) {
-                    if (response.message.notfit.tipo == 'warning') {
-                        notfit_msg_warning(response.message.notfit.mensagem);
-                    } else if (response.message.notfit.tipo == 'error') {
-                        notfit_msg_error(response.message.notfit.mensagem);
-                    } else if (response.message.notfit.tipo == 'success') {
-                        notfit_msg_success(response.message.notfit.mensagem);
-                    } else {
-                        notfit_msg_info(response.message.notfit.mensagem);
-                    }
-                }//end message notfit
-
-
-                //message trigger notfiti
-                if (response.message && response.message.triggernotifi) {
-
-                    var _param = [];
-                    _param['color'] = response.message.triggernotifi.tipo;
-                    _param['title'] = response.message.triggernotifi.mensagem;
-                    _param['timer'] = response.message.triggernotifi.timer;
-                    if (_param['color'] == 'undefined' || _param['color'] == null || _param['color'] == '') {
-                        _param['color'] = 'info';
-                    }
-
-                    if (_param['title'] == 'undefined' || _param['title'] == null || _param['title'] == '') {
-                        _param['title'] = 'Faltou informar o texto.';
-                    }
-
-                    if (_param['timer'] == 'undefined' || _param['timer'] == null || _param['timer'] == '') {
-                        _param['timer'] = 3200;
-                    }
-
-                    triggerNotify(_param);
-                }
-                //end message trigger notfiti
-
-
-
-                //message nice
-                if (response.message && response.message.nice) {
-                    var type = response.message.nice.type;
-                    var text = response.message.nice.text;
-                    var title = response.message.nice.title;
-                    var position = response.message.nice.position;
-                    var duration = response.message.nice.duration;
-                    if (text == 'undefined' || text == null) {
-                        text = 'Faltou informar o texto.';
-                    }
-
-                    if (title == 'undefined' || title == null) {
-                        title = '';
-                    }
-
-                    if (position == 'undefined' || position == null) {
-                        position = 'br';
-                    }
-
-                    if (duration == 'undefined' || duration == null) {
-                        duration = '3200';
-                    }
-
-                    if (type == 'success') {
-                        $.HP.notice({
-                            message: text,
-                            title: title,
-                            location: position,
-                            duration: duration
-                        });
-                    } else if (type == 'error') {
-                        $.HP.error({
-                            message: text,
-                            title: title,
-                            location: position,
-                            duration: duration
-                        });
-                    } else if (type == 'warning') {
-                        $.HP.warning({
-                            message: text,
-                            title: title,
-                            location: position,
-                            duration: duration
-                        });
-                    } else {
-                        $.HP({
-                            message: text,
-                            title: title,
-                            location: position,
-                            duration: duration
-                        });
-                    }
-
-                    return;
-                }//end message nice
-
-            },
-            complete: function () {
-                modalAguardeOff();
-            },
-            error: function () {
-                var message = "Desculpe mas não foi possível processar a requisição ajax. Avise o responsável pelo sistema !";
-                swal('ATENÇÃO !!!', message, 'error');
-            }
-        });
-    }
+    //var response_ajax = new Array();
+    //var mc_ajax_post = function (_url, _data, _arr) {
+    //
+    //    $.ajax({
+    //        url: _url,
+    //        type: "POST",
+    //        dataType: "json",
+    //        data: {
+    //            '<?php //echo $this->security->get_csrf_token_name(); ?>//': '<?php //echo $this->security->get_csrf_hash(); ?>//',
+    //            'data': _data
+    //        },
+    //        beforeSend: function () {
+    //            modalAguardeOn();
+    //        },
+    //        success: function (response) {
+    //
+    //            //redirect
+    //            if (response.redirect) {
+    //                window.location.href = response.redirect;
+    //            }
+    //
+    //            //reload
+    //            if (response.reload) {
+    //                window.location.reload();
+    //            }
+    //
+    //            //debug
+    //            if (response.debug) {
+    //                console.log('Debug:');
+    //                console.log(response.debug);
+    //            }
+    //
+    //            //data
+    //            if (response.data) {
+    //                response_ajax[_arr] = response.data;
+    //            }
+    //
+    //
+    //            //message toastr
+    //            if (response.message && response.message.toastr) {
+    //                var icon = '';
+    //                if (response.message.toastr.icon) {
+    //                    icon = response.message.toastr.icon;
+    //                } else {
+    //                    icon = 'fa-info-circle';
+    //                }
+    //
+    //                if (icon.length) {
+    //                } else {
+    //                    icon = 'fa-circle';
+    //                }
+    //                var msg = '<div class="alert alert-' + response.message.toastr.tipo + '" role="alert">' +
+    //                    '<button type="button" class="close" data-dismiss="alert" aria-label="Close">' +
+    //                    '<span aria-hidden="true">&times;</span>' +
+    //                    '</button>' +
+    //                    '<h4 class="alert-heading"><i class = "margin-right-5 fa ' + icon + '"></i>' + response.message.toastr.titulo + '</h4>' + response.message.toastr.mensagem + '<br /></div>';
+    //                $('.message-toastr').html(msg);
+    //                setTimeout(function () {
+    //                    $('.alert').fadeOut(1000);
+    //                }, 3000);
+    //            }//end message toastr
+    //
+    //
+    //            //message swal
+    //            if (response.message && response.message.swal) {
+    //                swal(response.message.swal.titulo, response.message.swal.mensagem, response.message.swal.tipo);
+    //            }//end message swal
+    //
+    //
+    //            //message notfit
+    //            if (response.message && response.message.notfit) {
+    //                if (response.message.notfit.tipo == 'warning') {
+    //                    notfit_msg_warning(response.message.notfit.mensagem);
+    //                } else if (response.message.notfit.tipo == 'error') {
+    //                    notfit_msg_error(response.message.notfit.mensagem);
+    //                } else if (response.message.notfit.tipo == 'success') {
+    //                    notfit_msg_success(response.message.notfit.mensagem);
+    //                } else {
+    //                    notfit_msg_info(response.message.notfit.mensagem);
+    //                }
+    //            }//end message notfit
+    //
+    //
+    //            //message trigger notfiti
+    //            if (response.message && response.message.triggernotifi) {
+    //
+    //                var _param = [];
+    //                _param['color'] = response.message.triggernotifi.tipo;
+    //                _param['title'] = response.message.triggernotifi.mensagem;
+    //                _param['timer'] = response.message.triggernotifi.timer;
+    //                if (_param['color'] == 'undefined' || _param['color'] == null || _param['color'] == '') {
+    //                    _param['color'] = 'info';
+    //                }
+    //
+    //                if (_param['title'] == 'undefined' || _param['title'] == null || _param['title'] == '') {
+    //                    _param['title'] = 'Faltou informar o texto.';
+    //                }
+    //
+    //                if (_param['timer'] == 'undefined' || _param['timer'] == null || _param['timer'] == '') {
+    //                    _param['timer'] = 3200;
+    //                }
+    //
+    //                triggerNotify(_param);
+    //            }
+    //            //end message trigger notfiti
+    //
+    //
+    //            //message nice
+    //            if (response.message && response.message.nice) {
+    //                var type = response.message.nice.type;
+    //                var text = response.message.nice.text;
+    //                var title = response.message.nice.title;
+    //                var position = response.message.nice.position;
+    //                var duration = response.message.nice.duration;
+    //                if (text == 'undefined' || text == null) {
+    //                    text = 'Faltou informar o texto.';
+    //                }
+    //
+    //                if (title == 'undefined' || title == null) {
+    //                    title = '';
+    //                }
+    //
+    //                if (position == 'undefined' || position == null) {
+    //                    position = 'br';
+    //                }
+    //
+    //                if (duration == 'undefined' || duration == null) {
+    //                    duration = '3200';
+    //                }
+    //
+    //                if (type == 'success') {
+    //                    $.HP.notice({
+    //                        message: text,
+    //                        title: title,
+    //                        location: position,
+    //                        duration: duration
+    //                    });
+    //                } else if (type == 'error') {
+    //                    $.HP.error({
+    //                        message: text,
+    //                        title: title,
+    //                        location: position,
+    //                        duration: duration
+    //                    });
+    //                } else if (type == 'warning') {
+    //                    $.HP.warning({
+    //                        message: text,
+    //                        title: title,
+    //                        location: position,
+    //                        duration: duration
+    //                    });
+    //                } else {
+    //                    $.HP({
+    //                        message: text,
+    //                        title: title,
+    //                        location: position,
+    //                        duration: duration
+    //                    });
+    //                }
+    //
+    //                return;
+    //            }//end message nice
+    //
+    //        },
+    //        complete: function () {
+    //            modalAguardeOff();
+    //        },
+    //        error: function () {
+    //            var message = "Desculpe mas não foi possível processar a requisição ajax. Avise o responsável pelo sistema !";
+    //            swal('ATENÇÃO !!!', message, 'error');
+    //        }
+    //    });
+    //}
 
 
     /**
@@ -407,30 +445,51 @@
             });
             editAreaLoader.init({
                 id: "codeeditor_2"	// id of the textarea to transform
-                , start_highlight: true
-                , allow_toggle: false
-                , language: "pt"
-                , syntax: "html"
-                , toolbar: "search, go_to_line, |, undo, redo, |, select_font, |, syntax_selection, |, change_smooth_selection, highlight, reset_highlight, |, help"
-                , syntax_selection_allow: "css,html,js,php,python,vb,xml,c,cpp,sql,basic,pas,brainfuck"
-                , is_multi_files: true
-                , EA_load_callback: "editAreaLoaded"
-                , show_line_colors: true
+                ,
+                start_highlight: true
+                ,
+                allow_toggle: false
+                ,
+                language: "pt"
+                ,
+                syntax: "html"
+                ,
+                toolbar: "search, go_to_line, |, undo, redo, |, select_font, |, syntax_selection, |, change_smooth_selection, highlight, reset_highlight, |, help"
+                ,
+                syntax_selection_allow: "css,html,js,php,python,vb,xml,c,cpp,sql,basic,pas,brainfuck"
+                ,
+                is_multi_files: true
+                ,
+                EA_load_callback: "editAreaLoaded"
+                ,
+                show_line_colors: true
             });
             editAreaLoader.init({
                 id: "codeeditor_3"	// id of the textarea to transform
-                , start_highlight: true
-                , font_size: "8"
-                , font_family: "verdana, monospace"
-                , allow_resize: "y"
-                , allow_toggle: false
-                , language: "fr"
-                , syntax: "css"
-                , toolbar: "new_document, save, load, |, charmap, |, search, go_to_line, |, undo, redo, |, select_font, |, change_smooth_selection, highlight, reset_highlight, |, help"
-                , load_callback: "my_load"
-                , save_callback: "my_save"
-                , plugins: "charmap"
-                , charmap_default: "arrows"
+                ,
+                start_highlight: true
+                ,
+                font_size: "8"
+                ,
+                font_family: "verdana, monospace"
+                ,
+                allow_resize: "y"
+                ,
+                allow_toggle: false
+                ,
+                language: "fr"
+                ,
+                syntax: "css"
+                ,
+                toolbar: "new_document, save, load, |, charmap, |, search, go_to_line, |, undo, redo, |, select_font, |, change_smooth_selection, highlight, reset_highlight, |, help"
+                ,
+                load_callback: "my_load"
+                ,
+                save_callback: "my_save"
+                ,
+                plugins: "charmap"
+                ,
+                charmap_default: "arrows"
 
             });
         };
@@ -533,7 +592,6 @@
     //});
 
 
-
     /**
      * INPUT UPPERCASE AND LOWERCASE
      */
@@ -570,7 +628,6 @@
         $('.j-mask-datahora-ptbr').mask('00/00/0000 00:00');
 
 
-
     });
     /*
      * BOTÃO DELETA REGISTROS
@@ -586,11 +643,11 @@
         $("#btn-delete").on("click", function () {
 
             var deleteditems = $('input:checkbox[name="btn-delete[]"]:checked')
-                    .map(function () {
-                        return $(this).val();
-                    })
-                    .get()
-                    .join(",");
+                .map(function () {
+                    return $(this).val();
+                })
+                .get()
+                .join(",");
             if (!deleteditems) {
 
                 swal("ATENÇÃO !", "Nenhum registro selecionado", "warning");
@@ -612,46 +669,45 @@
                     buttons: true,
                     dangerMode: true,
                 })
-                        .then((willDelete) => {
-                            if (willDelete) {
+                    .then((willDelete) => {
+                        if (willDelete) {
 
-                                $('#modal-aguarde').modal({
-                                    backdrop: 'static',
-                                    keyboard: false,
-                                    show: true,
-                                });
-                                /*
-                                 * DELETA O REGISTRO
-                                 */
-                                var formData = {[csrfName]: csrfHash, btndel: "btn-del", dadosdel: deleteditems}; //Array
+                            $('#modal-aguarde').modal({
+                                backdrop: 'static',
+                                keyboard: false,
+                                show: true,
+                            });
+                            /*
+                             * DELETA O REGISTRO
+                             */
+                            var formData = {[csrfName]: csrfHash, btndel: "btn-del", dadosdel: deleteditems}; //Array
 
-                                $.ajax({
-                                    url: "<?= site_url($this->router->fetch_class() . '/del'); ?>",
-                                    type: "POST",
-                                    data: formData,
-                                    success: function (formData, textStatus, jqXHR) {
-                                        window.location.href = "<?= site_url($this->router->fetch_class() . '?' . bz_app_parametros_url()); ?>";
-                                    },
-                                    error: function (jqXHR, textStatus, errorThrown) {
-                                        swal("ERRO !", "Erro ao deletar registro", "error");
-                                    }
-                                });
-                            } else {
+                            $.ajax({
+                                url: "<?= site_url($this->router->fetch_class() . '/del'); ?>",
+                                type: "POST",
+                                data: formData,
+                                success: function (formData, textStatus, jqXHR) {
+                                    window.location.href = "<?= site_url($this->router->fetch_class() . '?' . bz_app_parametros_url()); ?>";
+                                },
+                                error: function (jqXHR, textStatus, errorThrown) {
+                                    swal("ERRO !", "Erro ao deletar registro", "error");
+                                }
+                            });
+                        } else {
 
-                                $('#modal-aguarde').modal({
-                                    backdrop: 'static',
-                                    keyboard: false,
-                                    show: true,
-                                });
-                                window.location.href = "<?= site_url($this->router->fetch_class() . '?' . bz_app_parametros_url()); ?>";
-                            }
-                        });
+                            $('#modal-aguarde').modal({
+                                backdrop: 'static',
+                                keyboard: false,
+                                show: true,
+                            });
+                            window.location.href = "<?= site_url($this->router->fetch_class() . '?' . bz_app_parametros_url()); ?>";
+                        }
+                    });
             }
 
         });
     });
     //END BOTÃO DELETA REGISTROS
-
 
 
     /*
@@ -669,8 +725,19 @@
      * DATE AND TIME PICKER
      */
     $(function () {
-        $('.datepicker').datepicker({todayHighlight: true, toggleActive: true, format: "dd/mm/yyyy", autoclose: true, language: 'pt-BR'});
-        $('.datetimepicker').datetimepicker({format: "dd/mm/yyyy HH:ii", use24hours: true, autoclose: true, language: 'pt-BR'});
+        $('.datepicker').datepicker({
+            todayHighlight: true,
+            toggleActive: true,
+            format: "dd/mm/yyyy",
+            autoclose: true,
+            language: 'pt-BR'
+        });
+        $('.datetimepicker').datetimepicker({
+            format: "dd/mm/yyyy HH:ii",
+            use24hours: true,
+            autoclose: true,
+            language: 'pt-BR'
+        });
         $('.timepicker').timepicker({format: "HH:ii", showMeridian: false, autoclose: true, defaultTime: ''});
 
         $('.clockpicker').clockpicker({
@@ -729,9 +796,6 @@
         });
     });
     // END VALIDA A QUANTIDADE DE ARQUIVOS QUE O SERVIDOR PERMITE SER ENVIADO PARA UPLOAD
-
-
-
 
 
 </script>

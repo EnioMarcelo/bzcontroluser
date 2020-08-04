@@ -77,22 +77,22 @@
                         </div>
 
                         <!-- SEXO -->
-                        <?php $_error = form_error("sexo", "<small class='text-danger bz-input-error'>", "</small>"); ?>
-                        <div class="form-group has-feedback">
-                            <label for="sexo"><i class="fa fa-asterisk margin-right-5 text-error" style="font-size: 0.7em;"></i>Sexo</label>
-                            <div class="input-group col-md-12">
-                                <span class="input-group-addon"><i class="fa fa-venus-mars"></i></span>
-                                <?php
-                                $options = array(
-                                    '' => 'Selecione...',
-                                    'M' => 'MASCULINO',
-                                    'F' => 'FEMININO',
-                                );
-                                echo form_dropdown('sexo', $options, $_dados_usuario->sexo, 'class="form-control input-lg select2"');
-                                ?>
-                            </div>
-                            <?= $_error; ?>
-                        </div>
+<!--                        --><?php //$_error = form_error("sexo", "<small class='text-danger bz-input-error'>", "</small>"); ?>
+<!--                        <div class="form-group has-feedback">-->
+<!--                            <label for="sexo"><i class="fa fa-asterisk margin-right-5 text-error" style="font-size: 0.7em;"></i>Sexo</label>-->
+<!--                            <div class="input-group col-md-12">-->
+<!--                                <span class="input-group-addon"><i class="fa fa-venus-mars"></i></span>-->
+<!--                                --><?php
+//                                $options = array(
+//                                    '' => 'Selecione...',
+//                                    'M' => 'MASCULINO',
+//                                    'F' => 'FEMININO',
+//                                );
+//                                echo form_dropdown('sexo', $options, $_dados_usuario->sexo, 'class="form-control input-lg select2"');
+//                                ?>
+<!--                            </div>-->
+<!--                            --><?//= $_error; ?>
+<!--                        </div>-->
 
                         <br>
 

@@ -29,37 +29,28 @@ class Login extends MY_Controller
 
         $this->_sess_expiration = $this->config->config['sess_expiration'];
 
-        /**
-         * DELATA OS ARQUIVOS DE IMAGEM CAPTCHA DO MÚDLO DE RECUPERAR SENHA changepass
-         */
+        /** DELATA OS ARQUIVOS DE IMAGEM CAPTCHA DO MÚDLO DE RECUPERAR SENHA changepass */
         bz_delete_file_for_expired_lifetime('captcha');
 
-        /**
-         * SE SISTEMA ESTIVER EM MANUTENÇÃO, SERÁ REDIRCIONADO PARA TELA DE AVISO
-         */
+
+        /** SE SISTEMA ESTIVER EM MANUTENÇÃO, SERÁ REDIRCIONADO PARA TELA DE AVISO */
         if ($this->session->tempdata('manutencao') == 'Y') {
             redirect('manutencao', 'refresh');
             exit;
         }
 
 
-        /**
-         * EXCLUI AS SESSÕES DA TABELA ci_sessions QUE EXPIROU/VENCEU.
-         */
+        /** EXCLUI AS SESSÕES DA TABELA ci_sessions QUE EXPIROU/VENCEU */
         $this->last_activity_session();
 
 
-        /**
-         * TABELA QUE SERÁ USADO PELO MÓDULO DO SISTEMA
-         */
+        /** TABELA QUE SERÁ USADO PELO MÓDULO DO SISTEMA */
         $this->table_name = 'sec_usuarios';
 
 
         if ($this->input->post()) {
 
-            /**
-             * VALIDAÇÃO DOS DADOS DO FORMULÁRIO
-             */
+            /** VALIDAÇÃO DOS DADOS DO FORMULÁRIO */
             $this->form_validation->set_rules('email', '<b>Email</b>', 'trim|required|valid_email|xss_clean');
             $this->form_validation->set_rules('senha', '<b>Senha</b>', 'trim|required|min_length[6]|xss_clean');
 
@@ -79,22 +70,16 @@ class Login extends MY_Controller
     public function index()
     {
 
-        /**
-         * CHECK SE USUÁRIO ESTÁ LOGADO, SE OK, REDIRECIONA PARA O PAINEL.
-         */
+        /** CHECK SE USUÁRIO ESTÁ LOGADO, SE OK, REDIRECIONA PARA O PAINEL */
         if (check_is_user_login()) {
             redirect('dashboard');
         }
 
-        /**
-         * TIME THE SESSION EXPIRES
-         */
+        /** TIME THE SESSION EXPIRES */
         $this->dados['_sess_expiration'] = $this->_sess_expiration;
 
 
-        /**
-         * CHAMA A MASTER PAGE DO SISTEMA PASSANDO O PARÂMETRO dados
-         */
+        /** CHAMA A MASTER PAGE DO SISTEMA PASSANDO O PARÂMETRO dados */
         $this->load->view('vLogin', $this->dados);
     }
 
@@ -120,19 +105,14 @@ class Login extends MY_Controller
      */
     private function login($_email, $_senha)
     {
-
         $_is_login = false;
 
-        /**
-         * VERIFICA OS DADOS DO USUÁRIO DIGITADOS NA TELA DE LOGIN, SE FOR VERDADEIRO AUTORIZA O ACESSO AO SISTEMA.
-         */
+        /** VERIFICA OS DADOS DO USUÁRIO DIGITADOS NA TELA DE LOGIN, SE FOR VERDADEIRO AUTORIZA O ACESSO AO SISTEMA */
         $termosDB = array();
         $termosDB = 'WHERE email = "' . $_email . '" AND ativo = "Y" LIMIT 1';
         $result = $this->read->exec($this->table_name, $termosDB);
 
-        /**
-         * CHECK LOGIN E SENHA DO USUÁRIO
-         */
+        /** CHECK LOGIN E SENHA DO USUÁRIO */
         if ($result->result()) {
             if (password_verify($_senha, $result->row()->senha)) {
                 $_is_login = true;
@@ -140,9 +120,7 @@ class Login extends MY_Controller
         }
 
 
-        /**
-         * CHECK MULTIPLOS LOGINS
-         */
+        /** CHECK MULTIPLOS LOGINS */
         if ($_is_login) {
             if (get_setting('multiplos_logins') == 'NAO') {
                 if ($result->row()->super_admin == 'N') {
@@ -161,18 +139,14 @@ class Login extends MY_Controller
         }
 
 
-        /**
-         * GRAVA A DATA E HORA DO ÚLTIMO LOGIN
-         */
+        /** GRAVA A DATA E HORA DO ÚLTIMO LOGIN */
         if ($_is_login) {
             $_ultimoLogin = $result->row()->ultimo_login;
             $this->update->exec($this->table_name, array('ultimo_login' => date('Y-m-d H:i:s')), $termosDB);
         }
 
 
-        /**
-         * CARREGA A SESSÃO DO USUÁRIO COM OS DADOS
-         */
+        /** CARREGA A SESSÃO DO USUÁRIO COM OS DADOS */
         if ($_is_login) {
             $session_data = array(
                 'user_nome' => $result->row()->nome,
@@ -182,11 +156,17 @@ class Login extends MY_Controller
                 'user_token' => session_id(),
                 'user_ultimo_login' => $_ultimoLogin,
                 'user_gravatar' => bz_get_gravatar($result->row()->email),
+                'app_inicial' => $result->row()->app_inicial,
             );
 
-            /**
-             * GERA A SESSÃO DO USUÁRIO
-             */
+            /** CHECK SE O GRUPO TEM APP INICIAL, SE SIM, COLOQUE COMO PADRÃO */
+            $_acl_user = $this->user_acl_groups->_get_acl_user_by_email($result->row()->email);
+            $_acl_user = end($_acl_user);
+            if (!empty($_acl_user['grupo_app_inicial'])) {
+                $session_data['app_inicial'] = $_acl_user['grupo_app_inicial'];
+            }
+
+            /** GERA A SESSÃO DO USUÁRIO */
             $this->session->set_userdata('user_login', $session_data);
 
             /** GRAVA AUDITORIA */

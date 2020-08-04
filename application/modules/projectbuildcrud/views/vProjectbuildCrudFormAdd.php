@@ -150,7 +150,7 @@
                                 <?php $_error = form_error("tabela", "<small class='text-danger col-xs-12 bz-input-error'>", "</small>"); ?>
                                 <div class="form-group has-feedback">
                                     <label for="tabela"><i class="fa fa-asterisk margin-right-5 text-error" style="font-size: 0.7em;"></i>Tabela</label>
-                                    <select id="tabela" name="tabela" class="form-control select2" data-placeholder="Selecione a Tabela" style="width: 100%;" tabindex="-1" aria-hidden="true" value="" />
+                                    <select id="tabela" name="tabela" class="form-control select2" data-placeholder="Selecione..." style="width: 100%;" tabindex="-1" aria-hidden="true" value="" />
                                     <?php
                                     $_c = 0;
                                     if ($_tabelas):
@@ -162,7 +162,7 @@
                                                 echo '<option selected value="' . $tabela_row . '">' . $_c . ' - ' . $tabela_row . '</option>';
                                             else:
                                                 if ($_c == 1):
-                                                    echo '<option selected value="">Selecione a Tabela...</option>';
+                                                    echo '<option selected value="">Selecione...</option>';
                                                 endif;
 
                                                 echo '<option value="' . $tabela_row . '">' . $_c . ' - ' . $tabela_row . '</option>';

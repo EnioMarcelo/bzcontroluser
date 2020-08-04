@@ -347,9 +347,15 @@
                                         class="btn btn-default btn-block margin-bottom-3 j-btn-sidebar-database-insert"
                                         data-toggle="control-sidebar"
                                         data-clipboard-message="Copiado com sucesso."
-                                        data-clipboard-text="<?= ___MACRO_DIVERSOS_FORMAT_MOEDA___; ?>">Formatação de
-                                    Moeda
+                                        data-clipboard-text="<?= ___MACRO_DIVERSOS_FORMAT_MOEDA___; ?>">Formata Moeda
                                 </button>
+                            </li>
+                            <button type="button"
+                                    class="btn btn-default btn-block margin-bottom-3 j-btn-sidebar-database-insert"
+                                    data-toggle="control-sidebar"
+                                    data-clipboard-message="Copiado com sucesso."
+                                    data-clipboard-text="<?= ___MACRO_DIVERSOS_FORMAT_CPF_CNPJ___; ?>">Formata CPF/CNPJ
+                            </button>
                             </li>
                             <li>
                                 <button type="button"
@@ -439,6 +445,27 @@
                                         data-clipboard-message="Copiado com sucesso."
                                         data-clipboard-text="<?= ___MACRO_JS_CLOSE_MODAL___; ?>">Close Modal
                                 </button>
+                            </li>
+                            <li>
+                                <button type="button"
+                                        class="btn btn-default btn-block margin-bottom-3 j-btn-sidebar-database-insert"
+                                        data-toggle="control-sidebar"
+                                        data-clipboard-message="Copiado com sucesso."
+                                        data-clipboard-text="<?= ___MACRO_JS_ALERT_SWEET_ALERT___; ?>">Alert Sweet
+                                </button>
+                            </li>
+                            <button type="button"
+                                    class="btn btn-default btn-block margin-bottom-3 j-btn-sidebar-database-insert"
+                                    data-toggle="control-sidebar"
+                                    data-clipboard-message="Copiado com sucesso."
+                                    data-clipboard-text="<?= ___MACRO_JS_ALERT_NOTFIT___; ?>">Alert NotFit
+                            </button>
+                            <button type="button"
+                                    class="btn btn-default btn-block margin-bottom-3 j-btn-sidebar-database-insert"
+                                    data-toggle="control-sidebar"
+                                    data-clipboard-message="Copiado com sucesso."
+                                    data-clipboard-text="<?= ___MACRO_JS_ALERT_TOASTER___; ?>">Alert Toaster
+                            </button>
                             </li>
 
                             <!--GRID LIST-->

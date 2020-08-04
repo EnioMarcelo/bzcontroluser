@@ -3,6 +3,12 @@ application/cache/*
 !application/cache/.htaccess
 
 
+application/config/config.php
+application/config/config_email.php
+application/config/database.php
+
+
+
 application/logs/*
 !application/logs/index.html
 !application/logs/.htaccess
@@ -28,9 +34,6 @@ application/modules/*
 !application/modules/projectbuildcrud
 !application/modules/userprofile
 !application/modules/usuarios
-
-
-
 
 
 composer.lock
