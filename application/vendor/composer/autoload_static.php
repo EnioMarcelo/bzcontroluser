@@ -112,9 +112,10 @@ class ComposerStaticInitae879da1b34a5dbf6bf6849156918cc9
     );
 
     public static $classMap = array (
-        'Cpdf' => __DIR__ . '/..' . '/dompdf/dompdf/lib/Cpdf.php',
+        'Appbackup' => __DIR__ . '/../../..' . '/application/models/Appbackup.php',
         'Create' => __DIR__ . '/../../..' . '/application/models/generic/Create.php',
         'Delete' => __DIR__ . '/../../..' . '/application/models/generic/Delete.php',
+        'Dompdf\\Cpdf' => __DIR__ . '/..' . '/dompdf/dompdf/lib/Cpdf.php',
         'HTML5_Data' => __DIR__ . '/..' . '/dompdf/dompdf/lib/html5lib/Data.php',
         'HTML5_InputStream' => __DIR__ . '/..' . '/dompdf/dompdf/lib/html5lib/InputStream.php',
         'HTML5_Parser' => __DIR__ . '/..' . '/dompdf/dompdf/lib/html5lib/Parser.php',

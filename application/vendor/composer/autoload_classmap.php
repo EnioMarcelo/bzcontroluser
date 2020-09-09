@@ -6,9 +6,10 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname(dirname($vendorDir));
 
 return array(
-    'Cpdf' => $vendorDir . '/dompdf/dompdf/lib/Cpdf.php',
+    'Appbackup' => $baseDir . '/application/models/Appbackup.php',
     'Create' => $baseDir . '/application/models/generic/Create.php',
     'Delete' => $baseDir . '/application/models/generic/Delete.php',
+    'Dompdf\\Cpdf' => $vendorDir . '/dompdf/dompdf/lib/Cpdf.php',
     'HTML5_Data' => $vendorDir . '/dompdf/dompdf/lib/html5lib/Data.php',
     'HTML5_InputStream' => $vendorDir . '/dompdf/dompdf/lib/html5lib/InputStream.php',
     'HTML5_Parser' => $vendorDir . '/dompdf/dompdf/lib/html5lib/Parser.php',
