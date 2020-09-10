@@ -1,8 +1,8 @@
 # BUZZAControl
 Ferramenta RAD para desenvolvimento de sistemas CRUD em PHP utilizando o Framwork Codigniter 3.x, JQuery e o Template AdminLTE
 
-# Pré-Requisitos
-Recomenda-se o PHP versão 5.6 ou mais recente.
+# Requisitos do servidor
+##### Recomenda-se o PHP versão 5.6 ou mais recente.
 
 ##### Banco de Dados
 - MySQL (5.1+) por meio dos drivers mysql (obsoleto), mysqli e pdo
