@@ -2,7 +2,7 @@
 Ferramenta RAD para desenvolvimento de sistemas CRUD em PHP utilizando o Framwork Codigniter 3.x, JQuery e o Template AdminLTE
 
 # Requisitos do servidor
-##### Recomenda-se o PHP versão 5.6 ou mais recente.
+##### Recomenda-se o PHP versão 5.6 ou mais recente e o Composer.
 
 ##### Banco de Dados
 - MySQL (5.1+) por meio dos drivers mysql (obsoleto), mysqli e pdo
@@ -16,6 +16,10 @@ Ferramenta RAD para desenvolvimento de sistemas CRUD em PHP utilizando o Framwor
 
 # Intalação
 
+Partindo do princípo que os servidores de Banco de Dados MySql e o de Páginas Web Apache estejam instalados e configurados corretamente.
+
+- Composer : curl -s https://getcomposer.org/installer | php
+- BuzzaControl RAD : git clone https://github.com/EnioMarcelo/bzcontroluser.git www
 
 # Autor
 Enio Marcelo Buzaneli - Email: eniomarcelo@gmail.com
