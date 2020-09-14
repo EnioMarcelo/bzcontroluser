@@ -26,6 +26,7 @@ Agora terá que executar o seguinte comando: composer install ou composer.phar i
 Depois de terminar o composer terá que editar os seguintes arquivos:
 
 - nano application/config/config.php 
+
   $base_url = 'http://localhost:8080/'; // URL da sua instalação
   $encryption_key = ''; // Um Código para o ferramenta criptografar sua sessão, uma string contendo numero, letras e caracteres especiais do no mínio 10 caracteres.
 
