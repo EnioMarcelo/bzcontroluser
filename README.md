@@ -25,8 +25,8 @@ Partindo do princípo que os servidores de Banco de Dados MySql e o de Páginas 
 ###### Instalar o BUZZAControl
 - git clone https://github.com/EnioMarcelo/bzcontroluser.git www
 
-###### Agora terá que executar o seguinte comando
-- composer install para a instalação das dependências que o BUZZAControl utiliza.
+###### Agora terá que executar o comando abaixo para a instalação das dependências que o BUZZAControl utiliza
+- composer install
 
 ###### Depois de terminar o composer terá que editar os seguintes arquivos:
 
