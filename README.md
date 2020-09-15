@@ -2,7 +2,7 @@
 Ferramenta RAD para desenvolvimento de sistemas CRUD em PHP utilizando o Framwork Codigniter 3.x, JQuery e o Template AdminLTE
 
 # Requisitos do servidor
-##### Recomenda-se o PHP versão 5.6 ou mais recente e o Composer.
+##### Recomenda-se o PHP versão 7.1 ou mais recente e o Composer.
 
 ##### Banco de Dados
 - MySQL (5.1+) por meio dos drivers mysql (obsoleto), mysqli e pdo
@@ -16,17 +16,17 @@ Ferramenta RAD para desenvolvimento de sistemas CRUD em PHP utilizando o Framwor
 
 # Intalação
 
-Partindo do princípo que os servidores de Banco de Dados MySql e o de Páginas Web Apache estejam instalados e configurados corretamente.
+Partindo do princípo que o ervidor de Banco de Dados MariaDB/MySql e o servidor de Páginas Web Apache estejam instalados e configurados corretamente.
 
 ###### Instalar o Composer
 - curl -s https://getcomposer.org/installer | php
 - mv composer.phar /usr/local/bin/composer
       
 ###### Instalar o BUZZAControl
-- git clone https://github.com/EnioMarcelo/bzcontroluser.git www
+- git clone https://github.com/EnioMarcelo/bzcontroluser.git buzzacontrol
 
 ###### Agora terá que executar o comando abaixo para a instalação das dependências que o BUZZAControl utiliza
-- composer install
+- composer update
 
 ###### Depois de terminar o composer terá que editar os seguintes arquivos:
 
