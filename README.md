@@ -2,7 +2,7 @@
 Ferramenta RAD para desenvolvimento de sistemas CRUD em PHP utilizando o Framwork Codigniter 3.x, JQuery e o Template AdminLTE
 
 # Requisitos do servidor
-##### Recomenda-se o PHP versão 7.1 ou mais recente e o Composer.
+### Recomenda-se o PHP versão 7.1 ou mais recente e o Composer.
 
 ##### Banco de Dados
 - MySQL (5.1+) por meio dos drivers mysql (obsoleto), mysqli e pdo
@@ -18,23 +18,35 @@ Ferramenta RAD para desenvolvimento de sistemas CRUD em PHP utilizando o Framwor
 
 Partindo do princípo que o ervidor de Banco de Dados MariaDB/MySql e o servidor de Páginas Web Apache estejam instalados e configurados corretamente.
 
-###### Instalar o Composer
+#### Instalar o Composer
 - curl -s https://getcomposer.org/installer | php
 - mv composer.phar /usr/local/bin/composer
       
-###### Instalar o BUZZAControl
+#### Instalar o BUZZAControl
 - git clone https://github.com/EnioMarcelo/bzcontroluser.git buzzacontrol
 
-###### Agora terá que executar o comando abaixo para a instalação das dependências que o BUZZAControl utiliza
+#### Agora terá que executar o comando abaixo para a instalação das dependências que o BUZZAControl utiliza
 - composer update
 
-###### Depois de terminar o composer terá que editar os seguintes arquivos:
+#### Depois de terminar o composer terá que editar os seguintes arquivos:
+
+- mv application/config/config.php-dist application/config/config.php
+- mv application/config/config_email.php-dist application/config/config_email.php
+- mv application/config/database.php-dist application/config/database.php
 
 - nano application/config/config.php 
-
-- $base_url = 'http://localhost:8080/'; // URL da sua instalação
-  
+- $base_url = 'http://localhost:8080/'; // URL da sua instalação 
 - $encryption_key = ''; // Um Código para o ferramenta criptografar sua sessão, uma string contendo numero, letras e caracteres especiais do no mínio 10 caracteres.
+
+- nano application/config/database.php
+- Preencha as variáveis com os dados de conexão do MariaDB/MySql
+- $_hostname = 'localhost';
+- $_username = '';
+- $_password = '';
+- $_database = '';
+
+- nano application/config/config_email.php
+
 
 
 
