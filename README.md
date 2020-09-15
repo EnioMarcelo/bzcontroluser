@@ -18,9 +18,9 @@ Ferramenta RAD para desenvolvimento de sistemas CRUD em PHP utilizando o Framwor
 
 Partindo do princípo que o ervidor de Banco de Dados MariaDB/MySql e o servidor de Páginas Web Apache estejam instalados e configurados corretamente.
 
-#### Habilitar o Mod_Rewrite do Apache
+#### Habilitar o Mod_Rewrite do Apache caso seu Apache ainda não esteja habilitado este recurso
 - a2enmod rewrite
-- service apache2 restart
+- systemctl restart apache2
 
 #### Instalar o Composer
 - curl -s https://getcomposer.org/installer | php
