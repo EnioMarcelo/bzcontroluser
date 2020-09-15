@@ -35,17 +35,39 @@ Partindo do princípo que o ervidor de Banco de Dados MariaDB/MySql e o servidor
 - mv application/config/database.php-dist application/config/database.php
 
 - nano application/config/config.php 
-- $base_url = 'http://localhost:8080/'; // URL da sua instalação 
-- $encryption_key = ''; // Um Código para o ferramenta criptografar sua sessão, uma string contendo numero, letras e caracteres especiais do no mínio 10 caracteres.
+###### URL da sua instalação 
+- $base_url = 'http://localhost:8080/';
+###### Um Código para o ferramenta criptografar sua sessão, uma string contendo numero, letras e caracteres especiais do no mínio 10 caracteres.
+- $encryption_key = '';
+
+##### Configurar a conexão com banco de dados
 
 - nano application/config/database.php
-- Preencha as variáveis com os dados de conexão do MariaDB/MySql
+
+###### Preencha as variáveis com os dados de conexão do MariaDB/MySql
+
 - $_hostname = 'localhost';
 - $_username = '';
 - $_password = '';
 - $_database = '';
 
+##### Configurar servidor de email
+
 - nano application/config/config_email.php
+
+###### Preencha as variáveis com os dados do seu servidor de email
+
+- $config['CONF_EMAIL_SMTP_USER'] = '';
+- $config['CONF_EMAIL_SMTP_PASS'] = '';
+- $config['CONF_EMAIL_FROM_EMAIL'] = '';
+- $config['CONF_EMAIL_SMTP_HOST'] = '';
+//
+- $config['CONF_EMAIL_SMTP_PORT'] = 587;
+- $config['CONF_EMAIL_SMTP_PROTOCOL'] = 'smtp';
+- $config['CONF_EMAIL_SMTP_TIMEOUT'] = 60;
+- $config['CONF_EMAIL_SMTP_CRYPTO'] = 'TLS'; //SSL ou TLS
+
+
 
 
 
