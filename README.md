@@ -67,7 +67,8 @@ Partindo do princípo que o ervidor de Banco de Dados MariaDB/MySql e o servidor
 - $config['CONF_EMAIL_SMTP_TIMEOUT'] = 60;
 - $config['CONF_EMAIL_SMTP_CRYPTO'] = 'TLS'; //SSL ou TLS
 
-
+### Rodar a migration das tabelas
+- php index.php migrate version 20200910201509
 
 ####
 
