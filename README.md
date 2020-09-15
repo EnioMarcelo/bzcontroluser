@@ -18,20 +18,23 @@ Ferramenta RAD para desenvolvimento de sistemas CRUD em PHP utilizando o Framwor
 
 Partindo do princípo que os servidores de Banco de Dados MySql e o de Páginas Web Apache estejam instalados e configurados corretamente.
 
-- Composer : curl -s https://getcomposer.org/installer | php
-           :  mv composer.phar /usr/local/bin/composer
-           
-- BuzzaControl RAD : git clone https://github.com/EnioMarcelo/bzcontroluser.git www
+###### Instalar o Composer
+- curl -s https://getcomposer.org/installer | php
+- mv composer.phar /usr/local/bin/composer
+      
+###### Instalar o BUZZAControl
+- git clone https://github.com/EnioMarcelo/bzcontroluser.git www
 
-Agora terá que executar o seguinte comando: composer install ou composer.phar install para a instalação das dependências que o BUZZAControl utiliza.
+###### Agora terá que executar o seguinte comando
+- composer install ou composer.phar install para a instalação das dependências que o BUZZAControl utiliza.
 
-Depois de terminar o composer terá que editar os seguintes arquivos:
+###### Depois de terminar o composer terá que editar os seguintes arquivos:
 
 - nano application/config/config.php 
 
-  $base_url = 'http://localhost:8080/'; // URL da sua instalação
+- $base_url = 'http://localhost:8080/'; // URL da sua instalação
   
-  $encryption_key = ''; // Um Código para o ferramenta criptografar sua sessão, uma string contendo numero, letras e caracteres especiais do no mínio 10 caracteres.
+- $encryption_key = ''; // Um Código para o ferramenta criptografar sua sessão, uma string contendo numero, letras e caracteres especiais do no mínio 10 caracteres.
 
 
 
