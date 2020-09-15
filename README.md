@@ -33,7 +33,7 @@ Partindo do princípo que o ervidor de Banco de Dados MariaDB/MySql e o servidor
 - mv application/config/config.php-dist application/config/config.php
 - mv application/config/config_email.php-dist application/config/config_email.php
 - mv application/config/database.php-dist application/config/database.php
-
+###### 
 - nano application/config/config.php 
 ###### URL da sua instalação 
 - $base_url = 'http://localhost:8080/';
