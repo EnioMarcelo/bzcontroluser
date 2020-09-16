@@ -16,7 +16,7 @@ Ferramenta RAD para desenvolvimento de sistemas CRUD em PHP utilizando o Framwor
 
 # Intalação
 
-Partindo do princípo que o ervidor de Banco de Dados MariaDB/MySql e o servidor de Páginas Web Apache estejam instalados e configurados corretamente.
+Partindo do princípo que o servidor de Banco de Dados MariaDB/MySql e o servidor de Páginas Web Apache e PHP7.1 ou mais recente estejam instalados e configurados corretamente.
 
 #### Habilitar o Mod_Rewrite do Apache caso seu Apache ainda não esteja habilitado este recurso
 - a2enmod rewrite
