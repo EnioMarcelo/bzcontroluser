@@ -4239,7 +4239,7 @@ class ProjectbuildCrud extends MY_Controller
                                     /** INPUT NOT REQUIRED */
                                     $this->_formAddEditFields .= "" . PHP_EOL
                                         . "<?php \$_error = form_error('{$_row['field_name']}', '<small class=\'text-danger col-xs-12 bz-input-error\'>', '</small>'); ?>" . PHP_EOL
-                                        . "<div id='{$_row['field_name']} class='form-group has-feedback {$this->_formAddEditConfigInputClassCSS}'>" . PHP_EOL
+                                        . "<div id='{$_row['field_name']}' class='form-group has-feedback {$this->_formAddEditConfigInputClassCSS}'>" . PHP_EOL
                                         . "   <label for='{$_row['field_name']}'>{$_param_formAddEditField['form_add_edit_field_label']}</label>" . PHP_EOL
                                         . "   {$this->_formAddEditConfigInput}" . PHP_EOL
                                         . "   <?= \$_error; ?>" . PHP_EOL
