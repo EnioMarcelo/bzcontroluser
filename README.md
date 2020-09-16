@@ -74,6 +74,12 @@ Partindo do princípo que o ervidor de Banco de Dados MariaDB/MySql e o servidor
 ### Rodar a migration das tabelas
 - php index.php migrate version 20200910201509
 
+#### Permissões de pastas
+- chmod 777 captcha
+- chmod 777 application/logs
+- chmod 777 application/cache
+
+
 ####
 
 
