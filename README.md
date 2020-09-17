@@ -41,7 +41,7 @@ Partindo do princípo que o servidor de Banco de Dados MariaDB/MySql e o servido
 - nano application/config/config.php 
 ###### URL da sua instalação 
 - $base_url = 'http://localhost:8080/';
-###### Um Código para o ferramenta criptografar sua sessão, uma string contendo numero, letras e caracteres especiais do no mínio 10 caracteres.
+###### Um Código para o ferramenta criptografar sua sessão, uma string contendo números, letras e caracteres especiais de no mínio 10 caracteres.
 - $encryption_key = '';
 
 ##### Configurar a conexão com banco de dados
