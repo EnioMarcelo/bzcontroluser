@@ -107,7 +107,6 @@ class ProjectbuildCrud extends MY_Controller
     protected $_formEditCodeEditorCSS = '';
     protected $_formEditCodeEditorJS = '';
 
-
     /**
      * ProjectbuildCrud constructor.
      */
@@ -140,7 +139,6 @@ class ProjectbuildCrud extends MY_Controller
     }
 
     /** END function __construct() */
-
 
     public function index()
     {
@@ -743,7 +741,7 @@ class ProjectbuildCrud extends MY_Controller
 
         foreach ($_fieldsDeleteTable as $_fieldDelete) {
             if (!mc_contains_in_string('vrt_', $_fieldDelete->field_name)) {
-                if (!mc_filter_like_array((array)$_fields, $_fieldDelete->field_name)) {
+                if (!mc_filter_like_array((array) $_fields, $_fieldDelete->field_name)) {
                     mc_deleteDataDB(
                         'proj_build_fields'
                         , 'WHERE id = ' . $_fieldDelete->id
@@ -752,7 +750,6 @@ class ProjectbuildCrud extends MY_Controller
             }
         }
         /** END */
-
 
     }
     /** END public function save_fields_project() */
@@ -782,7 +779,6 @@ class ProjectbuildCrud extends MY_Controller
                     $this->form_validation->set_rules('calendarInputDataEnd', '<b>DATA FINAL</b> ', 'trim|required');
                 }
 
-
                 if ($this->form_validation->run() == true) {
 
                     $_dados = $this->input->post();
@@ -791,7 +787,6 @@ class ProjectbuildCrud extends MY_Controller
                      * PREPARA OS DADOS DOS CAMPOS DO CALENDÁRIO PARA GRAVAR
                      */
                     $_calendarInputs = [];
-
 
                     foreach ($_dados as $key => $calendarInput) {
                         if (mc_contains_in_string('calendarInput', $key) || mc_contains_in_string('calendarCheckboxAtivar', $key)) {
@@ -858,14 +853,12 @@ class ProjectbuildCrud extends MY_Controller
                                     $this->model->save_code_git([
                                         'code_git' => $_code_git,
                                         'proj_build_id' => $_query->row()->proj_build_id,
-                                        'code_script' => $_query->row()->code_script
+                                        'code_script' => $_query->row()->code_script,
                                     ]);
-
 
                                 }
                             }
                             /** END GRAVA O GIT CODE */
-
 
                             $this->update->exec('proj_build_codeeditor', $_dadosCodeEditor, $_whereCodeEditor);
 
@@ -1153,7 +1146,7 @@ class ProjectbuildCrud extends MY_Controller
                 unset($_dados['task']);
                 unset($_dados['screen_type']);
 
-                $_where = 'WHERE proj_build_id = "' . $_dados['projeto_id'] . '" AND field_name  = "' . $_dados ['field_name'] . '  " AND  screen_type  =  "' . $_screen_type . ' "';
+                $_where = 'WHERE proj_build_id = "' . $_dados['projeto_id'] . '" AND field_name  = "' . $_dados['field_name'] . '  " AND  screen_type  =  "' . $_screen_type . ' "';
                 if ($this->update->exec('proj_build_fields', array('order_field_gridlist' => $_dados['order_field_gridlist']), $_where)) {
                     /**/
                 }
@@ -1238,10 +1231,8 @@ class ProjectbuildCrud extends MY_Controller
                      * $this->db->where('screen_type', $this->input->post('screen_type'));
                      * $_response['update'] = $this->db->update('proj_build_fields'); */
 
-
                     $_where = "WHERE proj_build_id = " . $this->input->post('project_id') . " AND field_name = '" . $this->input->post('field_name') . "' AND screen_type = '" . $this->input->post('screen_type') . "'";
                     $_response['update'] = $this->update->exec('proj_build_fields', ['param_gridlist' => $_dados], $_where);
-
 
                     $_response['message'] = 'SAVE-SWITCH-OK';
                     echo json_encode($_response);
@@ -1293,10 +1284,10 @@ class ProjectbuildCrud extends MY_Controller
                      * } */
 
 //                    $this->db->set('param_gridlist', $_dados);
-//                    $this->db->where('proj_build_id', $this->input->post('project_id'));
-//                    $this->db->where('field_name', $this->input->post('field_name'));
-//                    $this->db->where('screen_type', $this->input->post('screen_type'));
-//                    $_response['update'] = $this->db->update('proj_build_fields');
+                    //                    $this->db->where('proj_build_id', $this->input->post('project_id'));
+                    //                    $this->db->where('field_name', $this->input->post('field_name'));
+                    //                    $this->db->where('screen_type', $this->input->post('screen_type'));
+                    //                    $_response['update'] = $this->db->update('proj_build_fields');
 
                     $_where = "WHERE proj_build_id = " . $this->input->post('project_id') . " AND field_name = '" . $this->input->post('field_name') . "' AND screen_type = '" . $this->input->post('screen_type') . "'";
                     $_response['update'] = $this->update->exec('proj_build_fields', ['param_gridlist' => $_dados], $_where);
@@ -1351,10 +1342,10 @@ class ProjectbuildCrud extends MY_Controller
                     $_dados = json_encode($_dados, JSON_UNESCAPED_UNICODE);
 
 //                    $this->db->set('param_gridlist', $_dados);
-//                    $this->db->where('proj_build_id', $this->input->post('project_id'));
-//                    $this->db->where('field_name', $this->input->post('field_name'));
-//                    $this->db->where('screen_type', $this->input->post('screen_type'));
-//                    $_response['update'] = $this->db->update('proj_build_fields');
+                    //                    $this->db->where('proj_build_id', $this->input->post('project_id'));
+                    //                    $this->db->where('field_name', $this->input->post('field_name'));
+                    //                    $this->db->where('screen_type', $this->input->post('screen_type'));
+                    //                    $_response['update'] = $this->db->update('proj_build_fields');
 
                     $_where = "WHERE proj_build_id = " . $this->input->post('project_id') . " AND field_name = '" . $this->input->post('field_name') . "' AND screen_type = '" . $this->input->post('screen_type') . "'";
                     $_response['update'] = $this->update->exec('proj_build_fields', ['param_gridlist' => $_dados], $_where);
@@ -1370,10 +1361,10 @@ class ProjectbuildCrud extends MY_Controller
                     $_dados = json_encode($_dados, JSON_UNESCAPED_UNICODE);
 
 //                    $this->db->set('param_formaddedit', $_dados);
-//                    $this->db->where('proj_build_id', $this->input->post('project_id'));
-//                    $this->db->where('field_name', $this->input->post('field_name'));
-//                    $this->db->where('screen_type', $this->input->post('screen_type'));
-//                    $_response['update'] = $this->db->update('proj_build_fields');
+                    //                    $this->db->where('proj_build_id', $this->input->post('project_id'));
+                    //                    $this->db->where('field_name', $this->input->post('field_name'));
+                    //                    $this->db->where('screen_type', $this->input->post('screen_type'));
+                    //                    $_response['update'] = $this->db->update('proj_build_fields');
 
                     $_where = "WHERE proj_build_id = " . $this->input->post('project_id') . " AND field_name = '" . $this->input->post('field_name') . "' AND screen_type = '" . $this->input->post('screen_type') . "'";
                     $_response['update'] = $this->update->exec('proj_build_fields', ['param_formaddedit' => $_dados], $_where);
@@ -1511,14 +1502,13 @@ class ProjectbuildCrud extends MY_Controller
 
                 }
 
-
             } elseif ($this->input->post('btn-save-code-editor')) {
                 /**
                  * CHECK SE EXISTE O REGISTRO GRAVADO
                  */
                 $_where = 'WHERE proj_build_id = "' . $this->input->post('proj_build_id') . '" AND ' .
-                    'code_screen = "' . $this->input->post('code_screen') . '" AND ' .
-                    'code_type = "' . $this->input->post('code_type') . '"';
+                'code_screen = "' . $this->input->post('code_screen') . '" AND ' .
+                'code_type = "' . $this->input->post('code_type') . '"';
 
                 $_query = $this->read->exec('proj_build_codeeditor', $_where);
 
@@ -1538,13 +1528,12 @@ class ProjectbuildCrud extends MY_Controller
                         $this->model->save_code_git([
                             'code_git' => $_code_git,
                             'proj_build_id' => $_query->row()->proj_build_id,
-                            'code_script' => $_query->row()->code_script
+                            'code_script' => $_query->row()->code_script,
                         ]);
 
                     }
                 }
                 /** END GRAVA O GIT CODE */
-
 
                 if ($_query->result_array()) {
                     /**
@@ -1643,7 +1632,6 @@ class ProjectbuildCrud extends MY_Controller
                 $this->dados['_parametros']['type_project'] = $this->dados['_dados_projeto']->type_project;
             }
 
-
             /**
              * GET GIT DO CÓDIGO
              */
@@ -1670,7 +1658,6 @@ class ProjectbuildCrud extends MY_Controller
          * GET FIELDS TABLE
          */
         $this->dados['_fields_table'] = get_fields_gridlist_project($this->dados['_dados_projeto']->id);
-
 
         /**
          * TEMPLATE QUE SERÁ USADO PELO MÓDULO DO SISTEMA
@@ -1750,7 +1737,7 @@ class ProjectbuildCrud extends MY_Controller
                 write_file($this->_directory . '/views/js/index.html', $_dados_index_html);
 
 //                write_file($this->_directory . '/views/v' . $this->_app_nome . 'FormAdd.php', $this->_dadosAdd);
-//                    write_file($this->_directory . '/views/v' . $this->_app_nome . 'FormEdit.php', $this->_dadosEdit);
+                //                    write_file($this->_directory . '/views/v' . $this->_app_nome . 'FormEdit.php', $this->_dadosEdit);
             }
 
             return true;
@@ -1790,7 +1777,6 @@ class ProjectbuildCrud extends MY_Controller
             $this->_appTitulo = $_appProject->app_titulo;
             $this->_appIcone = $_appProject->app_icone;
             $this->_typeModel = $_appProject->type_model;
-
 
             $this->_directory = FCPATH . 'application/modules/' . strtolower($this->_app_nome);
 
@@ -1851,7 +1837,6 @@ class ProjectbuildCrud extends MY_Controller
                 $this->_gridListVirtualFieldsTable = [];
                 $this->_appCalendarInputs = json_decode($_r_projetc->row()->calendar_inputs);
 
-
                 /**
                  * CHECK SE O DIRETÓRIO DO APP JÁ EXISTE
                  */
@@ -1872,7 +1857,6 @@ class ProjectbuildCrud extends MY_Controller
 
                         $_param_gridListField = json_decode($_row['param_gridlist'], true);
                         $_param_formAddEditField[$_row['field_name']] = mc_selectDataDB('proj_build_fields', 'WHERE proj_build_id = ' . $_row['proj_build_id'] . ' AND screen_type = "formaddedit" AND field_name = "' . $_row['field_name'] . '"')->row();
-
 
                         if ($_row['primary_key'] == 1) {
                             $this->_primary_key_field = $_row['field_name'];
@@ -2046,7 +2030,6 @@ class ProjectbuildCrud extends MY_Controller
                             /**/
                         }
                         /** END CAMPOS QUE SERÃO MOSTRADOS NA GRID LIST */
-
 
                         /**
                          * CAMPOS QUE SERÃO MOSTRADOS NA EXPORT
@@ -2227,49 +2210,49 @@ class ProjectbuildCrud extends MY_Controller
                             $this->_formEditConfigInputValidationAtributos = 'trim';
 
 //                        if (!empty($_param_formAddEditField['form_add_edit_field_read_only'])){
-//                            if ($_param_formAddEditField['form_add_edit_field_read_only'] == 'on'){
-//                                if ($_param_formAddEditField['form_add_edit_field_read_only_in_form'] == 'todos'){
-//                                    echo $_row['field_name'] . ' - READ ONLY TODOS...';
-//
-//                                }elseif ($_param_formAddEditField['form_add_edit_field_read_only_in_form'] == 'formadd'){
-//                                    echo $_row['field_name'] . ' - READ ONLY SOMENTE FORM ADD...';
-//
-//                                }
-//                            }
-//                        }
-//
-//
-//
-//                        if (!empty($_param_formAddEditField['form_add_edit_field_hidden'])){
-//                            if ($_param_formAddEditField['form_add_edit_field_hidden'] == 'on'){
-//                                if ($_param_formAddEditField['form_add_edit_field_hidden_in_form'] == 'todos'){
-//                                /**/
-//                                }elseif ($_param_formAddEditField['form_add_edit_field_hidden_in_form'] == 'formadd'){
-//
-//                                    if (!empty($_param_formAddEditField['form_add_edit_field_read_only'])){
-//                                        if ($_param_formAddEditField['form_add_edit_field_read_only'] == 'on'){
-//                                            if ($_param_formAddEditField['form_add_edit_field_read_only_in_form'] == 'formedit'){
-//                                                echo $_row['field_name'] . ' - SOMENTE LEITURA -> ' . $_param_formAddEditField['form_add_edit_field_read_only_in_form'] . '<br/><br/>';
-//                                            }
-//                                        }
-//
-//                                    }
-//
-//                                }elseif ($_param_formAddEditField['form_add_edit_field_hidden_in_form'] == 'formedit'){
-//
-//                                    if (!empty($_param_formAddEditField['form_add_edit_field_read_only'])){
-//                                        if ($_param_formAddEditField['form_add_edit_field_read_only'] == 'on'){
-//                                            if ($_param_formAddEditField['form_add_edit_field_read_only_in_form'] == 'formadd'){
-//                                                echo $_row['field_name'] . ' - SOMENTE LEITURA -> ' . $_param_formAddEditField['form_add_edit_field_read_only_in_form'] . '<br/><br/>';
-//                                            }
-//                                        }
-//
-//                                    }
-//
-//                                }
-//
-//                            }
-//                        }
+                            //                            if ($_param_formAddEditField['form_add_edit_field_read_only'] == 'on'){
+                            //                                if ($_param_formAddEditField['form_add_edit_field_read_only_in_form'] == 'todos'){
+                            //                                    echo $_row['field_name'] . ' - READ ONLY TODOS...';
+                            //
+                            //                                }elseif ($_param_formAddEditField['form_add_edit_field_read_only_in_form'] == 'formadd'){
+                            //                                    echo $_row['field_name'] . ' - READ ONLY SOMENTE FORM ADD...';
+                            //
+                            //                                }
+                            //                            }
+                            //                        }
+                            //
+                            //
+                            //
+                            //                        if (!empty($_param_formAddEditField['form_add_edit_field_hidden'])){
+                            //                            if ($_param_formAddEditField['form_add_edit_field_hidden'] == 'on'){
+                            //                                if ($_param_formAddEditField['form_add_edit_field_hidden_in_form'] == 'todos'){
+                            //                                /**/
+                            //                                }elseif ($_param_formAddEditField['form_add_edit_field_hidden_in_form'] == 'formadd'){
+                            //
+                            //                                    if (!empty($_param_formAddEditField['form_add_edit_field_read_only'])){
+                            //                                        if ($_param_formAddEditField['form_add_edit_field_read_only'] == 'on'){
+                            //                                            if ($_param_formAddEditField['form_add_edit_field_read_only_in_form'] == 'formedit'){
+                            //                                                echo $_row['field_name'] . ' - SOMENTE LEITURA -> ' . $_param_formAddEditField['form_add_edit_field_read_only_in_form'] . '<br/><br/>';
+                            //                                            }
+                            //                                        }
+                            //
+                            //                                    }
+                            //
+                            //                                }elseif ($_param_formAddEditField['form_add_edit_field_hidden_in_form'] == 'formedit'){
+                            //
+                            //                                    if (!empty($_param_formAddEditField['form_add_edit_field_read_only'])){
+                            //                                        if ($_param_formAddEditField['form_add_edit_field_read_only'] == 'on'){
+                            //                                            if ($_param_formAddEditField['form_add_edit_field_read_only_in_form'] == 'formadd'){
+                            //                                                echo $_row['field_name'] . ' - SOMENTE LEITURA -> ' . $_param_formAddEditField['form_add_edit_field_read_only_in_form'] . '<br/><br/>';
+                            //                                            }
+                            //                                        }
+                            //
+                            //                                    }
+                            //
+                            //                                }
+                            //
+                            //                            }
+                            //                        }
 
                             /**
                              * UNSET NO FIELD PRIMARY KEY NO EDIT
@@ -2355,7 +2338,6 @@ class ProjectbuildCrud extends MY_Controller
 
                             }
 
-
                             /** TRATA A VARIÁVEL form_add_edit_field_start_value DO INPUT - VALOR INICIAL */
                             if (!empty($_param_formAddEditField['form_add_edit_field_start_value'])) {
                                 $_param_formAddEditField['form_add_edit_field_start_value'] = base64_decode($_param_formAddEditField['form_add_edit_field_start_value']);
@@ -2363,13 +2345,12 @@ class ProjectbuildCrud extends MY_Controller
                                 if (mc_contains_in_string('[[', $_param_formAddEditField['form_add_edit_field_start_value']) && mc_contains_in_string(']]', $_param_formAddEditField['form_add_edit_field_start_value'])) {
                                     $_param_formAddEditField['form_add_edit_field_start_value'] = str_replace(['[[', ']]'], ['', ''], $_param_formAddEditField['form_add_edit_field_start_value']);
                                 } else {
-                                    $_param_formAddEditField['form_add_edit_field_start_value'] = $_param_formAddEditField['form_add_edit_field_start_value'];
+                                    $_param_formAddEditField['form_add_edit_field_start_value'] = '"' . $_param_formAddEditField['form_add_edit_field_start_value'] . '"';
                                 }
                             } else {
                                 $_param_formAddEditField['form_add_edit_field_start_value'] = '""';
                             }
                             /** END TRATA A VARIÁVEL form_add_edit_field_start_value DO INPUT - VALOR INICIAL */
-
 
                             /**
                              *
@@ -2381,19 +2362,23 @@ class ProjectbuildCrud extends MY_Controller
                             if ($_param_formAddEditField['form_add_edit_field_type'] == 'text') {
 
                                 $this->_formAddEditConfigInput = '<input '
-                                    . 'type="text" '
-                                    . 'name="' . $_row['field_name'] . '" '
-                                    . 'class="form-control ' . (!empty($_param_formAddEditField['form_add_edit_field_convert_letter_into']) ? $_param_formAddEditField['form_add_edit_field_convert_letter_into'] : null) . ' ' . ((!empty($_param_formAddEditField['form_add_edit_field_mask'])) ? 'j-mask-' . $_row['field_name'] : '') . ' " '
-                                    . 'placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" ' . $this->_formAddEditConfigInputAtributos . ' '
+                                . 'type="text" '
+                                . 'name="' . $_row['field_name'] . '" '
+                                . 'class="form-control ' . (!empty($_param_formAddEditField['form_add_edit_field_convert_letter_into']) ? $_param_formAddEditField['form_add_edit_field_convert_letter_into'] : null) . ' ' . ((!empty($_param_formAddEditField['form_add_edit_field_mask'])) ? 'j-mask-' . $_row['field_name'] : '') . ' " '
+                                . 'placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" ' . $this->_formAddEditConfigInputAtributos . ' '
                                     . 'value="<?=set_value("' . $_row['field_name'] . '") ? : (isset($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : ' . $_param_formAddEditField['form_add_edit_field_start_value'] . ');?>" '
                                     . '/>';
 
                                 if ($_row['field_type'] == 'int') {
-                                    if ($_enableFormAddConvertDadosToDatabase)
+                                    if ($_enableFormAddConvertDadosToDatabase) {
                                         $this->_formAddConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = preg_replace("/[^0-9]/", "", $_dados["' . $_row['field_name'] . '"]);' . PHP_EOL;
+                                    }
+
                                     if ($_row['primary_key'] == 0) {
-                                        if ($_enableFormEditConvertDadosToDatabase)
+                                        if ($_enableFormEditConvertDadosToDatabase) {
                                             $this->_formEditConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = preg_replace("/[^0-9]/", "", $_dados["' . $_row['field_name'] . '"]);' . PHP_EOL;
+                                        }
+
                                     }
                                 }
                             }
@@ -2402,7 +2387,6 @@ class ProjectbuildCrud extends MY_Controller
                              *  END INPUT TEXT OU INTEGER
                              */
                             /** ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================ */
-
 
                             /**
                              *
@@ -2414,9 +2398,9 @@ class ProjectbuildCrud extends MY_Controller
                             if ($_param_formAddEditField['form_add_edit_field_type'] == 'text-long') {
 
                                 $this->_formAddEditConfigInput = '<textarea '
-                                    . 'rows="5" name="' . $_row['field_name'] . '" '
-                                    . 'class="form-control" '
-                                    . 'placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" ' . $this->_formAddEditConfigInputAtributos . '/>'
+                                . 'rows="5" name="' . $_row['field_name'] . '" '
+                                . 'class="form-control" '
+                                . 'placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" ' . $this->_formAddEditConfigInputAtributos . '/>'
                                     . '<?=set_value("' . $_row['field_name'] . '") ? : (isset($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : ' . $_param_formAddEditField['form_add_edit_field_start_value'] . ');?>'
                                     . '</textarea>';
                             }
@@ -2425,7 +2409,6 @@ class ProjectbuildCrud extends MY_Controller
                              *  END INPUT LONG TEXT
                              */
                             /** ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================ */
-
 
                             /**
                              *
@@ -2437,17 +2420,19 @@ class ProjectbuildCrud extends MY_Controller
                             if ($_param_formAddEditField['form_add_edit_field_type'] == 'text-ckeditor') {
 
                                 $this->_formAddEditConfigInput = '<textarea '
-                                    . 'id="ckeditor-' . $_row['field_name'] . '" '
-                                    . 'rows="5" name="' . $_row['field_name'] . '" '
-                                    . 'class="form-control" placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" ' . $this->_formAddEditConfigInputAtributos . '/>'
+                                . 'id="ckeditor-' . $_row['field_name'] . '" '
+                                . 'rows="5" name="' . $_row['field_name'] . '" '
+                                . 'class="form-control" placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" ' . $this->_formAddEditConfigInputAtributos . '/>'
                                     . '<?=set_value("' . $_row['field_name'] . '") ? : (isset($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : ' . $_param_formAddEditField['form_add_edit_field_start_value'] . ');?>'
                                     . '</textarea>';
 
-                                if ($_enableFormAddConvertDadosToDatabase)
+                                if ($_enableFormAddConvertDadosToDatabase) {
                                     $this->_formAddConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = $this->input->post("' . $_row['field_name'] . '",FALSE);';
+                                }
 
-                                if ($_enableFormEditConvertDadosToDatabase)
+                                if ($_enableFormEditConvertDadosToDatabase) {
                                     $this->_formEditConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = $this->input->post("' . $_row['field_name'] . '",FALSE);';
+                                }
 
                                 /** FORM ADD */
                                 $this->_formAddCodeEditorJS .= "<!--" . PHP_EOL;
@@ -2485,7 +2470,6 @@ class ProjectbuildCrud extends MY_Controller
                              */
                             /** ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================ */
 
-
                             /**
                              *
                              * ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
@@ -2496,14 +2480,14 @@ class ProjectbuildCrud extends MY_Controller
                             if ($_param_formAddEditField['form_add_edit_field_type'] == 'email') {
 
                                 $this->_formAddEditConfigInput = '<div class="input-group">'
-                                    . '<span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>'
-                                    . '<input '
-                                    . 'type="text" '
-                                    . 'name="' . $_row['field_name'] . '" '
-                                    . 'class="form-control" '
-                                    . 'placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" '
-                                    . 'value="<?=set_value("' . $_row['field_name'] . '") ? : (isset($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : ' . $_param_formAddEditField['form_add_edit_field_start_value'] . ');?>" '
-                                    . $this->_formAddEditConfigInputAtributos
+                                . '<span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>'
+                                . '<input '
+                                . 'type="text" '
+                                . 'name="' . $_row['field_name'] . '" '
+                                . 'class="form-control" '
+                                . 'placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" '
+                                . 'value="<?=set_value("' . $_row['field_name'] . '") ? : (isset($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : ' . $_param_formAddEditField['form_add_edit_field_start_value'] . ');?>" '
+                                . $this->_formAddEditConfigInputAtributos
                                     . ' /></div>';
                             }
                             /**
@@ -2511,7 +2495,6 @@ class ProjectbuildCrud extends MY_Controller
                              *  END INPUT EMAIL
                              */
                             /** ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================ */
-
 
                             /**
                              *
@@ -2525,22 +2508,25 @@ class ProjectbuildCrud extends MY_Controller
                                 $this->_formAddEditConfigInputAtributos .= 'autocomplete="off"';
 
                                 $this->_formAddEditConfigInput = '<input '
-                                    . 'type="text" '
-                                    . 'name="' . $_row['field_name'] . '" '
-                                    . 'class="form-control datepicker j-mask-data-ptbr j-mask-' . $_row['field_name'] . '" '
-                                    . 'placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" '
-                                    . 'value="<?=set_value("' . $_row['field_name'] . '") ? : (isset($dados->' . $_row['field_name'] . ') ? bz_formatdata($dados->' . $_row['field_name'] . ',"d/m/Y") : ' . $_param_formAddEditField['form_add_edit_field_start_value'] . ');?>" '
-                                    . $this->_formAddEditConfigInputAtributos
+                                . 'type="text" '
+                                . 'name="' . $_row['field_name'] . '" '
+                                . 'class="form-control datepicker j-mask-data-ptbr j-mask-' . $_row['field_name'] . '" '
+                                . 'placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" '
+                                . 'value="<?=set_value("' . $_row['field_name'] . '") ? : (isset($dados->' . $_row['field_name'] . ') ? bz_formatdata($dados->' . $_row['field_name'] . ',"d/m/Y") : ' . $_param_formAddEditField['form_add_edit_field_start_value'] . ');?>" '
+                                . $this->_formAddEditConfigInputAtributos
                                     . ' />';
-
 
                                 $this->_formAddEditConfigInputMask .= '$(".j-mask-' . $_row['field_name'] . '").mask("00/00/0000", {placeholder: "__/__/____"});' . PHP_EOL;
 
-                                if ($_enableFormAddConvertDadosToDatabase)
+                                if ($_enableFormAddConvertDadosToDatabase) {
                                     $this->_formAddConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = bz_formatdata($_dados["' . $_row['field_name'] . '"],"Y-m-d");' . PHP_EOL;
+                                }
+
                                 if ($_row['primary_key'] == 0) {
-                                    if ($_enableFormEditConvertDadosToDatabase)
+                                    if ($_enableFormEditConvertDadosToDatabase) {
                                         $this->_formEditConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = bz_formatdata($_dados["' . $_row['field_name'] . '"],"Y-m-d");' . PHP_EOL;
+                                    }
+
                                 }
                             }
                             /**
@@ -2548,7 +2534,6 @@ class ProjectbuildCrud extends MY_Controller
                              *  END INPUT DATE
                              */
                             /** ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================ */
-
 
                             /**
                              *
@@ -2562,13 +2547,13 @@ class ProjectbuildCrud extends MY_Controller
                                 $this->_formAddEditConfigInputAtributos .= 'autocomplete="off"';
 
                                 $this->_formAddEditConfigInput = '<div class="input-group clockpicker">'
-                                    . '<input '
-                                    . 'type="text" '
-                                    . 'name="' . $_row['field_name'] . '" '
-                                    . 'class="form-control j-mask-' . $_row['field_name'] . '" '
-                                    . 'placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" '
-                                    . 'value="<?=set_value("' . $_row['field_name'] . '") ? : (isset($dados->' . $_row['field_name'] . ') ? bz_formatdata($dados->' . $_row['field_name'] . ',"H:i")  : ' . $_param_formAddEditField['form_add_edit_field_start_value'] . ');?>" '
-                                    . $this->_formAddEditConfigInputAtributos
+                                . '<input '
+                                . 'type="text" '
+                                . 'name="' . $_row['field_name'] . '" '
+                                . 'class="form-control j-mask-' . $_row['field_name'] . '" '
+                                . 'placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" '
+                                . 'value="<?=set_value("' . $_row['field_name'] . '") ? : (isset($dados->' . $_row['field_name'] . ') ? bz_formatdata($dados->' . $_row['field_name'] . ',"H:i")  : ' . $_param_formAddEditField['form_add_edit_field_start_value'] . ');?>" '
+                                . $this->_formAddEditConfigInputAtributos
                                     . ' />'
                                     . '<span class="input-group-addon">'
                                     . '     <span class="glyphicon glyphicon-time"></span>'
@@ -2583,7 +2568,6 @@ class ProjectbuildCrud extends MY_Controller
                              */
                             /** ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================ */
 
-
                             /**
                              *
                              * ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
@@ -2596,28 +2580,31 @@ class ProjectbuildCrud extends MY_Controller
                                 $this->_formAddEditConfigInputAtributos .= 'autocomplete="off"';
 
                                 $this->_formAddEditConfigInput = '<div class="input-group">'
-                                    . '<input '
-                                    . 'type="text" '
-                                    . 'name="' . $_row['field_name'] . '" '
-                                    . 'class="form-control datetimepicker j-mask-datahora-ptbr j-mask-' . $_row['field_name'] . '" '
-                                    . 'data-format="dd/mm/yyyy HH:mm:ss PP"'
-                                    . 'placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" '
-                                    . 'value="<?=set_value("' . $_row['field_name'] . '") ? : (isset($dados->' . $_row['field_name'] . ') ? bz_formatdata($dados->' . $_row['field_name'] . ',"d/m/Y H:i:s")  : ' . $_param_formAddEditField['form_add_edit_field_start_value'] . ');?>" '
-                                    . $this->_formAddEditConfigInputAtributos
+                                . '<input '
+                                . 'type="text" '
+                                . 'name="' . $_row['field_name'] . '" '
+                                . 'class="form-control datetimepicker j-mask-datahora-ptbr j-mask-' . $_row['field_name'] . '" '
+                                . 'data-format="dd/mm/yyyy HH:mm:ss PP"'
+                                . 'placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" '
+                                . 'value="<?=set_value("' . $_row['field_name'] . '") ? : (isset($dados->' . $_row['field_name'] . ') ? bz_formatdata($dados->' . $_row['field_name'] . ',"d/m/Y H:i:s")  : ' . $_param_formAddEditField['form_add_edit_field_start_value'] . ');?>" '
+                                . $this->_formAddEditConfigInputAtributos
                                     . ' />'
                                     . '<span class="input-group-addon">'
                                     . '     <span class="glyphicon glyphicon-calendar"></span>'
                                     . '</span>'
                                     . '</div>';
 
-
                                 $this->_formAddEditConfigInputMask .= '$(".j-mask-' . $_row['field_name'] . '").mask("00/00/0000 00:00", {placeholder: "__/__/____ __:__"});' . PHP_EOL;
 
-                                if ($_enableFormAddConvertDadosToDatabase)
+                                if ($_enableFormAddConvertDadosToDatabase) {
                                     $this->_formAddConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = bz_formatdata($_dados["' . $_row['field_name'] . '"],"Y-m-d H:i:s");' . PHP_EOL;
+                                }
+
                                 if ($_row['primary_key'] == 0) {
-                                    if ($_enableFormEditConvertDadosToDatabase)
+                                    if ($_enableFormEditConvertDadosToDatabase) {
                                         $this->_formEditConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = bz_formatdata($_dados["' . $_row['field_name'] . '"],"Y-m-d H:i:s");' . PHP_EOL;
+                                    }
+
                                 }
                             }
                             /**
@@ -2625,7 +2612,6 @@ class ProjectbuildCrud extends MY_Controller
                              *  END INPUT DATETIME
                              */
                             /** ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================ */
-
 
                             /**
                              *
@@ -2639,13 +2625,13 @@ class ProjectbuildCrud extends MY_Controller
                                 $this->_formAddEditConfigInputAtributos .= 'autocomplete="off"';
 
                                 $this->_formAddEditConfigInput = '<input '
-                                    . 'type="number" '
-                                    . 'name="' . $_row['field_name'] . '" '
-                                    . 'class="form-control" placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" '
-                                    . 'value="<?=set_value("' . $_row['field_name'] . '") ? : (isset($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : ' . $_param_formAddEditField['form_add_edit_field_start_value'] . ');?>" '
-                                    . 'pattern="[0-9]" '
-                                    . 'onkeypress="return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 0" '
-                                    . $this->_formAddEditConfigInputAtributos
+                                . 'type="number" '
+                                . 'name="' . $_row['field_name'] . '" '
+                                . 'class="form-control" placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" '
+                                . 'value="<?=set_value("' . $_row['field_name'] . '") ? : (isset($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : ' . $_param_formAddEditField['form_add_edit_field_start_value'] . ');?>" '
+                                . 'pattern="[0-9]" '
+                                . 'onkeypress="return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 0" '
+                                . $this->_formAddEditConfigInputAtributos
                                     . ' />';
                             }
                             /**
@@ -2653,7 +2639,6 @@ class ProjectbuildCrud extends MY_Controller
                              *  END INPUT INT NUMBER
                              */
                             /** ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================ */
-
 
                             /**
                              *
@@ -2667,20 +2652,24 @@ class ProjectbuildCrud extends MY_Controller
                                 $this->_formAddEditConfigInputAtributos .= 'autocomplete="off"';
 
                                 $this->_formAddEditConfigInput = '<input '
-                                    . 'type="text" '
-                                    . 'name="' . $_row['field_name'] . '" '
-                                    . 'class="form-control ' . ((!empty($_param_formAddEditField['form_add_edit_field_mask'])) ? 'j-mask-' . $_row['field_name'] : '') . '" '
-                                    . 'placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" '
-                                    . 'value="<?=set_value("' . $_row['field_name'] . '") ? : (isset($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : ' . $_param_formAddEditField['form_add_edit_field_start_value'] . ');?>" '
-                                    . 'onkeypress="return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 44 || event.charCode == 0" '
-                                    . $this->_formAddEditConfigInputAtributos
+                                . 'type="text" '
+                                . 'name="' . $_row['field_name'] . '" '
+                                . 'class="form-control ' . ((!empty($_param_formAddEditField['form_add_edit_field_mask'])) ? 'j-mask-' . $_row['field_name'] : '') . '" '
+                                . 'placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" '
+                                . 'value="<?=set_value("' . $_row['field_name'] . '") ? : (isset($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : ' . $_param_formAddEditField['form_add_edit_field_start_value'] . ');?>" '
+                                . 'onkeypress="return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 44 || event.charCode == 0" '
+                                . $this->_formAddEditConfigInputAtributos
                                     . ' />';
 
-                                if ($_enableFormAddConvertDadosToDatabase)
+                                if ($_enableFormAddConvertDadosToDatabase) {
                                     $this->_formAddConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = str_replace(",",".",str_replace(".","",$_dados["' . $_row['field_name'] . '"]));';
+                                }
+
                                 if ($_row['primary_key'] == 0) {
-                                    if ($_enableFormEditConvertDadosToDatabase)
+                                    if ($_enableFormEditConvertDadosToDatabase) {
                                         $this->_formEditConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = str_replace(",",".",str_replace(".","",$_dados["' . $_row['field_name'] . '"]));';
+                                    }
+
                                 }
                             }
                             /**
@@ -2688,7 +2677,6 @@ class ProjectbuildCrud extends MY_Controller
                              *  END INPUT INT NUMBER
                              */
                             /** ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================ */
-
 
                             /**
                              *
@@ -2702,20 +2690,24 @@ class ProjectbuildCrud extends MY_Controller
                                 $this->_formAddEditConfigInputAtributos .= 'autocomplete="off"';
 
                                 $this->_formAddEditConfigInput = '<input '
-                                    . 'type="text" '
-                                    . 'name="' . $_row['field_name'] . '" '
-                                    . 'class="form-control j-mask-moeda-ptbr" '
-                                    . 'placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" '
-                                    . 'value="<?=set_value("' . $_row['field_name'] . '") ? : (isset($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : ' . $_param_formAddEditField['form_add_edit_field_start_value'] . ');?>" '
-                                    . 'onkeypress="return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 44 || event.charCode == 0" '
-                                    . $this->_formAddEditConfigInputAtributos
+                                . 'type="text" '
+                                . 'name="' . $_row['field_name'] . '" '
+                                . 'class="form-control j-mask-moeda-ptbr" '
+                                . 'placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" '
+                                . 'value="<?=set_value("' . $_row['field_name'] . '") ? : (isset($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : ' . $_param_formAddEditField['form_add_edit_field_start_value'] . ');?>" '
+                                . 'onkeypress="return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 44 || event.charCode == 0" '
+                                . $this->_formAddEditConfigInputAtributos
                                     . ' />';
 
-                                if ($_enableFormAddConvertDadosToDatabase)
+                                if ($_enableFormAddConvertDadosToDatabase) {
                                     $this->_formAddConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = str_replace(",",".",str_replace(".","",$_dados["' . $_row['field_name'] . '"]));';
+                                }
+
                                 if ($_row['primary_key'] == 0) {
-                                    if ($_enableFormEditConvertDadosToDatabase)
+                                    if ($_enableFormEditConvertDadosToDatabase) {
                                         $this->_formEditConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = str_replace(",",".",str_replace(".","",$_dados["' . $_row['field_name'] . '"]));';
+                                    }
+
                                 }
                             }
                             /**
@@ -2723,7 +2715,6 @@ class ProjectbuildCrud extends MY_Controller
                              *  END INPUT MONETARY VALUE
                              */
                             /** ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================ */
-
 
                             /**
                              *
@@ -2737,12 +2728,12 @@ class ProjectbuildCrud extends MY_Controller
                                 $this->_formAddEditConfigInputAtributos .= 'autocomplete="off"';
 
                                 $this->_formAddEditConfigInput = '<div class="input-group">'
-                                    . '<span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>'
-                                    . '<input type="password" '
-                                    . 'name="' . $_row['field_name'] . '" '
-                                    . 'class="form-control" placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" '
-                                    . 'value="<?= set_value ("' . $_row['field_name'] . '", isset ($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : set_value ("' . $_row['field_name'] . '")); ?>" '
-                                    . $this->_formAddEditConfigInputAtributos
+                                . '<span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>'
+                                . '<input type="password" '
+                                . 'name="' . $_row['field_name'] . '" '
+                                . 'class="form-control" placeholder="' . $_param_formAddEditField['form_add_edit_field_placeholder'] . '" '
+                                . 'value="<?= set_value ("' . $_row['field_name'] . '", isset ($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : set_value ("' . $_row['field_name'] . '")); ?>" '
+                                . $this->_formAddEditConfigInputAtributos
                                     . ' />'
                                     . '</div>';
                             }
@@ -2751,7 +2742,6 @@ class ProjectbuildCrud extends MY_Controller
                              *  END INPUT PASSWORD
                              */
                             /** ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================ */
-
 
                             /**
                              *
@@ -2766,13 +2756,12 @@ class ProjectbuildCrud extends MY_Controller
 
                                 /** MONTA O CAMPO */
                                 $this->_formAddEditConfigInput = '<input '
-                                    . 'type="text" '
-                                    . 'name="' . $_row['field_name'] . '" '
-                                    . 'class="form-control j-mask-' . $_row['field_name'] . '" '
-                                    . 'value="<?=set_value("' . $_row['field_name'] . '") ? : (isset($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : ' . $_param_formAddEditField['form_add_edit_field_start_value'] . ');?>" '
-                                    . $this->_formAddEditConfigInputAtributos
+                                . 'type="text" '
+                                . 'name="' . $_row['field_name'] . '" '
+                                . 'class="form-control j-mask-' . $_row['field_name'] . '" '
+                                . 'value="<?=set_value("' . $_row['field_name'] . '") ? : (isset($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : ' . $_param_formAddEditField['form_add_edit_field_start_value'] . ');?>" '
+                                . $this->_formAddEditConfigInputAtributos
                                     . ' />';
-
 
                                 $this->_formAddEditConfigInputMask .= '$(".j-mask-' . $_row['field_name'] . '").mask("000.000.000-00", {placeholder: "000.000.000-00"});' . PHP_EOL;
 
@@ -2793,7 +2782,6 @@ class ProjectbuildCrud extends MY_Controller
                              */
                             /** ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================ */
 
-
                             /**
                              *
                              * ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
@@ -2807,11 +2795,11 @@ class ProjectbuildCrud extends MY_Controller
 
                                 /** MONTA O CAMPO */
                                 $this->_formAddEditConfigInput = '<input '
-                                    . 'type="text" '
-                                    . 'name="' . $_row['field_name'] . '" '
-                                    . 'class="form-control j-mask-' . $_row['field_name'] . '" '
-                                    . 'value="<?=set_value("' . $_row['field_name'] . '") ? : (isset($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : ' . $_param_formAddEditField['form_add_edit_field_start_value'] . ');?>" '
-                                    . $this->_formAddEditConfigInputAtributos
+                                . 'type="text" '
+                                . 'name="' . $_row['field_name'] . '" '
+                                . 'class="form-control j-mask-' . $_row['field_name'] . '" '
+                                . 'value="<?=set_value("' . $_row['field_name'] . '") ? : (isset($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : ' . $_param_formAddEditField['form_add_edit_field_start_value'] . ');?>" '
+                                . $this->_formAddEditConfigInputAtributos
                                     . ' />';
 
                                 $this->_formAddEditConfigInputMask .= '$(".j-mask-' . $_row['field_name'] . '").mask("00.000.000/0000-00", {placeholder: "00.000.000/0000-00"});' . PHP_EOL;
@@ -2833,7 +2821,6 @@ class ProjectbuildCrud extends MY_Controller
                              */
                             /** ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================ */
 
-
                             /**
                              *
                              * ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
@@ -2850,7 +2837,6 @@ class ProjectbuildCrud extends MY_Controller
                                 /** $this->_formAddEditConfigInput = '<input type="file" name="' . $_row['field_name'] . '" class="form-control-file margin-bottom-10" placeholder="" value="<?= set_value ("' . $_row['field_name'] . '", isset ($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : set_value ("' . $_row['field_name'] . '")); ?>"  />'; */
 
                                 if ($this->task['multiUploadImagem']) {
-
 
                                     $this->_formAddEditConfigInput = '<input type="file" name="' . $_row['field_name'] . '[]" class="form-control-file margin-bottom-10" placeholder="" value="<?= set_value ("' . $_row['field_name'] . '", isset ($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : set_value ("' . $_row['field_name'] . '")); ?>" accept="' . $_fileExtension . '"  multiple/>' . PHP_EOL
                                         . '<?php if ("$this->uri->segment (2) == "edit"" && !empty($dados->' . $_row['field_name'] . ')){ ?>' . PHP_EOL
@@ -2873,7 +2859,6 @@ class ProjectbuildCrud extends MY_Controller
                                         . ''
                                         . '<?php } ?>' . PHP_EOL;
 
-
                                     if ($_enableFormAddConvertDadosToDatabase) {
 
                                         $this->_formAddConvertDadosToDatabase .= ""
@@ -2883,7 +2868,6 @@ class ProjectbuildCrud extends MY_Controller
                                             . "";
 
                                     }
-
 
                                     if (!mc_contains_in_string('del_image()', $this->_controller_metodos_php)) {
                                         /**
@@ -2908,7 +2892,6 @@ class ProjectbuildCrud extends MY_Controller
                                             . "         \$_data = \$this->read->exec(\$this->table_formaddedit_name, 'WHERE id=' . \$_IdImageDel)->row()->\$_field_image;" . PHP_EOL
                                             . "         \$_data = json_decode(\$_data);" . PHP_EOL
                                             . "";
-
 
                                         if (!empty($_param_formAddEditField['form_add_edit_field_required']) && $_param_formAddEditField['form_add_edit_field_required'] == 'on') {
                                             $this->_controller_metodos_php .= ""
@@ -2971,7 +2954,6 @@ class ProjectbuildCrud extends MY_Controller
                                             . '     </div>' . PHP_EOL
                                             . '' . PHP_EOL;
                                     }
-
 
                                     $this->_formAddEditConfigInput .= ''
                                         . '     <div class="col-md-12">' . PHP_EOL
@@ -3046,7 +3028,6 @@ class ProjectbuildCrud extends MY_Controller
                              */
                             /** ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================ */
 
-
                             /**
                              *
                              * ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
@@ -3102,7 +3083,6 @@ class ProjectbuildCrud extends MY_Controller
                              */
                             /** ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================ */
 
-
                             /**
                              *
                              * ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
@@ -3124,8 +3104,8 @@ class ProjectbuildCrud extends MY_Controller
                                     $_s = explode('|', $_selectValue_value);
 
                                     $this->_formAddEditConfigInput .= '<option '
-                                        /*                                        . 'value="' . $_s[0] . '" <?= (set_value ("' . $_row['field_name'] . '", isset ($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : set_value ("' . $_row['field_name'] . '")) == ' . (is_numeric($_s[0]) ? $_s[0] : '"' . $_s[0] . '"') . ') ? "selected" : (' . (is_numeric($_param_formAddEditField['form_add_edit_field_start_value']) ? $_param_formAddEditField['form_add_edit_field_start_value'] : '"' . $_param_formAddEditField['form_add_edit_field_start_value'] . '"') . ' == ' . (is_numeric($_s[0]) ? $_s[0] : '"' . $_s[0] . '"') . ') ? "selected" : null; ?> />'*/
-                                        . 'value="' . $_s[0] . '" <?= ($_select_manual_ativo==' . (is_numeric($_s[0]) ? $_s[0] : '"' . $_s[0] . '"') . ') ? "selected" : null; ?> />'
+                                    /*                                        . 'value="' . $_s[0] . '" <?= (set_value ("' . $_row['field_name'] . '", isset ($dados->' . $_row['field_name'] . ') ? $dados->' . $_row['field_name'] . ' : set_value ("' . $_row['field_name'] . '")) == ' . (is_numeric($_s[0]) ? $_s[0] : '"' . $_s[0] . '"') . ') ? "selected" : (' . (is_numeric($_param_formAddEditField['form_add_edit_field_start_value']) ? $_param_formAddEditField['form_add_edit_field_start_value'] : '"' . $_param_formAddEditField['form_add_edit_field_start_value'] . '"') . ' == ' . (is_numeric($_s[0]) ? $_s[0] : '"' . $_s[0] . '"') . ') ? "selected" : null; ?> />'*/
+                                    . 'value="' . $_s[0] . '" <?= ($_select_manual_ativo==' . (is_numeric($_s[0]) ? $_s[0] : '"' . $_s[0] . '"') . ') ? "selected" : null; ?> />'
                                         . $_s[1] . '</option>' . PHP_EOL;
                                 }
 
@@ -3154,7 +3134,6 @@ class ProjectbuildCrud extends MY_Controller
                              *  END SELECT MANUAL
                              */
                             /** ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================ */
-
 
                             /**
                              *
@@ -3201,7 +3180,6 @@ class ProjectbuildCrud extends MY_Controller
                              */
                             /** ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================ */
 
-
                             /**
                              *
                              * ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
@@ -3235,11 +3213,15 @@ class ProjectbuildCrud extends MY_Controller
 
                                 $this->_formAddEditConfigInput = $_s;
 
-                                if ($_enableFormAddConvertDadosToDatabase)
+                                if ($_enableFormAddConvertDadosToDatabase) {
                                     $this->_formAddConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = json_encode($_dados["' . $_row['field_name'] . '"]);';
+                                }
+
                                 if ($_row['primary_key'] == 0) {
-                                    if ($_enableFormEditConvertDadosToDatabase)
+                                    if ($_enableFormEditConvertDadosToDatabase) {
                                         $this->_formEditConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = json_encode($_dados["' . $_row['field_name'] . '"]);';
+                                    }
+
                                 }
                             }
                             /**
@@ -3247,7 +3229,6 @@ class ProjectbuildCrud extends MY_Controller
                              *  END SELECT MANUAL MULTIPLE
                              */
                             /** ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================ */
-
 
                             /**
                              *
@@ -3296,11 +3277,15 @@ class ProjectbuildCrud extends MY_Controller
                                         $_r .= "?>" . PHP_EOL;
                                         $_r .= "</p>" . PHP_EOL;
 
-                                        if ($_enableFormAddConvertDadosToDatabase)
+                                        if ($_enableFormAddConvertDadosToDatabase) {
                                             $this->_formAddConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = json_encode($_dados["' . $_row['field_name'] . '"]);';
+                                        }
+
                                         if ($_row['primary_key'] == 0) {
-                                            if ($_enableFormEditConvertDadosToDatabase)
+                                            if ($_enableFormEditConvertDadosToDatabase) {
                                                 $this->_formEditConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = json_encode($_dados["' . $_row['field_name'] . '"]);';
+                                            }
+
                                         }
                                     }
 
@@ -3312,7 +3297,6 @@ class ProjectbuildCrud extends MY_Controller
                              *  END SELECT DINAMIC MULTIPLE
                              */
                             /** ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================ */
-
 
                             /**
                              *
@@ -3326,14 +3310,13 @@ class ProjectbuildCrud extends MY_Controller
                                 $_radioValue = explode(',', $_param_formAddEditField['form_add_edit_field_value_radiobutton_manual']);
                                 $_r = "";
 
-
                                 foreach ($_radioValue as $_radioValue_value) {
                                     $_r = explode('|', $_radioValue_value);
                                     $this->_formAddEditConfigInput .= '<input '
-                                        . 'class="flat-green" type="radio" '
-                                        . 'name="' . $_row['field_name'] . '" '
-                                        . 'value="' . $_r[0] . '" <?= ($_radiobutton_manual_' . $_row['field_name'] . '==' . (is_numeric($_r[0]) ? $_r[0] : '"' . $_r[0] . '"') . ') ? "checked" : null; ?> '
-                                        . $this->_formAddEditConfigInputAtributos . '/> ' . $_r[1] . '<i class="margin-right-10"></i>' . PHP_EOL;
+                                    . 'class="flat-green" type="radio" '
+                                    . 'name="' . $_row['field_name'] . '" '
+                                    . 'value="' . $_r[0] . '" <?= ($_radiobutton_manual_' . $_row['field_name'] . '==' . (is_numeric($_r[0]) ? $_r[0] : '"' . $_r[0] . '"') . ') ? "checked" : null; ?> '
+                                    . $this->_formAddEditConfigInputAtributos . '/> ' . $_r[1] . '<i class="margin-right-10"></i>' . PHP_EOL;
                                 }
 
                                 $_r = "" . PHP_EOL;
@@ -3357,7 +3340,6 @@ class ProjectbuildCrud extends MY_Controller
                              *  END RADIO BUTTON MANUAL
                              */
                             /** ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================ */
-
 
                             /**
                              *
@@ -3417,7 +3399,6 @@ class ProjectbuildCrud extends MY_Controller
                              */
                             /** ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================ */
 
-
                             /**
                              *
                              * ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
@@ -3441,11 +3422,15 @@ class ProjectbuildCrud extends MY_Controller
 
                                 $this->_formAddEditConfigInput .= $_r;
 
-                                if ($_enableFormAddConvertDadosToDatabase)
+                                if ($_enableFormAddConvertDadosToDatabase) {
                                     $this->_formAddConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = (isset($_dados["' . $_row['field_name'] . '"])) ? ($_dados["' . $_row['field_name'] . '"] == "' . $_param_formAddEditField['form_add_edit_field_value_checkbox_manual_on'] . '") ? $_dados["' . $_row['field_name'] . '"] : "' . $_param_formAddEditField['form_add_edit_field_value_checkbox_manual_off'] . '" : "' . $_param_formAddEditField['form_add_edit_field_value_checkbox_manual_off'] . '";' . PHP_EOL;
+                                }
+
                                 if ($_row['primary_key'] == 0) {
-                                    if ($_enableFormEditConvertDadosToDatabase)
+                                    if ($_enableFormEditConvertDadosToDatabase) {
                                         $this->_formEditConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = (isset($_dados["' . $_row['field_name'] . '"])) ? ($_dados["' . $_row['field_name'] . '"] == "' . $_param_formAddEditField['form_add_edit_field_value_checkbox_manual_on'] . '") ? $_dados["' . $_row['field_name'] . '"] : "' . $_param_formAddEditField['form_add_edit_field_value_checkbox_manual_off'] . '" : "' . $_param_formAddEditField['form_add_edit_field_value_checkbox_manual_off'] . '";' . PHP_EOL;
+                                    }
+
                                 }
                             }
                             /**
@@ -3453,7 +3438,6 @@ class ProjectbuildCrud extends MY_Controller
                              *  END CHECKBOX MANUAL
                              */
                             /** ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================ */
-
 
                             /**
                              *
@@ -3487,11 +3471,15 @@ class ProjectbuildCrud extends MY_Controller
 
                                 $this->_formAddEditConfigInput = $_r . PHP_EOL;
 
-                                if ($_enableFormAddConvertDadosToDatabase)
+                                if ($_enableFormAddConvertDadosToDatabase) {
                                     $this->_formAddConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = json_encode($_dados["' . $_row['field_name'] . '"]);' . PHP_EOL;
+                                }
+
                                 if ($_row['primary_key'] == 0) {
-                                    if ($_enableFormEditConvertDadosToDatabase)
+                                    if ($_enableFormEditConvertDadosToDatabase) {
                                         $this->_formEditConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = json_encode($_dados["' . $_row['field_name'] . '"]);' . PHP_EOL;
+                                    }
+
                                 }
                             }
                             /**
@@ -3499,7 +3487,6 @@ class ProjectbuildCrud extends MY_Controller
                              *  END MULTIPLE MANUAL
                              */
                             /** ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================ */
-
 
                             /**
                              *
@@ -3557,11 +3544,15 @@ class ProjectbuildCrud extends MY_Controller
 
                                     $this->_formAddEditConfigInput = $_r;
 
-                                    if ($_enableFormAddConvertDadosToDatabase)
+                                    if ($_enableFormAddConvertDadosToDatabase) {
                                         $this->_formAddConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = json_encode($_dados["' . $_row['field_name'] . '"]);' . PHP_EOL;
+                                    }
+
                                     if ($_row['primary_key'] == 0) {
-                                        if ($_enableFormEditConvertDadosToDatabase)
+                                        if ($_enableFormEditConvertDadosToDatabase) {
                                             $this->_formEditConvertDadosToDatabase .= '$_dados["' . $_row['field_name'] . '"] = json_encode($_dados["' . $_row['field_name'] . '"]);' . PHP_EOL;
+                                        }
+
                                     }
 
                                     /**
@@ -3581,7 +3572,6 @@ class ProjectbuildCrud extends MY_Controller
                              *  END MULTIPLE MANUAL
                              */
                             /** ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================ */
-
 
                             /**
                              *
@@ -3737,16 +3727,14 @@ class ProjectbuildCrud extends MY_Controller
                                             }
                                         }
 
-
                                         $this->_formAddEditFields .= ''
-                                            . '<?php $_error = form_error("' . $_row['field_name'] . '", "<small class=\'text-danger col-xs-12 bz-input-error\'>", "</small>"); ?>' . PHP_EOL
-                                            . '<div id="' . $_row['field_name'] . '" class="form-group has-feedback ' . $this->_formAddEditConfigInputClassCSS . '">' . PHP_EOL
-                                            . '<label for="' . $_row['field_name'] . '"><i class="fa fa-asterisk margin-right-5 text-error ' . $_classDisabledReadOnlyAsterisk . '" style="font-size: 0.7em;"></i>' . $_param_formAddEditField['form_add_edit_field_label'] . '</label>' . PHP_EOL
-                                            . '' . $this->_formAddEditConfigInput . '' . PHP_EOL
+                                        . '<?php $_error = form_error("' . $_row['field_name'] . '", "<small class=\'text-danger col-xs-12 bz-input-error\'>", "</small>"); ?>' . PHP_EOL
+                                        . '<div id="' . $_row['field_name'] . '" class="form-group has-feedback ' . $this->_formAddEditConfigInputClassCSS . '">' . PHP_EOL
+                                        . '<label for="' . $_row['field_name'] . '"><i class="fa fa-asterisk margin-right-5 text-error ' . $_classDisabledReadOnlyAsterisk . '" style="font-size: 0.7em;"></i>' . $_param_formAddEditField['form_add_edit_field_label'] . '</label>' . PHP_EOL
+                                        . '' . $this->_formAddEditConfigInput . '' . PHP_EOL
                                             . '<?= $_error; ?>' . PHP_EOL
                                             . ' </div>' . PHP_EOL
                                             . '' . PHP_EOL . PHP_EOL . PHP_EOL;
-
 
                                         /** VALDATION ATRIBUTO REQUIRED */
                                         if ($_param_formAddEditField['form_add_edit_field_type'] == 'checkbox-multiple-manual' || $_param_formAddEditField['form_add_edit_field_type'] == 'checkbox-multiple-dinamic' || $_param_formAddEditField['form_add_edit_field_type'] == 'select-multiple-manual' || $_param_formAddEditField['form_add_edit_field_type'] == 'select-dinamic' || $_param_formAddEditField['form_add_edit_field_type'] == 'select-multiple-dinamic' || $_param_formAddEditField['form_add_edit_field_type'] == 'radio-dinamic') {
@@ -4061,9 +4049,7 @@ class ProjectbuildCrud extends MY_Controller
                                          */
                                         if ($this->task['multiUploadImagem']) {
 
-
                                             $this->_formAddEditConfigInputValidationAtributos .= "[' . (!empty(\$_id) ? \$_id : '') . ']";
-
 
                                             $this->_formAddEditConfigInputValidationCallback .= ""
                                                 . "/** VALIDAÇÃO POR CALLBACK MULTI UPLOAD DE IMAGENS {$_row["field_name"]}. */" . PHP_EOL
@@ -4235,7 +4221,6 @@ class ProjectbuildCrud extends MY_Controller
                                             . "" . PHP_EOL . PHP_EOL . PHP_EOL;
                                     }
 
-
                                     /** INPUT NOT REQUIRED */
                                     $this->_formAddEditFields .= "" . PHP_EOL
                                         . "<?php \$_error = form_error('{$_row['field_name']}', '<small class=\'text-danger col-xs-12 bz-input-error\'>', '</small>'); ?>" . PHP_EOL
@@ -4294,7 +4279,6 @@ class ProjectbuildCrud extends MY_Controller
                              */
                             /** ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================ */
 
-
                             /**
                              * DADOS FILLABLE
                              */
@@ -4311,7 +4295,6 @@ class ProjectbuildCrud extends MY_Controller
                                 $this->_formEditDadosFillable .= 'if( isset( $_dadosFillable["' . $_row['field_name'] . '"] ) ){' . PHP_EOL
                                     . '     $_dados["' . $_row['field_name'] . '"] = $_dadosFillable["' . $_row['field_name'] . '"];' . PHP_EOL
                                     . '}' . PHP_EOL . PHP_EOL;
-
 
                                 if (!array_key_exists("form_add_edit_field_required", $_param_formAddEditField)) {
 
@@ -4334,7 +4317,6 @@ class ProjectbuildCrud extends MY_Controller
                                 }
 
                             }
-
 
                         }
                         /** END CAMPOS QUE SERÃO MOSTRADOS NO FORM ADD/EDIT */
@@ -4421,7 +4403,7 @@ class ProjectbuildCrud extends MY_Controller
                      * GET CODE EDITOR METODOS PHP CONTROLLER
                      */
                     $_where_getCode_ControllerMetodosPHP = array(
-                        'proj_build_id' => $this->_project_id, 'code_type' => 'metodo-php',);
+                        'proj_build_id' => $this->_project_id, 'code_type' => 'metodo-php');
                     $_query_getCode_ControllerMetodosPHP = $this->db->get_where('proj_build_codeeditor', $_where_getCode_ControllerMetodosPHP)->result();
                     foreach ($_query_getCode_ControllerMetodosPHP as $_row_getCode_ControllerMetodosPHP) {
                         if (!empty(trim($_row_getCode_ControllerMetodosPHP->code_script))) {
@@ -4456,7 +4438,7 @@ class ProjectbuildCrud extends MY_Controller
                      */
                     $_where_getCode_ModelsMetodosPHP = array(
                         'proj_build_id' => $this->_project_id,
-                        'code_type' => 'model-php',);
+                        'code_type' => 'model-php');
                     $_query_getCode_ModelsMetodosPHP = $this->db->get_where('proj_build_codeeditor', $_where_getCode_ModelsMetodosPHP)->result();
                     foreach ($_query_getCode_ModelsMetodosPHP as $_row_getCode_ModelsMetodosPHP) {
                         if (!empty(trim($_row_getCode_ModelsMetodosPHP->code_script))) {
@@ -4491,7 +4473,7 @@ class ProjectbuildCrud extends MY_Controller
                      */
                     $_where_getCode_onRecordExport = array(
                         'proj_build_id' =>
-                            $this->_project_id, 'code_type' => 'onrecordexport',
+                        $this->_project_id, 'code_type' => 'onrecordexport',
                     );
                     $_query_getCode_onRecordExport = $this->db->get_where(' proj_build_codeeditor', $_where_getCode_onRecordExport)->result();
                     foreach ($_query_getCode_onRecordExport as $_row_getCode_onRecordExport) {
@@ -4561,7 +4543,7 @@ class ProjectbuildCrud extends MY_Controller
                      * GET CODE EDITOR FORM EDIT
                      */
                     $_where_getCode_FormAddEdit = array(
-                        'proj_build_id' => $this->_project_id, 'code_screen' => 'formedit',);
+                        'proj_build_id' => $this->_project_id, 'code_screen' => 'formedit');
 
                     $_query_getCode_FormAddEdit = $this->db->get_where('proj_build_codeeditor', $_where_getCode_FormAddEdit)->result();
                     foreach ($_query_getCode_FormAddEdit as $_row_getCode_FormAddEdit) {
@@ -4773,7 +4755,7 @@ class ProjectbuildCrud extends MY_Controller
          */
         $_where_getCode_ModelsMetodosPHP = array(
             'proj_build_id' => $this->_project_id,
-            'code_type' => 'model-php',);
+            'code_type' => 'model-php');
         $_query_getCode_ModelsMetodosPHP = $this->db->get_where('proj_build_codeeditor', $_where_getCode_ModelsMetodosPHP)->result();
         foreach ($_query_getCode_ModelsMetodosPHP as $_row_getCode_ModelsMetodosPHP) {
             if (!empty(trim($_row_getCode_ModelsMetodosPHP->code_script))) {
@@ -4802,7 +4784,7 @@ class ProjectbuildCrud extends MY_Controller
      * GERA O MODEL DO APP
      */
 
-    private function ger_models($_modelEloquent = NULL)
+    private function ger_models($_modelEloquent = null)
     {
         /**
          * IMPORTA O TEMPLATE DO MODEL
@@ -4825,7 +4807,6 @@ class ProjectbuildCrud extends MY_Controller
 
         $this->_dadosModel = str_replace('"{{model-name}}"', $this->_app_nome, $this->_dadosModel);
         $this->_dadosModel = str_replace('"{{models-metodos-php}}"', $this->_models_metodos_php, $this->_dadosModel);
-
 
         /**
          *
@@ -5005,7 +4986,6 @@ class ProjectbuildCrud extends MY_Controller
 
         $this->_dadosController = str_replace('"{{form-edit-where-update-fields}}"', $this->_formEditWhereUpdateFields, $this->_dadosController);
 
-
         /** CAMPOS VIRTUAIS DA GRIDLIST */
         $this->_dadosController = str_replace('"{{controller-virtual-field}}"', ((count($this->_gridListVirtualFieldsTable) > 0) ? "'" . implode("','", $this->_gridListVirtualFieldsTable) . "'" : ''), $this->_dadosController);
         /** END CAMPOS VIRTUAIS DA GRIDLIST */
@@ -5016,7 +4996,6 @@ class ProjectbuildCrud extends MY_Controller
         $this->_dadosController = str_replace("<?= ", "'.", $this->_dadosController);
         $this->_dadosController = str_replace("; ?>", ".'", $this->_dadosController);
 
-
         /**
          * FAZ A TRATAMENTO DE $this->_exportCodeEditorOnRecord
          */
@@ -5026,7 +5005,6 @@ class ProjectbuildCrud extends MY_Controller
         $this->_dadosController = str_replace('"{{export-on-record}}"', $this->_exportCodeEditorOnRecord, $this->_dadosController);
 
         /** END EXPORT REPORT */
-
 
         /**
          * ########################################################################################################################################################################
@@ -5065,9 +5043,7 @@ class ProjectbuildCrud extends MY_Controller
             $this->_controller_onScriptinit .= '/** METHOD CALENDAR */' . PHP_EOL;
             $this->_controller_onScriptinit .= '$this->_methodCalendar = true;' . PHP_EOL . PHP_EOL;
 
-
             /** ############################################################################################################################################################ */
-
 
             /**
              *  IMPORTA O TEMPLATE VIEW DO CALENDAR
@@ -5098,9 +5074,7 @@ class ProjectbuildCrud extends MY_Controller
             write_file($this->_directory . '/views/v' . $this->_app_nome . 'Calendar.php', bz_removeEmptyLines($this->_dadosViewCalendar));
             /** END GERA O ARQUIVO view DO CALENDAR */
 
-
             $this->_dadosViewCalendar = '';
-
 
             /**/
         } else {
@@ -5117,13 +5091,11 @@ class ProjectbuildCrud extends MY_Controller
          * ########################################################################################################################################################################
          */
 
-
         /** EXPORT REPORT */
         if (!empty($this->_gridListHeaderTableExport)) {
             $this->_controller_onScriptinit .= '/** EXPORT REPORT */' . PHP_EOL;
             $this->_controller_onScriptinit .= '$this->_exportReport = true;' . PHP_EOL . PHP_EOL;
         }
-
 
         /** MÉTODOS */
         $this->_dadosController = str_replace('"{{controller-metodos-php}}"', $this->_controller_metodos_php, $this->_dadosController);
@@ -5141,11 +5113,9 @@ class ProjectbuildCrud extends MY_Controller
         $this->_dadosController = str_replace('"{{controller-onScriptEndExport}}"', $this->_controller_onScriptEndExport, $this->_dadosController);
         /** END MÉTODOS */
 
-
         /** GERA O ARQUIVO controller DA APLICAÇÃO */
         write_file($this->_directory . '/controllers/' . $this->_app_nome . '.php', bz_removeEmptyLines($this->_dadosController));
         /** END GERA O ARQUIVO controller DA APLICAÇÃO */
-
 
         $this->_dadosController = '';
         $this->_dadosControllerCalendar = '';
@@ -5209,13 +5179,11 @@ class ProjectbuildCrud extends MY_Controller
         /** SCRIPT JS */
         $this->_dadosView = str_replace('"{{grid-list-scripts-js}}"', "<?php \$this->load->view(\$this->router->fetch_class() . '/js/js-gridlist');?>", $this->_dadosView);
 
-
         /** GERA O ARQUIVO VIEW gridlist DA APLICAÇÃO */
         write_file($this->_directory . '/views/v' . $this->_app_nome . '.php', bz_removeEmptyLines($this->_dadosView));
         /** EDND GERA O ARQUIVO VIEW gridlist DA APLICAÇÃO */
 
         $this->_dadosView = '';
-
 
         /**
          * GERA O ARQUIVO CSS
@@ -5234,7 +5202,6 @@ class ProjectbuildCrud extends MY_Controller
         }
         /** END GERA O ARQUIVO CSS */
 
-
         /**
          * GERA O ARQUIVO JS
          */
@@ -5251,7 +5218,6 @@ class ProjectbuildCrud extends MY_Controller
             fclose($_dados);
         }
         /** END GERA O ARQUIVO JS */
-
 
         /**/
     }
@@ -5295,7 +5261,6 @@ class ProjectbuildCrud extends MY_Controller
         $this->_dadosFormAdd = str_replace('"{{form-addedit-input-form-open}}"', $this->_formAddEditConfigFormOpen, $this->_dadosFormAdd);
         $this->_dadosFormAdd = str_replace('"{{form-add-input-fields}}"', $this->_formAddFields, $this->_dadosFormAdd);
 
-
         /** CSS */
         $this->_dadosFormAdd = str_replace('"{{form-add-scripts-css}}"', "<?php \$this->load->view(\$this->router->fetch_class() . '/css/css-formAdd');?>", $this->_dadosFormAdd);
 
@@ -5305,14 +5270,11 @@ class ProjectbuildCrud extends MY_Controller
         /** SCRIPT JQUERY MASK */
         $this->_dadosFormAdd = str_replace('"{{form-add-scripts-js-mask}}"', "<?php \$this->load->view(\$this->router->fetch_class() . '/js/js-mask-formAdd');?>", $this->_dadosFormAdd);
 
-
         /** GERA O ARQUIVO VIEW formadd DA APLICAÇÃO */
         write_file($this->_directory . '/views/v' . $this->_app_nome . 'FormAdd.php', bz_removeEmptyLines($this->_dadosFormAdd));
         /** END GERA O ARQUIVO VIEW formadd DA APLICAÇÃO */
 
-
         $this->_dadosFormAdd = '';
-
 
         /**
          * GERA O ARQUIVO CSS
@@ -5331,7 +5293,6 @@ class ProjectbuildCrud extends MY_Controller
         }
         /** END GERA O ARQUIVO CSS */
 
-
         /**
          * GERA O ARQUIVO JS
          */
@@ -5349,7 +5310,6 @@ class ProjectbuildCrud extends MY_Controller
         }
         /** END GERA O ARQUIVO JS */
 
-
         /**
          * GERA O ARQUIVO JS JQUERY MASK
          */
@@ -5366,7 +5326,6 @@ class ProjectbuildCrud extends MY_Controller
             fclose($_dados);
         }
         /** END GERA O ARQUIVO JS JQUERY MASK */
-
 
         /**/
     }
@@ -5410,9 +5369,8 @@ class ProjectbuildCrud extends MY_Controller
         $this->_dadosFormEdit = str_replace('"{{form-edit-input-fields}}"', $this->_formEditFields, $this->_dadosFormEdit);
 
 //        $this->_dadosFormEdit = str_replace('"{{form-edit-scripts-css}}"', $this->_formEditCodeEditorCSS, $this->_dadosFormEdit);
-//        $this->_dadosFormEdit = str_replace('"{{form-edit-scripts-js}}"', $this->_formEditCodeEditorJS, $this->_dadosFormEdit);
-//        $this->_dadosFormEdit = str_replace('"{{form-edit-scripts-js-mask}}"', $this->_formAddEditConfigInputMask, $this->_dadosFormEdit);
-
+        //        $this->_dadosFormEdit = str_replace('"{{form-edit-scripts-js}}"', $this->_formEditCodeEditorJS, $this->_dadosFormEdit);
+        //        $this->_dadosFormEdit = str_replace('"{{form-edit-scripts-js-mask}}"', $this->_formAddEditConfigInputMask, $this->_dadosFormEdit);
 
         /** CSS */
         $this->_dadosFormEdit = str_replace('"{{form-edit-scripts-css}}"', "<?php \$this->load->view(\$this->router->fetch_class() . '/css/css-formEdit');?>", $this->_dadosFormEdit);
@@ -5422,7 +5380,6 @@ class ProjectbuildCrud extends MY_Controller
 
         /** SCRIPT JQUERY MASK */
         $this->_dadosFormEdit = str_replace('"{{form-edit-scripts-js-mask}}"', "<?php \$this->load->view(\$this->router->fetch_class() . '/js/js-mask-formEdit');?>", $this->_dadosFormEdit);
-
 
         /**
          * GERA O ARQUIVO CSS
@@ -5441,7 +5398,6 @@ class ProjectbuildCrud extends MY_Controller
         }
         /** END GERA O ARQUIVO CSS */
 
-
         /**
          * GERA O ARQUIVO JS
          */
@@ -5458,7 +5414,6 @@ class ProjectbuildCrud extends MY_Controller
             fclose($_dados);
         }
         /** END GERA O ARQUIVO JS */
-
 
         /**
          * GERA O ARQUIVO JS JQUERY MASK
@@ -5477,9 +5432,7 @@ class ProjectbuildCrud extends MY_Controller
         }
         /** END GERA O ARQUIVO JS JQUERY MASK */
 
-
         /**/
-
 
         /** GERA O ARQUIVO VIEW formedit DA APLICAÇÃO */
         write_file($this->_directory . '/views/v' . $this->_app_nome . 'FormEdit.php', bz_removeEmptyLines($this->_dadosFormEdit));
@@ -5490,7 +5443,6 @@ class ProjectbuildCrud extends MY_Controller
 
     /** END private function ger_formAdd() */
 
-
     public function backupapp()
     {
         /** CERTIFICA SE O ACESSO A ESTA FUNCTION REALMENTE ESTÁ SENDO FEITO POR AJAX. */
@@ -5499,7 +5451,7 @@ class ProjectbuildCrud extends MY_Controller
         $_app_name = $this->input->post('app_name');
         $_code_app_import = $this->input->post('code_app_import');
         $_action = $this->input->post('action');
-        $_msg = NULL;
+        $_msg = null;
 
         $this->load->model('appbackup');
 
@@ -5530,7 +5482,7 @@ class ProjectbuildCrud extends MY_Controller
                     $_msg['msg']['type'] = 'error';
                     echo json_encode($_msg);
                 }
-                
+
                 break;
 
             default:
@@ -5546,9 +5498,4 @@ class ProjectbuildCrud extends MY_Controller
 
 }
 
-
-
 /** END class */
-
-
-
