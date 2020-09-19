@@ -78,6 +78,7 @@ Partindo do princípo que o servidor de Banco de Dados MariaDB/MySql e o servido
 - chmod 777 captcha
 - chmod 777 application/logs
 - chmod 777 application/cache
+- chmod 777 application/modules
 
 
 ####
