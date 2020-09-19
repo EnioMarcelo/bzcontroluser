@@ -209,6 +209,7 @@
 
 <body class="skin-<?= ___BZ_LAYOUT_SKINCOLOR___; ?> sidebar-mini fixed" style="background-color: transparent;">
 
+<div id="post_ajax_return"></div>
 
 <!-- Content Wrapper. Contains page content -->
 <div class="container-fluid">

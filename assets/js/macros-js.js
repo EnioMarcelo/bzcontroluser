@@ -84,3 +84,4 @@ function mc_toast_alert(_title, _text, _position = "top-center", _type = "info")
 
 
 }
+

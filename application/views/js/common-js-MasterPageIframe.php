@@ -38,6 +38,23 @@
         $('#modal-aguarde').modal('show');
     }
 
+    /**
+     * MARCO AJAX POST
+     */
+    var mc_post_ajax = function (_url, _data = null, callback) {
+        
+        var url = _url;
+        var jsonData = {'<?php echo $this->security->get_csrf_token_name(); ?>': '<?php echo $this->security->get_csrf_hash(); ?>'};
+
+        $.post(url, jsonData, function (response, status) {
+
+            $( "#post_ajax_return" ).empty().append( response + ' - ' + status );
+
+        });
+
+
+    }
+
 
     /**
      *
@@ -66,7 +83,7 @@
                          * MACRO AJAX
                          */
                         var _method = '/del_image';
-                        var _url = '<?= site_url() . $this->router->fetch_class(); ?>' + _method;
+                        var _url = '<?=site_url() . $this->router->fetch_class();?>' + _method;
                         var _data = {
                             'id': _image.data('id'),
                             'field_name': _image.data('field_name'),
@@ -683,11 +700,11 @@
                             var formData = {[csrfName]: csrfHash, btndel: "btn-del", dadosdel: deleteditems}; //Array
 
                             $.ajax({
-                                url: "<?= site_url($this->router->fetch_class() . '/del'); ?>",
+                                url: "<?=site_url($this->router->fetch_class() . '/del');?>",
                                 type: "POST",
                                 data: formData,
                                 success: function (formData, textStatus, jqXHR) {
-                                    window.location.href = "<?= site_url($this->router->fetch_class() . '?' . bz_app_parametros_url()); ?>";
+                                    window.location.href = "<?=site_url($this->router->fetch_class() . '?' . bz_app_parametros_url());?>";
                                 },
                                 error: function (jqXHR, textStatus, errorThrown) {
                                     swal("ERRO !", "Erro ao deletar registro", "error");
@@ -700,7 +717,7 @@
                                 keyboard: false,
                                 show: true,
                             });
-                            window.location.href = "<?= site_url($this->router->fetch_class() . '?' . bz_app_parametros_url()); ?>";
+                            window.location.href = "<?=site_url($this->router->fetch_class() . '?' . bz_app_parametros_url());?>";
                         }
                     });
             }
@@ -715,8 +732,8 @@
      */
     $(function () {
         $('.sidebar-menu', window.parent.document).each(function () {
-            $(".sidebar-menu .bg-<?= ___BZ_LAYOUT_SKINCOLOR___; ?>-active", window.parent.document).removeClass().addClass('sidebar-menu j-btn-linkmenu');
-            $(".sidebar-menu a[href*='<?= $this->router->fetch_class(); ?>']", window.parent.document).addClass('bg-<?= ___BZ_LAYOUT_SKINCOLOR___; ?>-active');
+            $(".sidebar-menu .bg-<?=___BZ_LAYOUT_SKINCOLOR___;?>-active", window.parent.document).removeClass().addClass('sidebar-menu j-btn-linkmenu');
+            $(".sidebar-menu a[href*='<?=$this->router->fetch_class();?>']", window.parent.document).addClass('bg-<?=___BZ_LAYOUT_SKINCOLOR___;?>-active');
         });
     });
     // END MARCA O MENU CORRESPONDENTE A APLICAÇÃO COMO ATIVO css class bg-blue-active
@@ -754,10 +771,10 @@
     //REMOVE ELEMENTOS MARCADOS COM A CLASSE .hide-formadd ou .hide-formedit
     $(function () {
 
-        $('#IdFormADD_<?= $this->router->fetch_class(); ?>').find(".hide-formadd").parent().next().removeAttr('placeholder');
-        $('#IdFormADD_<?= $this->router->fetch_class(); ?>').find(".hide-formadd").remove();
-        $('#IdFormEDIT_<?= $this->router->fetch_class(); ?>').find(".hide-formedit").parent().next().removeAttr('placeholder');
-        $('#IdFormEDIT_<?= $this->router->fetch_class(); ?>').find(".hide-formedit").remove();
+        $('#IdFormADD_<?=$this->router->fetch_class();?>').find(".hide-formadd").parent().next().removeAttr('placeholder');
+        $('#IdFormADD_<?=$this->router->fetch_class();?>').find(".hide-formadd").remove();
+        $('#IdFormEDIT_<?=$this->router->fetch_class();?>').find(".hide-formedit").parent().next().removeAttr('placeholder');
+        $('#IdFormEDIT_<?=$this->router->fetch_class();?>').find(".hide-formedit").remove();
     });
     //END REMOVE ELEMENTOS MARCADOS COM A CLASSE .hide-formadd ou .hide-formedit
 
@@ -786,9 +803,9 @@
         $("input[type='file']").on('change', function (e) {
             e.preventDefault();
             var $fileUpload = $(this);
-            var message = "Quantidade máxima permitida de upload para este servidor é de <?= ini_get('max_file_uploads'); ?> arquivos.";
+            var message = "Quantidade máxima permitida de upload para este servidor é de <?=ini_get('max_file_uploads');?> arquivos.";
 
-            if (parseInt($fileUpload.get(0).files.length) > <?= ini_get('max_file_uploads'); ?>) {
+            if (parseInt($fileUpload.get(0).files.length) > <?=ini_get('max_file_uploads');?>) {
                 swal('ATENÇÃO !!!', message, 'error');
                 $fileUpload.val('');
                 modalAguardeOff();
