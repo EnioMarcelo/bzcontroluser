@@ -2,7 +2,7 @@
 Ferramenta RAD para desenvolvimento de sistemas CRUD em PHP utilizando o Framwork Codigniter 3.x, JQuery e o Template AdminLTE
 
 # Requisitos do servidor
-### Recomenda-se o PHP versão 7.1 ou mais recente, php-gd e o Composer.
+### Recomenda-se o PHP versão 7.1 ou mais recente, php-gd, php-xml e o Composer.
 
 ##### Banco de Dados
 - MySQL (5.1+) por meio dos drivers mysql (obsoleto), mysqli e pdo
@@ -78,6 +78,7 @@ Partindo do princípo que o servidor de Banco de Dados MariaDB/MySql e o servido
 - chmod 777 captcha
 - chmod 777 application/logs
 - chmod 777 application/cache
+- chmod 777 application/modules
 
 
 ####
